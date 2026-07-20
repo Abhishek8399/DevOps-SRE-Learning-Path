@@ -11,7 +11,7 @@ Status: **GATED — initial diagnostic in progress**
 - Git and software-delivery foundations
 - Bash plus one primary implementation language
 - Testing, validation, error handling, and debugging
-- Primary-cloud foundations after the cloud choice is known
+- Provider-neutral cloud foundations using local simulation and emulation; no online cloud resources
 - Security, reliability, observability, cost, and safe-change analysis throughout
 
 ## Unlock evidence
@@ -20,12 +20,12 @@ Before the first lesson and lab are generated:
 
 - Onboarding batch 1 is complete.
 - Initial reasoning, troubleshooting, and confidence evidence has been evaluated.
-- The lab environment, primary cloud, and primary scripting language are selected safely.
+- The lab environment, local-only cloud strategy, and primary scripting language are selected safely.
 - Major prerequisite gaps or dangerous misconceptions that affect lab safety are identified.
 
 ## Foundation gate
 
-Passing requires at least 85% retained performance across Linux, networking, Git, scripting, and cloud foundations, plus successful independent practical exercises. A single successful happy-path lab is not sufficient.
+Passing requires at least 85% retained performance across Linux, networking, Git, scripting, and provider-neutral cloud foundations, plus successful independent practical exercises. A single successful happy-path lab is not sufficient.
 
 ## First practical milestone
 

@@ -1,7 +1,7 @@
 # Initial Assessment
 
 Date opened: 2026-07-20
-Status: awaiting learner response
+Status: onboarding response in progress; diagnostic awaiting learner response
 Mode: closed-notes and AI-free unless explicitly disclosed
 
 ## Submission rules
@@ -20,6 +20,18 @@ Mode: closed-notes and AI-free unless explicitly disclosed
 4. List the infrastructure, CI/CD, container, Kubernetes, observability, security, database, and cloud tools you have operated. Distinguish independent production ownership from assisted use or lab-only exposure.
 5. List certifications and defensible projects, then name your three strongest and three weakest technical areas. `None` or `unknown` is acceptable.
 6. Choose a usual session length (30, 60, 90, or 120 minutes), preferred explanation language, and whether you can periodically complete closed-notes, AI-free exercises.
+
+## Onboarding response status
+
+| Question | Status | Recorded evidence or remaining gap |
+|---:|---|---|
+| 1 | Partially answered and locally verified | WSL 2 Ubuntu 24.04 approved; installation permitted; CPU, RAM, disk, systemd, and Docker state verified. Employer, proxy, network, and reboot restrictions remain pending. |
+| 2 | Scope decision recorded | Local-only delivery confirmed; no online cloud resources. Provider-specific target is deferred. |
+| 3 | Pending | Scripting confidence and owned automation example required. |
+| 4 | Pending | Tool-operation depth and ownership evidence required. |
+| 5 | Pending | Certifications, defensible projects, strengths, and weaknesses required. |
+| 6 | Pending | Session length, language, and AI-free practice availability required. |
+| Diagnostic problem 1 | Pending | No reasoning response submitted yet. |
 
 ## Evidence coverage tracker
 

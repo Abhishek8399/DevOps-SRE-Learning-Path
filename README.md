@@ -8,7 +8,8 @@ This directory holds the evidence and working artifacts for the interactive trai
 - Stage: onboarding and initial diagnostic
 - Phase 1 status: gated pending diagnostic evidence
 - Competency ratings: not yet assigned
-- Primary cloud and implementation stack: not yet selected
+- Delivery model: local-first; no online cloud resources
+- Primary implementation stack: pending diagnostic evidence
 
 ## Workflow
 
@@ -30,6 +31,7 @@ This directory holds the evidence and working artifacts for the interactive trai
 ## Learner files
 
 - [Learner profile](learner-profile.md)
+- [Local environment baseline](environment/local-baseline.md)
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
 - [Phase 1: Foundations](phase-01-foundations/README.md)

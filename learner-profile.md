@@ -4,7 +4,7 @@ Last updated: 2026-07-20
 
 Labels used below:
 
-- **Self-reported**: supplied in the governing prompt; not competency evidence.
+- **Self-reported**: supplied by the learner; not competency evidence.
 - **Observed**: collected through a read-only local check; presence does not prove proficiency or a working runtime.
 - **Pending**: requires a learner answer or later verification.
 
@@ -21,27 +21,31 @@ Labels used below:
 | Deadline | No fixed deadline | Self-reported |
 | Study availability | Irregular | Self-reported |
 | Cloud sandbox | None | Self-reported |
-| Host environment | 64-bit Windows; PowerShell 5.1 | Observed |
-| Linux environment | WSL 2; default distribution Ubuntu 24.04 | Observed |
-| Logical processors visible to the training shell | 12 | Observed |
-| Commands resolvable on Windows PATH | Git, Docker, Python, Go, Node.js/npm, Terraform, kubectl, Azure CLI | Observed; versions and runtime health unverified |
-| Commands not found on Windows PATH | Podman, OpenTofu, Helm, AWS CLI, Google Cloud CLI, kind, minikube, Ansible | Observed; may exist inside WSL or another environment |
+| Lab delivery policy | Local-first; no online cloud resources | Self-reported |
+| Installation policy | Required local lab dependencies may be installed | Self-reported |
+| Host environment | 64-bit Windows; PowerShell 5.1; 12 logical CPUs; approximately 31.7 GiB RAM | Observed |
+| Host storage | Approximately 271 GiB free on `C:` | Observed |
+| Linux environment | WSL 2 Ubuntu 24.04.1 LTS; systemd running; cgroup v2 | Observed |
+| WSL resource allocation | 2 logical CPUs; 4 GiB RAM; 2 GiB swap | Observed from `.wslconfig` and Ubuntu |
+| Linux storage | `ext4` root healthy; approximately 952 GiB reported free; 1% inode use | Observed; host free space is the physical ceiling |
+| Docker status | Docker Desktop CLI 29.6.1 present; engine stopped; Ubuntu integration disabled | Observed |
+| Native Ubuntu tools | Git 2.43.0, Python 3.12.3, OpenSSL 3.0.13 | Observed |
+| Commands resolvable on Windows PATH | Git, Docker, Python, Go, Node.js/npm, Terraform, kubectl, Azure CLI | Observed; availability does not imply Ubuntu-native installation |
+| Commands missing from Ubuntu | `jq`, `yq`, `pip3`, Go, native Node.js, Terraform/OpenTofu, kubectl, Helm, kind/minikube, Ansible, `make`, GCC, ShellCheck/Bats, Trivy, Syft, Cosign, Kustomize | Observed; absence is not a competency score |
+| Provider-specific cloud target | Deferred; use provider-neutral local simulation first | Self-reported constraint plus program decision |
 
 ## Pending profile fields
 
 | Field | Status |
 |---|---|
 | Preferred session length | Pending |
-| RAM and usable lab disk | Pending |
-| Approved lab environment and installation constraints | Pending |
-| Preferred primary cloud | Pending |
-| Monthly lab budget | Pending |
+| Administrator, employer, proxy, network, or reboot restrictions | Pending |
 | Programming and scripting depth | Pending |
 | Production tools and responsibility depth | Pending |
 | Certifications | Pending |
 | Defensible existing projects | Pending |
 | Strongest and weakest areas | Pending |
 | Preferred explanation language | Pending |
-| Employer, cost, accessibility, or other constraints | Pending |
+| Other cost, accessibility, or operational constraints | Pending |
 
-The first response batch is recorded in [assessments/initial-assessment.md](assessments/initial-assessment.md). This file will be updated after evidence is submitted.
+The normalized machine evidence is in [environment/local-baseline.md](environment/local-baseline.md). The first response batch is recorded in [assessments/initial-assessment.md](assessments/initial-assessment.md). This file will be updated after further evidence is submitted.

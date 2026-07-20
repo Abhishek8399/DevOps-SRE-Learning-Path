@@ -14,7 +14,7 @@ Current state: initial diagnostic in progress
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
 | CI/CD and GitOps | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Containers | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
-| Cloud engineering and IAM | Not assessed | — | None | 0 | — | — | After baseline | Select primary cloud |
+| Cloud engineering and IAM | Not assessed | — | None | 0 | — | — | After baseline | Assess provider-neutral foundations locally; provider choice deferred |
 | Infrastructure and configuration as code | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Kubernetes | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Observability | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
@@ -25,6 +25,16 @@ Current state: initial diagnostic in progress
 | Platform engineering | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Architecture and technical leadership | Not assessed | — | None | 0 | — | — | After baseline | Pending SCALE exercise |
 | AI-native DevOps, AIOps, MLOps, and LLMOps | Not assessed | — | None | 0 | — | — | After baseline | Pending AI audit |
+
+## Environment decisions
+
+| Date | Decision | Evidence |
+|---|---|---|
+| 2026-07-20 | Use WSL 2 Ubuntu 24.04 as the primary local lab | Learner approval plus read-only environment verification |
+| 2026-07-20 | Permit installation of exercise-required local dependencies | Learner authorization; no installation performed during baseline |
+| 2026-07-20 | Exclude online cloud resources | Learner constraint; use local simulation, emulation, validation, and design exercises |
+
+Machine readiness evidence is recorded in [../environment/local-baseline.md](../environment/local-baseline.md). These decisions do not establish competency.
 
 ## Completed labs
 
