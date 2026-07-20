@@ -33,7 +33,7 @@ This file records normalized, non-sensitive environment evidence. Raw inventory 
 | Native Git | Git 2.43.0 |
 | Native Python | Python 3.12.3; `pip3` absent |
 | TLS tooling | OpenSSL 3.0.13 |
-| Docker | Client/server 29.6.1; Ubuntu resolves `/usr/bin/docker`; daemon query succeeded; Compose v5.3.0 |
+| Docker | Client/server 29.6.1; Compose v5.3.0; Ubuntu client-to-daemon and bounded container execution verified after recovery from the documented WSL integration fault |
 | Windows-interoperability commands | `npm` and Azure CLI resolve from `/mnt/c`; they are not native Ubuntu installations |
 | Missing Phase 1 utilities | `jq`, `yq`, `make`, `gcc`, ShellCheck, and Bats |
 | Missing later-phase tools | Go, native Node.js, Terraform/OpenTofu, kubectl, Helm, kind/minikube, Ansible, Trivy, Syft, Cosign, and Kustomize |
@@ -46,14 +46,18 @@ Ready now:
 
 - Linux process, filesystem, permission, service, networking, Git, Bash, and native Python diagnostic work.
 - Local exercises that do not require a running container engine.
-- Docker client-to-daemon and Compose exercises; actual workload execution remains to be verified in a deliberate lab.
+- Docker client-to-daemon, image build, bounded container execution, and Compose exercises.
 
 Deferred:
 
-- First container execution, image-pull behavior, volume semantics, and networking behavior until tested in the container diagnostic.
+- Docker networking, persistent-volume behavior, and image-pull failure handling beyond the current network-disabled tmpfs lab.
 - Local Kubernetes and heavier observability labs until WSL resource allocation is reviewed; changing `.wslconfig` affects all WSL distributions and requires a WSL restart.
 - Provider-specific cloud implementation. Cloud concepts will use local simulation, emulation, configuration validation, and architecture reasoning.
 - Installation of missing tools until learner evidence establishes the primary scripting language and immediate lab requirement.
+
+## Local recovery runbooks
+
+- [Docker Desktop WSL CLI segmentation fault](troubleshooting/docker-wsl-cli-segfault.md): diagnosed as an unhealthy read-only CLI-tools loop mount and recovered with a Docker Desktop restart.
 
 ## Safety boundary
 

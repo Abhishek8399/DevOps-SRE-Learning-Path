@@ -73,3 +73,14 @@ Most important missing evidence:
 ## Teach-back
 
 Explain pathname resolution, mounts, allocation resources, and this failure in plain language. Include one analogy and where the analogy breaks.
+
+## Mentor environment verification
+
+- Date: 2026-07-20
+- Learner-supplied setup evidence: image build completed and `incident_ready=true` was returned for `devops-sre-p1-enospc`.
+- Learner-supplied status evidence: container running, health healthy, network mode `none`, and read-only root enabled.
+- Mentor fixture verification: passed with the intended bounded block and inode conditions.
+- Safety verification: expected training label, running state, readiness marker, disabled networking, read-only root, all capabilities dropped, and bounded tmpfs configuration confirmed.
+- Evidence classification: valid environment and fixture evidence; it does not establish learner diagnosis or mastery.
+
+The student-authored FRAME sections above remain intentionally blank until the learner submits predictions and observations.

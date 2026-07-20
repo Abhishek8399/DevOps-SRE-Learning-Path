@@ -1,6 +1,6 @@
 # Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage
 
-Status: guided practical unlocked after correct coached recall; the Phase 1 gate remains locked
+Status: guided practical active; setup and mentor fixture verification passed; the Phase 1 gate remains locked
 Estimated time: 60 minutes, completed through short checkpoints
 
 ## Checkpoint 1 — stop here first

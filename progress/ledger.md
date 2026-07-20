@@ -42,7 +42,9 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided lab unlocked — awaiting setup and status evidence | Attempt 3 correctly recalled `inode`; coached result does not raise mastery |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided lab running — awaiting learner read-only observations | Learner supplied successful setup/status output; mentor verified fixture and safety controls; diagnosis evidence still pending |
+
+Environment prerequisite note: the Ubuntu Docker CLI initially crashed because Docker Desktop’s WSL CLI-tools loop mount returned input/output errors. A Docker Desktop restart restored Windows and Ubuntu client/server checks. See the [recovery runbook](../environment/troubleshooting/docker-wsl-cli-segfault.md). This mentor-operated recovery is not learner competency evidence.
 
 ## Completed labs
 
@@ -54,7 +56,9 @@ None.
 
 ## Incident simulations
 
-None.
+| Simulation | Status | Evidence |
+|---|---|---|
+| Lesson 1 bounded ENOSPC incident | Active | Container running and healthy; network `none`; read-only root; mentor fixture verification passed; learner diagnosis pending |
 
 ## Architecture exercises
 
