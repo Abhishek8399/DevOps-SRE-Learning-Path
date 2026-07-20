@@ -9,6 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Checkpoint 1: learner reported no current model; no reasoning or command evidence submitted | 5 | Not stated | None established from one observation | Same-session guided transfer; 2026-07-21 if successful | Coached lab, then unfamiliar closed-notes transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -41,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Awaiting Checkpoint 1 prediction | None submitted |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided remediation — Checkpoint 1 not demonstrated | Learner disclosed no current answer; complete guided instruction at Hint 5 supplied; confidence not stated |
 
 ## Completed labs
 
@@ -69,11 +70,11 @@ None confirmed. Self-reported confidence has not yet been calibrated against per
 
 ## Weak prerequisite links
 
-Not yet measured.
+Filesystem allocation model: path-to-mount mapping and independent block/inode capacity. Observed 2026-07-20; guided retry pending.
 
 ## Reviews due
 
-None until the first concept is practiced and evaluated.
+Same-session guided retry for filesystem allocation. Schedule 2026-07-21 review only if the retry succeeds.
 
 ## Study time
 
@@ -85,4 +86,4 @@ None until the first concept is practiced and evaluated.
 
 | Date | Exercise | Evidence | Result |
 |---|---|---|---|
-| 2026-07-20 | Initial diagnostic problem 1 | Awaiting response | Pending |
+| 2026-07-20 | Initial diagnostic problem 1 | No technical answer or confidence submitted; learner requested detailed help | Knowledge gap identified; guided retry active |

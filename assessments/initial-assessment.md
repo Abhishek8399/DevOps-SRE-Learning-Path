@@ -1,7 +1,7 @@
 # Initial Assessment
 
 Date opened: 2026-07-20
-Status: onboarding response in progress; diagnostic awaiting learner response
+Status: onboarding response in progress; diagnostic problem 1 guided remediation active
 Mode: closed-notes and AI-free unless explicitly disclosed
 
 ## Submission rules
@@ -31,7 +31,7 @@ Mode: closed-notes and AI-free unless explicitly disclosed
 | 4 | Pending | Tool-operation depth and ownership evidence required. |
 | 5 | Pending | Certifications, defensible projects, strengths, and weaknesses required. |
 | 6 | Pending | Session length, language, and AI-free practice availability required. |
-| Diagnostic problem 1 | Pending | No reasoning response submitted yet. |
+| Diagnostic problem 1 | Attempted; guided remediation active | Learner disclosed no current answer; no reasoning, command, or confidence evidence submitted. |
 
 ## Evidence coverage tracker
 
@@ -40,7 +40,7 @@ No capability score is assigned until evidence exists.
 | Required diagnostic evidence | Status |
 |---|---|
 | Short factual questions | Pending |
-| Conceptual “how and why” questions | Pending |
+| Conceptual “how and why” questions | Active — complete filesystem instruction at Hint 5; independent transfer still pending |
 | Command-output interpretation | Pending |
 | Incomplete-evidence debugging | Active in [Lesson 1](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Architecture with competing requirements | Pending |

@@ -1,6 +1,6 @@
 # Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage
 
-Status: active embedded diagnostic; the Phase 1 gate remains locked
+Status: guided prerequisite remediation; the practical lab and Phase 1 gate remain locked
 Estimated time: 60 minutes, completed through short checkpoints
 
 ## Checkpoint 1 — stop here first
@@ -18,6 +18,10 @@ In 2–4 lines:
 3. Give your confidence from 0–100%.
 
 Record the answer in [student/prediction.md](student/prediction.md) or reply in chat. Wait for feedback before continuing.
+
+If you could not form an answer, read [the guided filesystem prerequisite](guided-notes.md).
+Stop at its guided transfer and reply in your own words before running the lab.
+Reading the complete note records Hint 5 and makes this incident coached practice; independence will be assessed later with an unfamiliar closed-notes case.
 
 ## Objective
 
