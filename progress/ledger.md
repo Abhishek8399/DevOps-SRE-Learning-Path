@@ -33,6 +33,7 @@ Current state: initial diagnostic in progress
 | 2026-07-20 | Use WSL 2 Ubuntu 24.04 as the primary local lab | Learner approval plus read-only environment verification |
 | 2026-07-20 | Permit installation of exercise-required local dependencies | Learner authorization; no installation performed during baseline |
 | 2026-07-20 | Exclude online cloud resources | Learner constraint; use local simulation, emulation, validation, and design exercises |
+| 2026-07-20 | Use Docker Desktop through Ubuntu WSL integration | Local client/server and Compose queries succeeded; workload execution remains unverified |
 
 Machine readiness evidence is recorded in [../environment/local-baseline.md](../environment/local-baseline.md). These decisions do not establish competency.
 

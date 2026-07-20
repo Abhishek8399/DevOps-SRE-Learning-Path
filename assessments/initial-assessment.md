@@ -25,7 +25,7 @@ Mode: closed-notes and AI-free unless explicitly disclosed
 
 | Question | Status | Recorded evidence or remaining gap |
 |---:|---|---|
-| 1 | Partially answered and locally verified | WSL 2 Ubuntu 24.04 approved; installation permitted; CPU, RAM, disk, systemd, and Docker state verified. Employer, proxy, network, and reboot restrictions remain pending. |
+| 1 | Partially answered and locally verified | WSL 2 Ubuntu 24.04 approved; installation permitted; CPU, RAM, disk, systemd, Docker engine, Ubuntu integration, and Compose verified. Employer, proxy, network, and reboot restrictions remain pending. |
 | 2 | Scope decision recorded | Local-only delivery confirmed; no online cloud resources. Provider-specific target is deferred. |
 | 3 | Pending | Scripting confidence and owned automation example required. |
 | 4 | Pending | Tool-operation depth and ownership evidence required. |

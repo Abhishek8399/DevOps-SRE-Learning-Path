@@ -33,7 +33,7 @@ This file records normalized, non-sensitive environment evidence. Raw inventory 
 | Native Git | Git 2.43.0 |
 | Native Python | Python 3.12.3; `pip3` absent |
 | TLS tooling | OpenSSL 3.0.13 |
-| Docker | Windows Docker CLI 29.6.1 present; Docker Desktop engine stopped; Ubuntu WSL integration disabled |
+| Docker | Client/server 29.6.1; Ubuntu resolves `/usr/bin/docker`; daemon query succeeded; Compose v5.3.0 |
 | Windows-interoperability commands | `npm` and Azure CLI resolve from `/mnt/c`; they are not native Ubuntu installations |
 | Missing Phase 1 utilities | `jq`, `yq`, `make`, `gcc`, ShellCheck, and Bats |
 | Missing later-phase tools | Go, native Node.js, Terraform/OpenTofu, kubectl, Helm, kind/minikube, Ansible, Trivy, Syft, Cosign, and Kustomize |
@@ -46,10 +46,11 @@ Ready now:
 
 - Linux process, filesystem, permission, service, networking, Git, Bash, and native Python diagnostic work.
 - Local exercises that do not require a running container engine.
+- Docker client-to-daemon and Compose exercises; actual workload execution remains to be verified in a deliberate lab.
 
 Deferred:
 
-- Docker labs until Docker Desktop is running and Ubuntu integration is deliberately enabled and verified.
+- First container execution, image-pull behavior, volume semantics, and networking behavior until tested in the container diagnostic.
 - Local Kubernetes and heavier observability labs until WSL resource allocation is reviewed; changing `.wslconfig` affects all WSL distributions and requires a WSL restart.
 - Provider-specific cloud implementation. Cloud concepts will use local simulation, emulation, configuration validation, and architecture reasoning.
 - Installation of missing tools until learner evidence establishes the primary scripting language and immediate lab requirement.

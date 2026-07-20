@@ -28,7 +28,7 @@ Labels used below:
 | Linux environment | WSL 2 Ubuntu 24.04.1 LTS; systemd running; cgroup v2 | Observed |
 | WSL resource allocation | 2 logical CPUs; 4 GiB RAM; 2 GiB swap | Observed from `.wslconfig` and Ubuntu |
 | Linux storage | `ext4` root healthy; approximately 952 GiB reported free; 1% inode use | Observed; host free space is the physical ceiling |
-| Docker status | Docker Desktop CLI 29.6.1 present; engine stopped; Ubuntu integration disabled | Observed |
+| Docker status | Docker Desktop client/server 29.6.1; Ubuntu integration active; Compose v5.3.0; daemon query succeeded | Observed |
 | Native Ubuntu tools | Git 2.43.0, Python 3.12.3, OpenSSL 3.0.13 | Observed |
 | Commands resolvable on Windows PATH | Git, Docker, Python, Go, Node.js/npm, Terraform, kubectl, Azure CLI | Observed; availability does not imply Ubuntu-native installation |
 | Commands missing from Ubuntu | `jq`, `yq`, `pip3`, Go, native Node.js, Terraform/OpenTofu, kubectl, Helm, kind/minikube, Ansible, `make`, GCC, ShellCheck/Bats, Trivy, Syft, Cosign, Kustomize | Observed; absence is not a competency score |
