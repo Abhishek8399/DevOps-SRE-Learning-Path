@@ -31,7 +31,7 @@ Mode: closed-notes and AI-free unless explicitly disclosed
 | 4 | Pending | Tool-operation depth and ownership evidence required. |
 | 5 | Pending | Certifications, defensible projects, strengths, and weaknesses required. |
 | 6 | Pending | Session length, language, and AI-free practice availability required. |
-| Diagnostic problem 1 | Attempted twice; beginner-first teaching active | Attempt 2 correctly separated path naming from disk-capacity evidence, but assumed `cache` proves temporary storage; confidence not stated. |
+| Diagnostic problem 1 | Attempted three times; guided lab unlocked | Attempt 3 correctly recalled `inode` after full instruction; coached evidence only, with confidence not stated. |
 
 ## Evidence coverage tracker
 
@@ -40,7 +40,7 @@ No capability score is assigned until evidence exists.
 | Required diagnostic evidence | Status |
 |---|---|
 | Short factual questions | Pending |
-| Conceptual “how and why” questions | Active — storage vocabulary teaching before the next focused check |
+| Conceptual “how and why” questions | Coached inode recall correct; explanation and independent transfer still pending |
 | Command-output interpretation | Pending |
 | Incomplete-evidence debugging | Active in [Lesson 1](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Architecture with competing requirements | Pending |

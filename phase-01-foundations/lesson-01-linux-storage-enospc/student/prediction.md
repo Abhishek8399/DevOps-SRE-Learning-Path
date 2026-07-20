@@ -44,3 +44,15 @@ Next action: answer the guided transfer in the notes in two or three sentences. 
 - Teaching adjustment: explain the complete beginner model before asking assessment questions, using accelerated short cycles.
 
 Next action: complete the foundational explanation, then answer one terminology check. The lab remains locked.
+
+## Mentor record — attempt 3
+
+- Date: 2026-07-20
+- Result: correct.
+- Learner answer: `inodes`.
+- Evidence: correctly recalled that an empty file still requires a filesystem metadata record called an inode.
+- Assistance context: immediate coached recall after Hint 5 and beginner-first instruction.
+- Confidence: not stated.
+- Mastery effect: sufficient to unlock guided practice, but not independent evidence for L1 or L2.
+
+Next action: run the bounded lab setup and status checks, then submit the actual output.

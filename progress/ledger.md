@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Attempt 2: correctly identified that a path does not reveal disk capacity; assumed `cache` proves temporary storage; blocks and inodes still unfamiliar | 5 | Not stated | None established; path-name assumption observed once | Same-session terminology check; 2026-07-21 if successful | Beginner explanation, coached lab, then unfamiliar closed-notes transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Attempt 3: correctly recalled `inode` after full instruction; coached recall only | 5 | Not stated | None established; path-name assumption observed once | 2026-07-21 | Guided lab, then unfamiliar closed-notes transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -42,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Beginner-first teaching active — lab locked | Attempt 2 was partially correct; full storage vocabulary requested before further assessment |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided lab unlocked — awaiting setup and status evidence | Attempt 3 correctly recalled `inode`; coached result does not raise mastery |
 
 ## Completed labs
 
@@ -70,11 +70,11 @@ None dangerous confirmed. One non-dangerous assumption is under correction: a di
 
 ## Weak prerequisite links
 
-Storage stack vocabulary: device, filesystem, mount point, path, blocks, inodes, and persistence. Observed 2026-07-20; beginner explanation and guided check in progress.
+Storage stack vocabulary: immediate inode recall succeeded after teaching; exact-path mount mapping and independent command interpretation still require practice.
 
 ## Reviews due
 
-Same-session terminology check after teaching. Schedule 2026-07-21 review only if the check succeeds.
+Guided practical begins now. First delayed terminology and transfer review scheduled for 2026-07-21.
 
 ## Study time
 
@@ -86,4 +86,4 @@ Same-session terminology check after teaching. Schedule 2026-07-21 review only i
 
 | Date | Exercise | Evidence | Result |
 |---|---|---|---|
-| 2026-07-20 | Initial diagnostic problem 1 | Attempt 2 recognized that a path does not reveal capacity, but assumed `cache` means temporary storage | Partially correct; independent understanding not yet demonstrated |
+| 2026-07-20 | Initial diagnostic problem 1 | Attempt 3 recalled `inode` after Hint 5 instruction | Correct coached recall; not AI-free or independent evidence |

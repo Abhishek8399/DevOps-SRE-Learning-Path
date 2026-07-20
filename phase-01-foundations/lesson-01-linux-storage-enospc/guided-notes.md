@@ -1,6 +1,6 @@
 # Guided prerequisite — filesystem space is more than bytes
 
-Status: complete guided instruction at Hint 5; the practical lab remains locked
+Status: terminology check passed with coached recall; guided practical work is unlocked
 
 The learner requested detailed instruction after the first attempt. This note therefore provides a worked diagnostic pattern. The original incident is now coached practice, not independent assessment evidence; a later unfamiliar closed-notes transfer is required.
 
