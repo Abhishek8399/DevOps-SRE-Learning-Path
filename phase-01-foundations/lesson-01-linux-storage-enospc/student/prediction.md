@@ -31,3 +31,16 @@ Confidence before execution (0–100%):
 An immediate correct transfer response demonstrates coached recall only. A later unfamiliar closed-notes transfer is required for independent evidence.
 
 Next action: answer the guided transfer in the notes in two or three sentences. Do not run the lab yet.
+
+## Mentor record — attempt 2
+
+- Date: 2026-07-20
+- Result: partially correct.
+- Technically strong reasoning: the learner recognized that `/opt/app/cache` alone does not identify the backing disk or its capacity.
+- First divergence: the directory name `cache` was treated as proof that the storage is temporary.
+- Missing evidence: backing mount, filesystem type, block availability, and inode availability.
+- Error classification: prerequisite knowledge gap plus an incorrect path-name-to-storage-type assumption; not a recurring error.
+- Confidence: not stated.
+- Teaching adjustment: explain the complete beginner model before asking assessment questions, using accelerated short cycles.
+
+Next action: complete the foundational explanation, then answer one terminology check. The lab remains locked.

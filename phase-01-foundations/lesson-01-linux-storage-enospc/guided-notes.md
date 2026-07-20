@@ -4,6 +4,39 @@ Status: complete guided instruction at Hint 5; the practical lab remains locked
 
 The learner requested detailed instruction after the first attempt. This note therefore provides a worked diagnostic pattern. The original incident is now coached practice, not independent assessment evidence; a later unfamiliar closed-notes transfer is required.
 
+## 0. Storage vocabulary before diagnosis
+
+Use this stack from bottom to top:
+
+~~~text
+physical storage
+  → partition or logical volume
+    → filesystem
+      → mount point
+        → directory path
+          → file
+~~~
+
+- **Physical storage** is hardware or a virtual disk that stores bytes.
+- A **partition or logical volume** is a region presented to the operating system as a block device, such as `/dev/vdb1`.
+- A **filesystem** organizes that storage into files and directories. Examples include `ext4`, `xfs`, and `tmpfs`.
+- A **mount point** is the directory where Linux attaches a filesystem into the single directory tree.
+- A **path** such as `/opt/app/cache` is an address in that tree. Its name does not identify the physical disk, filesystem, capacity, or persistence policy.
+
+The directory name `cache` only suggests how an application may use the data. It does not prove that the directory is temporary or RAM-backed. The path could be:
+
+- an ordinary directory on the root filesystem;
+- the root of a separate disk filesystem;
+- a memory-backed `tmpfs`;
+- a container volume or overlay;
+- or a network filesystem.
+
+Only mount and filesystem evidence can distinguish those cases. This is why the statement “`/opt/app/cache` does not tell us the exact disk space” is correct, while “it is temporary storage” is an unverified assumption.
+
+### A concrete mount example
+
+Suppose the root filesystem is mounted at `/`, but another filesystem is mounted at `/opt/app/cache`. When Linux resolves `/opt/app/cache/new-file`, it crosses into the second filesystem at `/opt/app/cache`. Capacity for `/opt` then describes the root filesystem, while capacity for `/opt/app/cache` describes the filesystem that must create `new-file`.
+
 ## 1. Start with the storage subsystem
 
 A program does not write to “the computer” in general. It asks a filesystem to create or extend an object at a pathname.

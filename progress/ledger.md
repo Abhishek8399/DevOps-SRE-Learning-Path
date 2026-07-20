@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Checkpoint 1: learner reported no current model; no reasoning or command evidence submitted | 5 | Not stated | None established from one observation | Same-session guided transfer; 2026-07-21 if successful | Coached lab, then unfamiliar closed-notes transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Attempt 2: correctly identified that a path does not reveal disk capacity; assumed `cache` proves temporary storage; blocks and inodes still unfamiliar | 5 | Not stated | None established; path-name assumption observed once | Same-session terminology check; 2026-07-21 if successful | Beginner explanation, coached lab, then unfamiliar closed-notes transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -42,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided remediation — Checkpoint 1 not demonstrated | Learner disclosed no current answer; complete guided instruction at Hint 5 supplied; confidence not stated |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Beginner-first teaching active — lab locked | Attempt 2 was partially correct; full storage vocabulary requested before further assessment |
 
 ## Completed labs
 
@@ -66,15 +66,15 @@ None.
 
 ## Dangerous misconceptions
 
-None confirmed. Self-reported confidence has not yet been calibrated against performance.
+None dangerous confirmed. One non-dangerous assumption is under correction: a directory named `cache` was treated as proof of temporary backing storage.
 
 ## Weak prerequisite links
 
-Filesystem allocation model: path-to-mount mapping and independent block/inode capacity. Observed 2026-07-20; guided retry pending.
+Storage stack vocabulary: device, filesystem, mount point, path, blocks, inodes, and persistence. Observed 2026-07-20; beginner explanation and guided check in progress.
 
 ## Reviews due
 
-Same-session guided retry for filesystem allocation. Schedule 2026-07-21 review only if the retry succeeds.
+Same-session terminology check after teaching. Schedule 2026-07-21 review only if the check succeeds.
 
 ## Study time
 
@@ -86,4 +86,4 @@ Same-session guided retry for filesystem allocation. Schedule 2026-07-21 review 
 
 | Date | Exercise | Evidence | Result |
 |---|---|---|---|
-| 2026-07-20 | Initial diagnostic problem 1 | No technical answer or confidence submitted; learner requested detailed help | Knowledge gap identified; guided retry active |
+| 2026-07-20 | Initial diagnostic problem 1 | Attempt 2 recognized that a path does not reveal capacity, but assumed `cache` means temporary storage | Partially correct; independent understanding not yet demonstrated |

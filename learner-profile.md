@@ -23,7 +23,7 @@ Labels used below:
 | Cloud sandbox | None | Self-reported |
 | Lab delivery policy | Local-first; no online cloud resources | Self-reported |
 | Installation policy | Required local lab dependencies may be installed | Self-reported |
-| Instruction preference | Detailed, guided explanations with one focused question at a time | Self-reported |
+| Instruction preference | Beginner-first explanation before assessment, then one focused checkpoint; accelerated pacing without skipping verification or safety | Self-reported |
 | Host environment | 64-bit Windows; PowerShell 5.1; 12 logical CPUs; approximately 31.7 GiB RAM | Observed |
 | Host storage | Approximately 271 GiB free on `C:` | Observed |
 | Linux environment | WSL 2 Ubuntu 24.04.1 LTS; systemd running; cgroup v2 | Observed |

@@ -1,6 +1,6 @@
 # Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage
 
-Status: guided prerequisite remediation; the practical lab and Phase 1 gate remain locked
+Status: beginner-first filesystem teaching in progress; the practical lab and Phase 1 gate remain locked
 Estimated time: 60 minutes, completed through short checkpoints
 
 ## Checkpoint 1 — stop here first
