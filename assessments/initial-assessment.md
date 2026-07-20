@@ -42,9 +42,9 @@ No capability score is assigned until evidence exists.
 | Short factual questions | Pending |
 | Conceptual “how and why” questions | Pending |
 | Command-output interpretation | Pending |
-| Incomplete-evidence debugging | Started below |
+| Incomplete-evidence debugging | Active in [Lesson 1](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Architecture with competing requirements | Pending |
-| Production safety and rollback | Started below |
+| Production safety and rollback | Active in Lesson 1 |
 | Assumptions and confidence calibration | Started below |
 | Small scripting exercise | Pending |
 | Flawed AI-generated answer audit | Pending |

@@ -1,0 +1,4 @@
+*
+!Dockerfile
+!internal/
+!internal/inject-incident.sh

@@ -5,7 +5,7 @@ This directory holds the evidence and working artifacts for the interactive trai
 ## Current state
 
 - Started: 2026-07-20
-- Stage: onboarding and initial diagnostic
+- Stage: adaptive onboarding through an embedded practical diagnostic
 - Phase 1 status: gated pending diagnostic evidence
 - Competency ratings: not yet assigned
 - Delivery model: local-first; no online cloud resources
@@ -35,3 +35,4 @@ This directory holds the evidence and working artifacts for the interactive trai
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
 - [Phase 1: Foundations](phase-01-foundations/README.md)
+- [Active Lesson 1: Linux storage and ENOSPC triage](phase-01-foundations/lesson-01-linux-storage-enospc/README.md)

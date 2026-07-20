@@ -4,6 +4,12 @@ Status: **GATED — initial diagnostic in progress**
 
 “Phase 1” is the workspace label for preparation toward the Foundation gate; it is not a numbered phase defined by the governing prompt. Its detailed sequence will be selected from measured prerequisites rather than assumed from job title or years of experience.
 
+## Active embedded diagnostic
+
+[Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage](lesson-01-linux-storage-enospc/README.md) is active.
+
+The lesson collects onboarding and diagnostic evidence through practical work. Its existence does not unlock Phase 1 or establish a competency level.
+
 ## Provisional scope
 
 - Linux and operating-system foundations

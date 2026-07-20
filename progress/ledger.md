@@ -8,7 +8,7 @@ Current state: initial diagnostic in progress
 | Skill | Level 0–5 | Last practiced | Evidence | Hints used | Confidence | Recurring error | Next review | Next challenge |
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
-| Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | Disk-evidence scenario |
+| Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -36,6 +36,12 @@ Current state: initial diagnostic in progress
 | 2026-07-20 | Use Docker Desktop through Ubuntu WSL integration | Local client/server and Compose queries succeeded; workload execution remains unverified |
 
 Machine readiness evidence is recorded in [../environment/local-baseline.md](../environment/local-baseline.md). These decisions do not establish competency.
+
+## Active assessment work
+
+| Exercise | Status | Evidence |
+|---|---|---|
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Awaiting Checkpoint 1 prediction | None submitted |
 
 ## Completed labs
 
