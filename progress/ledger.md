@@ -1,6 +1,6 @@
 # Progress Ledger
 
-Last updated: 2026-07-20
+Last updated: 2026-07-21
 Current state: initial diagnostic in progress
 
 `Not assessed` is intentionally different from L0. L0 will only be assigned when evidence shows that a concept is unfamiliar.
@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-20 | Attempt 3: correctly recalled `inode` after full instruction; coached recall only | 5 | Not stated | None established; path-name assumption observed once | 2026-07-21 | Guided lab, then unfamiliar closed-notes transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-21 | Attempt 4: exact-path output shows 48% block use and 100% inode use; interpretation missing; root-shell safety divergence observed | 5 | Not stated | None established; path-name assumption observed once | Same session after hardened rebuild | Rebuild non-root lab, interpret evidence, then unfamiliar transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -42,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Guided lab running — awaiting learner read-only observations | Learner supplied successful setup/status output; mentor verified fixture and safety controls; diagnosis evidence still pending |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Paused — validated version 2 awaits learner rebuild | Learner supplied valid capacity output but no interpretation; version 2 passed non-root identity, fixture, safety, and cleanup checks |
 
 Environment prerequisite note: the Ubuntu Docker CLI initially crashed because Docker Desktop’s WSL CLI-tools loop mount returned input/output errors. A Docker Desktop restart restored Windows and Ubuntu client/server checks. See the [recovery runbook](../environment/troubleshooting/docker-wsl-cli-segfault.md). This mentor-operated recovery is not learner competency evidence.
 
@@ -58,7 +58,7 @@ None.
 
 | Simulation | Status | Evidence |
 |---|---|---|
-| Lesson 1 bounded ENOSPC incident | Active | Container running and healthy; network `none`; read-only root; mentor fixture verification passed; learner diagnosis pending |
+| Lesson 1 bounded ENOSPC incident | Paused for learner rebuild | Version 2 non-root default validated independently; current learner version 1 container remains root-default and must be replaced |
 
 ## Architecture exercises
 

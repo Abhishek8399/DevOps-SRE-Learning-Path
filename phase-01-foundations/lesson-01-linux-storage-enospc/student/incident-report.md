@@ -84,3 +84,23 @@ Explain pathname resolution, mounts, allocation resources, and this failure in p
 - Evidence classification: valid environment and fixture evidence; it does not establish learner diagnosis or mastery.
 
 The student-authored FRAME sections above remain intentionally blank until the learner submits predictions and observations.
+
+## Mentor safety observation
+
+- Date: 2026-07-21
+- Learner-supplied capacity evidence: exact-path block use 48% with 8.4 MiB available; inode use 100% with zero available.
+- Learner-supplied identity evidence: the interactive shell reported UID/GID 0.
+- Missing learner evidence: no written interpretation or confidence was submitted with the command output.
+- Mentor verification: `lab.sh shell` explicitly requests UID/GID 65534, but the version 1 image and container default user were root, so alternative exec paths could open a root shell.
+- Classification: lab defense-in-depth gap plus a missed safety boundary; the exact shell entry path was not evidenced.
+- Immediate control: no write or delete action is permitted in the root shell.
+
+The lab is paused until version 2 is rebuilt with an unprivileged image and container default.
+
+### Mentor remediation verification
+
+- Version 2 image build: passed from the pinned BusyBox digest with runtime networking disabled.
+- Separate validation container: healthy with default UID/GID `65534:65534`, network `none`, read-only root, all capabilities dropped, and `no-new-privileges` enabled.
+- Fixture verification: passed at 48% block use, 100% inode use, and runtime UID 65534.
+- Cleanup verification: the separate validation container was removed; the learner version 1 container was left untouched.
+- Remaining action: exit the learner root shell, run the scoped cleanup, and rebuild through `lab.sh setup`.

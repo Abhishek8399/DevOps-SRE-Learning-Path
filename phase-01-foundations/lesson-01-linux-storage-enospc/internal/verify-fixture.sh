@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-readonly CONTAINER_NAME="devops-sre-p1-enospc"
-readonly EXPECTED_LABEL="phase01-lesson01"
+readonly CONTAINER_NAME="${CONTAINER_NAME:-devops-sre-p1-enospc}"
+readonly EXPECTED_LABEL="${EXPECTED_LABEL:-phase01-lesson01}"
 
 fail() {
   printf 'fixture_validation_failed=%s\n' "$1" >&2
@@ -17,6 +17,14 @@ actual_label="$(docker container inspect --format '{{ index .Config.Labels "devo
 
 state="$(docker container inspect --format '{{.State.Status}}' "$CONTAINER_NAME")"
 [[ "$state" == "running" ]] || fail "container_not_running"
+
+configured_user="$(docker container inspect --format '{{.Config.User}}' "$CONTAINER_NAME")"
+[[ "$configured_user" == "65534:65534" ]] || fail "default_user_not_unprivileged"
+
+runtime_uid="$(docker container exec "$CONTAINER_NAME" id -u)"
+runtime_gid="$(docker container exec "$CONTAINER_NAME" id -g)"
+[[ "$runtime_uid" == "65534" ]] || fail "runtime_uid_not_unprivileged"
+[[ "$runtime_gid" == "65534" ]] || fail "runtime_gid_not_unprivileged"
 
 docker container exec "$CONTAINER_NAME" test -f /run/lab-ready || fail "readiness_marker_missing"
 
@@ -43,6 +51,8 @@ cap_drop="$(docker container inspect --format '{{json .HostConfig.CapDrop}}' "$C
 tmpfs_configuration="$(docker container inspect --format '{{json .HostConfig.Tmpfs}}' "$CONTAINER_NAME")"
 [[ "$tmpfs_configuration" == *'nr_inodes=512'* ]] || fail "inode_limit_missing"
 [[ "$tmpfs_configuration" == *'size=16m'* ]] || fail "byte_limit_missing"
+[[ "$tmpfs_configuration" == *'uid=65534'* ]] || fail "tmpfs_uid_missing"
+[[ "$tmpfs_configuration" == *'gid=65534'* ]] || fail "tmpfs_gid_missing"
 
-printf 'fixture_valid=true block_use_percent=%s inode_use_percent=%s\n' \
-  "$block_percent" "$inode_percent"
+printf 'fixture_valid=true block_use_percent=%s inode_use_percent=%s runtime_uid=%s\n' \
+  "$block_percent" "$inode_percent" "$runtime_uid"

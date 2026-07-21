@@ -41,7 +41,7 @@ No capability score is assigned until evidence exists.
 |---|---|
 | Short factual questions | Pending |
 | Conceptual “how and why” questions | Coached inode recall correct; explanation and independent transfer still pending |
-| Command-output interpretation | Active — setup/status evidence supplied; diagnostic output interpretation next |
+| Command-output interpretation | Active — exact-path block/inode outputs supplied; interpretation and confidence still missing |
 | Incomplete-evidence debugging | Active in [Lesson 1](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Architecture with competing requirements | Pending |
 | Production safety and rollback | Active in Lesson 1 |

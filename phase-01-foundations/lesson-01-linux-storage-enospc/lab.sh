@@ -5,7 +5,7 @@ set -Eeuo pipefail
 readonly LAB_DIRECTORY="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly CONTAINER_NAME="devops-sre-p1-enospc"
 readonly CONTAINER_LABEL="phase01-lesson01"
-readonly IMAGE_NAME="devops-sre-training/enospc-lab:1"
+readonly IMAGE_NAME="devops-sre-training/enospc-lab:2"
 readonly BASE_IMAGE="busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662"
 
 require_docker() {
@@ -85,6 +85,7 @@ setup_lab() {
   docker run \
     --detach \
     --name "$CONTAINER_NAME" \
+    --user 65534:65534 \
     --label "devops-sre.training=$CONTAINER_LABEL" \
     --network none \
     --read-only \
@@ -96,8 +97,8 @@ setup_lab() {
     --cpus 0.5 \
     --restart no \
     --stop-timeout 3 \
-    --tmpfs /var:rw,nosuid,nodev,noexec,size=16m,nr_inodes=512,mode=0755 \
-    --tmpfs /run:rw,nosuid,nodev,noexec,size=1m,nr_inodes=64,mode=0755 \
+    --tmpfs /var:rw,nosuid,nodev,noexec,size=16m,nr_inodes=512,uid=65534,gid=65534,mode=0755 \
+    --tmpfs /run:rw,nosuid,nodev,noexec,size=1m,nr_inodes=64,uid=65534,gid=65534,mode=0755 \
     --health-cmd 'test -f /run/lab-ready' \
     --health-interval 2s \
     --health-timeout 1s \
@@ -130,7 +131,7 @@ show_status() {
   require_docker
   require_owned_container
   docker container inspect \
-    --format 'name={{.Name}} state={{.State.Status}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}} image={{.Config.Image}} network={{.HostConfig.NetworkMode}} readonly={{.HostConfig.ReadonlyRootfs}}' \
+    --format 'name={{.Name}} state={{.State.Status}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}} image={{.Config.Image}} user={{if .Config.User}}{{.Config.User}}{{else}}root{{end}} network={{.HostConfig.NetworkMode}} readonly={{.HostConfig.ReadonlyRootfs}}' \
     "$CONTAINER_NAME"
 }
 
@@ -138,10 +139,17 @@ open_shell() {
   require_docker
   require_owned_container
 
-  local state
+  local configured_user state
   state="$(docker container inspect --format '{{.State.Status}}' "$CONTAINER_NAME")"
   if [[ "$state" != "running" ]]; then
     printf 'Lab container is not running\n' >&2
+    return 1
+  fi
+
+  configured_user="$(docker container inspect --format '{{.Config.User}}' "$CONTAINER_NAME")"
+  if [[ "$configured_user" != "65534:65534" ]]; then
+    printf 'Refusing shell: lab container default user is %s; run cleanup and setup to rebuild the hardened lab\n' \
+      "${configured_user:-root}" >&2
     return 1
   fi
 

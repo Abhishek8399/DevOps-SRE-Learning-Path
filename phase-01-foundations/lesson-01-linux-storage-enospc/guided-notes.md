@@ -1,6 +1,6 @@
 # Guided prerequisite — filesystem space is more than bytes
 
-Status: terminology check passed; guided lab is running and ready for read-only investigation
+Status: terminology check passed; guided lab paused until the validated non-root version 2 is rebuilt
 
 The learner requested detailed instruction after the first attempt. This note therefore provides a worked diagnostic pattern. The original incident is now coached practice, not independent assessment evidence; a later unfamiliar closed-notes transfer is required.
 
