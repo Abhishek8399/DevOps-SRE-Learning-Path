@@ -1,6 +1,8 @@
 # Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage
 
-Status: hardened non-root version 2 validated; learner version 1 rebuild required; the Phase 1 gate remains locked
+Status: hardened non-root version 2 is running; guided inode remediation is active; the Phase 1 gate remains locked
+
+Continue with the [guided inode-remediation runbook](remediation-guide.md) after completing the capacity diagnosis.
 Estimated time: 60 minutes, completed through short checkpoints
 
 ## Checkpoint 1 — stop here first

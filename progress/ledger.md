@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L1 | 2026-07-31 | Guided teach-back correctly explains that free blocks do not rule out inode exhaustion; incorrectly connects inode allocation to mounting/cache behavior; version 2 identity unverified | 5 | Not stated | Path-name assumption observed once; inode allocation conflated with mounting once | Same session after correction and hardened rebuild | Verify non-root lab, distinguish symptom/immediate cause/root cause, then unfamiliar transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L1 | 2026-07-31 | Guided teach-back correctly explains that free blocks do not rule out inode exhaustion; mentor rebuilt and verified version 2; learner remediation evidence is pending | 5 | Not stated | Path-name assumption observed once; inode allocation conflated with mounting once | Same session after guided remediation | Identify the approved inode population, remediate safely, verify recovery, then complete an unfamiliar transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -42,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Paused — validated version 2 awaits learner rebuild | Learner supplied valid capacity output and a partially correct guided interpretation; confidence and learner-run non-root verification remain pending |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Active — guided remediation | Hardened version 2 is running; a separate fixture proved scoped deletion, retained-data safety, inode recovery, write recovery, and cleanup; learner container remains intentionally broken |
 
 Environment prerequisite note: the Ubuntu Docker CLI initially crashed because Docker Desktop’s WSL CLI-tools loop mount returned input/output errors. A Docker Desktop restart restored Windows and Ubuntu client/server checks. See the [recovery runbook](../environment/troubleshooting/docker-wsl-cli-segfault.md). This mentor-operated recovery is not learner competency evidence.
 
@@ -58,7 +58,7 @@ None.
 
 | Simulation | Status | Evidence |
 |---|---|---|
-| Lesson 1 bounded ENOSPC incident | Paused for learner rebuild | Version 2 non-root default validated independently; current learner version 1 container remains root-default and must be replaced |
+| Lesson 1 bounded ENOSPC incident | Active — awaiting learner remediation | Version 2 is running as UID/GID 65534; current learner fixture remains at 100% inode use; separate remediation validation passed |
 
 ## Architecture exercises
 

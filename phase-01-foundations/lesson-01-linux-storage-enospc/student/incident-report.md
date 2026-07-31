@@ -115,3 +115,17 @@ The lab is paused until version 2 is rebuilt with an unprivileged image and cont
 - Missing evidence: the underlying producer of the excessive file population is still unknown; timing of the recent deployment does not prove causation.
 - Missing verification: confidence was not stated and the learner has not supplied version 2 non-root `status` and `id` output.
 - Assessment: correct central mental model with one mechanism error; guided evidence supports L1 only.
+
+## Mentor-run hardened environment and remediation validation
+
+- Date: 2026-07-31
+- Prior learner container: version 1 was stopped with exit code 255.
+- Scoped replacement: `lab.sh cleanup` removed only the labeled lesson container; `lab.sh setup` built and started version 2.
+- Current learner container: running and healthy with image version 2, UID/GID `65534:65534`, network `none`, and a read-only root filesystem.
+- Read-only discovery: `/var` contains 502 files; the affected upload tree contains 500 files and remains at 100% inode use with zero available.
+- Separate validation fixture: contained 499 policy-approved `.part` cache fragments.
+- Scoped deletion validation: matching fragments decreased from 499 to 0 and inode use decreased from 100% to 3%, with 498 available after the write test.
+- Data-safety validation: `.retained-data` remained present.
+- Recovery validation: creation of `/var/lib/api/uploads/7f9c.tmp` succeeded after cleanup.
+- Validation cleanup: the separate labeled remediation container was removed and absence verified.
+- Learner environment preservation: the running learner container was not remediated and remains at 100% inode use for guided practice.

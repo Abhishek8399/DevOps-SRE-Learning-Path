@@ -31,7 +31,7 @@ Mode: closed-notes and AI-free unless explicitly disclosed
 | 4 | Pending | Tool-operation depth and ownership evidence required. |
 | 5 | Pending | Certifications, defensible projects, strengths, and weaknesses required. |
 | 6 | Pending | Session length, language, and AI-free practice availability required. |
-| Diagnostic problem 1 | Guided teach-back partially correct; hardened lab verification pending | The learner correctly connected zero free inodes to `ENOSPC` despite free block capacity. Inode allocation was incorrectly connected to mounting/cache creation; confidence and non-root version 2 evidence remain missing. |
+| Diagnostic problem 1 | Guided remediation active | The learner correctly connected zero free inodes to `ENOSPC` despite free block capacity. Inode allocation was incorrectly connected to mounting/cache creation; mentor-run version 2 verification passed, while learner remediation evidence and confidence remain missing. |
 
 ## Evidence coverage tracker
 
@@ -41,7 +41,7 @@ No capability score is assigned until evidence exists.
 |---|---|
 | Short factual questions | Pending |
 | Conceptual “how and why” questions | Guided explanation partially correct; mounting versus inode-allocation correction and independent transfer still pending |
-| Command-output interpretation | Active — exact-path block/inode outputs and a correct main interpretation supplied; confidence and hardened runtime verification still missing |
+| Command-output interpretation | Active — exact-path block/inode outputs and a correct main interpretation supplied; mentor verified the hardened runtime, while learner-run remediation output and confidence remain missing |
 | Incomplete-evidence debugging | Active in [Lesson 1](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
 | Architecture with competing requirements | Pending |
 | Production safety and rollback | Active in Lesson 1 |
