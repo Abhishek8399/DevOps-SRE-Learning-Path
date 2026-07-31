@@ -104,3 +104,14 @@ The lab is paused until version 2 is rebuilt with an unprivileged image and cont
 - Fixture verification: passed at 48% block use, 100% inode use, and runtime UID 65534.
 - Cleanup verification: the separate validation container was removed; the learner version 1 container was left untouched.
 - Remaining action: exit the learner root shell, run the scoped cleanup, and rebuild through `lab.sh setup`.
+
+## Learner teach-back evidence
+
+- Date: 2026-07-31
+- Correct reasoning: `ENOSPC` must not be treated as proof that the whole disk or data-block capacity is full.
+- Correct reasoning: a filesystem can have substantial byte capacity available while zero free inodes prevent creation of another file.
+- Correct reasoning: an inode holds filesystem-object metadata and is required to create another file.
+- First divergence: inode allocation was described as occurring when a filesystem or file is mounted and associated with caches. Mounting attaches a filesystem to the directory tree; an inode is allocated when a new filesystem object is created.
+- Missing evidence: the underlying producer of the excessive file population is still unknown; timing of the recent deployment does not prove causation.
+- Missing verification: confidence was not stated and the learner has not supplied version 2 non-root `status` and `id` output.
+- Assessment: correct central mental model with one mechanism error; guided evidence supports L1 only.

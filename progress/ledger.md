@@ -1,6 +1,6 @@
 # Progress Ledger
 
-Last updated: 2026-07-21
+Last updated: 2026-07-31
 Current state: initial diagnostic in progress
 
 `Not assessed` is intentionally different from L0. L0 will only be assigned when evidence shows that a concept is unfamiliar.
@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L0 | 2026-07-21 | Attempt 4: exact-path output shows 48% block use and 100% inode use; interpretation missing; root-shell safety divergence observed | 5 | Not stated | None established; path-name assumption observed once | Same session after hardened rebuild | Rebuild non-root lab, interpret evidence, then unfamiliar transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L1 | 2026-07-31 | Guided teach-back correctly explains that free blocks do not rule out inode exhaustion; incorrectly connects inode allocation to mounting/cache behavior; version 2 identity unverified | 5 | Not stated | Path-name assumption observed once; inode allocation conflated with mounting once | Same session after correction and hardened rebuild | Verify non-root lab, distinguish symptom/immediate cause/root cause, then unfamiliar transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -42,7 +42,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Paused — validated version 2 awaits learner rebuild | Learner supplied valid capacity output but no interpretation; version 2 passed non-root identity, fixture, safety, and cleanup checks |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Paused — validated version 2 awaits learner rebuild | Learner supplied valid capacity output and a partially correct guided interpretation; confidence and learner-run non-root verification remain pending |
 
 Environment prerequisite note: the Ubuntu Docker CLI initially crashed because Docker Desktop’s WSL CLI-tools loop mount returned input/output errors. A Docker Desktop restart restored Windows and Ubuntu client/server checks. See the [recovery runbook](../environment/troubleshooting/docker-wsl-cli-segfault.md). This mentor-operated recovery is not learner competency evidence.
 
@@ -78,7 +78,7 @@ Storage stack vocabulary: immediate inode recall succeeded after teaching; exact
 
 ## Reviews due
 
-Guided practical begins now. First delayed terminology and transfer review scheduled for 2026-07-21.
+Immediate mechanism correction and hardened-lab verification are due in the current session. If successful on 2026-07-31, schedule delayed reviews for 2026-08-01, 2026-08-03, 2026-08-07, 2026-08-14, 2026-08-30, 2026-09-29, and 2026-10-29.
 
 ## Study time
 
