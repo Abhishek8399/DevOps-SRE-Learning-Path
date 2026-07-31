@@ -10,6 +10,7 @@ The learner is not advanced because a lesson or file exists. Advancement must be
 
 - `README.md`: program entry point and current workflow.
 - `learner-profile.md`: known, observed, and pending learner context.
+- `TEACHING-STYLE.md`: mandatory explanation, diagram, and interaction style.
 - `assessments/`: assessment questions and submitted evidence.
 - `progress/ledger.md`: competency, hints, confidence, errors, reviews, and next challenges.
 - `phase-01-foundations/`: current phase gate and milestone status.
@@ -19,6 +20,7 @@ Read these files before proposing or changing training work. Do not infer master
 ## Working rules
 
 - Make the smallest safe, reviewable change that advances the current assessed need.
+- Follow `TEACHING-STYLE.md`; keep explanations conversational, visual, technically precise, and memorable.
 - Keep facts, evidence-based inferences, assumptions, hypotheses, and unverified claims distinct.
 - Never fabricate learner evidence, command output, test results, incidents, project experience, or resume metrics.
 - Do not publish answer keys before the learner has attempted an exercise. Use progressive hints and record hints used.

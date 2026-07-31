@@ -2,6 +2,8 @@
 
 This directory holds the evidence and working artifacts for the interactive training program. The external `DevOps-SRE-Prompt.txt` remains the governing instruction source and is not copied into this repository.
 
+All teaching sessions must follow the [conversation and diagram style](TEACHING-STYLE.md): practical engineer-to-engineer explanation, memorable mental models, precise connectivity diagrams, and one focused checkpoint at a time.
+
 ## Current state
 
 - Started: 2026-07-20
@@ -31,6 +33,7 @@ This directory holds the evidence and working artifacts for the interactive trai
 ## Learner files
 
 - [Learner profile](learner-profile.md)
+- [Teaching and diagram style](TEACHING-STYLE.md)
 - [Local environment baseline](environment/local-baseline.md)
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
