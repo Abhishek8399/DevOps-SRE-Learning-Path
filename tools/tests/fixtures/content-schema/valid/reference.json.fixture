@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-9001",
+  "title": "Ubuntu system information documentation",
+  "organization": "Canonical",
+  "url": "https://documentation.ubuntu.com/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Reviewed for Ubuntu 24.04",
+  "lessonIds": ["LES-9001"],
+  "topics": ["Ubuntu", "system information"],
+  "relevance": "Provides primary vendor context for the tested operating environment.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -12,7 +12,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Latest substantive checkpoint | `836c29e feat: add offline search and device-local reading desk` |
 | Remote | `origin` points to `Abhishek8399/DevOps-SRE-Learning-Path` |
 | Source checkpoint parity | `HEAD` and `origin/main` were confirmed at `836c29e` after the non-force push |
-| Worktree | Source checkpoint `836c29e` is committed and pushed; use `git status --short` for later documentation-only work |
+| Worktree | Structured schema, validator, tests, and governance updates are under validation; no mastery is inferred from this work |
 | Current milestone | `PLAN-ARC-004` / `PLAN-MS-01` - structured content foundation and the next curriculum batch |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
@@ -56,6 +56,14 @@ The following capabilities are committed in `836c29e`; `PARTIAL` means their com
 | `PLAN-WEB-011` | Safe malformed/unsupported-state recovery, visible storage fallback, empty/no-result search states, and invalid-lesson 404 | Occupied-port, dependency-install, start-failure, and runtime error UX |
 | `PLAN-AUD-005` | Fixed allowlisted state schema and repeated UI boundaries keep reading actions separate from competency; eight pure transition/search tests pass | Full evidence lineage, answer-key isolation, mentor-output, and assessment-state audit |
 
+## Current structured-content checkpoint (worktree)
+
+Schema v1 now has strict lesson, assessment, and reference records; opaque IDs separate from aliases, routes, slugs, and curriculum IDs; permanent reservations for all five typed lessons; and dependency-free repository validation. Thirty-four focused cases cover malformed and duplicate JSON, pinned schema policy, required/non-empty body sections, CommonMark fence and raw-HTML ambiguity, URL normalization, independent answer isolation, safe lab realpaths, canonical-content and policy-file symlinks, dangling links and exact path/file case, exact locations and filenames, legacy migration and collisions, ownership, backlinks, and prerequisite cycles. On this restricted Windows token, 33 passed and the real policy-file symlink case skipped because file-symlink creation returned `EPERM`; that runtime case remains for Linux or symlink-capable Windows.
+
+No production lesson has migrated to the new format yet. The five current website lessons remain authoritative typed sources and all existing routes remain unchanged. Passing this contract suite proves publishing infrastructure, not chapter acceptance or learner mastery.
+
+The remaining `PLAN-ARC-004` acceptance work is a separately reviewed production record and renderer/catalog adapter with route, text, search, device-state, and content-parity evidence.
+
 ## Recorded results versus current acceptance
 
 The repository ledger records that, earlier in this 2026-08-02 work session, six local routes returned HTTP 200, an invalid lesson returned 404, selected night-mode color pairs measured at least 5.77:1, and bounded Ubuntu labs produced cleanup proof. Those remain historical results for the worktree state at the time they ran.
@@ -66,7 +74,7 @@ For the reader checkpoint, full lint, explicit typecheck, content validation, th
 
 | ID | Severity | Affects | Finding | Required closure |
 |---|---|---|---|---|
-| `FIND-005` | Medium | `PLAN-ARC-004`, maintainability | Current lessons and depth data remain large TypeScript structures. | Define and validate MDX schema, then migrate without route/content regression |
+| `FIND-005` | Medium | `PLAN-ARC-004`, maintainability | The strict structured-Markdown contract and migration guard now exist, but current lessons and depth data remain large TypeScript structures. | Migrate one lesson through the catalog adapter with route, text, search, answer, lab, and device-state parity before retiring any typed source |
 | `FIND-006` | Program gate | `PLAN-GOV-005`, `PLAN-CUR-101`, `PLAN-LAB-102` | Learner understands blocks versus inodes but has not supplied the required remediation and transfer evidence. | Learner runs the bounded remediation, preserves retained data, proves write recovery and cleanup, then completes unfamiliar transfer and delayed recall |
 | `FIND-007` | Environment blocker | `PLAN-LAB-102`, `REL-LAB-009` through `REL-LAB-012` | Docker is not currently integrated into the Ubuntu 24.04 distribution, so the revised container lifecycle and descriptor behavior cannot be exercised there. | Restore Docker Desktop WSL integration, confirm `docker info`, then run exact-v2, exact-legacy-v1, full-envelope counterfeit, check, and reset tests without weakening the script |
 
@@ -89,7 +97,7 @@ For the reader checkpoint, full lint, explicit typecheck, content validation, th
 | Labs | Bounded ENOSPC fixture source plus four Ubuntu-first lab patterns, including runtime-verified symlink-safe permission cleanup | Docker-in-Ubuntu restoration; common host/container/VM/Kubernetes harnesses; Bats/ShellCheck; current/legacy descriptor, fresh-shell, adversarial, and failure-path matrix |
 | Interviews | Role matrix, Linux prompts, detailed answer guides, one interactive interview mode | Stable question metadata, full rubrics, timed mocks, role-specific banks, scoring calibration, portfolio defense |
 | Reliability evidence | Project ledger and one active incident simulation | Complete incident program, SLOs, observability, capacity, DR, projects, and independent learner transfer |
-| Quality | Current lint/typecheck/build, content/link/anchor/ID/requirement validation, patch whitespace, routes/404/headings/assets, answer reveal, shell syntax, registry audit, generated-file hygiene, and permissions regression | Full lesson-schema validation, axe/keyboard/print matrix, ShellCheck and remaining lab runtime matrices, dependency-tree/license review, fresh-clone test, public audit |
+| Quality | Current lint/typecheck/build, content/link/anchor/ID/requirement validation, strict schema and relationship tests, patch whitespace, routes/404/headings/assets, answer reveal, shell syntax, registry audit, generated-file hygiene, and permissions regression | Live structured-record corpus and renderer parity, CI wiring, axe/keyboard/print matrix, ShellCheck and remaining lab runtime matrices, dependency-tree/license review, fresh-clone test, public audit |
 
 ## Current learner state
 
@@ -100,7 +108,7 @@ For the reader checkpoint, full lint, explicit typecheck, content validation, th
 
 ## Next actions
 
-1. Define the structured lesson/assessment/reference schema and invalid fixtures without breaking the five existing URLs.
+1. Complete the schema checkpoint review, then publish the first new structured lesson and catalog adapter without breaking the five existing URLs or device-local IDs.
 2. Publish the next coherent Volume 00/Linux curriculum batch with deep explanations, command decoders, complete answers, and bounded Ubuntu labs.
 3. Add production-catalog search fixtures, filters, internal crawling, and browser-level persistence/keyboard/clipboard/visual tests.
 4. Restore Docker integration when available, then run the v2 lifecycle, full-boundary tamper/refusal, legacy migration, `check`, `reset`, and cleanup proof.

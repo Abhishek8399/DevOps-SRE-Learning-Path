@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devops-sre-learning.local/schema/reference-v1.json",
+  "title": "Systems Reliability Field Manual reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "title",
+    "organization",
+    "url",
+    "sourceType",
+    "versionOrDate",
+    "lessonIds",
+    "topics",
+    "relevance",
+    "usagePolicy",
+    "lastReviewed",
+    "reviewAfter"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "reference" },
+    "id": {
+      "type": "string",
+      "pattern": "^REF-[0-9]{4}$"
+    },
+    "title": { "$ref": "#/$defs/nonEmptyString" },
+    "organization": { "$ref": "#/$defs/nonEmptyString" },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "sourceType": {
+      "enum": [
+        "official-documentation",
+        "standard",
+        "rfc",
+        "manual",
+        "research-paper",
+        "book"
+      ]
+    },
+    "versionOrDate": { "$ref": "#/$defs/nonEmptyString" },
+    "lessonIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^LES-[0-9]{4}$"
+      }
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "relevance": { "$ref": "#/$defs/nonEmptyString" },
+    "usagePolicy": {
+      "enum": ["paraphrase-first", "short-quote-with-attribution"]
+    },
+    "lastReviewed": { "$ref": "#/$defs/date" },
+    "reviewAfter": { "$ref": "#/$defs/date" }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?(?![\\s\\S])"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

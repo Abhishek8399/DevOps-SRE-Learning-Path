@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-9001",
+  "lessonId": "LES-9001",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "Why does a successful uname command not prove that an API is healthy?",
+  "directAnswer": "It proves a kernel release value was returned, not that the API request path works.",
+  "foundation": "A system has layers. The kernel can answer one local question while a process, listener, route, dependency, or application request is failing.",
+  "reasoningSteps": [
+    "State the exact question the command answered.",
+    "Name the user-visible claim that remains untested.",
+    "Choose end-to-end evidence from the failing request boundary."
+  ],
+  "seniorAnswer": "Treat uname as environment inventory. Preserve the failing client namespace, test service state, listener ownership, transport, application response, and dependencies in order, and correlate them with the incident window before changing state.",
+  "weakAnswer": "The server is healthy because the command worked.",
+  "whyWeak": "It confuses shell execution and kernel identity with the application's end-to-end user journey and can delay restoration.",
+  "evidence": [
+    {
+      "signal": "uname -r prints a release string",
+      "proves": "The process obtained a kernel release identifier.",
+      "doesNotProve": "The API process exists, listens, serves requests, or reaches dependencies."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "What is the next evidence if the API is unavailable?",
+      "answer": "Start with the failing client boundary, then verify process or service state, listener ownership, and an application request without skipping layers."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Evidence boundary",
+      "points": 2,
+      "observableEvidence": "The answer states exactly what uname proves and does not prove."
+    },
+    {
+      "criterion": "Safe next investigation",
+      "points": 3,
+      "observableEvidence": "The answer proposes a layered, same-boundary request-path investigation before mutation."
+    }
+  ],
+  "maximumScore": 5,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

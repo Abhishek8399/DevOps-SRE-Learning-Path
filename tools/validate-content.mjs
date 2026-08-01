@@ -3,6 +3,7 @@
 import { existsSync, lstatSync, readFileSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateRepositoryStructuredContent } from "./lib/structured-content.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDirectory, "..");
@@ -27,6 +28,11 @@ const metrics = {
   generatedHeadingAnchors: 0,
   curriculumIds: 0,
   mappedRequirements: null,
+  structuredSchemaFiles: 0,
+  structuredLessons: 0,
+  structuredAssessments: 0,
+  structuredReferences: 0,
+  structuredLegacyLessons: 0,
 };
 
 function repositoryPath(absolutePath) {
@@ -112,6 +118,14 @@ function maskHtmlComments(line, state) {
   return { line: masked, open: state.open };
 }
 
+function parseFenceOpening(line) {
+  const marker = line.match(/^\s{0,3}(`{3,}|~{3,})(.*)$/);
+  if (!marker) return null;
+  const character = marker[1][0];
+  if (character === "`" && marker[2].includes("`")) return null;
+  return { character, length: marker[1].length };
+}
+
 function prepareMarkdownLines(text) {
   const originalLines = text.split(/\r?\n/);
   const headingLines = [];
@@ -120,7 +134,7 @@ function prepareMarkdownLines(text) {
   let fence = null;
 
   for (const originalLine of originalLines) {
-    const fenceMatch = originalLine.match(/^\s{0,3}(`{3,}|~{3,})/);
+    const fenceMatch = parseFenceOpening(originalLine);
     if (fence) {
       headingLines.push(" ".repeat(originalLine.length));
       linkLines.push(" ".repeat(originalLine.length));
@@ -132,7 +146,7 @@ function prepareMarkdownLines(text) {
       continue;
     }
     if (fenceMatch) {
-      fence = { character: fenceMatch[1][0], length: fenceMatch[1].length };
+      fence = fenceMatch;
       headingLines.push(" ".repeat(originalLine.length));
       linkLines.push(" ".repeat(originalLine.length));
       continue;
@@ -597,15 +611,18 @@ function printResults() {
     + `explicit-anchors=${metrics.explicitAnchorLinks} `
     + `heading-anchors=${metrics.generatedHeadingAnchors} `
     + `curriculum-ids=${metrics.curriculumIds} requirements=${requirementSummary}`;
+  const structuredSummary = `schemas=${metrics.structuredSchemaFiles}/3 lessons=${metrics.structuredLessons} `
+    + `assessments=${metrics.structuredAssessments} references=${metrics.structuredReferences} `
+    + `legacy-reservations=${metrics.structuredLegacyLessons}`;
 
   if (errors.length > 0) {
     console.error(`FAIL content validation: ${errors.length} error${errors.length === 1 ? "" : "s"}`);
     for (const error of errors) {
       console.error(`${error.file}:${error.line}: ERROR ${error.message}`);
     }
-    console.error(`SUMMARY ${summary}`);
+    console.error(`SUMMARY ${summary} structured={${structuredSummary}}`);
   } else {
-    console.log(`PASS content validation ${summary}`);
+    console.log(`PASS content validation ${summary} structured={${structuredSummary}}`);
   }
 }
 
@@ -623,5 +640,15 @@ for (const [markdownFile, prepared] of documents) {
   validateLinks(markdownFile, prepared, anchorIndex);
 }
 validateCurriculumMatrix();
+const structured = validateRepositoryStructuredContent(repositoryRoot);
+metrics.structuredSchemaFiles = structured.metrics.schemaFiles;
+metrics.structuredLessons = structured.metrics.lessons;
+metrics.structuredAssessments = structured.metrics.assessments;
+metrics.structuredReferences = structured.metrics.references;
+metrics.structuredLegacyLessons = structured.metrics.legacyLessons;
+for (const structuredIssue of structured.issues) {
+  addError(structuredIssue.file ?? "book/schema", structuredIssue.line,
+    `[${structuredIssue.code}] ${structuredIssue.path}: ${structuredIssue.message}`);
+}
 printResults();
 process.exitCode = errors.length === 0 ? 0 : 1;

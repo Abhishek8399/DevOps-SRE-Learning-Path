@@ -72,21 +72,21 @@ Before publishing, verify:
 - destructive actions have a narrower reviewed filter than discovery actions;
 - cleanup proves that files, sockets, processes, containers, or namespaces are absent.
 
-## Content storage migration
+## Structured content contract
 
-The first five lessons currently use React and typed TypeScript data while the schema is stabilized. New volumes should move toward structured Markdown or MDX under:
+The first five lessons currently use React and typed TypeScript data while the contract is stabilized. New content uses schema-v1 non-executable Markdown with strict JSON front matter:
 
 ```text
-book/volumes/<volume-id>/<lesson-id>/
-|-- lesson.mdx
-|-- memory-card.md
-|-- lab/
-|-- incident/
-|-- transfer/
-`-- references.yaml
+book/
+|-- volumes/<volume-slug>/<LES-id>-<slug>/lesson.md
+|-- assessments/<domain>/<ASM-id>.json
+|-- references/<REF-id>.json
+`-- schema/
 ```
 
-The website should remain a renderer over structured content. Do not grow a single page or one giant TypeScript constant indefinitely.
+Follow [`schema/README.md`](schema/README.md), begin new lesson IDs at `LES-0006`, and run both contract commands before review. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+
+The website should remain a renderer over structured content. Do not grow a single page or one giant TypeScript constant indefinitely. Do not migrate a typed lesson until route, text, diagram, answer, lab, search, and device-state compatibility are separately proven.
 
 ## Definition of done
 
@@ -111,7 +111,10 @@ From `learning-cockpit/`:
 
 ```bash
 npm run lint
+npm run typecheck
+npm run validate:content
+npm run test:content-schema
 npm run build
 ```
 
-For shell labs, run `shellcheck` when available, exercise each supported action, and prove cleanup from a fresh shell. Review the Git diff and scan for secrets before committing.
+For shell labs, run `shellcheck` when available, exercise each supported action, and prove cleanup from a fresh shell. Review the Git diff and scan for credentials, signed URLs, employer data, local paths, and secrets before committing.

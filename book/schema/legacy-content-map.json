@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "kind": "legacy-content-map",
+  "lessons": [
+    {
+      "id": "LES-0001",
+      "aliases": ["V01-L01", "storage"],
+      "curriculumIds": ["LNX-001"],
+      "slug": "storage",
+      "route": "/book/linux/storage",
+      "sources": [
+        "learning-cockpit/app/storage-chapter.tsx",
+        "learning-cockpit/app/lessons/lesson-glossaries.ts",
+        "learning-cockpit/app/lessons/command-decoders.ts",
+        "learning-cockpit/app/lessons/lesson-answer-guides.ts"
+      ]
+    },
+    {
+      "id": "LES-0002",
+      "aliases": ["V01-L02", "processes-signals-systemd"],
+      "curriculumIds": ["LNX-002"],
+      "slug": "processes-signals-systemd",
+      "route": "/book/linux/processes-signals-systemd",
+      "sources": [
+        "learning-cockpit/app/lessons/foundation-lessons.ts",
+        "learning-cockpit/app/lessons/lesson-glossaries.ts",
+        "learning-cockpit/app/lessons/command-decoders.ts",
+        "learning-cockpit/app/lessons/lesson-answer-guides.ts"
+      ]
+    },
+    {
+      "id": "LES-0003",
+      "aliases": ["V01-L03", "cpu-memory-pressure"],
+      "curriculumIds": ["LNX-003"],
+      "slug": "cpu-memory-pressure",
+      "route": "/book/linux/cpu-memory-pressure",
+      "sources": [
+        "learning-cockpit/app/lessons/foundation-lessons.ts",
+        "learning-cockpit/app/lessons/lesson-glossaries.ts",
+        "learning-cockpit/app/lessons/command-decoders.ts",
+        "learning-cockpit/app/lessons/lesson-answer-guides.ts"
+      ]
+    },
+    {
+      "id": "LES-0004",
+      "aliases": ["V01-L04", "network-request-path"],
+      "curriculumIds": ["NET-003", "NET-004", "NET-005", "NET-006"],
+      "slug": "network-request-path",
+      "route": "/book/linux/network-request-path",
+      "sources": [
+        "learning-cockpit/app/lessons/foundation-lessons.ts",
+        "learning-cockpit/app/lessons/lesson-glossaries.ts",
+        "learning-cockpit/app/lessons/command-decoders.ts",
+        "learning-cockpit/app/lessons/lesson-answer-guides.ts"
+      ]
+    },
+    {
+      "id": "LES-0005",
+      "aliases": ["V01-L05", "identity-permissions"],
+      "curriculumIds": ["LNX-004"],
+      "slug": "identity-permissions",
+      "route": "/book/linux/identity-permissions",
+      "sources": [
+        "learning-cockpit/app/lessons/foundation-lessons.ts",
+        "learning-cockpit/app/lessons/lesson-glossaries.ts",
+        "learning-cockpit/app/lessons/command-decoders.ts",
+        "learning-cockpit/app/lessons/lesson-answer-guides.ts"
+      ]
+    }
+  ]
+}

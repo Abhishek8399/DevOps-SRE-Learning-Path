@@ -117,16 +117,12 @@ book/
 |-- frameworks/
 |-- glossary/
 |-- volumes/
-|   `-- 01-linux-systems/
-|       `-- storage/
-|           |-- lesson.md
-|           |-- memory-card.md
-|           |-- lab/
-|           |-- incident/
-|           |-- transfer/
-|           `-- references.yaml
+|   `-- <volume>/
+|       `-- <LES-id>-<slug>/lesson.md
+|-- assessments/<domain>/<ASM-id>.json
+|-- references/<REF-id>.json
 |-- tracks/
-`-- schemas/
+`-- schema/
 
 labs/             executable local labs
 projects/         portfolio systems

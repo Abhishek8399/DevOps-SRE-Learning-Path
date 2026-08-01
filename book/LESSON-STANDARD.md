@@ -1,15 +1,19 @@
 # Lesson and Ubuntu Lab Standard
 
 Every public lesson must be safe enough to follow, deep enough to revisit, and structured enough for another human or AI to maintain.
+The executable record contract is [`schema/README.md`](schema/README.md). This document defines teaching quality; the schema defines machine-enforced identity, structure, safety metadata, and relationships. A lesson must satisfy both.
 
 ## Required lesson metadata
 
-- Stable lesson ID, domain, level, and estimated time.
-- Prerequisite lesson IDs.
+- Opaque stable lesson ID, public alias, route, slug, curriculum IDs, domain, level, and estimated time.
+- Prerequisite lesson IDs and prerequisite curriculum IDs in separate fields.
 - Tested Ubuntu and tool versions.
 - Target-role mappings.
 - Last-reviewed date and known limitations.
 - Learning objective and production relevance.
+- Explicit assessment and reference IDs with reciprocal ownership.
+
+Schema-v1 lesson files are non-executable Markdown with strict JSON front matter. Raw HTML blocks and HTML comments are not allowed outside fenced examples.
 
 ## Required teaching sections
 
@@ -54,6 +58,8 @@ plain-language picture -> precise mechanism -> visible evidence -> interpretatio
 ```
 
 ## Environment card
+
+A command risk label is an assertion that requires human safety review. Automated checks reject obvious mutators mislabeled read-only, but do not claim to understand arbitrary shell behavior.
 
 Every lab states:
 
@@ -111,6 +117,8 @@ preflight
   -> cleanup
   -> prove cleanup
 ```
+
+A structured lesson may link only to a dedicated lab directory under `phase-##-*/`, `labs/`, or `book/labs/`. It may not link to a file, repository root, `.git`, or an escaping path.
 
 ## Isolation choice
 

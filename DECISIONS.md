@@ -28,7 +28,7 @@ This file records material project decisions so future contributors do not need 
 | `DEC-011` | 2026-08-02 | `ACCEPTED` | Make Ubuntu-first commands and labs the default |
 | `DEC-012` | 2026-08-02 | `ACCEPTED` | Use Docker only when isolation or controlled exhaustion is the mechanism |
 | `DEC-013` | 2026-08-02 | `ACCEPTED` | Reserve disposable VMs and local Kubernetes for mechanisms that require them |
-| `DEC-014` | 2026-08-02 | `PROVISIONAL` | Keep current lessons in typed TypeScript, migrate future content toward MDX |
+| `DEC-014` | 2026-08-02 | `PROVISIONAL` | Keep current lessons in typed TypeScript, migrate future content toward structured Markdown |
 | `DEC-015` | 2026-08-02 | `ACCEPTED` | Replace the single long page with a routed book reader |
 | `DEC-016` | 2026-08-02 | `ACCEPTED` | Store only convenience state in browser localStorage |
 | `DEC-017` | 2026-08-02 | `ACCEPTED` | Do not let the browser silently execute shell, write Git, or promote mastery |
@@ -149,11 +149,11 @@ Only `progress/ledger.md`, updated after reviewed learner evidence, changes comp
 
 **Decision:** Use a resettable VM for host-sensitive mutation and a local Kubernetes cluster only for Kubernetes-specific behavior. Namespace every cluster exercise and require diff, rollback, and teardown evidence.
 
-### DEC-014 - Typed now, MDX later
+### DEC-014 - Typed now, structured Markdown after parity
 
 **Context:** The first five lessons use TypeScript structures, which provided fast type feedback while the lesson schema evolved. Those files are becoming large and mix content with application code.
 
-**Decision:** Keep the current typed data model while stabilizing the standard. New volumes move toward validated Markdown/MDX under `book/volumes/...`; migrate existing lessons only after parity tests exist.
+**Decision:** Keep the current typed data model while stabilizing the standard. New volumes move toward validated, non-executable Markdown under `book/volumes/...`; migrate existing lessons only after parity tests exist.
 
 **Consequences:** There is temporary duplication between the book architecture and React data. Avoid expanding one giant constant. The migration must preserve stable IDs and URLs.
 
@@ -230,3 +230,13 @@ Only `progress/ledger.md`, updated after reviewed learner evidence, changes comp
 **Decision:** Any status or shell gate described as the hardened fixture must compare all safety-relevant runtime settings established by setup, including mount exposure, privilege/capability state, security options, bounded resources, tmpfs configuration, restart behavior, and image identity. Legacy compatibility remains cleanup-only and must match the reviewed legacy settings rather than a relaxed subset.
 
 **Consequences:** Descriptor checks and their prose must evolve together. Adversarial tests vary one field at a time, and an incomplete check is a publication blocker even when the normal setup command is hardened.
+
+### DEC-026 - Structured content uses opaque identity and strict JSON front matter
+
+**Context:** The existing reader uses slugs, `V01-L##` aliases, and curriculum IDs for different purposes. Treating any one of those as canonical identity would break the networking lesson taxonomy, device-local state, routes, or future migrations. Free-form YAML or executable MDX would also expand parser ambiguity and execution risk.
+
+**Decision:** Canonical records use immutable opaque IDs (`LES-####`, `ASM-####`, and `REF-####`). Routes, slugs, public aliases, and curriculum IDs remain explicit separate fields. Schema-v1 lessons use non-executable Markdown with strict JSON front matter. The five typed lessons remain permanently reserved as `LES-0001` through `LES-0005`; new records begin at `LES-0006`.
+
+The repository audits its dependency-free JSON Schema subset, rejects unknown or malformed keywords, validates cross-record ownership and cycles, and compares all published legacy identities to an independently pinned baseline. Durable reference URLs cannot contain credentials, queries, or fragments. Raw HTML cannot define lesson structure. Independent-transfer records exclude model answers by construction. Command risk labels remain review assertions, not automated proof.
+
+**Consequences:** A typed lesson can migrate only with exact identity preservation and separate route/content/state parity evidence. Schema v1 is capped at `review-required`; neither author metadata, a passing build, reading activity, nor answer reveal can award verified-chapter status or learner mastery. Full prerequisite-cycle analysis of range expressions in `CONTENT_MATRIX.md` remains planned and explicitly documented.

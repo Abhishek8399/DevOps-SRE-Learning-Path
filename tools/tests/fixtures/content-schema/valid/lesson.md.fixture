@@ -1,0 +1,174 @@
+---
+{
+  "schemaVersion": 1,
+  "kind": "lesson",
+  "id": "LES-9001",
+  "aliases": ["V99-L01", "schema-fixture"],
+  "curriculumIds": ["LNX-001"],
+  "slug": "schema-fixture",
+  "route": "/book/linux/schema-fixture",
+  "order": 9001,
+  "volume": "99-validation-fixtures",
+  "title": "Valid structured lesson fixture",
+  "summary": "Proves the version 1 lesson contract with safe, disposable examples.",
+  "domain": "linux",
+  "level": {
+    "from": "foundation",
+    "to": "advanced"
+  },
+  "estimatedMinutes": 45,
+  "prerequisiteLessonIds": [],
+  "prerequisiteCurriculumIds": ["FND-001"],
+  "testedEnvironments": [
+    {
+      "platform": "Ubuntu",
+      "version": "24.04",
+      "support": "required",
+      "notes": "WSL 2 is supported for this read-only fixture."
+    }
+  ],
+  "targetRoles": ["site-reliability-engineer", "platform-engineer"],
+  "learningObjectives": [
+    "Explain why evidence and interpretation are separate.",
+    "Choose a bounded next command from an observed branch."
+  ],
+  "productionSignals": [
+    "A command succeeds but the user journey still fails."
+  ],
+  "diagrams": [
+    {
+      "id": "LES-9001-DIA-001",
+      "title": "Evidence boundary",
+      "direction": "left-to-right",
+      "boundaries": ["learner shell", "observed Linux state"],
+      "evidencePoints": ["command exit status", "visible output"],
+      "textAlternative": "The learner asks a narrow question, Linux returns evidence, and the learner interprets only what that evidence can prove."
+    }
+  ],
+  "commands": [
+    {
+      "id": "LES-9001-CMD-001",
+      "question": "Which kernel release does this environment report?",
+      "risk": "read-only",
+      "command": "uname -r",
+      "runFrom": "Ubuntu 24.04 as the normal user",
+      "expectedBranches": [
+        {
+          "when": "A release string is printed",
+          "meaning": "The running kernel exposed its release identifier.",
+          "nextEvidence": "Use uname -a only when the additional fields answer a real question."
+        }
+      ],
+      "proves": "The release string returned by this process namespace.",
+      "doesNotProve": "That every kernel feature or module required by an application is available."
+    }
+  ],
+  "labs": [
+    {
+      "id": "LES-9001-LAB-001",
+      "title": "Read-only kernel identity observation",
+      "mode": "guided",
+      "environment": "Ubuntu 24.04 or WSL 2 Ubuntu",
+      "timeMinutes": 3,
+      "privilege": "Normal user; no sudo",
+      "network": "None",
+      "changes": ["No persistent state; one read-only process is created by the shell"],
+      "abortConditions": ["Stop if the command shown differs from the lesson"],
+      "recovery": "No recovery is required because the command is read-only.",
+      "cleanupProof": "No file, process, socket, mount, or container remains."
+    }
+  ],
+  "incidents": [
+    {
+      "id": "LES-9001-INC-001",
+      "signal": "A local command succeeds while the user journey fails.",
+      "firstThought": "The command tested only one boundary.",
+      "safePath": "Trace the failing request from the same namespace without changing state first.",
+      "trap": "Declaring the whole service healthy from one successful local command."
+    }
+  ],
+  "assessmentIds": ["ASM-9001"],
+  "referenceIds": ["REF-9001"],
+  "contentStatus": "substantive-draft",
+  "masteryBoundary": "publication-does-not-award-mastery",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02",
+  "limitations": [
+    "This fixture validates structure, not technical depth."
+  ]
+}
+---
+
+# Valid structured lesson fixture
+
+## What you see and first thought
+
+Start by naming the exact symptom and boundary.
+
+## Terms before commands
+
+Evidence is an observation; a hypothesis is an explanation that still needs testing.
+
+## Architecture map
+
+The learner shell asks the running kernel for a release identifier.
+
+## Request or state path
+
+The shell starts `uname`, which asks the kernel and prints the returned value.
+
+## Failure zoom
+
+A missing command and an unexpected result are different failure branches.
+
+## Internals and state ownership
+
+The running kernel owns the reported release state.
+
+## Evidence table
+
+The command card states what the result proves and what it cannot prove.
+
+## Command decoders
+
+Every displayed field and important flag is explained in the lesson.
+
+## Decision path
+
+Ask a narrow question, collect evidence, interpret it, and choose the safest next question.
+
+## Guided Ubuntu lab
+
+Run only the bounded command declared in the metadata.
+
+## Production transfer
+
+Collect evidence from the same namespace and identity as the failing workload.
+
+## Reliability, security, observability, capacity, and cost
+
+A narrow read-only command has low risk but still has an evidence boundary.
+
+## Traps and prevention
+
+Do not turn one successful command into a claim about end-to-end health.
+
+## Memory card and retrieval
+
+A command result is evidence, not the entire diagnosis.
+
+## Complete answers
+
+Published checkpoints include direct, foundation, reasoning, senior, weak-answer, evidence, and follow-up layers.
+
+## Product-company interview
+
+The candidate must connect each hypothesis to evidence and a safe next step.
+
+## Independent transfer and rubric
+
+Independent evidence is reviewed separately and never auto-awards mastery.
+
+## References and review
+
+References use stable IDs, HTTPS sources, version context, and review dates.

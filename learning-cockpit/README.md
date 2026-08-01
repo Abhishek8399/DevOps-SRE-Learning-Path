@@ -82,6 +82,7 @@ Clear the relevant browser keys to reset local state. Search terms are not store
 npm run lint
 npm run typecheck
 npm run validate:content
+npm run test:content-schema
 npm run test:reader
 npm run build
 npm audit  # optional network-backed advisory check
@@ -89,7 +90,7 @@ npm audit  # optional network-backed advisory check
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
-The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, and requirements 1-46 coverage without adding another package dependency.
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The 34-case schema suite builds disposable repositories to exercise malformed or weakened schemas, answer leakage, identity collisions, unsafe paths, case drift, symlinks, broken ownership, dangling links, and prerequisite cycles. File-symlink creation can skip with `EPERM` on restricted Windows; run that case on Linux or symlink-capable Windows before a public release.
 
 The reader tests exercise malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, and local search normalization/ranking using Node's built-in test runner.
 

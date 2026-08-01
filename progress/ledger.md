@@ -58,8 +58,9 @@ None.
 | [Local learning cockpit](../learning-cockpit/README.md) | Volume 1 contains five detailed Linux lessons; not learner competency evidence | On 2026-08-02 ESLint and production build passed; loopback HTTP returned 200 and rendered the index, all five lesson titles, guided labs, optional self-checks, and interview prompts |
 | [Systems Reliability Field Manual reader](../learning-cockpit/README.md) | Routed, Ubuntu-first reader architecture and safety standard implemented; not learner competency evidence | On 2026-08-02 ESLint and production build passed; six local routes returned HTTP 200, invalid lessons returned 404, key night-mode color pairs measured 5.77:1 or higher, and bounded storage, permissions, process, and loopback-network labs passed on Ubuntu 24.04 with cleanup proof |
 | [Offline search and device-local reading desk](../learning-cockpit/README.md) | Five-lesson search, bookmarks, recent/resume history, private reading markers, and command-copy feedback implemented; reading state is not learner competency evidence | Commit `836c29e`; `VER-045` through `VER-057` record storage-safety tests, lint, typecheck, content validation, production build, route/payload/listener checks, staged safety review, commit, push, and revision parity |
-
+| [Structured content publishing contract](../book/schema/README.md) | Strict lesson, assessment, reference, identity, path, safety, and relationship validation implemented; not learner competency evidence | `VER-058` through `VER-062` record the preserved regression, 34-case adversarial suite (33 pass, 1 Windows `EPERM` skip), content validation, reader regression, lint, typecheck, build, and independent review; no production lesson has migrated yet |
 ## Incident simulations
+
 
 | Simulation | Status | Evidence |
 |---|---|---|

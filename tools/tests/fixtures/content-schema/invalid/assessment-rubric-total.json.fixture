@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-9002",
+  "lessonId": "LES-9001",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "What is the evidence boundary?",
+  "directAnswer": "It is the limit of what an observation proves.",
+  "foundation": "One observation answers one scoped question.",
+  "reasoningSteps": ["Name the question", "Name what remains unknown"],
+  "seniorAnswer": "Tie the observation to its namespace, identity, time window, and next confirming evidence.",
+  "weakAnswer": "One command proves everything.",
+  "whyWeak": "It creates unsupported production conclusions.",
+  "evidence": [
+    {
+      "signal": "A command returns zero",
+      "proves": "The command reported success.",
+      "doesNotProve": "The user journey succeeded."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "What comes next?",
+      "answer": "Test the next relevant boundary."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Scope",
+      "points": 2,
+      "observableEvidence": "Names what is proven."
+    }
+  ],
+  "maximumScore": 3,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

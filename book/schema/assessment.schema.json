@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devops-sre-learning.local/schema/assessment-v1.json",
+  "title": "Systems Reliability Field Manual assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "lessonId",
+    "type",
+    "difficulty",
+    "prompt",
+    "rubric",
+    "maximumScore",
+    "masteryBoundary",
+    "lastReviewed",
+    "reviewAfter"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "assessment" },
+    "id": {
+      "type": "string",
+      "pattern": "^ASM-[0-9]{4}$"
+    },
+    "lessonId": {
+      "type": "string",
+      "pattern": "^LES-[0-9]{4}$"
+    },
+    "type": {
+      "enum": [
+        "recall",
+        "diagnostic",
+        "production",
+        "guided-transfer",
+        "independent-transfer",
+        "interview"
+      ]
+    },
+    "difficulty": {
+      "enum": ["foundation", "intermediate", "advanced", "expert"]
+    },
+    "prompt": { "$ref": "#/$defs/nonEmptyString" },
+    "directAnswer": { "$ref": "#/$defs/nonEmptyString" },
+    "foundation": { "$ref": "#/$defs/nonEmptyString" },
+    "reasoningSteps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "seniorAnswer": { "$ref": "#/$defs/nonEmptyString" },
+    "weakAnswer": { "$ref": "#/$defs/nonEmptyString" },
+    "whyWeak": { "$ref": "#/$defs/nonEmptyString" },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["signal", "proves", "doesNotProve"],
+        "properties": {
+          "signal": { "$ref": "#/$defs/nonEmptyString" },
+          "proves": { "$ref": "#/$defs/nonEmptyString" },
+          "doesNotProve": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "followUps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["prompt", "answer"],
+        "properties": {
+          "prompt": { "$ref": "#/$defs/nonEmptyString" },
+          "answer": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "evidenceRequirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "reviewPolicy": {
+      "const": "reviewer-only-no-model-answer"
+    },
+    "rubric": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion", "points", "observableEvidence"],
+        "properties": {
+          "criterion": { "$ref": "#/$defs/nonEmptyString" },
+          "points": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "observableEvidence": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "maximumScore": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "masteryBoundary": {
+      "const": "requires-reviewed-learner-evidence"
+    },
+    "lastReviewed": { "$ref": "#/$defs/date" },
+    "reviewAfter": { "$ref": "#/$defs/date" }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?(?![\\s\\S])"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}
