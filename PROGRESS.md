@@ -25,23 +25,24 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-07-31 | `PLAN-LAB-102` | Hardened the fixture to run as UID/GID 65534 and documented Docker recovery plus safe inode remediation | Commits `55544da`, `571cccb`, `8af031e` |
 | 2026-08-01 | `PLAN-INT-003`, `PLAN-WEB-001`, `PLAN-WEB-006` foundations | Added target-role mapping and the first local, Git-backed learning cockpit | Commit `798404e` |
 | 2026-08-02 | `PLAN-CUR-101` through `PLAN-CUR-105` initial content | Added the first five Linux foundation lessons, diagrams, guided labs, optional checks, and interview prompts | Commit `d958043` |
+| 2026-08-02 | `PLAN-MS-00`, governance, architecture, routed reader, Linux-depth, lab-safety, and quality checkpoint | Added durable project controls, the canonical 107-ID curriculum map, routed/deep Linux reader, detailed decoders and answer guides, hardened ENOSPC ownership boundaries, and dependency-free content validation | Commit `aa3ede8` |
 
 The committed baseline is useful and runnable, but it does not satisfy the complete curriculum or prove any skill beyond the evidence recorded in the learner ledger.
 
-## Current uncommitted work
+## Current committed checkpoint scope
 
-| Plan IDs | Work present in the worktree | Delivery state |
+| Plan IDs | Capability present on `main` | Delivery state |
 |---|---|---|
-| `PLAN-GOV-001`, `PLAN-GOV-003`, `PLAN-GOV-004` | Persistent control documents, book architecture, lesson/lab standard, and contributor workflow | In progress; root controls are being added now |
-| `PLAN-ARC-001`, `PLAN-ARC-003`, `PLAN-ARC-006` | Volume map, typed glossary data, command decoders, complete teaching answers, and deeper lesson rendering | Implemented locally; acceptance rerun pending |
-| `PLAN-WEB-002`, `PLAN-WEB-003` | Routed library, Linux volume, dynamic lesson routes, breadcrumbs, desktop/mobile contents, and separate storage practice route | All nine declared routes return 200 with exactly one `h1`; the invalid lesson returns 404 and the corrected home practice link resolves; full anchor/manual-navigation review remains |
-| `PLAN-WEB-004`, `PLAN-WEB-008`, `PLAN-WEB-009` | Paper/night modes, text sizes, reading progress, print behavior, responsive layout, and lightweight local design | Implemented locally; full accessibility/print/performance audit incomplete |
-| `PLAN-WEB-006`, `PLAN-INT-001`, `PLAN-INT-002` | Incident, recall, teach-back, interview modes plus detailed Linux answer guides | Storage renders seven closed, explicit-reveal answer panels and zero eager-open panels; complete schema/rubrics and other volumes remain |
-| `PLAN-LAB-001`, `PLAN-LAB-101`, `PLAN-LAB-103`, `PLAN-LAB-104`, `PLAN-LAB-105` | Ubuntu-first environment cards and bounded storage, process, observation, and loopback labs with stronger cleanup controls | Implemented locally; all three shell scripts pass `bash -n`, while remaining lifecycle and failure matrices are pending |
-| `PLAN-LAB-003`, `PLAN-LAB-102` | Pinned digest bootstrap, full v2 shell/status security envelope, removal-only reviewed-v1 envelope, `check` verifier, and descriptor-gated `reset` | Implemented and statically re-audited; lifecycle and one-field tamper tests remain blocked until Docker is integrated into Ubuntu |
-| `PLAN-LAB-106` | Non-root permissions lab and guarded cleanup | Ubuntu normal cleanup and child-symlink refusal passed; the external target survived and bounded cleanup succeeded. Other misuse-matrix cases remain pending |
-| `PLAN-GOV-005` | Ledger records the routed reader as a project artifact without awarding learner mastery | Updated locally; must remain evidence-neutral |
-| `PLAN-QUA-001`, `PLAN-QUA-002`, `PLAN-QUA-004`, `PLAN-QUA-006` | Lint, typecheck, production build, content/link/anchor/ID/requirement validation, route/404/heading/asset checks, dependency audit, and patch whitespace validation | Current post-source checks pass; only the documented build warnings remain. Broader lesson-schema, accessibility, privacy, licenses, and reproducibility gates remain |
+| `PLAN-GOV-001`, `PLAN-GOV-003`, `PLAN-GOV-004` | Persistent control documents, book architecture, lesson/lab standard, and contributor workflow | Committed in `aa3ede8`; root controls are durable, while the contribution dry-run and full public-release review remain |
+| `PLAN-ARC-001`, `PLAN-ARC-003`, `PLAN-ARC-006` | Volume map, typed glossary data, command decoders, complete teaching answers, and deeper lesson rendering | Committed in `aa3ede8`; structured-content migration and full lesson-standard acceptance remain |
+| `PLAN-WEB-002`, `PLAN-WEB-003` | Routed library, Linux volume, dynamic lesson routes, breadcrumbs, desktop/mobile contents, and separate storage practice route | Committed in `aa3ede8`; all nine declared routes return 200 with exactly one `h1`, the invalid lesson returns 404, and the corrected practice link resolves; full manual navigation review remains |
+| `PLAN-WEB-004`, `PLAN-WEB-008`, `PLAN-WEB-009` | Paper/night modes, text sizes, reading progress, print behavior, responsive layout, and lightweight local design | Committed in `aa3ede8`; full accessibility, print, privacy, and performance audits remain incomplete |
+| `PLAN-WEB-006`, `PLAN-INT-001`, `PLAN-INT-002` | Incident, recall, teach-back, interview modes plus detailed Linux answer guides | Committed in `aa3ede8`; storage renders seven closed explicit-reveal answer panels and zero eager-open panels; complete schema/rubrics and other volumes remain |
+| `PLAN-LAB-001`, `PLAN-LAB-101`, `PLAN-LAB-103`, `PLAN-LAB-104`, `PLAN-LAB-105` | Ubuntu-first environment cards and bounded storage, process, observation, and loopback labs with stronger cleanup controls | Committed in `aa3ede8`; all three shell scripts pass `bash -n`, while remaining lifecycle and failure matrices are pending |
+| `PLAN-LAB-003`, `PLAN-LAB-102` | Pinned digest bootstrap, full v2 shell/status security envelope, removal-only reviewed-v1 envelope, `check` verifier, and descriptor-gated `reset` | Committed in `aa3ede8` and statically re-audited; lifecycle and one-field tamper tests remain blocked until Docker is integrated into Ubuntu |
+| `PLAN-LAB-106` | Non-root permissions lab and guarded cleanup | Committed in `aa3ede8`; Ubuntu normal cleanup and child-symlink refusal passed, the external target survived, and bounded cleanup succeeded. Other misuse-matrix cases remain pending |
+| `PLAN-GOV-005` | Ledger records the routed reader as a project artifact without awarding learner mastery | Committed in `aa3ede8` and remains evidence-neutral |
+| `PLAN-QUA-001`, `PLAN-QUA-002`, `PLAN-QUA-004`, `PLAN-QUA-006` | Lint, typecheck, production build, content/link/anchor/ID/requirement validation, route/404/heading/asset checks, dependency audit, and patch whitespace validation | Passed and recorded for `aa3ede8`; only the documented build warnings remain. Broader lesson-schema, accessibility, privacy, licenses, and reproducibility gates remain |
 
 ## Recorded results versus current acceptance
 

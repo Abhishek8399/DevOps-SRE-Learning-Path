@@ -30,7 +30,7 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 
 | ID | Milestone | Exit condition | Current status |
 |---|---|---|---|
-| `PLAN-MS-00` | Stabilize the field-manual foundation | Current routed reader, lesson-depth content, Ubuntu labs, safety corrections, documentation, and validation are reviewed and committed | `WORKTREE` |
+| `PLAN-MS-00` | Stabilize the field-manual foundation | Current routed reader, lesson-depth content, Ubuntu labs, safety corrections, documentation, and validation are reviewed and committed | `COMMITTED` |
 | `PLAN-MS-01` | Publish Volume 00 and complete Linux core | Safe-start material plus the complete Linux foundation has validated labs, answers, transfers, and audits | `PARTIAL` |
 | `PLAN-MS-02` | Publish connectivity and engineering delivery | Volumes 02 and 03 pass content, lab, interview, and quality gates | `PLANNED` |
 | `PLAN-MS-03` | Publish reliability, infrastructure, and platform core | Volumes 04 and 05 include a locally operable service platform and incident program | `PLANNED` |
@@ -42,10 +42,10 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
-| `PLAN-GOV-001` | P0 | Persistent project controls | None | `WORKTREE` | Root plan, progress, decisions, and verification files exist; use stable IDs; distinguish delivered work from mastery | Cross-link review; `git diff --check`; confirm only evidence changes competency |
+| `PLAN-GOV-001` | P0 | Persistent project controls | None | `COMMITTED` | Root plan, progress, decisions, and verification files exist; use stable IDs; distinguish delivered work from mastery | Cross-link review; `git diff --check`; confirm only evidence changes competency |
 | `PLAN-GOV-002` | P0 | Teaching and diagram standard | None | `COMMITTED` | Engineer-to-engineer voice, progressive depth, meaningful diagrams, command evidence, and limited checkpointing are mandatory | Review new lessons against `TEACHING-STYLE.md` |
-| `PLAN-GOV-003` | P0 | Public lesson and lab standard | `PLAN-GOV-002` | `WORKTREE` | Metadata, glossary, diagrams, decoders, Ubuntu lab, production transfer, complete answers, references, and review schedule are required | Schema/content audit against `book/LESSON-STANDARD.md` |
-| `PLAN-GOV-004` | P0 | Contribution and review workflow | `PLAN-GOV-003` | `WORKTREE` | A future human or AI can add content without chat history; safety and definition-of-done checks are explicit | Dry-run one new lesson through `book/CONTRIBUTING.md` |
+| `PLAN-GOV-003` | P0 | Public lesson and lab standard | `PLAN-GOV-002` | `PARTIAL` | Metadata, glossary, diagrams, decoders, Ubuntu lab, production transfer, complete answers, references, and review schedule are required | Schema/content audit against `book/LESSON-STANDARD.md` |
+| `PLAN-GOV-004` | P0 | Contribution and review workflow | `PLAN-GOV-003` | `PARTIAL` | A future human or AI can add content without chat history; safety and definition-of-done checks are explicit | Dry-run one new lesson through `book/CONTRIBUTING.md` |
 | `PLAN-GOV-005` | P0 | Evidence and competency governance | `PLAN-GOV-002` | `PARTIAL` | Evidence files, hint use, confidence, scoring, transfer, and delayed recall update the ledger without inferring mastery from reading | Audit a complete skill lifecycle from submission through review |
 | `PLAN-GOV-006` | P1 | Reference freshness policy | `PLAN-GOV-003` | `PLANNED` | Version-sensitive claims identify primary sources, tested versions, review dates, and expiration/recheck rules | Stale-reference report; sample source audit |
 | `PLAN-GOV-007` | P1 | Release and Git workflow | `PLAN-GOV-001` | `PARTIAL` | Logical changes are validated, committed to `main`, pushed without secrets, and recoverable from a fresh clone | Clean-tree check; remote parity; clone smoke test |
@@ -54,7 +54,7 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
-| `PLAN-ARC-001` | P0 | Durable knowledge map | `PLAN-GOV-003` | `WORKTREE` | Volumes, specialist tracks, prerequisites, mastery states, and planned repository shape are explicit | Human dependency review; orphan-topic scan |
+| `PLAN-ARC-001` | P0 | Durable knowledge map | `PLAN-GOV-003` | `COMMITTED` | Volumes, specialist tracks, prerequisites, mastery states, and planned repository shape are explicit | Human dependency review; orphan-topic scan |
 | `PLAN-ARC-002` | P0 | Stable content identifiers | `PLAN-ARC-001` | `PARTIAL` | Every volume, lesson, lab, incident, transfer, question, and project receives a unique immutable ID | Duplicate-ID validator |
 | `PLAN-ARC-003` | P0 | Typed current lesson model | `PLAN-GOV-003` | `PARTIAL` | Existing Linux content remains strongly typed and renders without a giant monolithic page; all current fields are validated | Type/build check; lesson field coverage test |
 | `PLAN-ARC-004` | P1 | Markdown/MDX content schema | `PLAN-ARC-002`, `PLAN-ARC-003` | `PLANNED` | New content lives under `book/volumes/...`; front matter covers metadata; diagrams, command cards, answers, and lab links have validated structures | Schema validation fixtures; invalid-content tests |
@@ -68,9 +68,9 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
 | `PLAN-WEB-001` | P0 | Loopback-only local launcher | None | `COMMITTED` | Windows launcher installs locked dependencies when needed, binds locally, opens the reader, and documents stop behavior | Fresh-clone Windows/WSL launch smoke test |
-| `PLAN-WEB-002` | P0 | Routed book reader | `PLAN-ARC-001` | `WORKTREE` | Separate library, volume, lesson, and practice routes; breadcrumbs; valid static params; invalid lessons return 404 | Route matrix and internal-link crawl |
-| `PLAN-WEB-003` | P1 | Persistent book navigation | `PLAN-WEB-002` | `WORKTREE` | Desktop sidebar and mobile contents expose current lessons and clearly label planned volumes | Keyboard/mobile/manual navigation test |
-| `PLAN-WEB-004` | P1 | Reader appearance controls | `PLAN-WEB-002` | `WORKTREE` | Paper/night modes, three text sizes, reading progress, print view, reduced motion, and stored preferences remain readable | Contrast, keyboard, responsive, print, and storage-disabled tests |
+| `PLAN-WEB-002` | P0 | Routed book reader | `PLAN-ARC-001` | `PARTIAL` | Separate library, volume, lesson, and practice routes; breadcrumbs; valid static params; invalid lessons return 404 | Route matrix and internal-link crawl |
+| `PLAN-WEB-003` | P1 | Persistent book navigation | `PLAN-WEB-002` | `PARTIAL` | Desktop sidebar and mobile contents expose current lessons and clearly label planned volumes | Keyboard/mobile/manual navigation test |
+| `PLAN-WEB-004` | P1 | Reader appearance controls | `PLAN-WEB-002` | `PARTIAL` | Paper/night modes, three text sizes, reading progress, print view, reduced motion, and stored preferences remain readable | Contrast, keyboard, responsive, print, and storage-disabled tests |
 | `PLAN-WEB-005` | P1 | Find and resume | `PLAN-ARC-008`, `PLAN-WEB-003` | `PLANNED` | Search, stable deep links, recent location, and bookmarks work locally; no convenience state becomes mastery evidence | Browser restart test; offline search test |
 | `PLAN-WEB-006` | P1 | Multi-format learning modes | `PLAN-WEB-002` | `PARTIAL` | Read, diagram, incident, recall, teach-back, interview, and transfer modes are separate and navigable | Interaction tests; answer-reveal and state-reset tests |
 | `PLAN-WEB-007` | P1 | Evidence handoff | `PLAN-GOV-005`, `PLAN-WEB-006` | `PLANNED` | Learner can export sanitized Markdown/JSON evidence for review; website cannot silently write Git or raise mastery | Malformed-input, path, redaction, and no-auto-advance tests |
@@ -86,11 +86,11 @@ The tables below reserve the complete shared-core knowledge architecture. A stat
 | ID | Pri | Volume/module | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
 | `PLAN-CUR-000` | P0 | Volume 00: start safely | `PLAN-GOV-003`, `PLAN-LAB-001` | `PLANNED` | Ubuntu setup, shell behavior, WSL boundaries, Git workflow, command risk, secrets, evidence, FRAME incidents, OPERATES reviews, SCALE decisions, rollback, and cleanup | Fresh learner follows setup without hidden prerequisites; safe-start assessment |
-| `PLAN-CUR-101` | P0 | Linux: filesystems, blocks, inodes, mounts, quotas, ENOSPC | `PLAN-CUR-000` | `WORKTREE` | Self-contained lesson, output decoders, Ubuntu observation lab, isolated ENOSPC incident, remediation, transfer, answers, and references | Content audit; host-lab and Docker-lab success/cleanup; unfamiliar transfer |
-| `PLAN-CUR-102` | P0 | Linux: processes, descriptors, signals, services, systemd | `PLAN-CUR-000` | `WORKTREE` | Process tree, states, FDs, signals, exit reasons, unit lifecycle, logs, restart policy, safe PID lab, and incident transfer | Non-root PID identity/cleanup test; systemd environment variants |
-| `PLAN-CUR-103` | P0 | Linux: CPU, scheduling, load, memory, swap, pressure, OOM | `PLAN-CUR-102` | `WORKTREE` | CPU/run queue and memory mechanisms, `vmstat` first-row semantics, cgroup distinction, read-only lab, and exit-137 transfer | Sample-output assertions; Ubuntu observation; scenario scoring |
-| `PLAN-CUR-104` | P0 | Linux bridge: DNS-to-HTTP request path and sockets | `PLAN-CUR-102` | `WORKTREE` | DNS, routes, TCP, TLS, HTTP, namespace boundary, loopback lab, errors, and one-pod transfer are explained | Loopback listener/PID/response/cleanup proof; namespace scenario |
-| `PLAN-CUR-105` | P0 | Linux: identity, modes, traversal, ACLs, capabilities, MAC | `PLAN-CUR-101`, `PLAN-CUR-102` | `WORKTREE` | Effective identity, directory semantics, ACL/capability/mount/MAC layers, non-root lab, container UID transfer | Path/type/owner/sentinel safety audit; permission scenario |
+| `PLAN-CUR-101` | P0 | Linux: filesystems, blocks, inodes, mounts, quotas, ENOSPC | `PLAN-CUR-000` | `PARTIAL` | Self-contained lesson, output decoders, Ubuntu observation lab, isolated ENOSPC incident, remediation, transfer, answers, and references | Content audit; host-lab and Docker-lab success/cleanup; unfamiliar transfer |
+| `PLAN-CUR-102` | P0 | Linux: processes, descriptors, signals, services, systemd | `PLAN-CUR-000` | `PARTIAL` | Process tree, states, FDs, signals, exit reasons, unit lifecycle, logs, restart policy, safe PID lab, and incident transfer | Non-root PID identity/cleanup test; systemd environment variants |
+| `PLAN-CUR-103` | P0 | Linux: CPU, scheduling, load, memory, swap, pressure, OOM | `PLAN-CUR-102` | `PARTIAL` | CPU/run queue and memory mechanisms, `vmstat` first-row semantics, cgroup distinction, read-only lab, and exit-137 transfer | Sample-output assertions; Ubuntu observation; scenario scoring |
+| `PLAN-CUR-104` | P0 | Linux bridge: DNS-to-HTTP request path and sockets | `PLAN-CUR-102` | `PARTIAL` | DNS, routes, TCP, TLS, HTTP, namespace boundary, loopback lab, errors, and one-pod transfer are explained | Loopback listener/PID/response/cleanup proof; namespace scenario |
+| `PLAN-CUR-105` | P0 | Linux: identity, modes, traversal, ACLs, capabilities, MAC | `PLAN-CUR-101`, `PLAN-CUR-102` | `PARTIAL` | Effective identity, directory semantics, ACL/capability/mount/MAC layers, non-root lab, container UID transfer | Path/type/owner/sentinel safety audit; permission scenario |
 | `PLAN-CUR-106` | P1 | Linux: boot, kernel, logs, time, libraries, packages | `PLAN-CUR-102`, `PLAN-CUR-103` | `PLANNED` | Boot chain, kernel/userspace, journal, clock drift, dynamic linking, packages, updates, and recovery | Disposable-VM or read-only labs; boot/log incident exercise |
 | `PLAN-CUR-107` | P1 | Linux: block I/O, devices, filesystems, performance | `PLAN-CUR-101`, `PLAN-CUR-103` | `PLANNED` | Page cache, block layer, latency/throughput/IOPS, queues, devices, LVM, filesystem repair boundaries | Read-only host observation plus disposable-VM failure lab |
 | `PLAN-CUR-108` | P1 | Linux: namespaces, cgroups, limits, isolation, hardening | `PLAN-CUR-102`, `PLAN-CUR-103`, `PLAN-CUR-105` | `PLANNED` | Container primitives, cgroup v2, limits, seccomp, capabilities, LSMs, and escape boundaries | Hardened container labs and security review |
@@ -142,24 +142,24 @@ The tables below reserve the complete shared-core knowledge architecture. A stat
 
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
-| `PLAN-LAB-001` | P0 | Lab safety and lifecycle contract | `PLAN-GOV-003` | `WORKTREE` | Preflight, scope, risk, prediction, experiment, recovery, cleanup, and cleanup proof; no implicit install/sudo/download | Static safety checklist and destructive-command audit |
+| `PLAN-LAB-001` | P0 | Lab safety and lifecycle contract | `PLAN-GOV-003` | `PARTIAL` | Preflight, scope, risk, prediction, experiment, recovery, cleanup, and cleanup proof; no implicit install/sudo/download | Static safety checklist and destructive-command audit |
 | `PLAN-LAB-002` | P0 | Ubuntu host-lab harness | `PLAN-LAB-001` | `PLANNED` | Non-root temp paths, exact state, sentinels, PID/socket identity, `check/setup/status/cleanup/reset`, fresh-shell recovery | ShellCheck, Bats, failure-path and cleanup tests |
 | `PLAN-LAB-003` | P0 | Hardened container-lab harness | `PLAN-LAB-001`, `PLAN-CUR-303` | `PARTIAL` | Pinned image, no host mounts/secrets, non-root, no network, read-only root, dropped capabilities, resource ceilings, descriptor-gated cleanup, and narrowly scoped retirement of known legacy fixtures | Inspect assertions, fixture verifier, full runtime-boundary descriptor tests, tampered-container refusal |
 | `PLAN-LAB-004` | P1 | Disposable VM harness | `PLAN-LAB-001`, `PLAN-CUR-106` | `PLANNED` | Host-sensitive kernel/systemd/firewall/LVM lessons run only in resettable VMs with snapshots and recovery | Create/destroy/reset and failed-boot recovery tests |
 | `PLAN-LAB-005` | P1 | Local Kubernetes harness | `PLAN-LAB-001`, `PLAN-CUR-502` | `PLANNED` | Pinned local cluster, namespace scoping, resource budgets, diffs, rollback, and deterministic teardown | Cluster lifecycle and namespace-escape tests |
-| `PLAN-LAB-101` | P0 | Storage and inode Ubuntu lab | `PLAN-CUR-101`, `PLAN-LAB-001` | `WORKTREE` | Bounded non-root object creation demonstrates inode use without exhausting host; exact cleanup is retryable | Ubuntu 24.04 happy/failure/cleanup runs |
+| `PLAN-LAB-101` | P0 | Storage and inode Ubuntu lab | `PLAN-CUR-101`, `PLAN-LAB-001` | `PARTIAL` | Bounded non-root object creation demonstrates inode use without exhausting host; exact cleanup is retryable | Ubuntu 24.04 happy/failure/cleanup runs |
 | `PLAN-LAB-102` | P0 | ENOSPC isolated incident | `PLAN-CUR-101`, `PLAN-LAB-003` | `PARTIAL` | Real kernel ENOSPC, block/inode distinction, retained data, authorized deletion, user-operation retry, descriptor-gated cleanup | Fixture verification, counterfeit-boundary refusal, and learner-operated remediation |
-| `PLAN-LAB-103` | P0 | Process and signal lab | `PLAN-CUR-102`, `PLAN-LAB-001` | `WORKTREE` | Unique token and UID protect PID signaling; graceful exit and absence are proven | Ubuntu run plus PID-reuse/refusal tests |
-| `PLAN-LAB-104` | P0 | CPU and memory observation lab | `PLAN-CUR-103` | `WORKTREE` | No synthetic host pressure; sampling semantics and limitations are explicit | Ubuntu samples and interpretation fixture review |
-| `PLAN-LAB-105` | P0 | Loopback request-path lab | `PLAN-CUR-104`, `PLAN-LAB-001` | `WORKTREE` | Non-root, loopback-only, checked port, unique response, PID/command/path proof, retryable exact cleanup | Occupied-port, dead-PID, unexpected-file, and cleanup tests |
-| `PLAN-LAB-106` | P0 | Identity and permission lab | `PLAN-CUR-105`, `PLAN-LAB-001` | `WORKTREE` | Path/type/owner/sentinel validation prevents cleanup from following a replaced child symlink outside the lab | Symlink-escape regression plus normal cleanup test |
+| `PLAN-LAB-103` | P0 | Process and signal lab | `PLAN-CUR-102`, `PLAN-LAB-001` | `PARTIAL` | Unique token and UID protect PID signaling; graceful exit and absence are proven | Ubuntu run plus PID-reuse/refusal tests |
+| `PLAN-LAB-104` | P0 | CPU and memory observation lab | `PLAN-CUR-103` | `PARTIAL` | No synthetic host pressure; sampling semantics and limitations are explicit | Ubuntu samples and interpretation fixture review |
+| `PLAN-LAB-105` | P0 | Loopback request-path lab | `PLAN-CUR-104`, `PLAN-LAB-001` | `PARTIAL` | Non-root, loopback-only, checked port, unique response, PID/command/path proof, retryable exact cleanup | Occupied-port, dead-PID, unexpected-file, and cleanup tests |
+| `PLAN-LAB-106` | P0 | Identity and permission lab | `PLAN-CUR-105`, `PLAN-LAB-001` | `PARTIAL` | Path/type/owner/sentinel validation prevents cleanup from following a replaced child symlink outside the lab | Symlink-escape regression plus normal cleanup test |
 | `PLAN-LAB-900` | P1 | Lab verification matrix | `PLAN-LAB-002`, `PLAN-LAB-003`, `PLAN-LAB-004`, `PLAN-LAB-005` | `PLANNED` | Supported environment/version/action/result/cleanup evidence is generated for every lab | Automated matrix report with retained failure logs |
 
 ## Interview and assessment system
 
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
-| `PLAN-INT-001` | P0 | Question and answer schema | `PLAN-GOV-003` | `WORKTREE` | Stable ID, level, prompt, direct answer, foundation, reasoning, senior answer, weak answer, evidence, follow-ups, rubric | Schema coverage and missing-answer test |
+| `PLAN-INT-001` | P0 | Question and answer schema | `PLAN-GOV-003` | `PARTIAL` | Stable ID, level, prompt, direct answer, foundation, reasoning, senior answer, weak answer, evidence, follow-ups, rubric | Schema coverage and missing-answer test |
 | `PLAN-INT-002` | P0 | Linux question bank | `PLAN-CUR-101` through `PLAN-CUR-108` | `PARTIAL` | Every Linux lesson has recall, diagnostic, production, and transfer questions with model answers | Coverage report by lesson and difficulty |
 | `PLAN-INT-003` | P1 | Role requirement mapping | None | `COMMITTED` | Apple, Experian, Mastercard, Cisco, Visa, GitLab, NVIDIA, Arm, and ADP requirements map to mechanisms and tracks | Trace each supplied requirement to planned IDs |
 | `PLAN-INT-004` | P1 | Company-style scenario banks | Core volumes | `PLANNED` | Ambiguous incidents, system design, coding, behavioral ownership, security, cost, and leadership scenarios exist without pretending to reproduce confidential interviews | Independent review and scoring calibration |
@@ -171,7 +171,7 @@ The tables below reserve the complete shared-core knowledge architecture. A stat
 
 | ID | Pri | Deliverable | Depends on | Status | Acceptance criteria | Verification |
 |---|---:|---|---|---|---|---|
-| `PLAN-QUA-001` | P0 | Lint, type, and production build | `PLAN-WEB-002` | `WORKTREE` | Reproducible scripts fail on lint/type/build errors; generated artifacts do not dirty Git | `npm ci`, lint, type check, build, clean-tree comparison |
+| `PLAN-QUA-001` | P0 | Lint, type, and production build | `PLAN-WEB-002` | `PARTIAL` | Reproducible scripts fail on lint/type/build errors; generated artifacts do not dirty Git | `npm ci`, lint, type check, build, clean-tree comparison |
 | `PLAN-QUA-002` | P0 | Content/schema validation | `PLAN-ARC-004` | `PARTIAL` | IDs, prerequisites, metadata, required sections, answers, references, and command labels validate in CI | Valid/invalid content fixtures |
 | `PLAN-QUA-003` | P0 | Shell and lab tests | `PLAN-LAB-002` | `PLANNED` | ShellCheck plus lifecycle, abort, stale-state, symlink, PID, port, root, and cleanup tests run automatically | Bats/integration report on Ubuntu 24.04 |
 | `PLAN-QUA-004` | P1 | Route, link, and 404 tests | `PLAN-WEB-002`, `PLAN-ARC-004` | `PARTIAL` | All declared routes return expected status; links and anchors resolve; invalid IDs return 404 | Automated route matrix and link crawler |

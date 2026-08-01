@@ -70,20 +70,22 @@ This register separates observed results from planned checks. A statement in a l
 | `VER-040` | 2026-08-02 | Docker profile-matching logic without a daemon | In-memory current/counterfeit/legacy cases | `RECORDED PASS` with limitation | The exact current profile was accepted, a one-bind counterfeit was refused, and legacy was refused shell access. This does not execute Docker lifecycle, cleanup, `check`, `reset`, or the complete tamper matrix |
 | `VER-041` | 2026-08-02 | Final canonical ID declarations and four control documents | Namespace, target, table, whitespace, marker, and relative-link revalidation | `PASS` | Found 114 unique `PLAN-*` IDs, 107 unique curriculum IDs, 8 unique `FIND-*` IDs, 25 unique `DEC-*` IDs, and 84 unique `VER-*`/`REL-*`/`LRN-*` IDs; zero internal duplicates, cross-namespace collisions, missing plan targets, malformed tables, trailing whitespace, conflict markers, or missing relative links |
 | `VER-042` | 2026-08-02 | Final repository content | `npm run validate:content` | `PASS` | Exit 0: `root-memory=6/6 markdown=28 local-links=38 explicit-anchors=0 heading-anchors=306 curriculum-ids=107 requirements=46/46` |
+| `VER-043` | 2026-08-02 | Staged 41-file foundation checkpoint | Staged whitespace, conflict-marker, credential-shape, local-identity-path, generated-artifact, and independent read-only diff review | `PASS` | No blocker, unintended file, patch/build artifact, credential/private-key shape, user/employer path, false Docker claim, or false learner-mastery claim was found |
+| `VER-044` | 2026-08-02 | Commit `aa3ede8` and `origin/main` | Commit, non-force push, branch-parity check, and exact revision readback | `PASS` | Commit `aa3ede8fd8f20c5b05fea8f6afaadaaf7fa7338e` was pushed; `git status --branch --short` reported `main...origin/main` with no worktree changes |
 
 ## Current release gate
 
-`PLAN-AUD-001` remains blocked by unavailable Docker-in-Ubuntu runtime verification and other pending P0 gates. The permissions-lab escape and incomplete Docker-envelope source findings are corrected and statically re-reviewed, but static review is not lifecycle evidence. The current uncommitted release must not be described as publication-safe or pushed as accepted until all P0 rows below pass and all failures have an explicit disposition.
+`PLAN-AUD-001` remains blocked by unavailable Docker-in-Ubuntu runtime verification and other pending P0 gates. The permissions-lab escape and incomplete Docker-envelope source findings are corrected and statically re-reviewed, but static review is not lifecycle evidence. Commit `aa3ede8` is a durable in-progress checkpoint; it must not be described as a publication-safe or accepted release until all P0 rows below pass and all failures have an explicit disposition.
 
 ### Repository and documentation
 
 | ID | Required check | Command or method | Current result | Acceptance |
 |---|---|---|---|---|
 | `REL-DOC-001` | Patch whitespace and conflict markers | `git diff --check` plus marker scan | `PASS` | No whitespace error or merge marker |
-| `REL-DOC-002` | Only intended files changed | `git status --short`; full `git diff` review | `PENDING` | Every change maps to a plan ID; no unrelated file or secret |
+| `REL-DOC-002` | Only intended files changed | `git status --short`; full `git diff` review | `PASS` for checkpoint `aa3ede8` | Every change maps to a plan ID; no unrelated file or secret |
 | `REL-DOC-003` | Root controls agree | Cross-check `MASTER_PLAN.md`, `PROGRESS.md`, `DECISIONS.md`, `VERIFICATION.md`, ledger | `PARTIAL` | Current statuses, blockers, evidence, and next actions agree; final full-ledger sign-off remains |
 | `REL-DOC-004` | Markdown links and anchors | Local link/anchor checker | `PASS` | All scanned local links resolve, generated heading anchors are unique, and the corrected home practice route resolves |
-| `REL-DOC-005` | Generated artifact hygiene | Inspect `tsconfig.tsbuildinfo` and build outputs before/after tests | `PARTIAL` | `*.tsbuildinfo` is ignored; final validation leaves no other unexplained generated files |
+| `REL-DOC-005` | Generated artifact hygiene | Inspect `tsconfig.tsbuildinfo` and build outputs before/after tests | `PASS` for checkpoint `aa3ede8` | `*.tsbuildinfo` is ignored; final validation leaves no other unexplained generated files |
 
 ### Website and content
 
@@ -129,7 +131,7 @@ Run inside the stated Ubuntu 24.04 environment. Do not substitute Windows, produ
 | `REL-A11Y-002` | Keyboard and focus | Manual keyboard-only route/control/table/details navigation | `PENDING` | All functions reachable; visible focus; sensible order; no trap |
 | `REL-A11Y-003` | Contrast and themes | Measure every text/control/state pair in paper and night modes | `PARTIAL` | WCAG AA for applicable text; selected prior pairs alone are insufficient |
 | `REL-A11Y-004` | Responsive and print | Phone/tablet/desktop, zoom, long commands/tables/diagrams, print preview | `PENDING` | No hidden content, unusable overflow, or clipped essential information |
-| `REL-SEC-001` | Secret and sensitive-data scan | Scan tracked/untracked source and full staged diff; manually review samples | `PENDING` | No credential, token, key, employer detail, internal URL, or production evidence |
+| `REL-SEC-001` | Secret and sensitive-data scan | Scan tracked/untracked source and full staged diff; manually review samples | `PASS` for checkpoint `aa3ede8`; Git-history scan not included | No credential, token, key, employer detail, internal URL, or production evidence |
 | `REL-SEC-002` | Dependency audit | Authorized current registry-backed `npm audit` plus manual dependency-tree review | `PARTIAL`: current audit passed | Registry findings are absent or dispositioned, and the dependency-tree/license review is complete; historical offline zero alone is not closure |
 | `REL-SEC-003` | External-request/privacy audit | Browser/network capture during normal reading and interactions | `PARTIAL` | Rendered routes contain no external script, link, or image assets; browser-network capture remains |
 | `REL-SEC-004` | Loopback binding | Inspect listening socket during launch | `PENDING` | Website listens only on intended loopback address |
@@ -141,8 +143,8 @@ Run inside the stated Ubuntu 24.04 environment. Do not substitute Windows, produ
 |---|---|---|---|---|
 | `REL-REP-001` | Fresh clone | Clone into an isolated path; follow only repository instructions | `PENDING` | Install, launch, navigate, and selected labs work without chat context |
 | `REL-REP-002` | Offline normal reading | Disconnect after dependency bootstrap; start and read | `PENDING` | Normal book use requires no cloud account or external application API |
-| `REL-REP-003` | Git review | `git diff`, `git diff --check`, secret scan, generated-file check | `PENDING` | Logical, reviewable, safe diff |
-| `REL-REP-004` | Commit and push | Non-interactive commit/push after all required checks | `PENDING` | `main` and `origin/main` match; no force push; commit ID recorded |
+| `REL-REP-003` | Git review | `git diff`, `git diff --check`, secret scan, generated-file check | `PASS` for checkpoint `aa3ede8` | Logical, reviewable, safe diff |
+| `REL-REP-004` | Commit and push | Non-interactive commit/push after all required checks | `PASS` for checkpoint `aa3ede8`; final audited release pending | `main` and `origin/main` match; no force push; commit ID recorded |
 
 ## Learner-evidence verification
 
