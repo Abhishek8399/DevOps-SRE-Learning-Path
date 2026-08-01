@@ -17,6 +17,7 @@ Labels used below:
 | Current level | Intermediate | Self-reported; not yet measured |
 | Target roles | DevOps, Senior DevOps, SRE, Platform, Cloud/Solutions Architecture, Infrastructure, DevSecOps, AI Platform | Self-reported |
 | Target companies | Product companies and startups | Self-reported |
+| Supplied role references | Apple, Experian, Mastercard, Cisco, Visa, GitLab, NVIDIA, Arm, and ADP | Self-reported job-description set; requirements mapped, not competency evidence |
 | Job market | Primarily India; also international | Self-reported |
 | Deadline | No fixed deadline | Self-reported |
 | Study availability | Irregular | Self-reported |

@@ -4,6 +4,8 @@ This directory holds the evidence and working artifacts for the interactive trai
 
 All teaching sessions must follow the [conversation and diagram style](TEACHING-STYLE.md): practical engineer-to-engineer explanation, memorable mental models, precise connectivity diagrams, and one focused checkpoint at a time.
 
+The [target-role requirements matrix](career/target-role-matrix.md) maps the supplied Apple, Experian, Mastercard, Cisco, Visa, GitLab, NVIDIA, Arm, and ADP roles to a shared engineering foundation and specialist tracks. The [local learning field manual design](career/learning-system.md) defines how the website, labs, Git evidence, and competency ledger work together.
+
 ## Current state
 
 - Started: 2026-07-20
@@ -37,5 +39,8 @@ All teaching sessions must follow the [conversation and diagram style](TEACHING-
 - [Local environment baseline](environment/local-baseline.md)
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
+- [Target-role requirements matrix](career/target-role-matrix.md)
+- [Local learning field manual design](career/learning-system.md)
+- [Local visual learning cockpit](learning-cockpit/README.md)
 - [Phase 1: Foundations](phase-01-foundations/README.md)
 - [Active Lesson 1: Linux storage and ENOSPC triage](phase-01-foundations/lesson-01-linux-storage-enospc/README.md)

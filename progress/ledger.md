@@ -1,6 +1,6 @@
 # Progress Ledger
 
-Last updated: 2026-07-31
+Last updated: 2026-08-01
 Current state: initial diagnostic in progress
 
 `Not assessed` is intentionally different from L0. L0 will only be assigned when evidence shows that a concept is unfamiliar.
@@ -35,6 +35,7 @@ Current state: initial diagnostic in progress
 | 2026-07-20 | Permit installation of exercise-required local dependencies | Learner authorization; no installation performed during baseline |
 | 2026-07-20 | Exclude online cloud resources | Learner constraint; use local simulation, emulation, validation, and design exercises |
 | 2026-07-20 | Use Docker Desktop through Ubuntu WSL integration | Local client/server and Compose queries succeeded; workload execution remains unverified |
+| 2026-08-01 | Use a lightweight local website backed by Git as the learning interface | Learner requested a durable, visual, documentation-like experience; repository remains the evidence source of truth and browser localStorage is scratch space only |
 
 Machine readiness evidence is recorded in [../environment/local-baseline.md](../environment/local-baseline.md). These decisions do not establish competency.
 
@@ -52,7 +53,9 @@ None.
 
 ## Project artifacts
 
-None.
+| Artifact | Status | Evidence |
+|---|---|---|
+| [Local learning cockpit](../learning-cockpit/README.md) | MVP built; not learner competency evidence | ESLint and production build passed in the isolated staging tree on 2026-08-01; HTTP smoke test returned 200 and contained the role map and active incident lesson |
 
 ## Incident simulations
 
