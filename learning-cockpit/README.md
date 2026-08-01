@@ -8,10 +8,23 @@ The cockpit trains four different kinds of recall:
 
 - **See the system:** architecture, request path, state, and failure-flow diagrams.
 - **Break the system:** choose-the-next-move incident decisions with immediate reasoning feedback.
+- **Read the field manual:** retain the complete explanation, signal map, safe-recovery path, and lab instructions for each completed topic.
 - **Recall the system:** compact flashcards that require an answer before reveal.
 - **Teach and defend:** Feynman notes and product-company interview drills.
 
 The dashboard never raises mastery by itself. The repository ledger remains the evidence source of truth.
+
+## Ready lessons
+
+Volume 1 currently contains five substantial Linux foundation lessons:
+
+1. Filesystems, blocks, inodes, and ENOSPC.
+2. Processes, signals, exit codes, and systemd.
+3. CPU, load, memory pressure, swap, and OOM.
+4. DNS, routing, TCP, TLS, HTTP, and sockets.
+5. Identity, permissions, traversal, and least privilege.
+
+`Ready to study` describes content availability, not demonstrated mastery. The progress ledger remains authoritative.
 
 ## Local use
 

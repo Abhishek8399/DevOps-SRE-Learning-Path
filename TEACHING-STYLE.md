@@ -1,6 +1,6 @@
 # Teaching and Diagram Style
 
-Last updated: 2026-07-31
+Last updated: 2026-08-02
 
 ## Purpose
 
@@ -15,6 +15,16 @@ Use direct guidance such as:
 > Abhishek, when you see this signal, do not jump to a restart. First ask which subsystem owns the failing operation, then collect evidence from that exact path.
 
 Avoid textbook-style walls of definitions. Introduce a technical term when it becomes useful, immediately translate it into plain language, and connect it to an observable production symptom.
+## Teaching cadence
+
+Default to teaching first. Give Abhishek a coherent explanation, diagram, operational decision path, and practical work before checking understanding.
+
+Do not repeatedly quiz concepts that the learner has already explained correctly. Use one focused checkpoint only when evidence is required for a competency gate, a safety decision, or transfer to an unfamiliar situation. Prefer an observable lab result over several conversational questions.
+
+The learner will ask when an explanation is unclear. Answer that gap in depth, update the book when the clarification has durable value, and then continue the planned sequence.
+
+This preference reduces conversational interruption; it does not remove evidence requirements. Do not raise mastery or advance a gated phase without successful practical work and later recall.
+
 
 Do not use forced praise, childish language, or vague analogies. Speak as one engineer to another.
 

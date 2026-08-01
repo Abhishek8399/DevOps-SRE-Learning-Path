@@ -24,7 +24,7 @@ Labels used below:
 | Cloud sandbox | None | Self-reported |
 | Lab delivery policy | Local-first; no online cloud resources | Self-reported |
 | Installation policy | Required local lab dependencies may be installed | Self-reported |
-| Instruction preference | Human, engineer-to-engineer explanation; address Abhishek directly; use memorable mental models, practical signal-to-action guidance, and clear connectivity or failure-flow diagrams before one focused checkpoint; retain technical terms but translate them into plain language; move quickly without skipping verification or safety | Self-reported |
+| Instruction preference | Human, engineer-to-engineer explanation; address Abhishek directly; use memorable mental models, practical signal-to-action guidance, and clear connectivity or failure-flow diagrams; teach a coherent slice before assessment; avoid repeated questions when the concept is already understood; prefer one evidence-producing practical action at a genuine gate; retain technical terms but translate them into plain language; move quickly without skipping verification or safety | Self-reported |
 | Host environment | 64-bit Windows; PowerShell 5.1; 12 logical CPUs; approximately 31.7 GiB RAM | Observed |
 | Host storage | Approximately 271 GiB free on `C:` | Observed |
 | Linux environment | WSL 2 Ubuntu 24.04.1 LTS; systemd running; cgroup v2 | Observed |

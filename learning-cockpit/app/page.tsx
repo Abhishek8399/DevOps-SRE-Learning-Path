@@ -1,4 +1,6 @@
 import CareerOverview from "./career-overview";
+import FoundationVolume, { BookIndex } from "./foundation-volume";
+import StorageChapter from "./storage-chapter";
 import InteractivePractice from "./interactive-practice";
 
 export default function Home() {
@@ -12,6 +14,11 @@ export default function Home() {
             <small>DevOps · SRE · Platform Engineering</small>
           </span>
         </a>
+        <nav className="book-links" aria-label="Learning book navigation">
+          <a href="#map">Roadmap</a>
+          <a href="#book-index">Book</a>
+          <a href="#practice">Practice</a>
+        </nav>
         <div className="status-pill"><span /> Local-only · no cloud cost</div>
       </header>
 
@@ -64,6 +71,9 @@ export default function Home() {
           <div><span>PROVE WITH</span><strong>findmnt + df -hT + df -i</strong></div>
         </div>
       </section>
+      <BookIndex />
+      <StorageChapter />
+      <FoundationVolume />
       <InteractivePractice />
     </main>
   );

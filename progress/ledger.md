@@ -1,6 +1,6 @@
 # Progress Ledger
 
-Last updated: 2026-08-01
+Last updated: 2026-08-02
 Current state: initial diagnostic in progress
 
 `Not assessed` is intentionally different from L0. L0 will only be assigned when evidence shows that a concept is unfamiliar.
@@ -9,7 +9,7 @@ Current state: initial diagnostic in progress
 |---|---:|---|---|---:|---:|---|---|---|
 | Engineering and systems thinking | Not assessed | — | None | 0 | — | — | After baseline | Initial diagnostic |
 | Linux and operating systems | Not assessed | — | None | 0 | — | — | After baseline | [Lesson 1 ENOSPC diagnostic](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) |
-| Linux filesystems — exact-path mount mapping and ENOSPC | L1 | 2026-07-31 | Guided teach-back correctly explains that free blocks do not rule out inode exhaustion; mentor rebuilt and verified version 2; learner remediation evidence is pending | 5 | Not stated | Path-name assumption observed once; inode allocation conflated with mounting once | Same session after guided remediation | Identify the approved inode population, remediate safely, verify recovery, then complete an unfamiliar transfer |
+| Linux filesystems — exact-path mount mapping and ENOSPC | L1 | 2026-08-02 | Learner independently recalled that ENOSPC can mean block or inode exhaustion and selected `df -hT` and `df -i`; precise inode-record wording was reinforced; learner remediation evidence is pending | 5 | Not stated | Earlier path-name assumption and mounting/inode conflation have not recurred; exact command syntax was lightly corrected | Immediate practical remediation | Identify the approved inode population, remediate safely, verify recovery, then complete an unfamiliar transfer |
 | Networking, DNS, HTTP, and PKI | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Git and software delivery | Not assessed | — | None | 0 | — | — | After baseline | Pending diagnostic |
 | Scripting, testing, and error handling | Not assessed | — | None | 0 | — | — | After baseline | Pending automation exercise |
@@ -43,7 +43,7 @@ Machine readiness evidence is recorded in [../environment/local-baseline.md](../
 
 | Exercise | Status | Evidence |
 |---|---|---|
-| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Active — guided remediation | Hardened version 2 is running; a separate fixture proved scoped deletion, retained-data safety, inode recovery, write recovery, and cleanup; learner container remains intentionally broken |
+| [Lesson 1 — Linux storage and ENOSPC triage](../phase-01-foundations/lesson-01-linux-storage-enospc/README.md) | Active — guided remediation | Learner now recalls the block-versus-inode diagnosis and exact commands; hardened version 2 remains the practical gate; learner remediation evidence is pending |
 
 Environment prerequisite note: the Ubuntu Docker CLI initially crashed because Docker Desktop’s WSL CLI-tools loop mount returned input/output errors. A Docker Desktop restart restored Windows and Ubuntu client/server checks. See the [recovery runbook](../environment/troubleshooting/docker-wsl-cli-segfault.md). This mentor-operated recovery is not learner competency evidence.
 
@@ -55,7 +55,7 @@ None.
 
 | Artifact | Status | Evidence |
 |---|---|---|
-| [Local learning cockpit](../learning-cockpit/README.md) | MVP built; not learner competency evidence | ESLint and production build passed in the isolated staging tree on 2026-08-01; HTTP smoke test returned 200 and contained the role map and active incident lesson |
+| [Local learning cockpit](../learning-cockpit/README.md) | Volume 1 contains five detailed Linux lessons; not learner competency evidence | On 2026-08-02 ESLint and production build passed; loopback HTTP returned 200 and rendered the index, all five lesson titles, guided labs, optional self-checks, and interview prompts |
 
 ## Incident simulations
 
@@ -77,11 +77,11 @@ None dangerous confirmed. One non-dangerous assumption is under correction: a di
 
 ## Weak prerequisite links
 
-Storage stack vocabulary: immediate inode recall succeeded after teaching; exact-path mount mapping and independent command interpretation still require practice.
+Storage diagnosis vocabulary is now recalled. Exact-path mount mapping, safe population selection, and end-to-end remediation still require learner-operated evidence.
 
 ## Reviews due
 
-Immediate mechanism correction and hardened-lab verification are due in the current session. If successful on 2026-07-31, schedule delayed reviews for 2026-08-01, 2026-08-03, 2026-08-07, 2026-08-14, 2026-08-30, 2026-09-29, and 2026-10-29.
+Hardened-lab remediation is due in the current session. Schedule delayed reviews only after the practical gate succeeds.
 
 ## Study time
 
