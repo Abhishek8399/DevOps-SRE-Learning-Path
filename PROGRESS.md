@@ -9,10 +9,10 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest substantive checkpoint | `836c29e feat: add offline search and device-local reading desk` |
+| Latest substantive checkpoint | `4c1b922 feat: add structured content contract and validation` |
 | Remote | `origin` points to `Abhishek8399/DevOps-SRE-Learning-Path` |
-| Source checkpoint parity | `HEAD` and `origin/main` were confirmed at `836c29e` after the non-force push |
-| Worktree | Structured schema, validator, tests, and governance updates are under validation; no mastery is inferred from this work |
+| Source checkpoint parity | Feature commit `4c1b922` and `origin/main` were confirmed at the same full revision after the non-force push |
+| Worktree | Feature checkpoint `4c1b922` is committed and pushed; this evidence-only follow-up does not change learner competency |
 | Current milestone | `PLAN-ARC-004` / `PLAN-MS-01` - structured content foundation and the next curriculum batch |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
@@ -27,6 +27,7 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-08-02 | `PLAN-CUR-101` through `PLAN-CUR-105` initial content | Added the first five Linux foundation lessons, diagrams, guided labs, optional checks, and interview prompts | Commit `d958043` |
 | 2026-08-02 | `PLAN-MS-00`, governance, architecture, routed reader, Linux-depth, lab-safety, and quality checkpoint | Added durable project controls, the canonical 107-ID curriculum map, routed/deep Linux reader, detailed decoders and answer guides, hardened ENOSPC ownership boundaries, and dependency-free content validation | Commit `aa3ede8` |
 | 2026-08-02 | `PLAN-ARC-008`, `PLAN-WEB-005`, `PLAN-WEB-011`, `PLAN-AUD-005` reader checkpoint | Added five-lesson local search, bookmarks, recent/resume state, private reading markers, command-copy feedback, safe storage fallback/reset, current-page navigation, and dependency-free tests without changing mastery | Commit `836c29e`; pushed to `origin/main` |
+| 2026-08-02 | `PLAN-ARC-004`, `PLAN-ARC-007`, `PLAN-QUA-002` structured-content checkpoint | Added strict lesson/assessment/reference schemas, immutable legacy identity, answer-isolated independent transfer, cross-record validation, path/symlink/case hardening, and disposable adversarial tests | Commit `4c1b922`; pushed to `origin/main` |
 
 The committed baseline is useful and runnable, but it does not satisfy the complete curriculum or prove any skill beyond the evidence recorded in the learner ledger.
 
@@ -56,13 +57,13 @@ The following capabilities are committed in `836c29e`; `PARTIAL` means their com
 | `PLAN-WEB-011` | Safe malformed/unsupported-state recovery, visible storage fallback, empty/no-result search states, and invalid-lesson 404 | Occupied-port, dependency-install, start-failure, and runtime error UX |
 | `PLAN-AUD-005` | Fixed allowlisted state schema and repeated UI boundaries keep reading actions separate from competency; eight pure transition/search tests pass | Full evidence lineage, answer-key isolation, mentor-output, and assessment-state audit |
 
-## Current structured-content checkpoint (worktree)
+## Current structured-content checkpoint
 
 Schema v1 now has strict lesson, assessment, and reference records; opaque IDs separate from aliases, routes, slugs, and curriculum IDs; permanent reservations for all five typed lessons; and dependency-free repository validation. Thirty-four focused cases cover malformed and duplicate JSON, pinned schema policy, required/non-empty body sections, CommonMark fence and raw-HTML ambiguity, URL normalization, independent answer isolation, safe lab realpaths, canonical-content and policy-file symlinks, dangling links and exact path/file case, exact locations and filenames, legacy migration and collisions, ownership, backlinks, and prerequisite cycles. On this restricted Windows token, 33 passed and the real policy-file symlink case skipped because file-symlink creation returned `EPERM`; that runtime case remains for Linux or symlink-capable Windows.
 
 No production lesson has migrated to the new format yet. The five current website lessons remain authoritative typed sources and all existing routes remain unchanged. Passing this contract suite proves publishing infrastructure, not chapter acceptance or learner mastery.
 
-The remaining `PLAN-ARC-004` acceptance work is a separately reviewed production record and renderer/catalog adapter with route, text, search, device-state, and content-parity evidence.
+Commit `4c1b922` establishes the publishing contract. The remaining `PLAN-ARC-004` acceptance work is a separately reviewed production record and renderer/catalog adapter with route, text, search, device-state, and content-parity evidence.
 
 ## Recorded results versus current acceptance
 
