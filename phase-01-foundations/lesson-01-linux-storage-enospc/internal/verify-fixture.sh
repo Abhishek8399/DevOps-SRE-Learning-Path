@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
+umask 077
 
 readonly CONTAINER_NAME="${CONTAINER_NAME:-devops-sre-p1-enospc}"
 readonly EXPECTED_LABEL="${EXPECTED_LABEL:-phase01-lesson01}"
+readonly SCRIPT_DIRECTORY="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+readonly LAB_SCRIPT="$SCRIPT_DIRECTORY/../lab.sh"
 
 fail() {
   printf 'fixture_validation_failed=%s\n' "$1" >&2
   exit 1
 }
+
+bash "$LAB_SCRIPT" status >/dev/null 2>&1 \
+  || fail "container_security_envelope_mismatch"
 
 docker container inspect "$CONTAINER_NAME" >/dev/null 2>&1 || fail "container_missing"
 

@@ -1,18 +1,20 @@
-import { foundationLessons } from "./lessons/foundation-lessons";
+import Link from "next/link";
+import { foundationLessons, type FoundationLesson } from "./lessons/foundation-lessons";
+import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
 
 const indexLessons = [
   {
     number: "01",
     title: "Filesystems, blocks, inodes, and ENOSPC",
     detail: "Map the path, distinguish limits, remediate safely.",
-    href: "#storage-chapter",
+    href: "/book/linux/storage",
     state: "PRACTICAL GATE",
   },
   ...foundationLessons.map((lesson) => ({
     number: lesson.number,
     title: lesson.title,
     detail: lesson.subtitle,
-    href: `#${lesson.id}`,
+    href: `/book/linux/${lesson.id}`,
     state: "READY TO STUDY",
   })),
 ];
@@ -33,12 +35,12 @@ export function BookIndex() {
         </div>
         <div className="lesson-shelf">
           {indexLessons.map((lesson) => (
-            <a href={lesson.href} className="shelf-card" key={lesson.number}>
+            <Link href={lesson.href} className="shelf-card" key={lesson.number}>
               <div><span>{lesson.number}</span><small>{lesson.state}</small></div>
               <strong>{lesson.title}</strong>
               <p>{lesson.detail}</p>
               <b>Open lesson -&gt;</b>
-            </a>
+            </Link>
           ))}
         </div>
         <aside className="study-protocol">
@@ -53,22 +55,30 @@ export function BookIndex() {
   );
 }
 
-export default function FoundationVolume() {
+export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }) {
+  const lessonIndex = foundationLessons.findIndex((item) => item.id === lesson.id);
   return (
-    <>
-
-      {foundationLessons.map((lesson, lessonIndex) => (
-        <article className="foundation-lesson" id={lesson.id} key={lesson.id}>
+    <article className="foundation-lesson routed-lesson" id={lesson.id}>
           <header className="lesson-heading">
             <div className="lesson-number">{lesson.number}</div>
             <div>
               <p className="eyebrow">LINUX FOUNDATION / READY TO STUDY</p>
-              <h2>{lesson.title}</h2>
+              <h1>{lesson.title}</h1>
               <p>{lesson.subtitle}</p>
             </div>
           </header>
+          <nav className="chapter-nav lesson-jump-nav" aria-label={`${lesson.title} sections`}>
+            <a href={`#${lesson.id}-mental-model`}>Mental model</a>
+            <a href={`#${lesson.id}-vocabulary`}>Vocabulary</a>
+            <a href={`#${lesson.id}-mechanisms`}>Internals</a>
+            <a href={`#${lesson.id}-incident`}>Incident</a>
+            <a href={`#${lesson.id}-commands`}>Evidence</a>
+            <a href={`#${lesson.id}-output-decoders`}>Output decoders</a>
+            <a href={`#${lesson.id}-lab`}>Ubuntu lab</a>
+            <a href={`#${lesson.id}-answers`}>Model answers</a>
+          </nav>
 
-          <section className="lesson-split">
+          <section className="lesson-split" id={`${lesson.id}-mental-model`}>
             <div className="lesson-prose">
               <p className="lesson-label">MENTAL MODEL</p>
               <h3>Where your mind should go</h3>
@@ -81,7 +91,9 @@ export default function FoundationVolume() {
             </div>
           </section>
 
-          <section className="lesson-section">
+          <LessonGlossary lessonId={lesson.id} />
+
+          <section className="lesson-section" id={`${lesson.id}-mechanisms`}>
             <div className="lesson-section-title">
               <p className="lesson-label">TECHNICAL REALITY</p>
               <h3>Mechanisms you must be able to explain</h3>
@@ -96,14 +108,14 @@ export default function FoundationVolume() {
             </div>
           </section>
 
-          <section className="incident-walkthrough">
+          <section className="incident-walkthrough" id={`${lesson.id}-incident`}>
             <div className="incident-title"><span>PRODUCTION SCENARIO</span><strong>{lesson.incident.signal}</strong></div>
             <div><small>FIRST THOUGHT</small><p>{lesson.incident.firstThought}</p></div>
             <div><small>SAFE PATH</small><p>{lesson.incident.safePath}</p></div>
             <div className="incident-trap"><small>COMMON TRAP</small><p>{lesson.incident.trap}</p></div>
           </section>
 
-          <section className="lesson-section">
+          <section className="lesson-section" id={`${lesson.id}-commands`}>
             <div className="lesson-section-title">
               <p className="lesson-label">COMMANDS AS EVIDENCE</p>
               <h3>Know what each command proves and what it cannot prove</h3>
@@ -119,11 +131,20 @@ export default function FoundationVolume() {
             </div>
           </section>
 
-          <section className="guided-lab">
+          <CommandDecoderGuide lessonId={lesson.id} />
+
+          <section className="guided-lab" id={`${lesson.id}-lab`}>
             <div className="lesson-section-title">
               <p className="lesson-label">GUIDED LOCAL LAB</p>
               <h3>Turn the picture into observable evidence</h3>
               <p><strong>Scope:</strong> {lesson.lab.scope}</p>
+            </div>
+            <div className="lab-requirements" aria-label="Lab environment and safety">
+              <article><span>ENVIRONMENT</span><strong>{lesson.lab.requirements.environment}</strong></article>
+              <article><span>TIME</span><strong>{lesson.lab.requirements.time}</strong></article>
+              <article><span>PACKAGES</span><strong>{lesson.lab.requirements.packages}</strong></article>
+              <article><span>PRIVILEGE</span><strong>{lesson.lab.requirements.privilege}</strong></article>
+              <article><span>CHANGE SCOPE</span><strong>{lesson.lab.requirements.risk}</strong></article>
             </div>
             <ol>
               {lesson.lab.steps.map((step) => (
@@ -141,27 +162,25 @@ export default function FoundationVolume() {
             </div>
           </section>
 
-          <section className="lesson-finish">
-            <details>
-              <summary>Optional self-check: three questions</summary>
-              <ol>{lesson.checkpoint.map((item) => <li key={item}>{item}</li>)}</ol>
-            </details>
-            <aside>
-              <span>PRODUCT-COMPANY INTERVIEW</span>
-              <strong>{lesson.interviewPrompt}</strong>
-            </aside>
-          </section>
+          <LessonAnswerGuide lessonId={lesson.id} />
+
           <nav className="lesson-pagination" aria-label={`Lesson ${lesson.number} navigation`}>
-            <a href={lessonIndex === 0 ? "#storage-chapter" : `#${foundationLessons[lessonIndex - 1].id}`}>
+            <Link href={lessonIndex === 0 ? "/book/linux/storage" : `/book/linux/${foundationLessons[lessonIndex - 1].id}`}>
               &lt;- Previous lesson
-            </a>
-            <a href="#book-index">Five-lesson index</a>
+            </Link>
+            <Link href="/book/linux">Five-lesson index</Link>
             {lessonIndex < foundationLessons.length - 1
-              ? <a href={`#${foundationLessons[lessonIndex + 1].id}`}>Next lesson -&gt;</a>
-              : <a href="#practice">Practise this volume -&gt;</a>}
+              ? <Link href={`/book/linux/${foundationLessons[lessonIndex + 1].id}`}>Next lesson -&gt;</Link>
+              : <Link href="/practice/storage">Practise this volume -&gt;</Link>}
           </nav>
-        </article>
-      ))}
+    </article>
+  );
+}
+
+export default function FoundationVolume() {
+  return (
+    <>
+      {foundationLessons.map((lesson) => <FoundationLessonArticle lesson={lesson} key={lesson.id} />)}
     </>
   );
 }

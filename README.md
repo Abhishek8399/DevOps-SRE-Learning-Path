@@ -9,19 +9,19 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 ## Current state
 
 - Started: 2026-07-20
-- Stage: adaptive onboarding through an embedded practical diagnostic
-- Phase 1 status: gated pending diagnostic evidence
-- Competency ratings: not yet assigned
+- Stage: Phase 1 guided Linux foundations and practical assessment
+- Phase 1 status: active; storage remediation remains the current evidence gate
+- Competency ratings: Linux storage diagnosis is L1; other areas remain unassessed
 - Delivery model: local-first; no online cloud resources
-- Primary implementation stack: pending diagnostic evidence
+- Primary implementation stack: Ubuntu 24.04 in WSL 2, Docker only for isolated failures, and the local field-manual website
 
 ## Workflow
 
-1. Complete the first assessment batch in [assessments/initial-assessment.md](assessments/initial-assessment.md).
-2. The mentor evaluates the response and records only evidence-supported changes in [progress/ledger.md](progress/ledger.md).
-3. The diagnostic continues adaptively until prerequisites, unsafe misconceptions, and practical ability are sufficiently clear.
-4. Phase 1 is then personalized and unlocked in [phase-01-foundations/README.md](phase-01-foundations/README.md).
-5. Advancement requires explanation, implementation, verification, failure diagnosis, safety analysis, and later recall—not lesson completion alone.
+1. Launch the local field manual from [learning-cockpit](learning-cockpit/README.md) and follow the current lesson path.
+2. Read the prerequisite vocabulary, system picture, and field-by-field output decoder before running a command.
+3. Run only the bounded Ubuntu or isolated lab stated by the lesson and preserve the requested output.
+4. The mentor reviews submitted evidence and records only supported changes in [progress/ledger.md](progress/ledger.md).
+5. Advancement requires explanation, implementation, verification, failure diagnosis, safety analysis, transfer, and later recall; reading completion alone is never enough.
 
 ## Evidence rules
 
@@ -29,7 +29,7 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 - Include actual command output when requested; do not claim results from commands that were not run.
 - Redact secrets, tokens, credentials, private URLs, tenant or subscription identifiers, and sensitive employer data.
 - Separate facts, assumptions, hypotheses, and unverified claims.
-- Do not perform a mutating action unless the exercise labels it `[MUTATING]` and provides scope, success criteria, and rollback.
+- Do not perform a mutating or destructive action unless the exercise labels it `[MUTATING]` or `[DESTRUCTIVE]` and provides exact scope, stop conditions, success evidence, and cleanup or rollback.
 - Production systems and employer cloud accounts are out of scope unless explicitly approved for a later exercise.
 
 ## Learner files
@@ -40,6 +40,9 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
 - [Target-role requirements matrix](career/target-role-matrix.md)
+- [Book architecture and knowledge map](book/README.md)
+- [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
+- [Field-manual contribution workflow](book/CONTRIBUTING.md)
 - [Local learning field manual design](career/learning-system.md)
 - [Local visual learning cockpit](learning-cockpit/README.md)
 - [Phase 1: Foundations](phase-01-foundations/README.md)

@@ -1,23 +1,22 @@
+import Link from "next/link";
 import CareerOverview from "./career-overview";
-import FoundationVolume, { BookIndex } from "./foundation-volume";
-import StorageChapter from "./storage-chapter";
-import InteractivePractice from "./interactive-practice";
+import { BookIndex } from "./foundation-volume";
 
 export default function Home() {
   return (
-    <main className="cockpit-shell">
+    <main className="cockpit-shell" id="main-content">
       <header className="topbar">
         <a className="brand" href="#top">
           <span className="brand-mark">A</span>
           <span>
-            <strong>Abhishek&apos;s Learning Cockpit</strong>
+            <strong>Systems Reliability Field Manual</strong>
             <small>DevOps · SRE · Platform Engineering</small>
           </span>
         </a>
         <nav className="book-links" aria-label="Learning book navigation">
           <a href="#map">Roadmap</a>
-          <a href="#book-index">Book</a>
-          <a href="#practice">Practice</a>
+          <Link href="/book">Library</Link>
+          <Link href="/practice/storage">Practice</Link>
         </nav>
         <div className="status-pill"><span /> Local-only · no cloud cost</div>
       </header>
@@ -27,7 +26,7 @@ export default function Home() {
           <p className="eyebrow">PHASE 01 · LINUX FOUNDATIONS</p>
           <h1>See the signal.<br /><em>Understand the system.</em><br />Make the safe move.</h1>
           <p className="hero-text">Picture the system, predict what happens, operate the lab, then explain it like the engineer responsible for production.</p>
-          <a className="primary-button" href="#lesson">Continue today&apos;s incident <span>→</span></a>
+          <Link className="primary-button" href="/book/linux/storage">Continue today&apos;s lesson <span>→</span></Link>
         </div>
         <aside className="mission-card">
           <p className="card-label">TODAY&apos;S MISSION</p>
@@ -44,7 +43,7 @@ export default function Home() {
             <p className="eyebrow">FAILURE ZOOM</p>
             <h2>Why 8.4 MB free can still mean “no space”</h2>
           </div>
-          <span className="live-badge">● LAB RUNNING</span>
+          <span className="live-badge">LAB AVAILABLE</span>
         </div>
         <div className="failure-flow">
           <article className="flow-node">
@@ -72,9 +71,6 @@ export default function Home() {
         </div>
       </section>
       <BookIndex />
-      <StorageChapter />
-      <FoundationVolume />
-      <InteractivePractice />
     </main>
   );
 }

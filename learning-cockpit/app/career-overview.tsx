@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const foundations = [
   ["01", "Systems", "Linux, processes, memory, filesystems"],
   ["02", "Connectivity", "DNS, TCP, TLS, HTTP, routing"],
@@ -26,7 +28,7 @@ export default function CareerOverview() {
             understand the path, prove the failure, recover safely, and prevent recurrence.
           </p>
         </div>
-        <a className="text-link" href="#practice">Practice current lesson -&gt;</a>
+        <Link className="text-link" href="/practice/storage">Practice current lesson -&gt;</Link>
       </div>
 
       <div className="career-map" aria-label="Role-driven learning architecture">

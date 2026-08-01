@@ -1,6 +1,6 @@
-# DevOps/SRE Learning Cockpit
+# Systems Reliability Field Manual Reader
 
-An offline-first visual practice dashboard for Abhishek's evidence-driven DevOps and SRE program. It turns the current lesson into several learning formats instead of duplicating the written notes.
+An offline-first reading and practice interface for the evidence-driven DevOps, SRE, platform, data, and production-engineering field manual.
 
 ## Purpose
 
@@ -26,6 +26,22 @@ Volume 1 currently contains five substantial Linux foundation lessons:
 
 `Ready to study` describes content availability, not demonstrated mastery. The progress ledger remains authoritative.
 
+Each lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and every checkpoint and product-company question includes a teaching answer from first-year foundations through senior production reasoning. The page always separates:
+
+```text
+question -> evidence -> field meanings -> combined interpretation -> safest next proof
+```
+
+## Reader routes
+
+- `/` - lightweight home, current mission, and learning map.
+- `/book` - complete knowledge library and planned volumes.
+- `/book/linux` - Ubuntu-first Volume 01 index and preflight.
+- `/book/linux/<lesson-id>` - one statically generated lesson per URL.
+- `/practice/storage` - practice separated from the explanatory chapter.
+
+The routed structure keeps individual pages lightweight as the manual grows. Desktop uses a persistent table of contents; smaller screens use a collapsible book menu. Previous and next links preserve the reading path.
+
 ## Local use
 
 Prerequisite: Node.js 22.13 or newer. The validated local version is Node.js 26.4.0.
@@ -45,19 +61,31 @@ start-learning.cmd
 
 ## Device-local data
 
-Teach-back notes are stored only in browser `localStorage` under `devops-sre-teachback`. They are not sent to a server and are not competency evidence until submitted and reviewed.
+Teach-back notes and reader preferences are stored only in browser `localStorage`. They are not sent to a server and are not competency evidence until submitted and reviewed.
 
-Clear that browser key to reset the note. Do not enter employer information, credentials, secrets, or production data.
+| Key | Purpose |
+|---|---|
+| `devops-sre-teachback` | Private draft explanation |
+| `field-manual-theme` | Paper or night reading mode |
+| `field-manual-reading-size` | Compact, comfortable, or large body text |
+
+The floating reader controls also show page progress and provide a print view. Theme colors, keyboard focus, mobile navigation, and reduced-motion behavior are part of the reader contract.
+
+Clear the relevant browser keys to reset local state. Do not enter employer information, credentials, secrets, or production data.
 
 ## Validation
 
 ```bash
 npm run lint
+npm run typecheck
+npm run validate:content
 npm run build
 npm audit
 ```
 
 The lockfile is committed for reproducible installation. Review audit findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
+
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, and requirements 1-46 coverage without adding another package dependency.
 
 ---
 

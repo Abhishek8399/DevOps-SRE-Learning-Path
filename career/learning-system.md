@@ -43,6 +43,10 @@ Every topic should use the same compact sequence:
 | Information | Storage | Durable after fresh clone? | Counts as mastery evidence? |
 |---|---|---:|---:|
 | Lessons, diagrams, labs, rubrics | Git | Yes | No |
+| Browser draft or flashcard state | `localStorage` | No | No |
+| Submitted command output and written response | Repository evidence file | Yes | After review |
+| Competency level and next review | `progress/ledger.md` | Yes | Yes, when evidence-supported |
+
 ## Five-lesson delivery cadence
 
 Learning content is released in coherent groups of five lessons. Each group should follow prerequisite order and contain enough explanation to study independently from the website.
@@ -50,10 +54,6 @@ Learning content is released in coherent groups of five lessons. Each group shou
 The learner reads at their own pace and asks whenever a section is unclear. The mentor answers the gap, adds durable clarification to the book, and avoids repetitive conversational quizzes. Optional self-checks remain available inside each lesson.
 
 Competency gates remain smaller than content batches. Reading five lessons does not unlock five skills. Practical evidence, safe decisions, transfer, and delayed recall are reviewed at the point where they matter.
-
-| Browser draft or flashcard state | `localStorage` | No | No |
-| Submitted command output and written response | Repository evidence file | Yes | After review |
-| Competency level and next review | `progress/ledger.md` | Yes | Yes, when evidence-supported |
 
 A static browser page cannot safely commit and push on the learner's behalf. A later localhost-only companion service may export or write a narrowly scoped evidence file, but it must require an explicit action, validate paths, avoid secrets, and never raise mastery automatically.
 

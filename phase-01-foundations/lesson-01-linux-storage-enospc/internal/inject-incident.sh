@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -eu
+umask 077
 export LC_ALL=C
 
 upload_directory=/var/lib/api/uploads

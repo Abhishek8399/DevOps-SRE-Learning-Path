@@ -12,8 +12,14 @@ export type LessonStep = {
   meaning: string;
 };
 
+export type FoundationLessonId =
+  | "processes-signals-systemd"
+  | "cpu-memory-pressure"
+  | "network-request-path"
+  | "identity-permissions";
+
 export type FoundationLesson = {
-  id: string;
+  id: FoundationLessonId;
   number: string;
   title: string;
   subtitle: string;
@@ -29,6 +35,13 @@ export type FoundationLesson = {
   };
   commands: LessonCommand[];
   lab: {
+    requirements: {
+      environment: string;
+      time: string;
+      packages: string;
+      privilege: string;
+      risk: string;
+    };
     scope: string;
     steps: LessonStep[];
     success: string[];
@@ -61,7 +74,7 @@ api.service
           +--> memory and CPU state
 
 SIGTERM --> process gets time to clean up
-SIGKILL --> kernel stops it immediately`,
+SIGKILL --> cannot be caught; a D-state kernel wait can still delay final exit`,
     mechanisms: [
       {
         term: "PID and PPID",
@@ -131,25 +144,32 @@ SIGKILL --> kernel stops it immediately`,
       },
     ],
     lab: {
-      scope: "A disposable shell process created by you. Do not substitute a production or system service PID.",
+      requirements: {
+        environment: "Ubuntu 24.04 or WSL 2 Ubuntu",
+        time: "8-12 minutes",
+        packages: "procps plus the shell already installed",
+        privilege: "Run as your normal user; no sudo",
+        risk: "Creates and signals one disposable child process",
+      },
+      scope: "One disposable child process created and removed in the same non-root shell. Do not substitute a production or system service PID.",
       steps: [
         {
           label: "MUTATING / DISPOSABLE PROCESS",
-          action: "Start a process that records SIGTERM.",
-          command: "sh -c 'trap \"echo graceful_shutdown; exit 0\" TERM; while :; do sleep 1; done' & LAB_PID=$!; echo $LAB_PID",
-          meaning: "The shell stores the new process ID in LAB_PID so every later action remains scoped.",
+          action: "Refuse root, then start a uniquely tagged process that records SIGTERM.",
+          command: "unset LAB_PID LAB_TOKEN; if test \"$(id -u)\" -eq 0; then echo 'STOP: open a normal non-root Ubuntu shell'; else LAB_TOKEN=\"sre-signal-lab-$$-$(date +%s)\"; sh -c 'trap \"echo graceful_shutdown; exit 0\" TERM; while :; do sleep 1; done' \"$LAB_TOKEN\" & LAB_PID=$!; printf 'pid=%s token=%s\\n' \"$LAB_PID\" \"$LAB_TOKEN\"; fi",
+          meaning: "Root would widen the blast radius. The PID and unique token let you re-check the exact disposable child before sending a signal.",
         },
         {
           label: "READ-ONLY",
           action: "Inspect identity and process state.",
-          command: "ps -o pid,ppid,user,stat,etime,cmd -p $LAB_PID",
+          command: "test -n \"${LAB_PID:-}\" && ps -o pid,ppid,user,stat,etime,cmd -p \"$LAB_PID\"",
           meaning: "Confirm the PID and command match your disposable process before sending a signal.",
         },
         {
-          label: "MUTATING / EXACT PID",
-          action: "Request graceful termination and collect the result.",
-          command: "kill -TERM $LAB_PID; wait $LAB_PID; echo exit_code=$?",
-          meaning: "You should see graceful_shutdown and exit_code=0 because the process handled SIGTERM.",
+          label: "DESTRUCTIVE / EXACT DISPOSABLE PID",
+          action: "Re-check identity, request graceful termination, and collect the result.",
+          command: "if test -n \"${LAB_PID:-}\" && test -n \"${LAB_TOKEN:-}\" && test -r \"/proc/$LAB_PID/cmdline\" && test \"$(stat -c '%u' \"/proc/$LAB_PID\")\" = \"$(id -u)\" && tr '\\0' ' ' < \"/proc/$LAB_PID/cmdline\" | grep -Fq -- \"$LAB_TOKEN\"; then kill -TERM \"$LAB_PID\"; wait \"$LAB_PID\"; printf 'exit_code=%s\\n' \"$?\"; else echo 'refusing: PID is absent, belongs to another user, or its identity changed'; fi",
+          meaning: "The token check prevents signaling an unrelated process if the recorded PID is stale.",
         },
       ],
       success: [
@@ -157,7 +177,7 @@ SIGKILL --> kernel stops it immediately`,
         "SIGTERM reaches the handler.",
         "The process exits cleanly and no longer appears in ps.",
       ],
-      cleanup: "The process exits during the lab. If interrupted, run kill -TERM $LAB_PID only after verifying that variable still identifies your disposable command.",
+      cleanup: "The final step exits the process. If interrupted, inspect /proc/$LAB_PID/cmdline and confirm it contains $LAB_TOKEN before signaling it.",
     },
     checkpoint: [
       "Explain why a running process can still represent an unavailable service.",
@@ -257,6 +277,13 @@ process allocations --> RAM --> reclaim --> swap
       },
     ],
     lab: {
+      requirements: {
+        environment: "Ubuntu 24.04 or WSL 2 Ubuntu",
+        time: "10-15 minutes",
+        packages: "procps",
+        privilege: "Read-only as your normal user; no sudo",
+        risk: "Five-second observation only; no synthetic host pressure",
+      },
       scope: "Read-only observation of your Ubuntu environment. This lesson deliberately avoids creating artificial memory pressure on the host.",
       steps: [
         {
@@ -367,52 +394,111 @@ reverse proxy -> application -> database / queue / cache`,
         doesNotProve: "Remote reachability, load-balancer health, TLS, or application response correctness.",
       },
       {
-        classification: "READ-ONLY / NETWORK REQUEST",
-        command: "curl -v --connect-timeout 3 http://127.0.0.1:8080/",
+        classification: "MUTATING / NETWORK REQUEST / REMOTE EFFECT DEPENDS ON ENDPOINT",
+        command: "curl -v --connect-timeout 3 http://127.0.0.1:18080/",
         proves: "Connection and HTTP details for this URL from the current namespace.",
-        doesNotProve: "Behavior from another host, pod, proxy path, hostname, or TLS endpoint.",
+        doesNotProve: "Behavior from another host, pod, proxy path, hostname, or TLS endpoint. A request may also change remote logs, counters, sessions, or application state.",
       },
       {
-        classification: "READ-ONLY / NETWORK REQUEST",
+        classification: "MUTATING / NETWORK REQUEST / REMOTE EFFECT DEPENDS ON ENDPOINT",
         command: "openssl s_client -connect <host>:443 -servername <host> </dev/null",
         proves: "The presented certificate chain and TLS negotiation for that address and server name.",
-        doesNotProve: "Authorization or successful application requests after the handshake.",
+        doesNotProve: "Authorization or successful application requests after the handshake. The connection can still create server-side logs and metrics.",
       },
     ],
     lab: {
-      scope: "A Python HTTP server bound only to 127.0.0.1:8080. It is reachable from your machine, not intentionally exposed to the LAN.",
+      requirements: {
+        environment: "Ubuntu 24.04 or WSL 2 Ubuntu",
+        time: "12-18 minutes",
+        packages: "python3, iproute2, curl",
+        privilege: "Run as your normal user; no sudo",
+        risk: "Creates one loopback-only listener and one private temporary directory",
+      },
+      scope: "A Python HTTP server created, tested, and removed in the same non-root shell, bound only to 127.0.0.1:18080. The fixed port is checked before use and is not exposed to the LAN.",
       steps: [
         {
-          label: "MUTATING / LOCAL DISPOSABLE PROCESS",
-          action: "Start a loopback-only HTTP server from an empty temporary directory.",
-          command: "LAB_DIR=$(mktemp -d); cd $LAB_DIR; python3 -m http.server 8080 --bind 127.0.0.1 & SERVER_PID=$!; echo $SERVER_PID",
-          meaning: "The server has a known directory, port, interface, and PID.",
+          label: "READ-ONLY / PREFLIGHT",
+          action: "Refuse root, confirm dependencies, and prove the teaching port is free.",
+          command: "if test \"$(id -u)\" -eq 0; then echo 'STOP: open a normal non-root Ubuntu shell'; elif ! command -v python3 >/dev/null || ! command -v ss >/dev/null || ! command -v curl >/dev/null; then echo 'STOP: install python3, iproute2, and curl'; else LAB_PORT=18080; if ss -H -ltn \"sport = :$LAB_PORT\" | grep -q .; then echo 'STOP: port 18080 is already in use'; else echo 'non_root=true port_available=true'; fi; fi",
+          meaning: "Stop if root is active, a command is missing, or the port is occupied; never kill an unknown listener.",
+        },
+        {
+          label: "MUTATING / LOOPBACK PROCESS + PRIVATE TEMP DIRECTORY",
+          action: "Start a tagged loopback-only HTTP server.",
+          command: "unset LAB_DIR SERVER_PID; if test \"$(id -u)\" -eq 0; then echo 'STOP: open a normal non-root Ubuntu shell'; else LAB_PORT=18080; if ss -H -ltn \"sport = :$LAB_PORT\" | grep -q .; then echo 'STOP: port 18080 is already in use'; else LAB_DIR=\"$(mktemp -d --tmpdir=/tmp sre-network.XXXXXXXX)\"; printf 'sre-network-lab-v1\\n' > \"$LAB_DIR/.sre-lab-sentinel\"; printf 'sre-network-response=true\\n' > \"$LAB_DIR/index.html\"; python3 -m http.server \"$LAB_PORT\" --bind 127.0.0.1 --directory \"$LAB_DIR\" > \"$LAB_DIR/server.log\" 2>&1 & SERVER_PID=$!; sleep 1; if kill -0 \"$SERVER_PID\" 2>/dev/null; then echo \"server_pid=$SERVER_PID lab_dir=$LAB_DIR\"; else cat \"$LAB_DIR/server.log\"; fi; fi; fi",
+          meaning: "The server has a sentinel, known content, loopback address, checked port, recorded PID, and an explicit serving directory without changing your shell's working directory.",
         },
         {
           label: "READ-ONLY",
-          action: "Prove the socket is listening before testing HTTP.",
-          command: "ss -lntp | grep ':8080'",
-          meaning: "This checks the TCP listener boundary, not the complete HTTP response.",
+          action: "Prove the exact socket and recorded process exist before HTTP.",
+          command: "ss -H -lnt \"sport = :$LAB_PORT\"; ps -o pid,user,stat,etime,cmd -p \"$SERVER_PID\"",
+          meaning: "This checks the TCP listener and process boundaries, not the complete HTTP response.",
         },
         {
-          label: "READ-ONLY / LOOPBACK REQUEST",
-          action: "Send an HTTP request and observe connection plus protocol details.",
-          command: "curl -v --connect-timeout 3 http://127.0.0.1:8080/",
-          meaning: "A successful status proves that this namespace reached the listener and received HTTP.",
+          label: "MUTATING / LOOPBACK REQUEST (SERVER ACCESS LOG)",
+          action: "Send an HTTP request and verify that the response belongs to this lab.",
+          command: "curl --fail --show-error --connect-timeout 3 \"http://127.0.0.1:$LAB_PORT/\" | grep -F 'sre-network-response=true'",
+          meaning: "The sentinel body proves that this namespace reached this teaching server and received HTTP. The request also appends an entry to the lab server log.",
         },
         {
-          label: "DESTRUCTIVE / EXACT LAB PROCESS AND DIRECTORY",
-          action: "Stop the server and remove only its temporary directory.",
-          command: "kill -TERM $SERVER_PID; wait $SERVER_PID; cd /; rm -rf -- $LAB_DIR",
-          meaning: "Verify SERVER_PID and LAB_DIR still refer to this lab before cleanup.",
+          label: "DESTRUCTIVE / EXACT LAB PROCESS + NAMED FILES",
+          action: "Prove path, owner, sentinel, PID owner, and full command identity before stopping or deleting anything.",
+          command: [
+            "LAB_PORT=18080; LAB_PATH_OK=false; LAB_PROCESS_OK=true",
+            "LAB_REAL=\"$(realpath -e -- \"${LAB_DIR:-}\" 2>/dev/null || true)\"",
+            "case \"$(basename -- \"$LAB_REAL\" 2>/dev/null)\" in",
+            "  sre-network.*)",
+            "    if test -n \"$LAB_REAL\" && test \"$(dirname -- \"$LAB_REAL\")\" = /tmp && test \"$(stat -c '%u' \"$LAB_REAL\")\" = \"$(id -u)\" && test \"$(cat \"$LAB_REAL/.sre-lab-sentinel\" 2>/dev/null)\" = 'sre-network-lab-v1'; then",
+            "      LAB_DIR=\"$LAB_REAL\"; LAB_PATH_OK=true",
+            "    fi",
+            "    ;;",
+            "esac",
+            "if test \"$LAB_PATH_OK\" != true; then",
+            "  echo 'refusing cleanup: expected an owned /tmp/sre-network.* directory with the lesson sentinel'",
+            "else",
+            "  if test -n \"${SERVER_PID:-}\" && test -r \"/proc/$SERVER_PID/cmdline\"; then",
+            "    LAB_CMD=\"$(tr '\\0' ' ' < \"/proc/$SERVER_PID/cmdline\")\"",
+            "    if test \"$(stat -c '%u' \"/proc/$SERVER_PID\")\" = \"$(id -u)\" && printf '%s\\n' \"$LAB_CMD\" | grep -Fq -- \"http.server $LAB_PORT\" && printf '%s\\n' \"$LAB_CMD\" | grep -Fq -- \"--directory $LAB_DIR\"; then",
+            "      kill -TERM \"$SERVER_PID\"; wait \"$SERVER_PID\" 2>/dev/null || true",
+            "    else",
+            "      echo 'refusing cleanup: recorded PID owner or command identity changed'; LAB_PROCESS_OK=false",
+            "    fi",
+            "  fi",
+            "  if ss -H -ltn \"sport = :$LAB_PORT\" | grep -q .; then",
+            "    echo 'refusing file cleanup: a listener still owns the teaching port'; LAB_PROCESS_OK=false",
+            "  fi",
+            "  if test \"$LAB_PROCESS_OK\" = true; then",
+            "    UNEXPECTED=\"$(find \"$LAB_DIR\" -xdev -mindepth 1 -maxdepth 1 ! -name '.sre-lab-sentinel' ! -name 'index.html' ! -name 'server.log' -print -quit)\"",
+            "    if test -n \"$UNEXPECTED\"; then",
+            "      printf 'refusing cleanup: unexpected entry remains: %s\\n' \"$UNEXPECTED\"",
+            "    else",
+            "      rm -f -- \"$LAB_DIR/index.html\" \"$LAB_DIR/server.log\"",
+            "      REMAINING=\"$(find \"$LAB_DIR\" -xdev -mindepth 1 -maxdepth 1 ! -name '.sre-lab-sentinel' -print -quit)\"",
+            "      if test -n \"$REMAINING\"; then",
+            "        printf 'refusing final cleanup: unexpected entry remains: %s\\n' \"$REMAINING\"",
+            "      else",
+            "        rm -- \"$LAB_DIR/.sre-lab-sentinel\"",
+            "        if rmdir -- \"$LAB_DIR\"; then",
+            "          echo 'cleanup_verified=true'",
+            "          unset LAB_DIR LAB_REAL LAB_PID SERVER_PID LAB_CMD LAB_PATH_OK LAB_PROCESS_OK LAB_PORT UNEXPECTED REMAINING",
+            "        else",
+            "          printf 'sre-network-lab-v1\\n' > \"$LAB_DIR/.sre-lab-sentinel\"",
+            "          echo 'cleanup incomplete: sentinel restored for a safe retry'",
+            "        fi",
+            "      fi",
+            "    fi",
+            "  fi",
+            "fi",
+          ].join("\\n"),
+          meaning: "The cleanup fixes the teaching port locally, accepts only an owned direct child of /tmp with the exact sentinel, checks PID and command identity, refuses unexpected files, and restores the sentinel if the final empty-directory removal loses a race.",
         },
       ],
       success: [
-        "The listener appears on 127.0.0.1:8080.",
-        "curl shows a completed TCP connection and an HTTP response.",
+        "The listener appears only on 127.0.0.1:18080.",
+        "curl returns the unique teaching response.",
         "After cleanup, the listener is absent.",
       ],
-      cleanup: "The final step stops the exact recorded PID and removes the mktemp-created directory. Never run the cleanup with empty variables.",
+      cleanup: "The destructive final step validates path, ownership, sentinel, PID ownership, command identity, and port state; then it removes only three named files and lets rmdir refuse unexpected content.",
     },
     checkpoint: [
       "Explain what DNS success proves and what it does not prove.",
@@ -513,31 +599,80 @@ container user, Kubernetes securityContext`,
       },
     ],
     lab: {
+      requirements: {
+        environment: "Ubuntu 24.04 or WSL 2 Ubuntu",
+        time: "10-15 minutes",
+        packages: "util-linux and coreutils",
+        privilege: "Run as a non-root normal user; no sudo",
+        risk: "Creates mode-restricted files only under a private temporary directory",
+      },
       scope: "A private directory created with mktemp under /tmp and owned by your current user. No sudo or system path is used.",
       steps: [
         {
           label: "MUTATING / PRIVATE TEMP DIRECTORY",
-          action: "Create a controlled path with restrictive permissions.",
-          command: "LAB_DIR=$(mktemp -d); mkdir -p $LAB_DIR/app/config; printf 'mode=lab\\n' > $LAB_DIR/app/config/settings; chmod 700 $LAB_DIR; chmod 750 $LAB_DIR/app $LAB_DIR/app/config; chmod 640 $LAB_DIR/app/config/settings",
-          meaning: "Every object is under the mktemp-created directory and belongs to your current user.",
+          action: "Refuse root, then create a tagged path with restrictive permissions.",
+          command: "unset LAB_DIR; if test \"$(id -u)\" -eq 0; then echo 'STOP: open a normal non-root Ubuntu shell'; else LAB_DIR=\"$(mktemp -d --tmpdir=/tmp sre-permissions.XXXXXXXX)\"; printf 'sre-permissions-lab-v1\\n' > \"$LAB_DIR/.sre-lab-sentinel\"; mkdir -p \"$LAB_DIR/app/config\"; printf 'mode=lab\\n' > \"$LAB_DIR/app/config/settings\"; chmod 700 \"$LAB_DIR\"; chmod 750 \"$LAB_DIR/app\" \"$LAB_DIR/app/config\"; chmod 640 \"$LAB_DIR/app/config/settings\"; fi",
+          meaning: "Root would bypass important checks, so the lab refuses it. Every created object is quoted and stays below a lesson-specific path.",
         },
         {
           label: "READ-ONLY",
           action: "Trace every path component and inspect the target.",
-          command: "id; namei -l $LAB_DIR/app/config/settings; stat -c '%A %a %U:%G %n' $LAB_DIR/app/config/settings",
+          command: "if test -n \"$LAB_DIR\" && test \"$(cat \"$LAB_DIR/.sre-lab-sentinel\")\" = 'sre-permissions-lab-v1'; then id; namei -l \"$LAB_DIR/app/config/settings\"; stat -c '%A %a %U:%G %n' \"$LAB_DIR/app/config/settings\"; else echo 'refusing: lab identity missing'; fi",
           meaning: "Connect runtime identity with directory traversal and file read/write permissions.",
         },
         {
           label: "READ-ONLY",
           action: "Verify the permitted operation without changing modes.",
-          command: "test -r $LAB_DIR/app/config/settings && echo readable=true; test -x $LAB_DIR/app/config && echo traversable=true",
+          command: "test -n \"$LAB_DIR\" && test -r \"$LAB_DIR/app/config/settings\" && echo readable=true; test -n \"$LAB_DIR\" && test -x \"$LAB_DIR/app/config\" && echo traversable=true",
           meaning: "The checks evaluate access for your current shell identity.",
         },
         {
-          label: "DESTRUCTIVE / EXACT TEMP DIRECTORY",
-          action: "Remove only the directory created by mktemp.",
-          command: "case $LAB_DIR in /tmp/tmp.*) rm -rf -- $LAB_DIR ;; *) echo 'refusing unexpected path' ;; esac",
-          meaning: "The guard refuses cleanup if LAB_DIR does not resemble the expected mktemp path.",
+          label: "DESTRUCTIVE / EXACT LAB FILES + EMPTY DIRECTORIES",
+          action: "Verify resolved path, owner, and sentinel; then remove named files and empty directories.",
+          command: [
+            "LAB_REAL=\"$(realpath -e -- \"${LAB_DIR:-}\" 2>/dev/null || true)\"",
+            "case \"$(basename -- \"$LAB_REAL\" 2>/dev/null)\" in",
+            "  sre-permissions.*)",
+            "    if test -n \"$LAB_REAL\" && test \"$(dirname -- \"$LAB_REAL\")\" = /tmp && test \"$(stat -c '%u' \"$LAB_REAL\")\" = \"$(id -u)\" && test \"$(cat \"$LAB_REAL/.sre-lab-sentinel\" 2>/dev/null)\" = 'sre-permissions-lab-v1'; then",
+            "      LAB_DIR=\"$LAB_REAL\"",
+            "      UNEXPECTED=\"$(find \"$LAB_DIR\" -xdev -mindepth 1 ! -path \"$LAB_DIR/.sre-lab-sentinel\" ! -path \"$LAB_DIR/app\" ! -path \"$LAB_DIR/app/config\" ! -path \"$LAB_DIR/app/config/settings\" -print -quit)\"",
+            "      if test -n \"$UNEXPECTED\"; then",
+            "        printf 'refusing cleanup: unexpected entry remains: %s\\n' \"$UNEXPECTED\"",
+            "      else",
+            "        APP_REAL=\"$(realpath -e -- \"$LAB_DIR/app\" 2>/dev/null || true)\"",
+            "        CONFIG_REAL=\"$(realpath -e -- \"$LAB_DIR/app/config\" 2>/dev/null || true)\"",
+            "        SETTINGS_REAL=\"$(realpath -e -- \"$LAB_DIR/app/config/settings\" 2>/dev/null || true)\"",
+            "        if test ! -L \"$LAB_DIR/app\" && test -d \"$LAB_DIR/app\" && test \"$APP_REAL\" = \"$LAB_DIR/app\" && test \"$(stat -c '%u' \"$LAB_DIR/app\")\" = \"$(id -u)\" \\",
+            "          && test ! -L \"$LAB_DIR/app/config\" && test -d \"$LAB_DIR/app/config\" && test \"$CONFIG_REAL\" = \"$LAB_DIR/app/config\" && test \"$(stat -c '%u' \"$LAB_DIR/app/config\")\" = \"$(id -u)\" \\",
+            "          && test ! -L \"$LAB_DIR/app/config/settings\" && test -f \"$LAB_DIR/app/config/settings\" && test \"$SETTINGS_REAL\" = \"$LAB_DIR/app/config/settings\" && test \"$(stat -c '%u' \"$LAB_DIR/app/config/settings\")\" = \"$(id -u)\"; then",
+            "        rm -f -- \"$LAB_DIR/app/config/settings\"",
+            "        if { test ! -d \"$LAB_DIR/app/config\" || rmdir -- \"$LAB_DIR/app/config\"; } && { test ! -d \"$LAB_DIR/app\" || rmdir -- \"$LAB_DIR/app\"; }; then",
+            "          REMAINING=\"$(find \"$LAB_DIR\" -xdev -mindepth 1 -maxdepth 1 ! -name '.sre-lab-sentinel' -print -quit)\"",
+            "          if test -n \"$REMAINING\"; then",
+            "            printf 'refusing final cleanup: unexpected entry remains: %s\\n' \"$REMAINING\"",
+            "          else",
+            "            rm -- \"$LAB_DIR/.sre-lab-sentinel\"",
+            "            if rmdir -- \"$LAB_DIR\"; then",
+            "              echo 'cleanup_verified=true'",
+            "              unset LAB_DIR LAB_REAL UNEXPECTED REMAINING",
+            "            else",
+            "              printf 'sre-permissions-lab-v1\\n' > \"$LAB_DIR/.sre-lab-sentinel\"",
+            "              echo 'cleanup incomplete: sentinel restored for a safe retry'",
+            "            fi",
+            "          fi",
+            "        fi",
+            "        else",
+            "          echo 'refusing cleanup: app, config, or settings is missing, a symlink, outside the lab, or not owned by the current UID'",
+            "        fi",
+            "      fi",
+            "    else",
+            "      echo 'refusing cleanup: expected an owned direct child of /tmp with the lesson sentinel'",
+            "    fi",
+            "    ;;",
+            "  *) echo 'refusing cleanup: path is outside /tmp/sre-permissions.*' ;;",
+            "esac",
+          ].join("\\n"),
+          meaning: "The lab root, app, config, and settings paths must resolve exactly inside the owned /tmp lab; child symlinks are refused. Unexpected paths block cleanup, the sentinel remains until child directories are empty, and a failed final rmdir restores it for retry.",
         },
       ],
       success: [
@@ -545,7 +680,7 @@ container user, Kubernetes securityContext`,
         "Every directory component is visible in namei output.",
         "Read and traversal checks succeed without broadening permissions.",
       ],
-      cleanup: "Use only the guarded final command. Do not manually replace LAB_DIR with /tmp or another parent directory.",
+      cleanup: "Use the sentinel-guarded final command. It removes two named files and then only empty directories; it never recursively deletes a path.",
     },
     checkpoint: [
       "Explain execute permission on a directory without describing it as running the directory.",

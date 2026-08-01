@@ -1,6 +1,6 @@
 # Lesson 1 — Linux Storage Evidence and Safe ENOSPC Triage
 
-Status: hardened non-root version 2 is running; guided inode remediation is active; the Phase 1 gate remains locked
+Status: hardened non-root version 2 is available; guided inode remediation is active; the Phase 1 gate remains locked
 
 Continue with the [guided inode-remediation runbook](remediation-guide.md) after completing the capacity diagnosis.
 Estimated time: 60 minutes, completed through short checkpoints
@@ -36,13 +36,13 @@ Restarting a service or deleting files because one broad `df -h` result looked s
 ## Prerequisites and environment
 
 - WSL 2 Ubuntu 24.04.1
-- Docker client/server 29.6.1 with Ubuntu integration
+- Docker Desktop with the Docker CLI and Ubuntu WSL integration (29.6.1 is the recorded tested version)
 - Docker Compose v5.3.0 is available but not required by this lab
 - Pinned image: `busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662`
 - Approximately 100 MiB free local storage
 - No cloud account, credentials, ports, or production access
 
-If the pinned image is absent, the one-time `docker pull busybox:1.36.1` bootstrap uses network bandwidth. Runtime networking is disabled.
+If the pinned image is absent, `lab.sh setup` prints the exact digest-pinned `docker pull` command and stops. That one-time bootstrap uses network bandwidth; lab build and runtime networking remain disabled.
 
 ## Small mental model
 
@@ -73,11 +73,13 @@ Run commands from this lesson directory in Ubuntu WSL only after Checkpoint 1 is
    bash lab.sh setup
    ```
 
-2. `[READ-ONLY]` Confirm only the lab lifecycle state:
+2. `[READ-ONLY]` Validate the complete container security envelope and incident fixture:
 
    ```bash
-   bash lab.sh status
+   bash lab.sh check
    ```
+   If setup reports an existing container, run `bash lab.sh status`. An exact legacy v1 fixture can be removed with `bash lab.sh cleanup` and rebuilt; every other mismatch is a stop condition.
+
 
 3. `[MUTATING — EPHEMERAL EXEC SESSION]` Enter the container as an unprivileged user:
 
@@ -120,7 +122,7 @@ The fixture intentionally creates a bounded allocation failure in an in-memory l
 - Runtime network: disabled.
 - Host mounts and real secrets: prohibited.
 - Global cleanup commands such as `docker system prune` are prohibited.
-- Only the exact container `devops-sre-p1-enospc` with the expected training label may be removed by the cleanup script.
+- Only the exact container `devops-sre-p1-enospc` matching the full current or removal-only legacy lesson envelope may be removed by the cleanup script.
 
 ## Rollback and cleanup
 
@@ -130,7 +132,13 @@ The fixture intentionally creates a bounded allocation failure in an in-memory l
 bash lab.sh cleanup
 ```
 
-The cleanup validates the exact container label, removes only that container, and verifies absence. The reusable local image remains cached. Student evidence is preserved.
+Cleanup validates the image generation, entrypoint, identity, mounts, namespaces, capabilities, security options, resource ceilings, network, and tmpfs options before removing only that container, then verifies absence. The reusable local image remains cached. Student evidence is preserved.
+
+To discard and recreate a verified lesson fixture in one explicitly destructive action:
+
+```bash
+bash lab.sh reset
+```
 
 ## Deliverable and scoring
 

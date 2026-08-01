@@ -56,6 +56,7 @@ None.
 | Artifact | Status | Evidence |
 |---|---|---|
 | [Local learning cockpit](../learning-cockpit/README.md) | Volume 1 contains five detailed Linux lessons; not learner competency evidence | On 2026-08-02 ESLint and production build passed; loopback HTTP returned 200 and rendered the index, all five lesson titles, guided labs, optional self-checks, and interview prompts |
+| [Systems Reliability Field Manual reader](../learning-cockpit/README.md) | Routed, Ubuntu-first reader architecture and safety standard implemented; not learner competency evidence | On 2026-08-02 ESLint and production build passed; six local routes returned HTTP 200, invalid lessons returned 404, key night-mode color pairs measured 5.77:1 or higher, and bounded storage, permissions, process, and loopback-network labs passed on Ubuntu 24.04 with cleanup proof |
 
 ## Incident simulations
 

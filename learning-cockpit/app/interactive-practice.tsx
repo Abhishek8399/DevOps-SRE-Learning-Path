@@ -42,6 +42,13 @@ export default function InteractivePractice() {
     setSaved(false);
   };
 
+  const moveTab = (currentIndex: number, direction: -1 | 1) => {
+    const nextIndex = (currentIndex + direction + modes.length) % modes.length;
+    const next = modes[nextIndex].id;
+    setMode(next);
+    window.requestAnimationFrame(() => document.getElementById(`practice-tab-${next}`)?.focus());
+  };
+
 
   return (
     <section className="practice-section" id="practice">
@@ -52,15 +59,29 @@ export default function InteractivePractice() {
           <p className="section-intro">Switch formats until you can recognize, operate, explain, and defend the same system.</p>
         </div>
       </div>
-      <nav className="mode-tabs" aria-label="Learning modes">
-        {modes.map((item) => (
-          <button className={mode === item.id ? "active" : ""} key={item.id} onClick={() => setMode(item.id)} type="button">
+      <nav className="mode-tabs" aria-label="Learning modes" role="tablist">
+        {modes.map((item, index) => (
+          <button
+            aria-controls="practice-panel"
+            aria-selected={mode === item.id}
+            className={mode === item.id ? "active" : ""}
+            id={`practice-tab-${item.id}`}
+            key={item.id}
+            onClick={() => setMode(item.id)}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight") { event.preventDefault(); moveTab(index, 1); }
+              if (event.key === "ArrowLeft") { event.preventDefault(); moveTab(index, -1); }
+            }}
+            role="tab"
+            tabIndex={mode === item.id ? 0 : -1}
+            type="button"
+          >
             <strong>{item.label}</strong>
             <small>{item.detail}</small>
           </button>
         ))}
       </nav>
-      <div className="practice-stage">
+      <div className="practice-stage" id="practice-panel" role="tabpanel" aria-labelledby={`practice-tab-${mode}`} tabIndex={0}>
         {mode === "incident" && (
           <div className="mode-content incident-mode">
             <div className="mode-kicker">INCIDENT / DECISION 1 OF 3</div>
@@ -72,14 +93,14 @@ export default function InteractivePractice() {
                 </button>
               ))}
             </div>
-            {feedback && <div className={feedback.startsWith("Correct") ? "feedback correct" : "feedback warning"}>{feedback}</div>}
+            {feedback && <div aria-live="polite" className={feedback.startsWith("Correct") ? "feedback correct" : "feedback warning"}>{feedback}</div>}
             <p className="memory-line"><strong>Operator instinct:</strong> preserve evidence, inspect the exact path, and choose the smallest informative move.</p>
           </div>
         )}
         {mode === "recall" && (
           <div className="mode-content recall-mode">
             <div className="mode-kicker">MEMORY CARD {card + 1} OF {flashcards.length}</div>
-            <button className="flashcard" type="button" onClick={() => setRevealed(!revealed)}>
+            <button aria-pressed={revealed} className="flashcard" type="button" onClick={() => setRevealed(!revealed)}>
               <span>{revealed ? "ANSWER" : "QUESTION"}</span>
               <strong>{revealed ? flashcards[card].a : flashcards[card].q}</strong>
               <small>{revealed ? "Say it once without reading" : "Answer aloud, then reveal"}</small>
@@ -92,11 +113,12 @@ export default function InteractivePractice() {
             <div className="mode-kicker">FEYNMAN TEACH-BACK</div>
             <h3>Explain inode exhaustion to a developer whose upload just failed.</h3>
             <p>Cover the symptom, exact filesystem, blocks versus inodes, safe remediation, and verification.</p>
-            <textarea value={teachBack} onChange={(event) => { setTeachBack(event.target.value); setSaved(false); }} placeholder="Abhishek, when you see ENOSPC..." />
+            <label className="sr-only" htmlFor="inode-teachback">Your inode exhaustion explanation</label>
+            <textarea id="inode-teachback" value={teachBack} onChange={(event) => { setTeachBack(event.target.value); setSaved(false); }} placeholder="Abhishek, when you see ENOSPC..." />
             <div className="teach-actions">
               <div><button type="button" onClick={saveTeachBack}>Save on this device</button>
               <button className="load-note" type="button" onClick={loadTeachBack}>Load saved note</button></div>
-              <span>{saved ? "Saved locally - not uploaded" : `${teachBack.trim().split(/\s+/).filter(Boolean).length} words`}</span>
+              <span aria-live="polite">{saved ? "Saved locally - not uploaded" : `${teachBack.trim().split(/\s+/).filter(Boolean).length} words`}</span>
             </div>
           </div>
         )}
