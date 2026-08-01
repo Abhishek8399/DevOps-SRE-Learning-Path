@@ -61,7 +61,7 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 | `PLAN-ARC-005` | P1 | Typed-to-MDX migration | `PLAN-ARC-004` | `PLANNED` | Existing five lessons migrate without URL, ID, text, diagram, answer, or lab regression | Before/after route snapshots; content parity test |
 | `PLAN-ARC-006` | P1 | Glossary and cross-link graph | `PLAN-ARC-004` | `PARTIAL` | Terms are defined before use, acronyms expand once, duplicates link to canonical definitions, and prerequisites are navigable | Undefined-term and broken-link reports |
 | `PLAN-ARC-007` | P1 | Reference registry | `PLAN-GOV-006`, `PLAN-ARC-004` | `PLANNED` | Primary references record title, URL, version/date, lesson IDs, and last review; copyrighted material is paraphrased | Reference schema and link checker |
-| `PLAN-ARC-008` | P2 | Content search index | `PLAN-ARC-004`, `PLAN-WEB-005` | `PLANNED` | Local search finds terms, symptoms, commands, tools, and lesson IDs without an external service | Search relevance fixtures and offline test |
+| `PLAN-ARC-008` | P2 | Content search index | `PLAN-ARC-002`, `PLAN-ARC-003` | `PARTIAL` | Local search finds terms, symptoms, commands, tools, and lesson IDs without an external service | Search relevance fixtures and offline test |
 
 ## Website capabilities
 
@@ -71,13 +71,13 @@ Priority `P0` protects safety or the source of truth. `P1` is required for the s
 | `PLAN-WEB-002` | P0 | Routed book reader | `PLAN-ARC-001` | `PARTIAL` | Separate library, volume, lesson, and practice routes; breadcrumbs; valid static params; invalid lessons return 404 | Route matrix and internal-link crawl |
 | `PLAN-WEB-003` | P1 | Persistent book navigation | `PLAN-WEB-002` | `PARTIAL` | Desktop sidebar and mobile contents expose current lessons and clearly label planned volumes | Keyboard/mobile/manual navigation test |
 | `PLAN-WEB-004` | P1 | Reader appearance controls | `PLAN-WEB-002` | `PARTIAL` | Paper/night modes, three text sizes, reading progress, print view, reduced motion, and stored preferences remain readable | Contrast, keyboard, responsive, print, and storage-disabled tests |
-| `PLAN-WEB-005` | P1 | Find and resume | `PLAN-ARC-008`, `PLAN-WEB-003` | `PLANNED` | Search, stable deep links, recent location, and bookmarks work locally; no convenience state becomes mastery evidence | Browser restart test; offline search test |
+| `PLAN-WEB-005` | P1 | Find and resume | `PLAN-ARC-008`, `PLAN-WEB-003` | `PARTIAL` | Search, stable deep links, recent location, and bookmarks work locally; no convenience state becomes mastery evidence | Browser restart test; offline search test |
 | `PLAN-WEB-006` | P1 | Multi-format learning modes | `PLAN-WEB-002` | `PARTIAL` | Read, diagram, incident, recall, teach-back, interview, and transfer modes are separate and navigable | Interaction tests; answer-reveal and state-reset tests |
 | `PLAN-WEB-007` | P1 | Evidence handoff | `PLAN-GOV-005`, `PLAN-WEB-006` | `PLANNED` | Learner can export sanitized Markdown/JSON evidence for review; website cannot silently write Git or raise mastery | Malformed-input, path, redaction, and no-auto-advance tests |
 | `PLAN-WEB-008` | P2 | Accessible diagrams | `PLAN-ARC-004` | `PARTIAL` | Every diagram has direction, boundary labels, evidence points, and a useful text equivalent; diagrams remain legible in print/night/mobile | Screen-reader text review and viewport snapshots |
 | `PLAN-WEB-009` | P1 | Fast, local, privacy-preserving operation | `PLAN-WEB-002` | `PARTIAL` | No analytics, external font, account, database, or application API; normal reading stays lightweight and loopback-only | Network-request audit; bundle/performance budget |
 | `PLAN-WEB-010` | P2 | Offline distribution | `PLAN-WEB-009`, `PLAN-QUA-007` | `PLANNED` | Documented install/start path works after clone; an optional prebuilt local package is reproducible and does not require hosting | Disconnected start test after dependency bootstrap |
-| `PLAN-WEB-011` | P1 | Error, empty, and unsupported-state UX | `PLAN-WEB-002` | `PLANNED` | Missing lessons, missing browser storage, failed dependency install, unavailable port, and unsupported runtime show actionable recovery | Failure-injection UI tests |
+| `PLAN-WEB-011` | P1 | Error, empty, and unsupported-state UX | `PLAN-WEB-002` | `PARTIAL` | Missing lessons, missing browser storage, failed dependency install, unavailable port, and unsupported runtime show actionable recovery | Failure-injection UI tests |
 
 ## Complete core curriculum
 
@@ -183,7 +183,7 @@ The tables below reserve the complete shared-core knowledge architecture. A stat
 | `PLAN-AUD-002` | P1 | Per-volume editorial audit | Each volume | `PLANNED` | Prerequisites, depth, diagrams, outputs, labs, answers, transfers, references, and role coverage meet the lesson standard | Volume coverage report and expert review |
 | `PLAN-AUD-003` | P1 | Curriculum completeness audit | All core volumes | `PLANNED` | No critical mechanism or target-role requirement is orphaned; redundancy is intentional; dependency order is valid | Requirement-to-content and graph reports |
 | `PLAN-AUD-004` | P0 | Public safety and security audit | All labs, `PLAN-QUA-006` | `PLANNED` | Copy-paste commands cannot escape documented scope under tested misuse cases; dependencies and licenses are reviewed | Adversarial lab suite, dependency/license/secret reports |
-| `PLAN-AUD-005` | P0 | Mastery-integrity audit | `PLAN-GOV-005`, `PLAN-INT-006` | `PLANNED` | Reading, button clicks, localStorage, model answers, and mentor-generated output cannot be mistaken for learner evidence | State-transition and evidence-lineage review |
+| `PLAN-AUD-005` | P0 | Mastery-integrity audit | `PLAN-GOV-005`, `PLAN-INT-006` | `PARTIAL` | Reading, button clicks, localStorage, model answers, and mentor-generated output cannot be mistaken for learner evidence | State-transition and evidence-lineage review |
 | `PLAN-AUD-006` | P1 | Product-company readiness audit | Core curriculum, tracks, projects, interviews | `PLANNED` | Learner can diagnose, build, operate, explain, and transfer across target-role scenarios with defensible artifacts | Independent mock loop and portfolio defense |
 | `PLAN-AUD-007` | P0 | Final public release audit | `PLAN-AUD-002` through `PLAN-AUD-006`, `PLAN-QUA-008` | `PLANNED` | Fresh clone, documentation, safety, accessibility, security, performance, licensing, links, labs, and maintainership all pass with no critical finding | Versioned release report and reproducible tag |
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { foundationLessons } from "./lessons/foundation-lessons";
+import NavigationLink from "./navigation-link";
 
 const plannedVolumes = [
   ["00", "Start safely"],
@@ -13,13 +14,13 @@ const plannedVolumes = [
 function NavigationLinks() {
   return (
     <nav aria-label="Book contents">
-      <Link className="nav-home" href="/"><span>FIELD MANUAL</span><strong>Systems Reliability</strong></Link>
-      <Link className="library-link" href="/book">Knowledge library</Link>
+      <NavigationLink className="nav-home" href="/"><span>FIELD MANUAL</span><strong>Systems Reliability</strong></NavigationLink>
+      <NavigationLink className="library-link" href="/book">Knowledge library</NavigationLink>
       <div className="nav-volume current-volume">
         <div><span>VOLUME 01</span><strong>Linux systems</strong></div>
-        <Link href="/book/linux/storage"><b>01</b> Storage and ENOSPC</Link>
+        <NavigationLink href="/book/linux/storage"><b>01</b> Storage and ENOSPC</NavigationLink>
         {foundationLessons.map((lesson) => (
-          <Link href={`/book/linux/${lesson.id}`} key={lesson.id}><b>{lesson.number}</b> {lesson.title}</Link>
+          <NavigationLink href={`/book/linux/${lesson.id}`} key={lesson.id}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
         ))}
       </div>
       <div className="planned-volumes">
@@ -28,7 +29,9 @@ function NavigationLinks() {
           <Link href="/book#knowledge-map" key={number}><b>{number}</b>{title}<small>PLANNED</small></Link>
         ))}
       </div>
-      <Link className="practice-link" href="/practice/storage">Storage practice lab <span>-&gt;</span></Link>
+      <NavigationLink className="practice-link" href="/search">Search the field manual <span>-&gt;</span></NavigationLink>
+      <NavigationLink className="practice-link" href="/my-learning">My Learning <span>-&gt;</span></NavigationLink>
+      <NavigationLink className="practice-link" href="/practice/storage">Storage practice lab <span>-&gt;</span></NavigationLink>
       <p className="nav-footnote">Available to read is not the same as verified mastery.</p>
     </nav>
   );

@@ -9,11 +9,11 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Committed HEAD at snapshot start | `d958043 feat: add five-lesson Linux foundation volume` |
+| Committed HEAD before this checkpoint | `d886b61 docs: record field manual checkpoint evidence` |
 | Remote | `origin` points to `Abhishek8399/DevOps-SRE-Learning-Path` |
-| Remote parity before current work | `HEAD` and `origin/main` both at `d958043` |
-| Worktree | Dirty: routed-reader, content-depth, design, lab-safety, governance, and progress changes are not yet committed |
-| Current milestone | `PLAN-MS-00` - stabilize the field-manual foundation |
+| Remote parity before current work | `HEAD` and `origin/main` both at `d886b61` |
+| Worktree | Dirty: offline search, device-local reading desk, current-page navigation, command-copy feedback, tests, and checkpoint records await commit |
+| Current milestone | `PLAN-ARC-008` / `PLAN-WEB-005` - local find, resume, and reader ergonomics |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
@@ -26,6 +26,7 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-08-01 | `PLAN-INT-003`, `PLAN-WEB-001`, `PLAN-WEB-006` foundations | Added target-role mapping and the first local, Git-backed learning cockpit | Commit `798404e` |
 | 2026-08-02 | `PLAN-CUR-101` through `PLAN-CUR-105` initial content | Added the first five Linux foundation lessons, diagrams, guided labs, optional checks, and interview prompts | Commit `d958043` |
 | 2026-08-02 | `PLAN-MS-00`, governance, architecture, routed reader, Linux-depth, lab-safety, and quality checkpoint | Added durable project controls, the canonical 107-ID curriculum map, routed/deep Linux reader, detailed decoders and answer guides, hardened ENOSPC ownership boundaries, and dependency-free content validation | Commit `aa3ede8` |
+| 2026-08-02 | `PLAN-ARC-008`, `PLAN-WEB-005`, `PLAN-WEB-011`, `PLAN-AUD-005` reader checkpoint | Added five-lesson local search, bookmarks, recent/resume state, private reading markers, command-copy feedback, safe storage fallback/reset, current-page navigation, and dependency-free tests without changing mastery | Validated current worktree; commit ID will be recorded after the logical checkpoint is created |
 
 The committed baseline is useful and runnable, but it does not satisfy the complete curriculum or prove any skill beyond the evidence recorded in the learner ledger.
 
@@ -44,11 +45,20 @@ The committed baseline is useful and runnable, but it does not satisfy the compl
 | `PLAN-GOV-005` | Ledger records the routed reader as a project artifact without awarding learner mastery | Committed in `aa3ede8` and remains evidence-neutral |
 | `PLAN-QUA-001`, `PLAN-QUA-002`, `PLAN-QUA-004`, `PLAN-QUA-006` | Lint, typecheck, production build, content/link/anchor/ID/requirement validation, route/404/heading/asset checks, dependency audit, and patch whitespace validation | Passed and recorded for `aa3ede8`; only the documented build warnings remain. Broader lesson-schema, accessibility, privacy, licenses, and reproducibility gates remain |
 
+## Current worktree scope
+
+| Plan IDs | Capability implemented | Remaining acceptance work |
+|---|---|---|
+| `PLAN-ARC-008` | Compact server-built search catalog for five lessons, with deterministic client ranking across stable IDs, curriculum IDs, titles, symptoms, commands, terms, and guidance | Topic/role/difficulty filters, complete cross-volume schema, production-catalog fixtures, and disconnected-browser proof |
+| `PLAN-WEB-005` | Stable lesson links, device-local bookmarks, recent history, resume, reading markers, clear/reset flow, and origin/privacy explanation | Browser restart, real cross-tab, storage-disabled, and offline interaction tests |
+| `PLAN-WEB-011` | Safe malformed/unsupported-state recovery, visible storage fallback, empty/no-result search states, and invalid-lesson 404 | Occupied-port, dependency-install, start-failure, and runtime error UX |
+| `PLAN-AUD-005` | Fixed allowlisted state schema and repeated UI boundaries keep reading actions separate from competency; eight pure transition/search tests pass | Full evidence lineage, answer-key isolation, mentor-output, and assessment-state audit |
+
 ## Recorded results versus current acceptance
 
 The repository ledger records that, earlier in this 2026-08-02 work session, six local routes returned HTTP 200, an invalid lesson returned 404, selected night-mode color pairs measured at least 5.77:1, and bounded Ubuntu labs produced cleanup proof. Those remain historical results for the worktree state at the time they ran.
 
-After the latest source edits, lint, explicit typecheck, content validation, the escalated production build, `git diff --check`, and the current registry-backed `npm audit --audit-level=high` passed. Content validation found all six memory files, 28 Markdown files, 38 valid local links, 306 heading anchors, 107 unique curriculum IDs, and explicit coverage of all 46 requirements. The build retained only vinext route-classification and Node `module.register` deprecation warnings. All nine declared routes returned 200 with exactly one `h1` and no external script/link/image assets; the invalid lesson returned 404. Storage rendered seven closed explicit-reveal answer panels and no eager-open panels, and the home practice link was corrected. All three shell scripts passed `bash -n`. The Ubuntu permissions normal-cleanup and child-symlink-refusal regressions passed with external-target survival and bounded cleanup. These are project validation results, not learner evidence. Real Docker lifecycle/tamper execution and the remaining release gates are incomplete; exact scope is maintained in `VERIFICATION.md`.
+For the reader checkpoint, full lint, explicit typecheck, content validation, the escalated production build, eight reader/search tests, and `git diff --check` passed. Content validation reports all six memory files, 28 Markdown files, 38 valid local links, 307 heading anchors, 107 unique curriculum IDs, and all 46 requirements. The build retained only vinext route-classification and Node `module.register` deprecation warnings. Eleven declared routes returned 200 with exactly one `h1` and no external script/link/image assets; the search payload contained all five trusted lesson IDs; the reading desk and non-mastery boundary rendered; the invalid lesson returned 404; the temporary production server listened only on `127.0.0.1:4179` and was stopped cleanly. An attempted fresh registry audit was rejected before transmission because external manifest disclosure was not authorized; `package-lock.json` is unchanged from the prior zero-advisory audit, but no new registry result is claimed. These are project checks, not learner evidence. Browser-level keyboard, persistence, cross-tab, clipboard, night/mobile/print, and disconnected tests remain incomplete; Docker lifecycle/tamper execution remains blocked.
 
 ## Open findings and blockers
 
@@ -73,7 +83,7 @@ After the latest source edits, lint, explicit typecheck, content validation, the
 | Area | Present now | Missing before complete |
 |---|---|---|
 | Curriculum | First five Linux lessons and full knowledge map | Volume 00; remaining Linux internals; Volumes 02-06; seven specialist tracks; references and scheduled review for every lesson |
-| Website | Local launcher, landing page, routed book worktree, reading controls, four learning modes | Search, bookmarks/resume, structured content renderer, evidence export, failure UX, comprehensive automated accessibility and performance checks |
+| Website | Local launcher, landing page, routed book, reading controls, four learning modes, five-lesson search, bookmarks, recent/resume, private reading markers, and command-copy feedback | Cross-volume structured indexing and filters, structured content renderer, evidence export, due-review scheduling, stable-ID migration, browser restart/offline/cross-tab validation, full failure UX, and comprehensive accessibility/performance checks |
 | Labs | Bounded ENOSPC fixture source plus four Ubuntu-first lab patterns, including runtime-verified symlink-safe permission cleanup | Docker-in-Ubuntu restoration; common host/container/VM/Kubernetes harnesses; Bats/ShellCheck; current/legacy descriptor, fresh-shell, adversarial, and failure-path matrix |
 | Interviews | Role matrix, Linux prompts, detailed answer guides, one interactive interview mode | Stable question metadata, full rubrics, timed mocks, role-specific banks, scoring calibration, portfolio defense |
 | Reliability evidence | Project ledger and one active incident simulation | Complete incident program, SLOs, observability, capacity, DR, projects, and independent learner transfer |

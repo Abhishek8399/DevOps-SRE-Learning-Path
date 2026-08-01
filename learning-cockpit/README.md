@@ -4,7 +4,7 @@ An offline-first reading and practice interface for the evidence-driven DevOps, 
 
 ## Purpose
 
-The cockpit trains four different kinds of recall:
+The cockpit trains five complementary learning behaviors:
 
 - **See the system:** architecture, request path, state, and failure-flow diagrams.
 - **Break the system:** choose-the-next-move incident decisions with immediate reasoning feedback.
@@ -39,6 +39,8 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 - `/book/linux` - Ubuntu-first Volume 01 index and preflight.
 - `/book/linux/<lesson-id>` - one statically generated lesson per URL.
 - `/practice/storage` - practice separated from the explanatory chapter.
+- `/search` - offline search by symptom, command, term, title, or stable lesson ID.
+- `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.
 
 The routed structure keeps individual pages lightweight as the manual grows. Desktop uses a persistent table of contents; smaller screens use a collapsible book menu. Previous and next links preserve the reading path.
 
@@ -68,10 +70,11 @@ Teach-back notes and reader preferences are stored only in browser `localStorage
 | `devops-sre-teachback` | Private draft explanation |
 | `field-manual-theme` | Paper or night reading mode |
 | `field-manual-reading-size` | Compact, comfortable, or large body text |
+| `field-manual-learning-library-v1` | Fixed lesson IDs, bookmarks, reading markers, and recent-open timestamps |
 
 The floating reader controls also show page progress and provide a print view. Theme colors, keyboard focus, mobile navigation, and reduced-motion behavior are part of the reader contract.
 
-Clear the relevant browser keys to reset local state. Do not enter employer information, credentials, secrets, or production data.
+Clear the relevant browser keys to reset local state. Search terms are not stored. The reading library has no free-text fields and never changes the competency ledger. Browser storage is origin-specific, so `localhost`, `127.0.0.1`, and different ports keep separate state. Do not enter employer information, credentials, secrets, or production data.
 
 ## Validation
 
@@ -79,13 +82,16 @@ Clear the relevant browser keys to reset local state. Do not enter employer info
 npm run lint
 npm run typecheck
 npm run validate:content
+npm run test:reader
 npm run build
-npm audit
+npm audit  # optional network-backed advisory check
 ```
 
-The lockfile is committed for reproducible installation. Review audit findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
+The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
 The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, and requirements 1-46 coverage without adding another package dependency.
+
+The reader tests exercise malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, and local search normalization/ranking using Node's built-in test runner.
 
 ---
 

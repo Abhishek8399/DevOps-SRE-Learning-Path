@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CopyCommand from "./copy-command";
 import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
 
 const comparisons = [
@@ -123,17 +124,21 @@ export default function StorageChapter() {
           <article>
             <div><span>READ-ONLY</span><strong>Map the exact path</strong></div>
             <code>findmnt -T /var/lib/api/uploads</code>
+            <CopyCommand text="findmnt -T /var/lib/api/uploads" />
             <p>A path that looks like disk storage may actually be tmpfs, a volume, a container layer, or another mount.</p>
           </article>
           <article>
             <div><span>READ-ONLY</span><strong>Compare independent limits</strong></div>
             <code>df -hT /var/lib/api/uploads</code>
+            <CopyCommand text="df -hT /var/lib/api/uploads" />
             <code>df -i /var/lib/api/uploads</code>
+            <CopyCommand text="df -i /var/lib/api/uploads" />
             <p>Free blocks do not compensate for zero free inodes. Both checks target the same failed path.</p>
           </article>
           <article>
             <div><span>READ-ONLY / POTENTIALLY EXPENSIVE</span><strong>Locate file-count pressure</strong></div>
             <code>du --inodes -x -d 1 /var/lib/api</code>
+            <CopyCommand text="du --inodes -x -d 1 /var/lib/api" />
             <p>Start narrow. A recursive inode scan can add I/O pressure to an already unhealthy filesystem.</p>
           </article>
           <article>

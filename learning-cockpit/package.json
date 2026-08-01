@@ -11,7 +11,8 @@
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit --pretty false",
-    "validate:content": "node ../tools/validate-content.mjs"
+    "validate:content": "node ../tools/validate-content.mjs",
+    "test:reader": "node --experimental-strip-types --test tests/reader.test.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

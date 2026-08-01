@@ -1,0 +1,16 @@
+.button {
+  min-height: 44px;
+  padding: 8px 11px;
+  align-self: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--teal-text);
+  font-size: .7rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+.button:hover { border-color: var(--teal); }
+.button:focus-visible { outline: 3px solid #d64f18; outline-offset: 3px; }
+:global(html[data-reader-theme="night"]) .button { background: #101d2f; }
+@media print { .button { display: none; } }

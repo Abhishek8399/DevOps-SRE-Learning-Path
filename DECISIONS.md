@@ -169,11 +169,15 @@ Only `progress/ledger.md`, updated after reviewed learner evidence, changes comp
 
 **Decision:** Store only non-sensitive convenience state locally. Do not store secrets, employer data, production evidence, or authoritative competency there.
 
+**Consequences:** The reading desk uses a versioned schema with allowlisted lesson IDs, validated markers and timestamps, and capped duplicate-free recent history. It never persists arbitrary URLs or free text. Corrupt state resets safely; unavailable storage falls back to explicitly temporary page memory; browser origins remain separate and disposable.
+
 ### DEC-017 - No silent local execution or Git mutation from the browser
 
 **Context:** A browser-connected shell or automatic repository writer would expand attack surface and could turn lesson text into unreviewed commands or false evidence.
 
 **Decision:** Current website commands are explanatory/copyable, not executable by the site. A future companion may export or write only explicitly approved, path-validated evidence and may never commit, push, or promote mastery silently.
+
+**Consequences:** Copy controls place only the displayed command text on the clipboard. They never invoke a shell, and clipboard refusal produces visible manual-copy guidance.
 
 ### DEC-018 - Mechanisms before tools
 

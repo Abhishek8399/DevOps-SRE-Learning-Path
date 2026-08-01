@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FoundationLessonArticle } from "../../../foundation-volume";
+import LessonReadingActions from "../../../lesson-reading-actions";
 import { foundationLessons } from "../../../lessons/foundation-lessons";
 import StorageChapter from "../../../storage-chapter";
 
@@ -14,6 +15,10 @@ export default async function LinuxLessonPage({ params }: { params: Promise<{ le
     return (
       <>
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/book">Library</Link><span>/</span><Link href="/book/linux">Linux systems</Link><span>/</span><b>Storage</b></nav>
+        <LessonReadingActions
+          lessonId="storage"
+          title="Filesystems, blocks, inodes, and ENOSPC"
+        />
         <StorageChapter />
       </>
     );
@@ -25,6 +30,7 @@ export default async function LinuxLessonPage({ params }: { params: Promise<{ le
   return (
     <>
       <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/book">Library</Link><span>/</span><Link href="/book/linux">Linux systems</Link><span>/</span><b>Lesson {lesson.number}</b></nav>
+      <LessonReadingActions lessonId={lesson.id} title={lesson.title} />
       <FoundationLessonArticle lesson={lesson} />
     </>
   );

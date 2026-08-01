@@ -24,7 +24,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: restoreReaderPreferences }} />
       </head>
       <body>
-        <a className="skip-link" href="#main-content">Skip to the lesson</a>
+        <a className="skip-link" href="#main-content">Skip to main content</a>
         {children}
         <ReaderControls />
       </body>

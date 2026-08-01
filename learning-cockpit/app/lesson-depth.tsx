@@ -1,3 +1,4 @@
+import CopyCommand from "./copy-command";
 import {
   commandDecoders,
   type CommandDecoderLessonId,
@@ -90,6 +91,9 @@ export function CommandDecoderGuide({ lessonId }: { lessonId: LessonDepthId }) {
             <div className="decoder-question">
               <strong>QUESTION THIS COMMAND ANSWERS</strong>
               <p>{decoder.questionAnswered}</p>
+            </div>
+            <div className="decoder-command-tools">
+              <CopyCommand text={decoder.command} />
             </div>
             <pre className="decoder-command"><code>{decoder.command}</code></pre>
             <div className="decoder-prerequisite">

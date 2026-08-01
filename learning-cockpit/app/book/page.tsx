@@ -33,7 +33,8 @@ export default function BookLibraryPage() {
         </p>
         <div className="library-actions">
           <Link href="/book/linux">Open Volume 01</Link>
-          <Link href="/book/linux/storage">Resume storage lesson</Link>
+          <Link href="/my-learning">Resume and bookmarks</Link>
+          <Link href="/search">Search lessons</Link>
         </div>
       </header>
 

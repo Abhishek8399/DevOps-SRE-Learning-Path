@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CopyCommand from "./copy-command";
 import { foundationLessons, type FoundationLesson } from "./lessons/foundation-lessons";
 import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
 
@@ -123,7 +124,11 @@ export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }
             <div className="evidence-commands">
               {lesson.commands.map((item) => (
                 <article key={item.command}>
-                  <div className="command-line"><span>{item.classification}</span><code>{item.command}</code></div>
+                  <div className="command-line">
+                    <span>{item.classification}</span>
+                    <code>{item.command}</code>
+                    <CopyCommand text={item.command} />
+                  </div>
                   <div><strong>PROVES</strong><p>{item.proves}</p></div>
                   <div><strong>DOES NOT PROVE</strong><p>{item.doesNotProve}</p></div>
                 </article>
@@ -151,6 +156,7 @@ export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }
                 <li key={step.action}>
                   <span>{step.label}</span>
                   <strong>{step.action}</strong>
+                  <CopyCommand text={step.command} />
                   <pre><code>{step.command}</code></pre>
                   <p>{step.meaning}</p>
                 </li>
