@@ -9,11 +9,11 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Committed HEAD before this checkpoint | `d886b61 docs: record field manual checkpoint evidence` |
+| Latest substantive checkpoint | `836c29e feat: add offline search and device-local reading desk` |
 | Remote | `origin` points to `Abhishek8399/DevOps-SRE-Learning-Path` |
-| Remote parity before current work | `HEAD` and `origin/main` both at `d886b61` |
-| Worktree | Dirty: offline search, device-local reading desk, current-page navigation, command-copy feedback, tests, and checkpoint records await commit |
-| Current milestone | `PLAN-ARC-008` / `PLAN-WEB-005` - local find, resume, and reader ergonomics |
+| Source checkpoint parity | `HEAD` and `origin/main` were confirmed at `836c29e` after the non-force push |
+| Worktree | Source checkpoint `836c29e` is committed and pushed; use `git status --short` for later documentation-only work |
+| Current milestone | `PLAN-ARC-004` / `PLAN-MS-01` - structured content foundation and the next curriculum batch |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
@@ -26,7 +26,7 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-08-01 | `PLAN-INT-003`, `PLAN-WEB-001`, `PLAN-WEB-006` foundations | Added target-role mapping and the first local, Git-backed learning cockpit | Commit `798404e` |
 | 2026-08-02 | `PLAN-CUR-101` through `PLAN-CUR-105` initial content | Added the first five Linux foundation lessons, diagrams, guided labs, optional checks, and interview prompts | Commit `d958043` |
 | 2026-08-02 | `PLAN-MS-00`, governance, architecture, routed reader, Linux-depth, lab-safety, and quality checkpoint | Added durable project controls, the canonical 107-ID curriculum map, routed/deep Linux reader, detailed decoders and answer guides, hardened ENOSPC ownership boundaries, and dependency-free content validation | Commit `aa3ede8` |
-| 2026-08-02 | `PLAN-ARC-008`, `PLAN-WEB-005`, `PLAN-WEB-011`, `PLAN-AUD-005` reader checkpoint | Added five-lesson local search, bookmarks, recent/resume state, private reading markers, command-copy feedback, safe storage fallback/reset, current-page navigation, and dependency-free tests without changing mastery | Validated current worktree; commit ID will be recorded after the logical checkpoint is created |
+| 2026-08-02 | `PLAN-ARC-008`, `PLAN-WEB-005`, `PLAN-WEB-011`, `PLAN-AUD-005` reader checkpoint | Added five-lesson local search, bookmarks, recent/resume state, private reading markers, command-copy feedback, safe storage fallback/reset, current-page navigation, and dependency-free tests without changing mastery | Commit `836c29e`; pushed to `origin/main` |
 
 The committed baseline is useful and runnable, but it does not satisfy the complete curriculum or prove any skill beyond the evidence recorded in the learner ledger.
 
@@ -45,7 +45,9 @@ The committed baseline is useful and runnable, but it does not satisfy the compl
 | `PLAN-GOV-005` | Ledger records the routed reader as a project artifact without awarding learner mastery | Committed in `aa3ede8` and remains evidence-neutral |
 | `PLAN-QUA-001`, `PLAN-QUA-002`, `PLAN-QUA-004`, `PLAN-QUA-006` | Lint, typecheck, production build, content/link/anchor/ID/requirement validation, route/404/heading/asset checks, dependency audit, and patch whitespace validation | Passed and recorded for `aa3ede8`; only the documented build warnings remain. Broader lesson-schema, accessibility, privacy, licenses, and reproducibility gates remain |
 
-## Current worktree scope
+## Current reader checkpoint scope
+
+The following capabilities are committed in `836c29e`; `PARTIAL` means their complete acceptance criteria still require the named evidence.
 
 | Plan IDs | Capability implemented | Remaining acceptance work |
 |---|---|---|
@@ -98,12 +100,12 @@ For the reader checkpoint, full lint, explicit typecheck, content validation, th
 
 ## Next actions
 
-1. Restore Docker integration in Ubuntu, then run v2 lifecycle, full-boundary tamper/refusal, exact legacy-v1 cleanup, v2 `check`/`reset`, rebuild, and cleanup proof.
-2. Complete the remaining host-lab root, wrong-owner/sentinel, unexpected-entry, stale-state, and cleanup-retry cases.
-3. Run the still-pending full link/anchor, contrast, keyboard, responsive, print, reduced-motion, secret, and browser-network checks.
-4. Run ShellCheck, the manual dependency-tree/license review, and final generated-file/diff hygiene checks.
-5. Complete `PLAN-AUD-001`, inspect the entire diff, commit the logical field-manual release, and push `main`.
-6. Return to learner-operated `PLAN-LAB-102`; do not advance the competency gate merely because five lessons are readable.
+1. Define the structured lesson/assessment/reference schema and invalid fixtures without breaking the five existing URLs.
+2. Publish the next coherent Volume 00/Linux curriculum batch with deep explanations, command decoders, complete answers, and bounded Ubuntu labs.
+3. Add production-catalog search fixtures, filters, internal crawling, and browser-level persistence/keyboard/clipboard/visual tests.
+4. Restore Docker integration when available, then run the v2 lifecycle, full-boundary tamper/refusal, legacy migration, `check`, `reset`, and cleanup proof.
+5. Complete host-lab failure matrices, ShellCheck, accessibility/privacy/performance checks, dependency/license review, and fresh-clone reproducibility.
+6. Keep learner-operated `PLAN-LAB-102` at its current evidence gate; published content and reader actions must not auto-advance it.
 
 ## Update protocol
 

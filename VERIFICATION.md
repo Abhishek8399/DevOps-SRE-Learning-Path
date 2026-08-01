@@ -84,20 +84,21 @@ This register separates observed results from planned checks. A statement in a l
 | `VER-054` | 2026-08-02 | Reader worktree after storage, focus, contrast, and copy-label review fixes | `npm run test:reader` | `PASS` | Eight of eight tests passed, including safe persisted-state removal and clear refusal |
 | `VER-055` | 2026-08-02 | Reader worktree after review fixes | Full lint, typecheck, tracked whitespace check, and independent read-only blocker review | `PASS` with limitation | Commands passed and review found no Critical, High, or Medium issue; production-catalog fixtures and browser-level interaction/visual QA remain |
 | `VER-056` | 2026-08-02 | Final post-review reader and documentation worktree | Lint, typecheck, content validation, reader tests, production build, enhanced eleven-route smoke, payload assertions, exact listener, and cleanup | `PASS` with limitation | Content reported `root-memory=6/6 markdown=28 local-links=38 explicit-anchors=0 heading-anchors=307 curriculum-ids=107 requirements=46/46`; eight tests passed; build retained two known warning classes; all routes/404/assets passed; search exposed five trusted IDs; non-mastery/lesson controls rendered; loopback server stopped cleanly. Manual browser interaction and visual QA remain |
+| `VER-057` | 2026-08-02 | Staged 30-file reader checkpoint and commit `836c29e` | Staged name/stat/whitespace review, credential/private-key/token/local-identity scan, commit, non-force push, and revision parity | `PASS` | No unexpected file or sensitive/local path shape was found; commit `836c29ead467aca21a840a04e73a995ac0dc3945` was pushed; `HEAD` and `origin/main` matched exactly afterward |
 
 ## Current release gate
 
-`PLAN-AUD-001` remains blocked by unavailable Docker-in-Ubuntu runtime verification and other pending P0 gates. The permissions-lab escape and incomplete Docker-envelope source findings are corrected and statically re-reviewed, but static review is not lifecycle evidence. Commit `aa3ede8` is a durable in-progress checkpoint; it must not be described as a publication-safe or accepted release until all P0 rows below pass and all failures have an explicit disposition.
+`PLAN-AUD-001` remains blocked by unavailable Docker-in-Ubuntu runtime verification and other pending P0 gates. The permissions-lab escape and incomplete Docker-envelope source findings are corrected and statically re-reviewed, but static review is not lifecycle evidence. Commit `836c29e` is the latest durable in-progress checkpoint; it must not be described as a publication-safe or accepted release until all P0 rows below pass and all failures have an explicit disposition.
 
 ### Repository and documentation
 
 | ID | Required check | Command or method | Current result | Acceptance |
 |---|---|---|---|---|
 | `REL-DOC-001` | Patch whitespace and conflict markers | `git diff --check` plus marker scan | `PASS` | No whitespace error or merge marker |
-| `REL-DOC-002` | Only intended files changed | `git status --short`; full `git diff` review | `PASS` for checkpoint `aa3ede8` | Every change maps to a plan ID; no unrelated file or secret |
+| `REL-DOC-002` | Only intended files changed | `git status --short`; full `git diff` review | `PASS` for checkpoint `836c29e` | Every change maps to a plan ID; no unrelated file or secret |
 | `REL-DOC-003` | Root controls agree | Cross-check `MASTER_PLAN.md`, `PROGRESS.md`, `DECISIONS.md`, `VERIFICATION.md`, ledger | `PARTIAL` | Current statuses, blockers, evidence, and next actions agree; final full-ledger sign-off remains |
 | `REL-DOC-004` | Markdown links and anchors | Local link/anchor checker | `PASS` | All scanned local links resolve, generated heading anchors are unique, and the corrected home practice route resolves |
-| `REL-DOC-005` | Generated artifact hygiene | Inspect `tsconfig.tsbuildinfo` and build outputs before/after tests | `PASS` for checkpoint `aa3ede8` | `*.tsbuildinfo` is ignored; final validation leaves no other unexplained generated files |
+| `REL-DOC-005` | Generated artifact hygiene | Inspect `tsconfig.tsbuildinfo` and build outputs before/after tests | `PASS` for checkpoint `836c29e` | `*.tsbuildinfo` is ignored; final validation left no unexplained generated file |
 
 ### Website and content
 
@@ -145,7 +146,7 @@ Run inside the stated Ubuntu 24.04 environment. Do not substitute Windows, produ
 | `REL-A11Y-002` | Keyboard and focus | Manual keyboard-only route/control/table/details navigation | `PENDING` | All functions reachable; visible focus; sensible order; no trap |
 | `REL-A11Y-003` | Contrast and themes | Measure every text/control/state pair in paper and night modes | `PARTIAL` | WCAG AA for applicable text; selected prior pairs alone are insufficient |
 | `REL-A11Y-004` | Responsive and print | Phone/tablet/desktop, zoom, long commands/tables/diagrams, print preview | `PENDING` | No hidden content, unusable overflow, or clipped essential information |
-| `REL-SEC-001` | Secret and sensitive-data scan | Scan tracked/untracked source and full staged diff; manually review samples | `PASS` for checkpoint `aa3ede8`; Git-history scan not included | No credential, token, key, employer detail, internal URL, or production evidence |
+| `REL-SEC-001` | Secret and sensitive-data scan | Scan tracked/untracked source and full staged diff; manually review samples | `PASS` for checkpoint `836c29e`; Git-history scan not included | No credential, token, key, employer detail, internal URL, or production evidence |
 | `REL-SEC-002` | Dependency audit | Authorized current registry-backed `npm audit` plus manual dependency-tree review | `PARTIAL`: lockfile unchanged since prior zero-advisory audit; fresh request blocked | Registry findings are absent or dispositioned, and the dependency-tree/license review is complete; no unapproved manifest disclosure |
 | `REL-SEC-003` | External-request/privacy audit | Browser/network capture during normal reading and interactions | `PARTIAL` | Eleven rendered routes contain no external script, link, or image assets; browser-network capture remains |
 | `REL-SEC-004` | Loopback binding | Inspect listening socket during launch | `PASS` for current production smoke | Temporary server listened exactly on `127.0.0.1:4179` and stopped cleanly; fresh-clone launcher smoke remains separate |
@@ -157,8 +158,8 @@ Run inside the stated Ubuntu 24.04 environment. Do not substitute Windows, produ
 |---|---|---|---|---|
 | `REL-REP-001` | Fresh clone | Clone into an isolated path; follow only repository instructions | `PENDING` | Install, launch, navigate, and selected labs work without chat context |
 | `REL-REP-002` | Offline normal reading | Disconnect after dependency bootstrap; start and read | `PENDING` | Normal book use requires no cloud account or external application API |
-| `REL-REP-003` | Git review | `git diff`, `git diff --check`, secret scan, generated-file check | `PASS` for checkpoint `aa3ede8` | Logical, reviewable, safe diff |
-| `REL-REP-004` | Commit and push | Non-interactive commit/push after all required checks | `PASS` for checkpoint `aa3ede8`; final audited release pending | `main` and `origin/main` match; no force push; commit ID recorded |
+| `REL-REP-003` | Git review | `git diff`, `git diff --check`, secret scan, generated-file check | `PASS` for checkpoint `836c29e` | Logical, reviewable, safe diff |
+| `REL-REP-004` | Commit and push | Non-interactive commit/push after all required checks | `PASS` for checkpoint `836c29e`; final audited release pending | `main` and `origin/main` matched after the non-force push; commit ID recorded |
 
 ## Learner-evidence verification
 
