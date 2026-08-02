@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0165",
+  "title": "Monitoring Distributed Systems",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition; reviewed 2026-08-02",
+  "lessonIds": ["LES-0026"],
+  "topics": ["monitoring methodology", "black-box monitoring", "white-box monitoring", "symptoms", "causes", "latency", "traffic", "errors", "saturation", "actionable alerts"],
+  "relevance": "Primary Google SRE chapter for why teams monitor, how black-box and white-box evidence differ, why symptoms and causes must not be confused, and how latency, traffic, errors and saturation organize service monitoring. Its 2016 examples are methodology, not current product behavior or a complete service-level objective policy.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

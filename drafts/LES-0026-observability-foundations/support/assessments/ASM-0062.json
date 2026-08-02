@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0062",
+  "lessonId": "LES-0026",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "You own observability for a payment authorization journey: mobile client to regional edge to API gateway to authorization service to database and an external risk provider. At 09:15 a certificate-rotation event changes one edge listener in the smallest region, which carries 6 percent of global traffic. At 09:20 regional black-box probes begin failing TLS validation before an HTTP response. The global success dashboard remains above its 99 percent threshold and application RED metrics remain green because these attempts never reach the gateway. A listener inspection shows the unexpected certificate-chain fingerprint only in that region, and a bounded comparison with the last-known-good chain succeeds. The same investigation reveals a fragile telemetry platform: metrics use raw order and request IDs as labels and now create nine million active series; every trace is sampled; a single gateway Collector has a full queue and drops exports; application logs contain full card numbers and bearer tokens; client-supplied trace context is trusted without validation; nodes disagree on wall time; thirty-day retention applies to every signal; and an always-on profiler adds 12 percent CPU to the authorization service. Teams page on Collector CPU, use one dashboard for users and infrastructure, and have no alert for missing telemetry or regional journey failure. Lead the incident, then design the production observability system and answer the product-company interview question, ‘How would you make this journey observable without making telemetry unsafe, unaffordable or another outage source?’ Start from first-year definitions and reach senior architecture, operating model, cost, privacy and proof limits. Include the five evidence signals, black-box and white-box monitoring, RED, USE, golden signals, context and timestamps, pipeline stages and health, sampling, cardinality, retention, profiling, dashboards, alerts, runbooks and recovery evidence.",
+  "directAnswer": "Declare a regional customer-impacting incident even though the global average and application metrics are green. Failed TLS handshakes occur before application instrumentation, so outside-in regional probes are the authoritative symptom evidence for that boundary. Freeze certificate rollout, preserve listener, certificate, chain, probe and event identities, and restore the exact last-known-good chain to one bounded listener or cohort through the approved mechanism. Verify handshake, regional authorization journey, certificate identity and expiry, then roll out in controlled waves. Do not change telemetry and certificate variables in one experiment. Treat exposed card numbers and bearer tokens as a security incident: stop further unsafe emission, restrict access and retention, preserve only necessary evidence, notify data and security owners, and rotate or revoke exposed credentials without repeating them. Redesign observability around the user journey and explicit evidence paths. Use regional black-box success and latency plus service RED and resource USE; record deployment and certificate events; correlate structured minimized logs and sampled traces with validated context; run scoped profiles only for a declared question. Send telemetry through redundant bounded receiver, processor and exporter paths, monitor accepted, dropped, queued, retried, exported and freshness counts, and make ordinary telemetry loss visible without allowing it to cascade into payment failure. Remove unbounded IDs from metric labels, adopt bounded dimensions, budget series and bytes, select sampling by decision need, and assign signal-specific retention and access. Dashboards should drill from user symptom to service to resource to pipeline; pages must represent urgent actionable user risk or imminent loss of evidence, not raw Collector CPU. Recovery needs sustained regional user success, correct certificate identity, service health, pipeline freshness and loss within policy, bounded cardinality and overhead, and verified removal of sensitive fields. None of those observations proves future reliability or universal trace completeness.",
+  "foundation": "A production request crosses boundaries, and each boundary can fail before the next one sees anything. Black-box monitoring behaves like a user and asks whether the offered service works from outside. White-box monitoring reads internal state such as request counters, queues and CPU. Metrics summarize numeric behavior; logs preserve selected discrete records; traces connect spans for one operation when context survives; events record changes; profiles sample resource use at code or system level. RED means request Rate, Errors and Duration for a service. USE means Utilization, Saturation and Errors for a resource. The golden signals are latency, traffic, errors and saturation. A telemetry pipeline has sources and instrumentation, receivers, processors, exporters, transport and backends; the pipeline must be observable too. Cardinality is the number of distinct label combinations, not the number of metric names. Sampling selects a subset and therefore changes what can be concluded. Retention decides how long evidence remains available. Observability is successful only when these choices let an authorized operator answer an operational question with known uncertainty and without harming the service or the people represented in its data.",
+  "reasoningSteps": [
+    "Name the user journey and boundary first. The failing operation is regional payment authorization as observed before the edge. Create a timeline with event time, observation time, ingestion time, query time, source clock, revision and uncertainty instead of assuming dashboard timestamps share one clock.",
+    "Declare incident severity from customer impact and business criticality, not affected traffic share. Six percent can represent every customer in a region. Assign incident command, edge recovery, customer verification, telemetry, security and communications owners with one decision log.",
+    "Preserve the exact certificate event, listener, region, chain, fingerprint, validation output, configuration revision, first failure and last known-good observation. Do not place private keys, tokens, full card numbers or unnecessary personal data into the incident record.",
+    "Explain the green application metrics. TLS validation fails before HTTP reaches gateway or service instrumentation, so application RED has no denominator for rejected handshakes. Absence inside the application is expected at that boundary and is not evidence of user success.",
+    "Reject the global average. Partition black-box success and latency by bounded dimensions that change operator action, including journey, region, client class and protocol. Publish request counts with ratios so a small or missing population cannot silently disappear.",
+    "Use the rotation event to form a hypothesis, then test it. The region-specific unexpected fingerprint and success with the exact known-good chain under a bounded comparison support the certificate-chain mechanism. Timing alone would not be sufficient.",
+    "Contain by freezing further rotation, restoring the reviewed chain to a canary listener and defining handshake, authorization, certificate, error and rollback thresholds. Expand in bounded waves while monitoring unaffected regions and certificate expiry. Avoid fleet-wide restart or an unrelated instrumentation rollout.",
+    "Treat sensitive logging as a parallel security and privacy incident. Stop or filter unsafe fields at the earliest controlled boundary, restrict searches and exports, preserve legally required evidence, determine destinations and readers, shorten exposure, and coordinate credential revocation and card-data response with owners. Never copy values into tickets.",
+    "Map the evidence architecture: clients and synthetic probes observe the edge; edge, gateway, service and dependencies emit local telemetry; agents or SDKs send to receivers; processors batch, filter, transform or sample; exporters write to backends; dashboards and alerts query those stores. Record owner and loss behavior at every arrow.",
+    "Instrument the journey from the outside in. Black-box probes capture DNS, connection, TLS, HTTP and semantic authorization outcomes. Service RED captures requests that entered each service. Dependency calls have their own rate, error and duration. Resource USE covers connection pools, queues, CPU, memory, disk, file descriptors and constrained external quotas.",
+    "Use change events as first-class evidence with stable deployment, configuration, certificate and feature identities. Put markers on timelines, but do not let proximity automatically label a change as cause. Compare before and after cohorts or controlled reversals.",
+    "Define metric contracts before labels: name, type, unit, monotonicity, temporality, population, timestamp owner and bounded dimensions. Counters require reset-aware change or rate over time; gauges may rise and fall. Classic histogram buckets require aligned boundaries, units and semantics; compatible native-histogram schemas may aggregate across resolutions under the deployed version's rules. Do not average percentiles.",
+    "Remove order, request, trace, session, email and customer IDs from metric labels. Estimate active series as the product of label-value combinations under realistic churn, set per-service and per-tenant budgets, alert before backend limits, and reject or aggregate unsafe instrumentation during review.",
+    "Design structured logs with an allowlisted schema: severity, event name, service, revision, bounded route and outcome, timestamp and an approved correlation identifier. Minimize values, tokenize or redact where justified, secure transport and storage, separate audit from debug logs, and test that secrets and regulated fields never appear.",
+    "Validate untrusted trace context at ingress and propagate standard context across every synchronous, retry and asynchronous boundary. Generate new trusted context when policy requires it. A correlation identifier must not become authentication or authorization, and baggage must not carry secrets merely because it travels with a trace.",
+    "Choose trace sampling from operational decisions and traffic shape. Head sampling bounds cost early but can miss rare failures; tail sampling can retain error or slow traces after seeing more of the trace but requires buffering, consistent routing and capacity. Keep denominators and sampling policy so sampled evidence is not presented as the whole population.",
+    "Eliminate the single Collector gateway failure domain. Use deployment-appropriate agents and a redundant gateway tier with bounded memory, queues, batches, retries and timeouts. Understand synchronous fan-out and processor blocking. Define backpressure and shed policy per signal so ordinary debug telemetry cannot cascade into authorization failure.",
+    "Monitor the telemetry system with independent evidence: source emission where measurable; receive, refuse, process, drop, queue, retry and export counters; backend ingest acknowledgements; end-to-end canary records; query freshness; clock offset; configuration identity and cost. A Collector process being up is not pipeline success.",
+    "Set retention by question, legal obligation, resolution and access need. Keep high-resolution incident data only as long as useful, retain lower-resolution aggregates for trends, separate security or audit requirements, and include index, replication, network, object storage and query costs. Thirty days for everything is neither a reliability nor compliance strategy.",
+    "Turn off the always-on high-overhead profiler. Choose CPU, allocation, wall-clock or off-CPU profiling according to a specific hypothesis; restrict process or host scope, frequency, duration and permissions; record workload and build identity; measure overhead; protect captured symbols and memory-related data; and remove temporary privileges afterward.",
+    "Build dashboard hierarchy around decisions. Page one starts with regional journey success, latency, traffic and freshness. Page two shows service RED and dependency state. Page three shows resource USE. A separate pipeline page shows loss, lag, queues, cardinality, cost and schema violations. Every graph declares unit, window, population and missing-data behavior.",
+    "Define alerts from an owner and action backward. Page on material journey failure, fast error-budget risk if later covered by SLO policy, or imminent telemetry loss that prevents safe operation. Ticket capacity or cost trends. Put diagnosis in dashboards and runbooks rather than paging on raw CPU without a customer or evidence consequence.",
+    "Write runbooks as decision trees: confirm scope and freshness, identify the first failed boundary, preserve evidence, select the smallest authorized containment, specify abort and rollback, verify independent user and system outcomes, and escalate security or privacy exposure. Test runbooks with controlled faults and missing-signal exercises.",
+    "Verify recovery in layers. Regional black-box TLS and semantic authorization succeed with the intended certificate for a declared sample and window; edge and service error and duration recover; no other region regresses; telemetry canaries arrive within freshness objective; drops and queues are within explicit policy; series, CPU overhead and cost return below budget; and sensitive-field tests pass.",
+    "State proof limits in the incident review. A successful probe is one path, green application metrics exclude pre-ingress failures, a trace is a sampled constructed record, a log proves only what code recorded and the pipeline retained, a profile is workload-specific, and pipeline health does not prove service health. Convert every unknown into an owner or an explicit accepted risk."
+  ],
+  "seniorAnswer": "I would make the journey observable by starting with its contract, not with a vendor. The first layer is regional black-box evidence for DNS, connection, TLS, HTTP and semantic authorization, because internal metrics cannot see traffic that never enters. Behind that I use RED for each service and dependency, USE for constrained resources, immutable change events, minimized structured logs, validated distributed context and question-driven profiles. In this incident, the regional probe, listener fingerprint and controlled known-good comparison support a certificate-chain failure, so I freeze rotation and recover through one listener and bounded waves. The green global average is a partitioning defect, and green application RED is expected because TLS failed upstream. I treat card and bearer-token logging as a security incident and stop further collection, restrict access and retention, trace exposure and rotate authority through owners. The telemetry path is an operated distributed system: source to receiver to processor to exporter to backend to query. It has redundant capacity, bounded queues and retries, independent canaries, freshness and loss objectives, and a policy that prevents debug telemetry from taking down payments. Metric schemas allow only bounded action-driving labels; logs and traces use minimized access-controlled correlation; incoming trace context is untrusted; sampling retains known bias; retention follows a question and legal need. Profiles are scoped, time-bounded, least-privilege experiments with measured overhead. Dashboards drill from user symptom to service to resource to pipeline, while alerts name an owner and immediate action. I verify recovery with regional user success, exact certificate state, service health, pipeline delivery, bounded cardinality and overhead, and sensitive-field tests. I explicitly say which paths, windows and samples that evidence covers.",
+  "weakAnswer": "Install one monitoring tool everywhere, collect every log and trace forever, put all IDs into metric labels, alert when the Collector uses 80 percent CPU, and use the global dashboard as the source of truth.",
+  "whyWeak": "It starts with a tool rather than a user and decision model, misses failures before application ingress, hides regional impact in aggregation, creates uncontrolled cardinality and retention cost, captures secrets and regulated data, treats untrusted context as safe, makes one Collector a failure domain, ignores sampling and pipeline loss, pages without an action, and offers no bounded incident recovery or proof limits.",
+  "evidence": [
+    {
+      "signal": "Prompt-observed: at 09:20 black-box probes in the smallest region fail TLS validation before an HTTP response; the global dashboard remains above 99 percent.",
+      "proves": "The probed regional journey is broken at or before its edge TLS boundary while the global aggregate can hide a six-percent cohort.",
+      "doesNotProve": "That every client trusts the same roots, that application services are healthy, or which certificate configuration change introduced the failure."
+    },
+    {
+      "signal": "Prompt-observed: after the 09:15 rotation event, the affected listener presents an unexpected chain fingerprint, and a bounded comparison with the last-known-good chain succeeds.",
+      "proves": "The affected listener differs from the reviewed known-good chain and that known-good chain succeeds in the bounded comparison.",
+      "doesNotProve": "Why the rollout selected the unexpected chain, that every listener is inventoried, or that semantic authorization succeeds after TLS."
+    },
+    {
+      "signal": "Prompt-observed: application RED metrics remain green because the failed regional probe attempts do not reach the gateway.",
+      "proves": "Those failed probe attempts are outside the application RED measurement boundary described by the prompt.",
+      "doesNotProve": "That application components are healthy under real load or that no unrelated application failure exists."
+    },
+    {
+      "signal": "Prompt-observed: metrics use raw order and request IDs as labels and the platform reports nine million active series.",
+      "proves": "The metric schema contains unbounded high-cardinality dimensions and the reported active-series population is already large.",
+      "doesNotProve": "The complete backend bill, exact memory per series, or that removing the labels alone fixes every pipeline bottleneck."
+    },
+    {
+      "signal": "Prompt-observed: the single gateway Collector has a full queue and drops exports.",
+      "proves": "Telemetry is being lost at the reported Collector export boundary.",
+      "doesNotProve": "That sources emitted all expected data, that accepted exports were indexed, or that the payment service is unhealthy."
+    },
+    {
+      "signal": "Prompt-observed: application logs contain full card numbers and bearer tokens.",
+      "proves": "The observed application-log boundary contains prohibited sensitive values and fails a safe logging contract.",
+      "doesNotProve": "The full historical exposure population, legal classification, malicious access, or which credentials remain valid."
+    },
+    {
+      "signal": "Prompt-observed: the always-on profiler adds 12 percent CPU to the authorization service; the prompt does not provide the measurement design, workload, interval or uncertainty.",
+      "proves": "The scenario reports material profiler overhead, but only within an unspecified measurement scope.",
+      "doesNotProve": "Overhead under all workloads, the value of captured profiles, or that profiling caused the TLS incident."
+    },
+    {
+      "signal": "Required recovery evidence: if remediation is authorized, measure regional TLS and authorization journeys, listener fingerprint, telemetry-canary freshness, export loss, active series, profiler overhead and sensitive-field tests over a declared window.",
+      "proves": "If every criterion is observed, it would establish bounded user, certificate, telemetry, capacity and field-policy recovery for the tested paths and window.",
+      "doesNotProve": "Permanent reliability, exhaustive removal from every historical store, universal client compatibility, or organization-wide observability maturity."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why are black-box and white-box monitoring both necessary?",
+      "answer": "Black-box evidence tells whether the offered journey works from outside, including failures before application ingress. White-box evidence explains internal service and resource behavior. Either alone leaves important blind spots."
+    },
+    {
+      "prompt": "How would you detect that an entire region vanished from a ratio?",
+      "answer": "Track expected probe and traffic counts, freshness and region membership separately from success ratio. Alert when a population is absent or stale; a ratio computed from the surviving regions can remain perfect."
+    },
+    {
+      "prompt": "Is tail sampling always better than head sampling?",
+      "answer": "No. Tail sampling can retain slow or failed traces using later information, but it needs buffering, routing consistency, memory and decision latency. Head sampling bounds cost earlier and is simpler but may miss rare events. Choose against stated questions and failure behavior."
+    },
+    {
+      "prompt": "Why must incoming trace context be treated as untrusted?",
+      "answer": "A caller can forge identifiers, flags and baggage, cause collisions or cardinality, and inject sensitive or misleading values. Validate format and size, limit baggage, create trusted context where policy requires, and never use trace identity for authorization."
+    },
+    {
+      "prompt": "What should happen when the telemetry backend is unavailable?",
+      "answer": "Use bounded queues, timeouts and retries with one owner; expose loss and freshness; shed lower-value telemetry according to policy; and prevent instrumentation from indefinitely blocking business work. Mandatory audit signals need a separately approved fail-open or fail-closed contract."
+    },
+    {
+      "prompt": "How do you choose retention instead of saying thirty days?",
+      "answer": "Start with each operational, security, legal or trend question; required resolution; time to detection; access pattern; replay need; data sensitivity and cost. Keep expensive high-resolution data briefly and approved aggregates longer when that still answers the question."
+    },
+    {
+      "prompt": "What is a good alert?",
+      "answer": "It identifies a material current or imminent condition, has reliable and fresh evidence, names an accountable owner, requires action now, links a tested runbook and has an explicit resolve condition. A raw metric threshold without consequence and action is usually dashboard or ticket material."
+    },
+    {
+      "prompt": "What telemetry-pipeline signals matter most?",
+      "answer": "Source or canary emission, receiver acceptance and refusal, processor drops, queue occupancy and age, retry and failure counts, export acknowledgement, backend ingest and query freshness, configuration identity, clock offset, cardinality, bytes and cost."
+    },
+    {
+      "prompt": "How should profiling be used safely in production?",
+      "answer": "State a question, choose the right event, scope the target and duration, use least privilege, measure overhead with a control, set abort limits, protect profile data and symbols, record build and workload identity, and remove temporary access when done."
+    },
+    {
+      "prompt": "What would you say if an interviewer asks whether the system is fully observable?",
+      "answer": "Avoid an absolute claim. Name the critical journeys and questions the evidence can answer, coverage and freshness tests, known missing paths, loss and sampling policy, security and cost controls, and recent fault exercises. Observability is a measured capability with boundaries."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Incident leadership and customer-boundary diagnosis",
+      "points": 10,
+      "observableEvidence": "Declares regional impact despite green averages, explains pre-ingress invisibility, preserves exact certificate evidence, uses a bounded reversal and verifies the semantic journey."
+    },
+    {
+      "criterion": "End-to-end signal and pipeline architecture",
+      "points": 10,
+      "observableEvidence": "Maps five signals, black-box and white-box layers, RED, USE, golden signals, source-to-query pipeline stages, self-telemetry, redundancy, backpressure and missing-data detection."
+    },
+    {
+      "criterion": "Correlation, semantics and evidence quality",
+      "points": 10,
+      "observableEvidence": "Defines metric types and bounded dimensions, validates trace context, records event and timestamp identity, discloses sampling bias, avoids percentile and aggregation errors, and states proof limits."
+    },
+    {
+      "criterion": "Security, privacy, cost and profiling controls",
+      "points": 10,
+      "observableEvidence": "Contains sensitive logging, coordinates credential response, budgets cardinality and volume, selects retention and access by purpose, and scopes profiling with least privilege and measured overhead."
+    },
+    {
+      "criterion": "Operating model, recovery and interview communication",
+      "points": 10,
+      "observableEvidence": "Designs decision-oriented dashboards, actionable alerts, tested runbooks, layered recovery evidence and a concise senior explanation that distinguishes observed facts, inference, unknowns and future risk."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

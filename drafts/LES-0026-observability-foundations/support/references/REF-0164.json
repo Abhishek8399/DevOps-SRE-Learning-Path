@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0164",
+  "title": "Signals",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/concepts/signals/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OpenTelemetry signal-status documentation reviewed 2026-08-02; events and profiles were still described as developing or proposal-stage signals",
+  "lessonIds": ["LES-0026"],
+  "topics": ["observability signals", "traces", "metrics", "logs", "events", "profiles", "baggage", "signal maturity"],
+  "relevance": "Official OpenTelemetry taxonomy for traces, metrics, logs, baggage, events and profiles. It supports the lesson's five-evidence-signal map while preserving a dated maturity boundary: support and stability vary by signal, language, component and backend, so the taxonomy is not proof that a particular deployment collects every signal.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

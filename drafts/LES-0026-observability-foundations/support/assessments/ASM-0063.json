@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0063",
+  "lessonId": "LES-0026",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Independently investigate an unfamiliar, unseen and disposable local observability case supplied by an instructor or created and owned by the learner under explicit non-production authorization. The published LES-0026 guided lab and its known missing-signal walkthrough are excluded and cannot satisfy this assessment. Before viewing answered assessments, worked examples, generated solutions or another person's work, record the system boundary, predictions and proof requirements. Build an evidence map for metrics, logs, traces, change events and profiles; establish a measured baseline; introduce exactly one documented, bounded and reversible fault through the unseen case's owned control; diagnose it from collected evidence; identify at least one intentionally missing, misleading or degraded signal; recover and prove cleanup. Then propose a production-grade monitoring and telemetry architecture covering user journeys, RED, USE, golden signals, correlation, timestamps, pipeline health, sampling, cardinality, retention, profiling, cost, privacy, alerting and runbooks. Verify exact private identity and paths locally, but submit only sanitized evidence that preserves numeric UID and GID, privilege and boundary proof while redacting user names, group names and personal or employer path segments. Label every claim as observation, calculation, documented contract, inference, hypothesis or unknown. A reviewer, not this record or the reader, decides whether the evidence passes.",
+  "deliverables": [
+    "An independence, authorization and environment record completed before investigation, including prior exposure, help received, unseen-case source, local boundary, numeric UID and GID, privilege, network behavior, expected mutations, abort conditions and cleanup plan. Exact private identity and paths are verified locally but submitted names and personal or employer path segments are redacted.",
+    "A user-journey and architecture map from the observation point through service and resource boundaries and from signal source through collection, processing, export, storage, query, dashboard and alert consumers, with a text alternative.",
+    "A signal contract for at least one metric, one structured log, one trace or correlated request path, one change event and one profile or profiling decision, naming schema, unit, timestamp owner, dimensions, scope, collection path, retention, access, cost driver and proof limit.",
+    "A baseline evidence packet captured before fault injection with exact commands or queries, timestamps, windows, workload, sample counts, denominators, units, configuration and software identities, raw sanitized outputs and an explanation of natural variation.",
+    "At least three falsifiable hypotheses written before derived diagnosis, each with predicted evidence, disconfirming evidence, state owner, next safe observation and status updates tied to the chronological record.",
+    "One authorized bounded fault record with the exact control used, changed state, safety boundary, start time, expected symptom, abort threshold, rollback or recovery mechanism and evidence that no unrelated resource or external service was changed.",
+    "A diagnostic narrative that applies user or black-box evidence, RED at a service boundary, USE at a named resource boundary and golden signals without presenting any framework as automatic root-cause proof.",
+    "A cross-signal correlation table that keeps event time, observation time and ingestion or query time separate; records clock source and skew; and explains trace-context, sampling, query and missing-data limits.",
+    "A missing-signal investigation that locates the earliest measured loss, distortion, staleness or semantic mismatch along the evidence path and distinguishes source absence from collection, processing, export, storage, retention, permission and query causes.",
+    "A controlled recovery and cleanup packet with before, faulted, recovered and final states; independent user or synthetic verification; service and resource evidence; telemetry-pipeline evidence; process, port and file checks; and an explicit residual-risk statement.",
+    "A metric-cardinality and telemetry-cost worksheet using measured or clearly labeled estimated series, events or spans per second, bytes, retention and query needs, with assumptions, uncertainty, budget, owner and a safer design decision.",
+    "A privacy and security review covering data classification, minimization, label and attribute allowlists, secret and personal-data tests, trace-context trust, transport, storage, access, retention, profiling privilege and evidence sanitization.",
+    "A production design with decision-oriented dashboard layers, symptom and cause separation, telemetry self-monitoring, bounded queues and retries, sampling and retention policies, failure behavior, actionable alert ownership, tested runbook links and staged rollout or rollback.",
+    "A concise incident handoff and a five-minute product-company interview response that state impact, evidence, mechanism, containment, recovery, prevention, trade-offs, unknowns and at least twelve precise proof-limit statements without claiming mastery."
+  ],
+  "evidenceRequirements": [
+    "Use only an instructor-provided unseen disposable local case or a learner-created and learner-owned disposable non-production target. The guided LES-0026 lab and its published missing-signal walkthrough are prohibited for this assessment. Stop and submit a blocker rather than installing software, elevating privilege, opening firewall paths, authenticating to a service, contacting a cloud, weakening a control or inspecting data without explicit authorization.",
+    "Complete and timestamp the independence gate before derived investigation. Disclose any prior exposure to LES-0026 answered assessments or substantially similar solutions so the reviewer can require a fresh case if independence is compromised.",
+    "Do not open `ASM-0061.json`, `ASM-0062.json`, the LES-0026 guided or missing-signal walkthrough, another learner response, generated solution or model answer after the independence gate. The blank response template and official references remain allowed.",
+    "Verify exact environment identity and workspace resolution locally, including operating system, kernel, native or WSL or container boundary, numeric UID and GID, privilege, process or container boundary, relevant tool versions, configuration revision and clock status. In submitted evidence, redact user and group names and personal or employer path segments while preserving numeric UID and GID, privilege, filesystem boundary, path type and enough sanitized structure for a reviewer to verify scope.",
+    "Preserve raw evidence locally before interpretation and submit a sanitized copy. Every excerpt must retain command or query, source class, timestamp, timezone, scope, window, filters, grouping, unit, denominator and collection freshness without raw private names, private path segments, secrets or personal data; record each redaction and omission rather than silently editing evidence.",
+    "Maintain a chronological evidence ledger. Classify each entry as direct observation, documented contract, calculation, inference, hypothesis or unknown and link every conclusion to entries that support and limit it.",
+    "Capture a stable baseline and repeat comparable measurements during the fault and after recovery. If workload, sample size, configuration or collection changes, disclose the difference and do not claim a controlled comparison.",
+    "For metrics, identify instrument type and temporality where known; never average percentiles; distinguish cumulative values from rates; calculate cardinality from label combinations; and include active-series or equivalent inventory evidence where available.",
+    "For logs, show source and journal or file query boundaries, structured fields and correlation without copying secrets, tokens, credentials, full personal values or unrelated records. An empty query must trigger scope and evidence-path checks before an absence claim.",
+    "For traces, record ingress context policy, hop propagation, span identity, sampling policy and completeness limits. A trace or correlation ID is never authentication evidence and a valid context header does not prove that spans were recorded, exported or retained.",
+    "For change events and timestamps, preserve exact revision or operation identity and distinguish occurrence, observation and ingestion time. Measure or disclose clock skew; temporal proximity alone must not be presented as cause.",
+    "For profiling, state the operational question, event or profile type, process or CPU scope, duration, sampling settings, workload and build identity, privilege, sensitive-data risk and measured overhead. If profiling is unavailable or unsafe, provide the decision evidence instead of elevating or fabricating a profile.",
+    "For telemetry pipelines, measure or explicitly mark unavailable source emission, receive, refuse, process, drop, queue, retry, export, backend ingest and query freshness evidence. A running collector process or green health endpoint is not end-to-end delivery proof.",
+    "The injected fault must be singular, documented, bounded and reversible. Capture before state, fault-control output, expected and unexpected effects, abort checks, recovery action and cleanup proof. Do not use destructive deletion, host-wide stress, production credentials or uncontrolled load.",
+    "Cost analysis must separate measured facts from estimates and show formulas, units, workload, label combinations, sampling, retention, replication or index assumptions and uncertainty. Do not invent vendor prices or claim savings without a baseline.",
+    "Privacy and security analysis must test schemas or sanitized canaries for prohibited data, identify every storage and access boundary in scope, use least privilege, and treat sampling, hashing and correlation as controls with limits rather than automatic anonymization.",
+    "Recovery requires independent journey evidence plus internal mechanism and telemetry-pipeline evidence over a declared window and sample. A green graph, one request, one complete trace, one profile or stopped fault process is insufficient by itself.",
+    "Prove final cleanup using the unseen case's reviewed verification path and direct checks appropriate to the environment. List every expected remaining process, file, port, container, namespace or state item and disclose anything not returned to baseline.",
+    "State at least twelve narrow proof limits, including population, time window, sampling, missing data, clock, correlation, causality, query, pipeline, privacy, profiling and transfer limits. Reviewer acceptance applies only to this submitted evidence and does not certify production, security, future behavior, interview readiness or professional mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Independence, authorization and evidence integrity",
+      "points": 10,
+      "observableEvidence": "The learner completes the gate before investigation, uses an unseen disposable case rather than the published LES-0026 lab, discloses prior exposure and help, stays within an owned local boundary, preserves sanitized evidence with numeric UID/GID and privilege proof but no private names or paths, labels unknowns and does not use answer material or invented output."
+    },
+    {
+      "criterion": "Architecture, user journey and state ownership",
+      "points": 10,
+      "observableEvidence": "The submission maps user, service, resource and telemetry paths; names owners at every boundary; supplies a useful text alternative; and separates service state, evidence state and operator decisions."
+    },
+    {
+      "criterion": "Five-signal contracts and semantic correctness",
+      "points": 10,
+      "observableEvidence": "Metrics, logs, traces, events and profiles or a justified profiling decision have explicit schemas, scope, units, timestamps, context, collection, retention and proof limits without type, percentile or causality errors."
+    },
+    {
+      "criterion": "Baseline and experimental discipline",
+      "points": 10,
+      "observableEvidence": "The learner captures a reproducible baseline, writes falsifiable predictions first, changes one bounded variable, preserves comparability, records abort criteria and updates hypotheses from chronological evidence."
+    },
+    {
+      "criterion": "Diagnosis and missing-signal reasoning",
+      "points": 10,
+      "observableEvidence": "The narrative applies black-box, RED, USE and golden-signal questions at correct boundaries, locates the earliest supported telemetry gap or distortion, tests alternatives and distinguishes observation from inference."
+    },
+    {
+      "criterion": "Safe containment, recovery and cleanup",
+      "points": 10,
+      "observableEvidence": "The fault and remediation remain authorized and reversible; before, faulted, recovered and final states are evidenced; user and internal recovery are independent; and processes, ports, files and other changed resources are accounted for."
+    },
+    {
+      "criterion": "Telemetry pipeline reliability and observability",
+      "points": 10,
+      "observableEvidence": "The submission measures or bounds source-to-query delivery, loss, queues, retries, freshness, clock and configuration; defines backpressure and shedding behavior; and avoids equating process health with evidence delivery."
+    },
+    {
+      "criterion": "Cardinality, sampling, capacity and cost",
+      "points": 10,
+      "observableEvidence": "The learner calculates or defensibly estimates series and volume, discloses formulas and uncertainty, evaluates sampling bias and retention, sets a budget and proposes a decision-preserving bounded design without invented prices."
+    },
+    {
+      "criterion": "Security, privacy and profiling safety",
+      "points": 10,
+      "observableEvidence": "The review minimizes sensitive fields, validates context trust, protects transport, storage and access, scopes retention and profiling privilege, measures overhead, sanitizes evidence and identifies limits of hashing and sampling."
+    },
+    {
+      "criterion": "Production design, communication and proof limits",
+      "points": 10,
+      "observableEvidence": "The learner presents decision-oriented dashboards, actionable alerts and runbooks, staged change controls, a concise incident and interview explanation, explicit trade-offs and at least twelve precise evidence limits without mastery inflation."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

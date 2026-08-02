@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0169",
+  "title": "Perf events and tool security",
+  "organization": "The Linux Kernel documentation",
+  "url": "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Linux kernel administration guide; reviewed 2026-08-02",
+  "lessonIds": ["LES-0026"],
+  "topics": ["Linux profiling", "perf events", "performance counters", "profiling scope", "CAP_PERFMON", "perf_event_paranoid", "resource limits", "sensitive data"],
+  "relevance": "Primary Linux kernel guidance for what perf_events can expose, how credentials, CAP_PERFMON and perf_event_paranoid constrain collection, and which file-descriptor and memory limits affect a session. It supports least-privilege profiling and the rule that captured samples describe only the selected event, scope, workload and interval.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0167",
+  "title": "Metric types",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/concepts/metric_types/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus concept documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0026"],
+  "topics": ["metrics", "counter", "gauge", "histogram", "summary", "percentiles", "aggregation", "instrument semantics"],
+  "relevance": "Official Prometheus definition of counter, gauge, histogram and summary behavior. It anchors correct instrument choice and explains why a raw cumulative counter, client-side quantile or average must be interpreted with its type, window, labels and aggregation limits before it becomes incident evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

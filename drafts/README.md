@@ -6,9 +6,9 @@ Nothing below `drafts/` is canonical book content, a live website route, an acce
 
 ## Current staged work
 
-- No substantive lesson publication candidate is currently staged here.
-- `LES-0025` was promoted to canonical `book/` locations as the `substantive-draft` lesson `V03-L10` / `CI-002` at `/book/engineering/ci-platform-operations`, with its assessments, references, and bounded lab colocated under their canonical roots.
-- Its local engines remain teaching implementations. They demonstrate graph-versus-stage semantics, artifact transfer, minimal job environments, contract comparison, and a green-but-unsafe port; they do not prove vendor-platform behavior, provider acceptance, learner completion, or mastery.
+- `LES-0026-observability-foundations/` is the quarantined publication candidate for `V04-L01` / `OBS-001` at `/book/reliability/observability-foundations`.
+- It is being built before release engineering because progressive-delivery decisions require trustworthy signals and explicit telemetry-failure reasoning.
+- Any local signal pipeline remains a bounded teaching implementation; it cannot establish OpenTelemetry, Prometheus, Grafana, Splunk, Elastic, Datadog, Dynatrace, or production-provider behavior.
 
 ## Promotion gate
 

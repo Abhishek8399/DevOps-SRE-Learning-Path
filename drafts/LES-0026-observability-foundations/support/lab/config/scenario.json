@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "lesson": "LES-0026",
+  "scenarioId": "checkout-observability-v1",
+  "baseTime": "2026-08-02T12:00:00Z",
+  "analysisTime": "2026-08-04T12:00:00Z",
+  "service": "synthetic-checkout-api",
+  "environment": "local-teaching",
+  "thresholds": {
+    "latencyMs": 300,
+    "queueMs": 200
+  },
+  "privacy": {
+    "syntheticCustomerEmail": "synthetic-user@example.invalid",
+    "outputReplacement": "[REDACTED]"
+  },
+  "retentionSeconds": {
+    "metrics": 604800,
+    "logs": 259200,
+    "traces": 86400,
+    "events": 2592000,
+    "profiles": 21600
+  },
+  "missingSignalCase": {
+    "traceDropSequences": [3, 7]
+  },
+  "requests": [
+    {
+      "sequence": 1,
+      "requestId": "req-0001",
+      "syntheticTraceKey": "trace-key-0001",
+      "route": "/checkout",
+      "method": "POST",
+      "queueMs": 5,
+      "serviceMs": 40,
+      "status": 200
+    },
+    {
+      "sequence": 2,
+      "requestId": "req-0002",
+      "syntheticTraceKey": "trace-key-0002",
+      "route": "/checkout",
+      "method": "POST",
+      "queueMs": 10,
+      "serviceMs": 55,
+      "status": 200
+    },
+    {
+      "sequence": 3,
+      "requestId": "req-0003",
+      "syntheticTraceKey": "trace-key-0003",
+      "route": "/search",
+      "method": "GET",
+      "queueMs": 260,
+      "serviceMs": 35,
+      "status": 200
+    },
+    {
+      "sequence": 4,
+      "requestId": "req-0004",
+      "syntheticTraceKey": "trace-key-0004",
+      "route": "/checkout",
+      "method": "POST",
+      "queueMs": 20,
+      "serviceMs": 80,
+      "status": 503
+    },
+    {
+      "sequence": 5,
+      "requestId": "req-0005",
+      "syntheticTraceKey": "trace-key-0005",
+      "route": "/search",
+      "method": "GET",
+      "queueMs": 240,
+      "serviceMs": 30,
+      "status": 200
+    },
+    {
+      "sequence": 6,
+      "requestId": "req-0006",
+      "syntheticTraceKey": "trace-key-0006",
+      "route": "/checkout",
+      "method": "POST",
+      "queueMs": 15,
+      "serviceMs": 450,
+      "status": 200
+    },
+    {
+      "sequence": 7,
+      "requestId": "req-0007",
+      "syntheticTraceKey": "trace-key-0007",
+      "route": "/search",
+      "method": "GET",
+      "queueMs": 5,
+      "serviceMs": 45,
+      "status": 200
+    },
+    {
+      "sequence": 8,
+      "requestId": "req-0008",
+      "syntheticTraceKey": "trace-key-0008",
+      "route": "/checkout",
+      "method": "POST",
+      "queueMs": 12,
+      "serviceMs": 50,
+      "status": 200
+    }
+  ]
+}

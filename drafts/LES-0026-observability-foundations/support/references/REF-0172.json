@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0172",
+  "title": "The /proc Filesystem",
+  "organization": "The Linux Kernel documentation",
+  "url": "https://docs.kernel.org/filesystems/proc.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Linux kernel documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0026"],
+  "topics": ["procfs", "Linux uptime", "CPU accounting", "/proc/stat", "/proc/meminfo", "MemAvailable", "Dirty memory", "Writeback"],
+  "relevance": "Primary Linux kernel documentation for the procfs interfaces used by the Ubuntu command cards, including uptime and combined CPU idle accounting, aggregate CPU fields in /proc/stat, and memory fields such as MemAvailable, Dirty and Writeback. Exact fields and accounting semantics remain kernel-version dependent and should be checked against the running kernel.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

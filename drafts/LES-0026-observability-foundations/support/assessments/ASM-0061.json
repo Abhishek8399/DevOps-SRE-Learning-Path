@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0061",
+  "lessonId": "LES-0026",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "At 14:00 a team releases `checkout-api` revision 42 to twelve instances. The reviewed change contains two independent edits: the database client-pool limit falls from 80 to 16 per instance, and `customer.id` is added as a metric label and verbose log field. At 14:04 an external checkout probe shows success falling from 99.95 percent to 91 percent and p99 latency rising from 420 milliseconds to 4.8 seconds while request rate stays normal. Service metrics show all sixteen client connections busy, a growing pool-wait queue and pool-acquisition timeouts; host CPU is 34 percent, memory is 61 percent and disk utilization is low. A deployment event records revision 42 at 14:00. Structured logs from records that arrived contain `db_pool_timeout`, route, instance, revision and trace ID, but one instance clock is 75 seconds fast. Only 28 percent of failed probes join to a complete trace because a retry proxy does not forward valid trace context. Collector internal metrics show an exporter queue at capacity and rejected metric points after the new unbounded customer label creates hundreds of thousands of series. A short CPU profile shows no dominant function; no wall-clock or off-CPU profile was taken. An operator proposes restarting every instance, enabling debug logs and 100 percent tracing indefinitely, and adding email address as another label so affected users are easy to find. Diagnose the incident from first-year foundations through senior reasoning. Define each signal, separate user symptom, likely service mechanism and telemetry-pipeline failure, explain RED, USE and the four golden signals, state what every observation proves and does not prove, choose safe containment and recovery, and define prevention for correlation, timestamps, cardinality, sampling, retention, cost and privacy.",
+  "directAnswer": "Treat this as two related but distinct problems: a checkout reliability incident and an observability-pipeline incident. The external probe proves user-visible failure in its sampled path. The service metrics and logs support client-pool exhaustion as the first violated service contract, and the reviewed revision gives a strong, testable mechanism because the pool limit changed from 80 to 16 at the start of impact. Roll back or restore that exact known-good pool configuration through the normal controlled path, canary it, and verify user success, latency, errors and queue recovery. Do not restart everything or change several variables at once. In parallel, stop the unbounded `customer.id` metric label and do not add email. Those values create uncontrolled cardinality, cost and privacy risk; use bounded dimensions such as route, status class, region and revision, with restricted logs or traces only when an approved diagnostic purpose requires identity. Repair the retry proxy's trace-context propagation, clock synchronization and Collector capacity or backpressure after preserving evidence. Keep telemetry volume bounded and degrade telemetry before business traffic where architecture allows. CPU is not the bottleneck supported by current evidence, and a CPU profile cannot explain blocked pool wait. Recovery is not a green dashboard: require sustained external success, latency and error recovery, falling pool wait, correct revision and connection settings, fresh non-dropping telemetry, trace joins across the retry hop, valid timestamps, and no sensitive or unbounded attributes.",
+  "foundation": "Telemetry is data a system emits: metrics, logs, traces, change events and profiles. Observability is the engineering ability to use that evidence to answer questions about system behavior; buying a backend does not create that ability. Monitoring is the repeated evaluation of selected evidence for known conditions and decisions. A metric is a numeric measurement with a timestamp and dimensions. A log is a discrete record of something a component chose to report. A trace is a set of spans representing one operation across boundaries when context is propagated and the spans are recorded, exported and retained. An event records a state change such as a deployment. A profile samples where a process or system spent a selected kind of resource under a specific workload and interval. RED asks for Rate, Errors and Duration at a service boundary. USE asks for Utilization, Saturation and Errors at a resource boundary. The four golden signals are latency, traffic, errors and saturation. These models organize questions; none is a root-cause detector. In this incident the probe describes the user symptom, the pool measurements describe a likely constrained resource inside the service, the deployment event supplies timing and identity, logs add discrete failure context, traces are incomplete causal paths, and the CPU profile is evidence only about sampled CPU activity.",
+  "reasoningSteps": [
+    "Declare the exact user operation, time window and scope first: checkout attempts observed by the external probe after revision 42. Preserve the probe denominator, locations, status classification, latency distribution and timestamps; percentages without request counts and scope can mislead.",
+    "Build one timeline in a common clock: last known good, 14:00 deployment, 14:04 first confirmed impact, telemetry degradation and every operator action. Record the 75-second clock offset rather than visually correlating raw timestamps as if all clocks agreed.",
+    "Separate three layers. The user layer is failed or slow checkouts. The service mechanism under test is client-pool saturation and waiting. The evidence system has its own exporter queue, rejected points, missing propagation and clock defect. A telemetry failure can hide or distort an incident without being the service cause.",
+    "Apply RED to `checkout-api`: request rate is stable, error proportion rises and the duration distribution worsens. Use counts and a histogram-derived distribution over a declared window; never average per-instance percentiles or treat a cumulative counter as a rate without a time function.",
+    "Apply the golden signals at the user-facing service boundary: traffic is normal, errors and latency are bad, and pool saturation is a candidate constraint. Golden signals reveal where to investigate; they do not identify the code or configuration that caused saturation.",
+    "Apply USE to the database client pool, not to the whole host: utilization is 16 of 16 connections, saturation is the growing wait queue and acquisition delay, and errors are pool timeouts. Normal host CPU and memory do not contradict saturation of this smaller logical resource.",
+    "Compare revision 42 with the last known-good resolved configuration. The pool reduction starts at the impact boundary and predicts full utilization, queue growth and acquisition timeouts. That is a strong hypothesis, but timing alone is not causality; a bounded reversal or controlled reproduction supplies stronger evidence.",
+    "Use logs as discrete corroboration. `db_pool_timeout` with route, instance, revision and trace ID ties selected failures to a component decision. Missing log records do not mean an event did not occur because application filtering, rate limiting, permissions, rotation, forwarding, Collector queues, indexing, retention and query scope can each remove visibility.",
+    "Use traces only for operations whose context and spans exist. A trace ID is an identifier, not proof of completeness. The retry proxy's broken propagation predicts separate or missing downstream spans; sampling and exporter loss add other reasons a failed probe may not join to a complete trace.",
+    "Treat the deployment event as change evidence: it proves the recorded revision transition at the event owner's boundary. It does not prove every instance loaded the intended settings, that revision 42 caused the incident, or that rollback reached every instance.",
+    "Interpret the CPU profile narrowly. It reports sampled CPU activity for its process or system scope, event, frequency, call-graph method, workload and interval. A blocked connection wait can consume wall time without dominating CPU samples; no CPU hotspot is not proof that the service has no performance bottleneck.",
+    "Contain with the smallest reversible service change. Freeze wider rollout and unrelated mutations, restore the reviewed pool limit or known-good revision to one canary cohort, keep enough capacity, and define abort thresholds. Avoid fleet restart because it destroys temporal evidence, changes all instances and may briefly hide queueing without fixing configuration.",
+    "Contain the telemetry incident independently. Remove the unbounded customer label, stop unsafe verbose identity fields, preserve Collector and backend rejection counters, and bound queues, batches and retries. Telemetry must not create unbounded memory, network or storage load or block the business request path.",
+    "Do not use email, customer ID, trace ID or request ID as a general metric label. Every distinct label-set becomes a time series in dimensional metric systems. Use bounded operational labels and move approved high-cardinality correlation to access-controlled logs or traces with minimization, retention and audit controls.",
+    "Repair trace propagation at every ingress, retry, messaging and outbound boundary using the standard trace context contract. Test valid, missing, malformed and untrusted incoming context. Propagation links identity; it still does not guarantee sampling, successful export, backend retention or causal correctness of application attributes.",
+    "Define a telemetry budget before raising volume: expected events or spans per second, bytes per item, active series, retention, index expansion, network and storage cost, query need and incident value. Temporary debug changes need an owner, bounded scope, expiry, rollback and privacy review.",
+    "Verify service recovery with independent evidence: external checkout success and latency recover for a declared window and sample count, error count falls, pool queue drains, acquisition latency normalizes, intended revision and pool values are observed, and representative real or synthetic user journeys complete.",
+    "Verify observability recovery separately: source emission and Collector receive, process, drop and export counts reconcile within known loss policy; backend freshness meets objective; retry-hop traces join; clock offset is bounded; cardinality returns below budget; restricted fields are absent; and queries disclose their window, dimensions and missing-data behavior. State that this proves only the observed population and interval.",
+    "Prevent recurrence with configuration bounds and load tests for the pool, deployment markers, correlation-contract tests, time-sync monitoring, schema and cardinality review in CI, safe Collector buffering and self-telemetry, signal-specific retention, sensitive-field allowlists, and runbooks that map each alert to an owner and next evidence.",
+    "Close with proof limits. Correlation is not causation; absence is not nonexistence; one successful canary is not fleet proof; a complete trace is not user success; a profile is not universal CPU truth; and restored telemetry is not restored service. Each conclusion names its source, scope, timestamp, denominator and uncertainty."
+  ],
+  "seniorAnswer": "I would lead with the customer contract: an external probe shows a real checkout symptom after revision 42. I would open parallel service and telemetry workstreams so a blind spot is not mistaken for the outage itself. RED at the checkout boundary shows stable rate with sharply worse errors and p99 duration. USE at the client-pool boundary shows 100 percent utilization, a growing wait queue and acquisition errors even though the host is not CPU- or memory-saturated. The reviewed pool change predicts those observations, so I would freeze rollout and canary the exact last-known-good setting, not restart the fleet. I would verify instance configuration as well as user outcomes. The deployment event and timeout logs strengthen the hypothesis but do not by themselves prove causality. Trace coverage is biased because propagation and export are failing, and the CPU-only profile cannot see off-CPU pool waits. Separately I would remove the unbounded customer dimension, reject email as telemetry metadata, inspect Collector receive/drop/export counters and recover a bounded pipeline. I would repair trace-context forwarding, clock offset and correlation tests. The durable design budgets active series, span and log volume, retention and query value; classifies and minimizes sensitive fields; makes telemetry failure non-blocking where permitted; and monitors its own freshness and loss. I call recovery only after sustained external success, latency and errors, pool-queue drainage, exact revision evidence, trace joins, bounded cardinality, fresh pipeline data and privacy checks. Those observations establish recovery only for the declared paths, samples and window.",
+  "weakAnswer": "CPU is normal, so the database must be slow. Restart all instances, turn on every log and trace, add customer email to the dashboard, and wait for the graphs to become green.",
+  "whyWeak": "It chooses a cause that the evidence does not establish, ignores saturation of the client pool, changes many variables at once, destroys useful incident state, risks telemetry-induced overload, creates high-cardinality and sensitive-data exposure, misuses a CPU profile to exclude blocked time, treats incomplete traces as representative, and defines recovery by dashboard appearance instead of user, service and pipeline evidence.",
+  "evidence": [
+    {
+      "signal": "Prompt-observed: at 14:04 the external checkout probe reports success falling from 99.95 percent to 91 percent and p99 rising from 420 milliseconds to 4.8 seconds while request rate remains normal.",
+      "proves": "The probe's user-facing checkout path degraded under its reported scope and measurement definition.",
+      "doesNotProve": "The unstated attempt count, exact probe locations, duration of impact, that all users were affected, or that the database pool caused the failures."
+    },
+    {
+      "signal": "Prompt-observed: all sixteen client-pool slots are in use, the pool-wait queue grows, pool-acquisition timeouts occur and request rate remains normal.",
+      "proves": "The measured application pool is saturated and requests are waiting or timing out at that resource boundary.",
+      "doesNotProve": "Why slots remain occupied, whether 80 is the correct permanent limit, or whether the downstream database can safely accept more connections."
+    },
+    {
+      "signal": "Proposed evidence: if an authorized bounded canary restores only the prior pool setting under comparable load, record whether pool wait drains and checkout outcomes recover.",
+      "proves": "If that controlled result is observed, it would strengthen the pool-limit mechanism and show reversal restored the measured canary contract.",
+      "doesNotProve": "That no other contributing factor exists, that the prior limit is safe at all loads, or that the whole fleet and every user have recovered."
+    },
+    {
+      "signal": "Prompt-observed: Collector internal metrics show an exporter queue at capacity and rejected metric points after the unbounded customer label creates hundreds of thousands of series.",
+      "proves": "Metric points are being rejected at the reported telemetry boundary, and the ordering is consistent with the cardinality change.",
+      "doesNotProve": "That every missing log or span was lost there, that backend storage is healthy, or that telemetry loss caused checkout failure."
+    },
+    {
+      "signal": "Prompt-observed: only 28 percent of failed probes join to complete traces, and the retry proxy is known not to forward valid trace context.",
+      "proves": "The available complete traces are an incomplete subset and the stated retry-proxy behavior is a supported propagation gap.",
+      "doesNotProve": "The behavior of unsampled requests, whether every other hop propagates correctly, or the population-wide distribution of failure causes."
+    },
+    {
+      "signal": "Prompt-observed: a short CPU profile shows no dominant function; its exact duration, sampling settings and workload scope are not provided, and no wall-clock or off-CPU profile was taken.",
+      "proves": "No function dominated the reported short CPU sample under its unspecified capture details.",
+      "doesNotProve": "That CPU was never constrained, that blocked or sleeping time is absent, or that there is no latency bottleneck."
+    },
+    {
+      "signal": "Prompt-observed: one instance's wall clock is 75 seconds ahead of the reference clock.",
+      "proves": "Raw wall-clock timestamps from that instance cannot be directly ordered with correctly synchronized sources without adjustment.",
+      "doesNotProve": "That the clock defect caused checkout failure or that trace duration based on monotonic clocks is wrong."
+    },
+    {
+      "signal": "Required recovery evidence: if bounded remediation is authorized, measure whether external probe success and duration meet the declared objective, pool wait returns to baseline, expected revision and settings are observed, and Collector loss stays flat with fresh backend data for a declared window.",
+      "proves": "If all criteria are observed, they would establish bounded user, service-constraint, configuration and telemetry recovery for the measured paths and window.",
+      "doesNotProve": "Long-term reliability, complete absence of sensitive data, untested workload behavior, or learner and professional mastery."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why can low host CPU coexist with severe saturation?",
+      "answer": "Saturation belongs to a named resource. The sixteen-slot client pool can be full with a wait queue while threads sleep and the host CPUs remain mostly idle. USE must be applied to the pool as well as to host resources."
+    },
+    {
+      "prompt": "What is wrong with averaging p95 or p99 values from instances?",
+      "answer": "A percentile is a position in one distribution, not an additive value. Averaging instance percentiles loses traffic weights and distribution shape. Sum classic histogram buckets only when boundaries, units and semantics align; compatible native-histogram schemas can aggregate across resolutions under the deployed version's rules. Then calculate the percentile over the combined population."
+    },
+    {
+      "prompt": "Why is `customer.id` dangerous as a metric label?",
+      "answer": "Each distinct label combination creates a separate series. Customer identity is unbounded, so memory, ingestion, storage and query cost can grow with users. It may also be personal data. Use bounded labels for aggregation and an approved restricted correlation channel when identity is truly necessary."
+    },
+    {
+      "prompt": "Does a valid `traceparent` header guarantee a complete trace?",
+      "answer": "No. It supplies interoperable trace and parent context. A component may still choose not to record, sampling may exclude spans, export can fail, retention may expire, and an intermediary may create incorrect relationships."
+    },
+    {
+      "prompt": "Why does an empty `journalctl` query not prove that the application emitted no log?",
+      "answer": "The query may use the wrong boot, unit, priority, time range, namespace or permissions; records may be rate-limited, volatile, rotated or forwarded elsewhere. Check the emission and journal boundaries before concluding nonexistence."
+    },
+    {
+      "prompt": "When is a profile more useful than another log line?",
+      "answer": "When the question is where a resource such as CPU cycles or allocations is concentrated under a representative workload. Choose event, scope and interval deliberately. For blocked latency, use wall-clock or off-CPU evidence rather than expecting a CPU profile to answer it."
+    },
+    {
+      "prompt": "Should telemetry ever be allowed to fail?",
+      "answer": "Loss policy depends on the signal. Debug telemetry should normally shed or buffer within bounds before it blocks business work. Mandatory audit evidence may require a fail-closed design. The policy, queue limits, retry owner and data-loss visibility must be explicit."
+    },
+    {
+      "prompt": "How do RED, USE and golden signals relate?",
+      "answer": "RED describes service requests; USE describes resources; golden signals organize service health around latency, traffic, errors and saturation. They overlap, but their boundaries differ. Use them to generate questions and then test mechanisms with narrower evidence."
+    },
+    {
+      "prompt": "How should a temporary debug-telemetry increase be governed?",
+      "answer": "Define purpose, affected scope, fields, sampling rate, volume and cost ceiling, privacy approval, owner, start and automatic expiry, access, retention and rollback. Monitor the telemetry pipeline and business overhead during the change."
+    },
+    {
+      "prompt": "What makes the recovery statement senior-quality?",
+      "answer": "It names independent user evidence, internal mechanism evidence, configuration identity, telemetry freshness and loss, correlation, window, sample count and known limits. It does not turn temporal correlation or one canary into a universal claim."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Signal foundations and monitoring methods",
+      "points": 10,
+      "observableEvidence": "Defines metrics, logs, traces, events and profiles; correctly applies RED, USE and golden signals to explicit service and resource boundaries without treating a framework as diagnosis."
+    },
+    {
+      "criterion": "Incident reasoning and state separation",
+      "points": 10,
+      "observableEvidence": "Separates user impact, client-pool mechanism and telemetry-pipeline failure; uses timeline, configuration identity and falsifiable hypotheses instead of dashboard correlation alone."
+    },
+    {
+      "criterion": "Signal interpretation and proof limits",
+      "points": 10,
+      "observableEvidence": "States what probe, metrics, logs, traces, event, profile, clock and Collector evidence each prove and cannot prove, with windows, scope, denominators and missing-data bias."
+    },
+    {
+      "criterion": "Safe containment, recovery and verification",
+      "points": 10,
+      "observableEvidence": "Chooses a bounded reversible service correction and separate telemetry remediation, preserves evidence, avoids broad restart, and verifies user, service, configuration and pipeline recovery."
+    },
+    {
+      "criterion": "Durable cost, privacy and operability design",
+      "points": 10,
+      "observableEvidence": "Controls cardinality, propagation, timestamps, sampling, queues, retention, sensitive fields and telemetry budgets and explains how each prevention control is tested."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
