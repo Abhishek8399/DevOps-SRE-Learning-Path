@@ -1,6 +1,6 @@
 # LES-0026 local observability evidence lab
 
-> **Maintainer-review notice:** this copy lives under `drafts/.../support/lab` and is not the learner entry point. Review and verification happen here before promotion. Every learner command below intentionally points to the future canonical location, `book/labs/LES-0026-observability-foundations`.
+> **Canonical learner lab:** this reviewed bundle lives at `book/labs/LES-0026-observability-foundations`. Read the safety model and command classifications before running it as a normal Ubuntu user.
 
 This lab teaches one operating habit: **do not ask a single signal to answer a question it cannot answer**.
 
@@ -101,7 +101,7 @@ bash --version | head -n 1
 
 The maintainer verifier additionally expects `shellcheck`, `sha256sum`, `grep`, and `find`, all of which are already present in the intended Ubuntu 24.04 workbench. The lab never installs them.
 
-After promotion, enter the canonical lab directory on native Ubuntu or Ubuntu in WSL, then begin with a read-only check:
+Enter the canonical lab directory on native Ubuntu or Ubuntu in WSL, then begin with a read-only check:
 
 **[READ-ONLY]**
 
@@ -449,7 +449,7 @@ Linux `renameat2(RENAME_NOREPLACE)` prevents overwriting a quarantine destinatio
 
 ## Maintainer verification
 
-This command is for maintainers reviewing the draft before promotion:
+This command is for maintainers verifying the canonical bundle:
 
 **[DESTRUCTIVE]** — creates and removes only bounded verifier-owned `/tmp` lifecycles and private regression roots.
 

@@ -338,10 +338,10 @@
   "lastReviewed": "2026-08-02",
   "reviewAfter": "2027-02-02",
   "limitations": [
-    "No OpenTelemetry SDK or Collector, Prometheus server, log or trace backend, continuous profiler, Linux perf deployment, dashboard service, or alert manager was installed or executed while authoring this lesson. The support lab executed bounded deterministic Python cProfile call-count evidence, which does not prove production profiler behavior.",
+    "No OpenTelemetry SDK or Collector, Prometheus server, log or trace backend, continuous profiler, Linux perf deployment, dashboard service, or alert manager was installed or executed while authoring this lesson. The canonical lab executed bounded deterministic Python cProfile call-count evidence, which does not prove production profiler behavior.",
     "OpenTelemetry events and profiles were evolving on the review date. Their maturity, data model, SDK coverage, and interoperability must be verified against current official documentation before production adoption.",
     "The command cards read local procfs and journal state or process fixed synthetic data. They do not reproduce a distributed service, backend semantics, collector failure, production load, customer traffic, or provider billing.",
-    "The support lab verifier passed from the draft support path on Ubuntu 24.04 on 2026-08-02. Promotion to the canonical lab path and publication review remain pending; that pass proves only the encoded local model and lifecycle, not production behavior, learner execution, or mastery.",
+    "The canonical lab verifier passed from `book/labs/LES-0026-observability-foundations` on Ubuntu 24.04 on 2026-08-02, including root refusal, thirteen restart boundaries, ownership-preservation checks, and final absence. That pass proves only the encoded local model and lifecycle, not production behavior, formal chapter acceptance, learner execution, or mastery.",
     "Journal visibility varies by init system, permissions, namespace, retention, boot, and WSL configuration. Empty output cannot prove that no event occurred.",
     "Timestamps and correlation identifiers are reported evidence, not trusted identity, authentication, causal proof, or a total ordering across hosts.",
     "Cardinality, sampling, retention, and cost examples are deliberately small models. Actual limits, compression, pricing, query behavior, and privacy obligations depend on the selected systems and organization.",
@@ -963,7 +963,7 @@ Write the boundary: “Region r2 checkout success exceeded the objective for 30 
 
 ## Guided Ubuntu lab
 
-There are two learning modes. The first is the bounded local evidence model for `LES-0026-LAB-001`; the second is independent reasoning for `LES-0026-LAB-002`. The canonical runtime target is `book/labs/LES-0026-observability-foundations`. Run commands only after the support bundle has been promoted to that exact path and inspect its `README.md`, `lab.sh`, controller, model, configuration, and verifier first.
+There are two learning modes. The first is the bounded local evidence model for `LES-0026-LAB-001`; the second is independent reasoning for `LES-0026-LAB-002`. The canonical runtime target is `book/labs/LES-0026-observability-foundations`. Inspect its `README.md`, `lab.sh`, controller, model, configuration, and verifier before running commands.
 
 ### Guided lab contract
 
@@ -1024,7 +1024,7 @@ Produce an evidence plan, not a guess. Rank at least three hypotheses. Separate 
 
 ### Lab proof boundary
 
-The checked-in support lab has a reviewed interface and is intended for promotion to the canonical directory with this lesson. This text does not itself claim a learner run or maintainer pass. Preserve actual command output. Automated verification can prove encoded local invariants—deterministic counts, initial ambiguity, manifest binding, modeled export loss, refusal, and cleanup—not conceptual mastery, production safety, W3C trace-context compliance, collector or vendor behavior, causality, or interview readiness. Independent reasoning still requires qualified review.
+The checked-in canonical lab has a reviewed interface and is colocated with this lesson. This text does not itself claim a learner run or maintainer pass. Preserve actual command output. Automated verification can prove encoded local invariants—deterministic counts, initial ambiguity, manifest binding, modeled export loss, refusal, and cleanup—not conceptual mastery, production safety, W3C trace-context compliance, collector or vendor behavior, causality, or interview readiness. Independent reasoning still requires qualified review.
 
 ## Production transfer
 
@@ -1489,7 +1489,7 @@ Mastery is demonstrated when you can identify a measurement failure while a serv
 
 ## References and review
 
-The reference identifiers below point to canonical registry records that are promoted with this lesson. Official and primary sources are preferred because signal models and products evolve.
+The reference identifiers below point to canonical registry records stored with this lesson. Official and primary sources are preferred because signal models and products evolve.
 
 - **REF-0164 — OpenTelemetry Signals.** Vendor-neutral signal taxonomy for traces, metrics, logs, baggage, and developing event and profile concepts. It supports the five-family map, but current maturity must be rechecked because the documentation is living.
 - **REF-0165 — Google SRE, Monitoring Distributed Systems.** Primary SRE treatment of black-box and white-box monitoring, symptoms and causes, actionable alerting, and latency, traffic, errors, and saturation. Principles are durable; examples come from the 2016 SRE book.
@@ -1509,7 +1509,7 @@ On or before `2027-02-02`, a reviewer should:
 2. Verify Prometheus metric and histogram semantics against the versions used by any examples or labs.
 3. Compare procfs field semantics with REF-0172 and the running kernel, then compare the journal command with Ubuntu 24.04’s installed manual and test WSL’s no-journal branch.
 4. Re-run schema and lesson-standard validation; confirm exactly 12 command records, 2 labs, 4 incidents, 6 diagrams, 3 assessments, and 9 references.
-5. Run the promoted lab’s `bash verify.sh` as a normal Ubuntu user and preserve the actual result; do not convert an unrun design into a pass claim.
+5. Run the canonical lab’s `bash verify.sh` as a normal Ubuntu user and preserve the actual result; do not convert an unrun design into a pass claim.
 6. Recheck every command for bounded scope, units, environment assumptions, and explicit `proves` and `doesNotProve` statements.
 7. Recheck privacy language, retention assumptions, and cost examples against current organizational and legal policy.
 8. Have an independent reviewer score the transfer scenario and challenge at least one causal claim and one missing-data claim.

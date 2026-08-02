@@ -304,7 +304,9 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
       ? <Link href="/book/connectivity">Continue: Volume 02 -&gt;</Link>
       : entry.volumeId === "02-connectivity"
         ? <Link href="/book/engineering">Continue: Volume 03 -&gt;</Link>
-        : <Link href="/book#knowledge-map">Continue through the knowledge map -&gt;</Link>;
+        : entry.volumeId === "03-engineering-delivery"
+          ? <Link href="/book/reliability">Continue: Volume 04 -&gt;</Link>
+          : <Link href="/book#knowledge-map">Continue through the knowledge map -&gt;</Link>;
   return (
     <article className={styles.article} id={metadata.slug}>
       <header className={styles.hero}>

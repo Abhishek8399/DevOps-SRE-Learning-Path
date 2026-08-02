@@ -9,13 +9,14 @@ const startLessonCount = readerEntriesForVolume("00-start-safely").length;
 const linuxLessonCount = readerEntriesForVolume("01-linux-systems").length;
 const connectivityLessonCount = readerEntriesForVolume("02-connectivity").length;
 const engineeringLessonCount = readerEntriesForVolume("03-engineering-delivery").length;
+const reliabilityLessonCount = readerEntriesForVolume("04-reliability-operations").length;
 
 const volumes = [
   { number: "00", title: "Start safely", detail: "Systems thinking, evidence, cleanup, command risk, and a reliable learning workflow.", state: lessonState(startLessonCount), href: "/book/start" },
   { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: lessonState(linuxLessonCount), href: "/book/linux" },
   { number: "02", title: "Connectivity", detail: "Ethernet through TLS: routing, TCP, DNS, HTTP, proxies, load balancers, and PKI.", state: lessonState(connectivityLessonCount), href: "/book/connectivity" },
   { number: "03", title: "Engineering and delivery", detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, and supply chain.", state: lessonState(engineeringLessonCount), href: "/book/engineering" },
-  { number: "04", title: "Reliability and operations", detail: "Observability, SLOs, capacity, overload, incidents, toil, backup, and recovery.", state: "PLANNED" },
+  { number: "04", title: "Reliability and operations", detail: "Observability, SLOs, capacity, overload, incidents, toil, backup, and recovery.", state: lessonState(reliabilityLessonCount), href: "/book/reliability" },
   { number: "05", title: "Infrastructure and platforms", detail: "Terraform, Ansible, Kubernetes internals, GitOps, golden paths, and platform SLOs.", state: "PLANNED" },
   { number: "06", title: "State and distributed systems", detail: "Databases, queues, streams, replication, consistency, consensus, and workflows.", state: "PLANNED" },
 ];

@@ -12,10 +12,10 @@ const availableVolumes: readonly Readonly<{
   { id: "01-linux-systems", number: "01", title: "Linux systems", route: "/book/linux" },
   { id: "02-connectivity", number: "02", title: "Connectivity", route: "/book/connectivity" },
   { id: "03-engineering-delivery", number: "03", title: "Engineering & delivery", route: "/book/engineering" },
+  { id: "04-reliability-operations", number: "04", title: "Reliability & operations", route: "/book/reliability" },
 ];
 
 const plannedVolumes = [
-  ["04", "Reliability & operations"],
   ["05", "Infrastructure & platforms"],
   ["06", "Distributed systems"],
 ];

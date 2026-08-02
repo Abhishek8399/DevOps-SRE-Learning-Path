@@ -80,6 +80,8 @@ The routed volume begins with `LES-0009` / `V03-L01`, a safe local Ubuntu/WSL wo
 
 Metrics, logs, traces, events, profiling, OpenTelemetry, SLIs, SLOs, error budgets, alert design, capacity, overload, retries, backpressure, degradation, incident command, runbooks, post-incident reviews, toil, backup, restore, RTO/RPO, chaos, and disaster recovery.
 
+The routed Volume 04 path begins with `LES-0026` / `V04-L01` / `OBS-001` at `/book/reliability/observability-foundations`. It teaches metrics, logs, traces, events, and profiles as complementary evidence; follows telemetry across instrumentation, clocks, context, queues, sampling, cardinality, retention, privacy, and cost boundaries; and includes a guarded local five-signal fixture. That fixture is a deterministic teaching implementation, not a representative instrumented service, OpenTelemetry SDK or Collector, Prometheus, Grafana, continuous profiler, or vendor backend. Publication and mentor-operated checks do not establish production behavior, formal acceptance, learner transfer, delayed recall, or mastery.
+
 ### Volume 05 - Infrastructure and platforms
 
 Terraform/OpenTofu, state, drift, policy, Ansible, image construction, Kubernetes architecture, reconciliation, scheduling, networking, storage, security, upgrades, multi-tenancy, platform engineering, golden paths, self-service, and platform SLOs.
@@ -122,9 +124,9 @@ Data + distributed systems + SRE ------> data/ML platforms
 All core branches ----------------------> architecture leadership
 ```
 
-Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The `LES-0009` through `LES-0013` and `LES-0014` through `LES-0018` batches extend the safe-start, Linux, connectivity, and engineering paths in dependency order. The current canonical sequence continues through `LES-0025`; future content begins with `LES-0026` and must preserve all published lesson, route, state, assessment, reference, and curriculum ownership.
+Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The `LES-0009` through `LES-0013` and `LES-0014` through `LES-0018` batches extend the safe-start, Linux, connectivity, and engineering paths in dependency order. The current canonical worktree sequence continues through `LES-0026`; future content begins with `LES-0027` and must preserve all published lesson, route, state, assessment, reference, and curriculum ownership.
 
-The local reader exposes twenty-five lessons across Volumes 00 through 03: five established typed lessons plus twenty schema-backed `substantive-draft` lessons. The structured corpus contains 60 assessments—forty complete-answer records and twenty answer-isolated independent transfers—and 163 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
+The uncommitted canonical reader exposes twenty-six lessons across Volumes 00 through 04: five established typed lessons plus twenty-one schema-backed `substantive-draft` lessons. The structured corpus contains 63 assessments—forty-two complete-answer records and twenty-one answer-isolated independent transfers—and 172 references. Automated LES-0026 content, registry, schema, reader, lint, typecheck, build, Ubuntu-lab, loopback-HTTP, asset, link, and hygiene gates pass. Real-browser interaction remains unavailable, and the feature commit, push, and exact remote parity remain pending. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
 
 ## Planned repository shape
 

@@ -1077,12 +1077,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes twenty lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes twenty-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 20);
-  assert.equal(result.metrics.assessments, 60);
-  assert.equal(result.metrics.references, 163);
+  assert.equal(result.metrics.lessons, 21);
+  assert.equal(result.metrics.assessments, 63);
+  assert.equal(result.metrics.references, 172);
 
   const expectations = [
     {
@@ -1425,6 +1425,24 @@ test("the live structured corpus publishes twenty lessons with exact ownership a
         "REF-0161", "REF-0162", "REF-0163",
       ],
       independentId: "ASM-0060",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations",
+        "LES-0026-observability-foundations", "lesson.md"),
+      id: "LES-0026",
+      domain: "reliability",
+      route: "/book/reliability/observability-foundations",
+      volume: "04-reliability-operations",
+      order: 1,
+      prerequisiteLessonIds: ["LES-0008"],
+      prerequisiteCurriculumIds: ["FND-001", "DBG-001"],
+      assessmentIds: ["ASM-0061", "ASM-0062", "ASM-0063"],
+      referenceIds: [
+        "REF-0164", "REF-0165", "REF-0166", "REF-0167",
+        "REF-0168", "REF-0169", "REF-0170", "REF-0171",
+        "REF-0172",
+      ],
+      independentId: "ASM-0063",
     },
   ];
 

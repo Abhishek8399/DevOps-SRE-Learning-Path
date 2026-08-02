@@ -177,6 +177,9 @@ grep -Fq 'book/labs/LES-0026-observability-foundations' README.md \
 if grep -Eq '^cd .*drafts/' README.md; then
   fail 'draft-path-exposed-as-learner-command'
 fi
+if grep -Eiq 'future canonical|after promotion|before promotion|intended for promotion|reviewing the draft' README.md; then
+  fail 'stale-draft-promotion-language'
+fi
 grep -Fq 'guided walkthrough' README.md || fail 'walkthrough-classification-missing'
 grep -Fq 'record-hypothesis delayed' README.md || fail 'hypothesis-command-missing'
 grep -Fq 'pipeline_trace_produced=8' README.md || fail 'pipeline-key-doc-mismatch'

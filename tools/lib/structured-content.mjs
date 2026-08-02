@@ -1598,6 +1598,7 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
     ["01-linux-systems", "linux"],
     ["02-connectivity", "connectivity"],
     ["03-engineering-delivery", "engineering"],
+    ["04-reliability-operations", "reliability"],
   ]);
   for (const entry of legacy.entries) {
     const id = entry.record.id;

@@ -45,6 +45,8 @@ const stages = [
     number: "05",
     title: "Observability & SRE",
     detail: "Signals, SLIs, SLOs, alert quality, incidents, capacity, overload, toil, resilience, and recovery.",
+    state: availableLessons(readerEntriesForVolume("04-reliability-operations").length),
+    href: "/book/reliability",
   },
   {
     number: "06",
@@ -131,7 +133,7 @@ export default function Home() {
             <h2 id="journey-title">One route through the systems that production depends on.</h2>
           </div>
           <p>
-            Start with the four available stages. Planned stages reserve the curriculum order;
+            Start with the five available stages. Planned stages reserve the curriculum order;
             they have no lesson route and do not imply that content or competency exists yet.
           </p>
         </header>
