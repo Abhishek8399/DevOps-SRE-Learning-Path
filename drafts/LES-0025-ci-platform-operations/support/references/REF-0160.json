@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0160",
+  "title": "Approvals and checks",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/devops/pipelines/process/approvals",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Azure Pipelines approvals and checks documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Azure Pipelines", "approvals", "checks", "protected resources", "environments", "service connections", "exclusive lock", "resource authorization", "deployment control"],
+  "relevance": "Official Microsoft reference for approvals and checks configured on protected resources rather than solely inside pipeline YAML. It supports the separation of pipeline authorship from resource authorization, the use of environment and exclusive-lock controls, and the need to preserve the exact policy decision and immutable release intent.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0157",
+  "title": "Extending with Shared Libraries",
+  "organization": "Jenkins",
+  "url": "https://www.jenkins.io/doc/book/pipeline/shared-libraries/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Jenkins Pipeline Shared Libraries documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Jenkins Pipeline", "Shared Libraries", "trusted libraries", "untrusted libraries", "source control", "library versions", "Groovy sandbox", "reusable pipeline code", "privilege boundaries"],
+  "relevance": "Primary Jenkins documentation for centralizing Pipeline logic and for the critical difference between trusted and untrusted Shared Libraries. It supports treating library source write access and version selection as supply-chain and controller-privilege decisions, not merely code reuse convenience.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,37 @@
+{
+  "contract": {
+    "concurrency": "cancel-older-same-ref",
+    "networkTargets": [],
+    "permissions": [
+      "artifact:write",
+      "source:read"
+    ],
+    "secretInputs": [],
+    "timeoutSeconds": 300
+  },
+  "engine": "local-stage",
+  "pipelineIdentity": "portable-pipeline-v1",
+  "portableInput": "portable-output-v1\n",
+  "schemaVersion": 1,
+  "sourceIdentity": "local-source-001",
+  "stages": [
+    {
+      "id": "build-stage",
+      "jobs": [
+        {
+          "action": "build",
+          "id": "build"
+        }
+      ]
+    },
+    {
+      "id": "test-stage",
+      "jobs": [
+        {
+          "action": "test",
+          "id": "test"
+        }
+      ]
+    }
+  ]
+}

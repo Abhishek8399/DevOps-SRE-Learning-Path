@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0155",
+  "title": "GitLab CI/CD YAML syntax reference",
+  "organization": "GitLab",
+  "url": "https://docs.gitlab.com/ci/yaml/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitLab CI/CD YAML reference; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["GitLab CI/CD", "pipeline configuration", "includes", "jobs", "needs", "artifacts", "cache", "rules", "resource groups", "configuration snapshots"],
+  "relevance": "Primary GitLab syntax source for pipeline configuration, includes, dependency-aware jobs, artifacts, caches, rules and resource serialization. It supports the lesson's portability mapping and the requirement to preserve resolved configuration identity instead of assuming that the currently visible file describes an older run.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

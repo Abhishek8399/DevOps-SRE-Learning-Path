@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0159",
+  "title": "Azure Pipelines agents",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Azure Pipelines agent documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Azure Pipelines", "agents", "agent pools", "Microsoft-hosted agents", "self-hosted agents", "capabilities", "demands", "parallel jobs", "agent lifecycle"],
+  "relevance": "Primary Microsoft reference for hosted and self-hosted agents, pools, capabilities and demands. It supports the lesson's eligibility model, the need to distinguish advertised capabilities from verified tools, and the operational requirement to refresh and canary self-hosted agent state after controlled software changes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

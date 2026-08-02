@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0153",
+  "title": "Workflow syntax for GitHub Actions",
+  "organization": "GitHub",
+  "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitHub Actions workflow syntax reference; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["GitHub Actions", "workflow syntax", "events", "permissions", "jobs", "job dependencies", "runner selection", "environments", "concurrency", "timeouts"],
+  "relevance": "Primary GitHub reference for the structure and declared semantics of workflow triggers, permissions, job graphs, `runs-on`, environments, concurrency and timeouts. It supports provider-specific syntax explanations while the lesson keeps execution, security and recovery claims bounded by organization policy and observed run evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

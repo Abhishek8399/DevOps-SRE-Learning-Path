@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0154",
+  "title": "Managing access to self-hosted runners",
+  "organization": "GitHub",
+  "url": "https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitHub Actions self-hosted runner access guidance; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["self-hosted runners", "runner groups", "repository access", "organization access", "labels", "administrative scope", "public repository risk", "trust boundaries"],
+  "relevance": "Official GitHub guidance used to distinguish runner-group access from labels and to explain why repository or organization scope is an eligibility predicate. It also anchors the warning that self-hosted execution of public contribution code requires a deliberately restricted trust boundary rather than a shared privileged host.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

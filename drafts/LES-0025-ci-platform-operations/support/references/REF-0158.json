@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0158",
+  "title": "Managing plugins",
+  "organization": "Jenkins",
+  "url": "https://www.jenkins.io/doc/book/managing/plugins/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Jenkins plugin management documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Jenkins plugins", "plugin manager", "plugin dependencies", "plugin updates", "controller restart", "compatibility", "upgrade operations", "rollback limitations"],
+  "relevance": "Official Jenkins source for plugin installation, dependency resolution and update operations. It anchors the lesson's requirement to inventory exact controller, Java and plugin identities, test a pinned candidate, plan restart and restore behavior, and avoid assuming that replacing one plugin file safely reverses configuration or data migration.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

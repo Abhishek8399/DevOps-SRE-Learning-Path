@@ -1,0 +1,20 @@
+{
+  "artifactHandoff": true,
+  "concurrency": "cancel-older-same-ref",
+  "dependencyEdges": [
+    "build->test"
+  ],
+  "jobOrder": [
+    "build",
+    "test"
+  ],
+  "networkTargets": [],
+  "permissions": [
+    "artifact:write",
+    "source:read"
+  ],
+  "pipelineIdentity": "portable-pipeline-v1",
+  "secretInputs": [],
+  "sourceIdentity": "local-source-001",
+  "timeoutSeconds": 300
+}

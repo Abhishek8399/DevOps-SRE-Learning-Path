@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0059",
+  "lessonId": "LES-0025",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "A product company operates GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines during a migration. A shared `release-tools:current` worker image and a floating shared pipeline repository changed at 09:55. At 10:02, protected releases begin queueing or failing across all four platforms, while aggregate fleet utilization remains 24 percent and global p50 queue time remains below thirty seconds. GitHub jobs have matching labels but the protected runner group lost repository access. The GitLab release contract requires a dedicated runner configured as protected and carrying a `protected-release` tag; that runner is busy, while free general runners are outside the approved trust class. Jenkins agents connect, but a controller plugin upgrade changed dependencies and all matching executors are busy retrying a new failure. Azure self-hosted agents have the new tool installed, but their advertised capabilities are stale and fail the demand. The general persistent pool recently executed a public-fork change, can reach internal services, writes a cache later read by release jobs, and contains a long-lived package credential. A ported green workflow rebuilds the package instead of consuming the artifact that passed tests. A cancelled deployment attempt had already been accepted by the target; an automatic retry created a second operation. An operator proposes removing protection and selectors, restarting every worker and the Jenkins controller, clearing all caches, floating to the newest image and plugins, and rerunning deployments until green. Lead containment, diagnosis, recovery, verification, and prevention. Include provider control and execution planes, shared-dependency change isolation, runner compromise, effective authority, artifacts and caches, timeout and cancellation, upgrade strategy, observability, service objectives, capacity, cost, migration, and proof limits.",
+  "directAnswer": "Reject the proposed broad changes. Declare a shared CI-platform and release-integrity incident with a possible worker and credential compromise. Pause protected promotion, automatic retries, the shared image or template rollout, and scheduling into the general pool; preserve control-plane, worker, cache, artifact, credential-use, plugin, configuration, and target-operation evidence. Separate each provider's immediate dispatch cause: GitHub administrative group access, GitLab protected-release pool availability under the organization's runner-and-tag contract, Jenkins executor saturation plus plugin compatibility, and Azure stale capabilities. Compare old and new image and shared-configuration identities in isolated canary combinations instead of floating further. Assume the public-fork worker, its writable outputs, reachable services, and long-lived credential may be compromised; isolate it, rotate or expire authority through owners, trace consumers, and rebuild from a trusted image. Re-establish one known-good protected worker path per affected class without weakening trust. Rebuild only when required from exact reviewed inputs, publish one immutable artifact, and make every later job consume its digest. Query the deployment target by stable logical operation identity and reconcile both accepted operations before another retry. Recover through canaries and bounded waves with explicit abort thresholds. Prove assignment to intended pools, image and configuration identities, least privilege, artifact digest continuity, falling class-specific backlogs, successful target reconciliation, and representative user outcomes. Prevent recurrence with separate ephemeral trust pools, immutable shared releases, staged runner and plugin upgrades, capability contract tests, short-lived workload identity, one-way cache trust, build-once promotion, target-side idempotency, and telemetry partitioned by workload class rather than global averages.",
+  "foundation": "A CI platform has a control plane that receives events, resolves pipeline configuration, builds a job graph, applies policy, queues work, and records state. Its execution plane contains runners or agents that execute arbitrary code. A shared image, template, action, task, Shared Library, or plugin is executable supply-chain input; changing it can affect many repositories at once. A public fork is lower-trust code. Running it on a persistent worker that later handles protected releases can leave files, processes, cache entries, or stolen credentials. A cache is optional acceleration state and may be missing or unsafe; an artifact is a declared output that later stages should consume by immutable identity. Cancellation changes the desired state of a CI attempt but cannot guarantee that an already accepted external operation disappeared. Global averages can look healthy while one protected workload class is completely unavailable.",
+  "reasoningSteps": [
+    "Establish incident command and split coordinated workstreams for provider scheduling, shared image and reusable configuration, Jenkins controller and plugins, runner security and credentials, artifact continuity, deployment reconciliation, and customer impact. One person should own the combined timeline and decisions.",
+    "Scope by provider, organization or instance, repository or project or folder, event trust, protected ref, pool or group, operating system, architecture, and time. Record first bad and last known-good logical runs, configurations, worker images, agent versions, plugin sets, and user outcomes.",
+    "Freeze high-blast-radius mutation: stop the shared image and template rollout, protected promotion, automatic deployment retries, cache publication from suspect pools, and new jobs on potentially compromised workers. Do not erase workspaces, caches, controller state, or logs before evidence owners decide retention.",
+    "Confirm job readiness separately from worker dispatch. Dependencies, conditions, approvals, environment checks, resource locks, or concurrency may explain some waits before any worker predicate is evaluated.",
+    "For GitHub, capture the expanded job `runs-on` requirements, runner-group access, repository assignment, labels, status, and concurrency. Matching labels cannot override a runner group that excludes the repository.",
+    "For GitLab, capture project or group scope, every job tag, protected-ref state, protected-runner policy, executor, paused or online state, and concurrency. A free unprotected runner is not protected-release capacity.",
+    "For Jenkins, preserve controller core, Java, plugin dependency set, configuration, Shared Library revisions, queue reason, node labels, executor occupancy, and agent versions. Stop plugin rollout or retries that amplify load; do not restart the controller until Pipeline state, backup or restore boundary, and in-flight work are understood.",
+    "For Azure Pipelines, capture pool permission, expanded demands, advertised capabilities, agent version, online and enabled state, parallel-job allowance, and environment checks. If capability discovery is stale, refresh one isolated canary agent through the documented lifecycle and verify the tool, not only the string.",
+    "Treat the simultaneous shared image and configuration changes as competing hypotheses. Preserve immutable old and new identities. In a no-production-authority canary, compare old image plus old config, new image plus old config, old image plus new config, and new image plus new config while holding source, architecture, inputs, and assertions constant.",
+    "Do not use production jobs as the experiment. Define predicted and disconfirming observations, sample enough representative workloads, and compare shell, certificates, proxy, toolchain, filesystem, container, permissions, artifact, cancellation, and cleanup behavior.",
+    "Assume the general persistent pool is potentially compromised. Stop scheduling, isolate without destroying evidence, identify public-fork attempts, processes, files, containers, network reach, cache and artifact writes, credentials and identity sources, and later trusted consumers. Rebuild from a trusted immutable image rather than cleaning in place.",
+    "Coordinate revocation, rotation, or expiry of the long-lived package credential through its owner without logging the value. Audit its use, repository writes, package versions, signing or publication actions, sessions, and other credentials reachable from the worker.",
+    "Quarantine suspect cache namespaces. A lower-trust job must not publish state later trusted by a protected release. Preserve cache keys, fallback rules, writer identity, restore source, content validation, and consumers. Do not infer artifact compromise solely from a cache write.",
+    "Trace the tested artifact and the rebuilt package separately. Record source and pipeline revisions, builder image, job attempt, artifact digest, upload receipt, repository identity, and every consumer. A green upstream job supplies no evidence for independently rebuilt bytes.",
+    "Classify the cancelled deployment as an unknown outcome. Query the target control plane by the stable logical release or idempotency identity, list every accepted operation, determine desired and observed state and side effects, and reconcile duplicates before authorizing another request. One layer owns retry policy and budget.",
+    "Restore one qualified known-good protected execution path per necessary workload class. Pin image, configuration, action or task, plugin, and agent identities. Canary a representative non-destructive job, then build or retrieve one reviewed immutable artifact and pass it through policy and target verification without a second build.",
+    "Roll out in bounded waves. Drain workers before replacement, preserve enough previous qualified capacity, handle in-flight attempts explicitly, define abort thresholds for queue, failure, artifact, security, and cost signals, and choose rollback or roll-forward based on compatibility and vulnerability risk.",
+    "Prove recovery from fresh, partitioned telemetry. Protected ready-to-assigned latency and oldest backlog return within objective; successful dispatch and completion exceed arrivals; expected workers and identities are used; artifact readback matches; duplicate target operations are reconciled; credentials are contained; and representative user operations remain healthy through the declared window.",
+    "Redesign migration around an explicit portability contract: event trust, exact source and configuration snapshot, graph, selector, image, shell, permissions, inputs, artifact, cache, timeout, retry, cancellation, concurrency, environment, and evidence. Dual-run without giving both providers production-write authority.",
+    "Define service indicators by workload class with source, timestamps, window, sample count, exclusions, missing-data behavior, and freshness. Pair ready-to-assigned latency with eligible free slots, arrivals, service-time distributions, provisioning, retries, quota, artifact outcomes, and user delivery signals.",
+    "Model total cost: hosted minutes, machine class, storage, egress and licensing versus self-hosted compute, idle headroom, fleet engineering, patching, controller backup and upgrades, security response, and developer wait. Optimize cost per successful useful result, not the cheapest visible minute.",
+    "Record proof limits. A canary does not prove the full fleet; a label does not prove integrity; a digest does not prove safety; a signature does not prove correctness; a green job does not prove deployment; and local or staged evidence does not certify a hosted provider or learner mastery."
+  ],
+  "seniorAnswer": "I would treat the common timing as evidence of a shared-platform change, not as proof of one root cause, and I would treat the public-fork worker as a parallel security incident. My first actions are to stop the shared rollout, protected promotion and automatic retries; quarantine scheduling and cache writes from the general pool; preserve exact source, resolved configuration, image, plugin, agent, worker, cache, artifact, credential-use and target-operation identities; and scope user impact. I would then separate readiness from dispatch and enumerate the eligible intersection on each provider. GitHub is blocked by runner-group authorization, GitLab by protected-runner policy, Jenkins by executor saturation amplified by plugin-related failures, and Azure by stale capabilities. I would restore one pinned known-good protected path rather than remove selectors. In an isolated canary without production authority, I would run a four-cell old/new image and configuration comparison with representative jobs. Jenkins changes require proved backup restoration, an exact core/Java/plugin dependency set, Pipeline and restart tests, and an explicit restore or roll-forward boundary. The public-fork worker and its writable outputs are untrusted; I would isolate it, rotate the package credential, trace cache, package, artifact and network activity, and rebuild rather than sanitize. I would stop rebuilding during deployment, promote one immutable tested digest, and bind policy to it. Because cancellation followed target acceptance, I would reconcile every operation under one logical release identity before retry. Recovery is assignment to intended trust pools, correct pinned identities, least privilege, artifact continuity, falling protected backlog, reconciled target state and sustained user verification. The durable platform uses separated ephemeral pools, protected reusable releases, canary fleets, short-lived federation, one-way cache trust, target idempotency, class-specific SLOs and capacity, and an evidence-based migration contract.",
+  "weakAnswer": "Remove all selectors, route releases to any online worker, restart every agent and Jenkins, delete all caches, upgrade to the newest versions, and keep rerunning until all four dashboards are green.",
+  "whyWeak": "It collapses trust boundaries, destroys incident evidence, may interrupt or duplicate accepted work, changes multiple variables at once, floats to unknown dependencies, ignores controller and plugin state compatibility, treats aggregate online capacity as eligible capacity, permits suspect cache and credentials to cross into releases, rebuilds unapproved bytes, and defines recovery as dashboard color rather than artifact, target, and user proof.",
+  "evidence": [
+    {
+      "signal": "GitHub control-plane records show the repository was removed from the protected runner group's allowed scope at 09:55, while runner labels and heartbeats remained unchanged.",
+      "proves": "The observed GitHub jobs cannot use those runners because administrative access changed, independently of label and online state.",
+      "doesNotProve": "Why access changed, whether restoring it is authorized, or that worker integrity and capacity are otherwise acceptable."
+    },
+    {
+      "signal": "A controlled matrix shows old image plus new configuration succeeds, new image plus old configuration fails the same tool assertion, and new image plus new configuration fails identically across representative repositories.",
+      "proves": "Within the controlled inputs, the candidate image change is necessary for the reproduced tool failure and the configuration change is not necessary.",
+      "doesNotProve": "The exact defect inside the image, every production failure, security of the old image, or absence of an interaction in untested workloads."
+    },
+    {
+      "signal": "Audit evidence shows a public-fork attempt ran on the persistent general worker before a protected cache consumer, and the worker account could access the long-lived package credential.",
+      "proves": "Lower-trust code and production-capable authority shared an execution boundary and writable state path.",
+      "doesNotProve": "That the contributor stole the credential or poisoned the cache; forensic and repository investigation remains required."
+    },
+    {
+      "signal": "The test job records artifact digest A, while the ported deployment job independently builds and publishes digest B.",
+      "proves": "Deployment did not consume the exact bytes associated with the upstream test evidence.",
+      "doesNotProve": "That B is malicious or functionally different; its equivalence and authorization are unknown."
+    },
+    {
+      "signal": "The target control plane records two accepted operation IDs under the same logical release after the cancellation and retry.",
+      "proves": "CI cancellation did not prevent target acceptance and the retry was not durably deduplicated.",
+      "doesNotProve": "That both operations reached completion, served users, or produced identical side effects."
+    },
+    {
+      "signal": "After bounded recovery, every affected class has fresh ready-to-assigned percentiles within objective, negative backlog slope to baseline, expected pinned worker identities, artifact digest readback, one reconciled target revision, and healthy representative user operations for the declared window.",
+      "proves": "The stated scheduling, identity, artifact, target and user criteria recovered for the sampled classes and window.",
+      "doesNotProve": "Long-term whole-platform reliability, absence of compromise in unexamined systems, or safe future upgrades without the same controls."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why should shared image and configuration changes be tested independently?",
+      "answer": "When both move together, timing cannot identify which is causal or whether they interact. A controlled old/new matrix holds source and other inputs constant so each hypothesis can be confirmed or disconfirmed without another fleet-wide mutation."
+    },
+    {
+      "prompt": "Why not clean and reuse the public-fork worker?",
+      "answer": "Arbitrary code may persist outside the repository through processes, tools, mounts, runtime sockets, credentials or host changes. Deleting a workspace cannot re-establish host trust. Preserve evidence, then rebuild from a trusted immutable image and correct the architecture."
+    },
+    {
+      "prompt": "What makes a Jenkins plugin upgrade different from replacing an ordinary runner image?",
+      "answer": "A plugin executes in the controller and can affect durable orchestration state, security, job behavior and dependency compatibility. A newer version may migrate stored configuration, so file downgrade may be unsafe. Backup restoration, controller restart and Pipeline resumption require explicit tests."
+    },
+    {
+      "prompt": "Can dual-running two CI providers be safe?",
+      "answer": "Yes for shadow build and test when both use the same reviewed source and isolated outputs, but only one should own production effects. The shadow path should lack production-write authority and publish to a separate namespace while evidence and artifact identity are compared."
+    },
+    {
+      "prompt": "How would you prevent cache poisoning across trust levels?",
+      "answer": "Separate namespaces and writers. Lower-trust jobs must not publish entries consumed as trusted release inputs. Use complete keys, controlled restore direction, content validation where available, writer identity, retention and cold-cache correctness."
+    },
+    {
+      "prompt": "What should happen when a deployment is cancelled after target acceptance?",
+      "answer": "Treat outcome as unknown. Query the target state owner by the stable logical operation or idempotency key, inspect accepted and observed state and side effects, then verify, compensate or retry only under one bounded policy after absence or safe replay is established."
+    },
+    {
+      "prompt": "Why did global p50 fail to show this incident?",
+      "answer": "The affected protected class can be a small fraction of jobs, so healthy general traffic dominates the median. Partition by meaningful class and inspect p95, oldest queue age, eligible free slots, sample count, backlog slope and telemetry freshness."
+    },
+    {
+      "prompt": "How should an emergency exception be handled?",
+      "answer": "Name the exact scope, owner, reason, authority changed, risk, compensating controls, evidence, approval, start and expiry, and a restoration test. An exception must not silently become the new design or erase the incident boundary."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Containment and incident structure",
+      "points": 10,
+      "observableEvidence": "Stops high-blast-radius rollout, promotion, retries and suspect pools while preserving provider, worker, controller, cache, artifact, credential and target evidence."
+    },
+    {
+      "criterion": "Provider and shared-change diagnosis",
+      "points": 10,
+      "observableEvidence": "Separates four provider dispatch causes and uses a controlled old/new image and configuration experiment plus Jenkins-specific compatibility reasoning."
+    },
+    {
+      "criterion": "Security and release integrity",
+      "points": 10,
+      "observableEvidence": "Treats the fork worker and credential as potentially compromised, isolates trust pools and caches, and restores immutable artifact continuity and least privilege."
+    },
+    {
+      "criterion": "Recovery and verification",
+      "points": 10,
+      "observableEvidence": "Restores pinned protected capacity, reconciles cancelled and duplicate operations, rolls out in bounded waves, and verifies class backlog, target state and user outcomes."
+    },
+    {
+      "criterion": "Platform prevention and trade-offs",
+      "points": 10,
+      "observableEvidence": "Designs portable contracts, staged upgrades, observability and SLOs, qualified capacity, total cost, migration ownership and explicit proof limits."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

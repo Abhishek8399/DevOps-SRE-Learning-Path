@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0060",
+  "lessonId": "LES-0025",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete an answer-isolated CI platform operations dossier using `ASM-0060-response-template.md`. Choose one non-sensitive pipeline that you are authorized to review without changing it. If none is available, use the four illustrative definitions in LES-0025 and label every provider behavior as unexecuted. Before consulting answered assessments or receiving diagnosis help, record your independence declaration, prior exposure, environment boundary, exact source material, and predictions. Map the control plane, execution plane, state owners, identities, trust boundaries, worker eligibility, artifacts, caches, permissions, environments, and user evidence. Fill the portability contract for at least build and test; map it to GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines; diagnose a queued-jobs-with-online-workers signal through at least three competing hypotheses; design a runner or controller upgrade; define reliability, observability, capacity, security, cost, migration, and incident controls; and state proof limits. Use only normal-user, read-only or in-memory local evidence. Do not install software, use root, authenticate to a provider, register a runner, change a pipeline, create a token, contact a production target, inspect secrets, run untrusted code, modify canonical lesson or support records, or copy a model answer. A blocked result with preserved evidence is valid; bypassing the boundary is not.",
+  "deliverables": [
+    "An independence and authorization declaration recording attempt time and timezone, prior LES-0025 or assessment material seen, help received, chosen source material, authorization scope, local environment, network boundary, privilege, abort conditions, and whether provider execution is real, reviewed-only, or absent.",
+    "A scope card naming the provider or illustrative definition, organization or instance only when non-sensitive, repository or project or folder boundary, event and trust class, full source revision when available, pipeline entry identity, and all unknowns that must not be inferred.",
+    "A CI platform architecture diagram plus text alternative covering event ingress, resolved pipeline configuration, graph and policy, queue and scheduler, administrative scope, worker pool and execution boundary, workspace and process state, identity, cache, artifact, environment authorization, external effect, telemetry, and user outcome.",
+    "A state-ownership and immutable-identity table that keeps event, source, pipeline entry and reusable dependency, logical run and attempt, job and attempt, worker and image, executor or runtime, workspace, permission profile, cache key and source, artifact digest and receipt, environment decision, target operation, runtime revision, and user operation distinct.",
+    "A portability contract for at least build and test covering event, source, resolved configuration, graph dependencies and conditions, selector and trust pool, image and toolchain, shell, effective authority, inputs, cache, artifact, timeout, retry, cancellation, concurrency, environment, and evidence.",
+    "A four-provider mapping for GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines that identifies each provider's configuration entry, reusable dependency, administrative scope, selector mechanism, worker lifecycle, permission path, cache, artifact handoff, concurrency control, environment control, and one important semantic difference. Unexecuted definitions must remain labeled unexecuted.",
+    "A queue-incident worksheet with at least three competing hypotheses recorded before derived investigation, each naming predicted evidence, disconfirming evidence, state owner, one bounded read-only check, mutation risk, and the next branch. It must separate not-ready, empty-eligibility, unavailable-capacity, bootstrap, and long-service-time possibilities.",
+    "A worker or controller upgrade runbook with current inventory, immutable candidate identity, compatibility and security review, isolated canary scope, representative tests, metrics and sample requirements, abort thresholds, drain and in-flight-work policy, rollback or roll-forward boundary, bounded waves, recovery proof, and exception expiry.",
+    "A security review covering untrusted versus protected events, persistent and ephemeral boundaries, local and provider credentials, short-lived workload identity, network reach, runtime sockets, reusable workflows or includes or libraries or templates, plugins or tasks or actions, cache writer trust, artifact immutability, sensitive logging, and incident containment.",
+    "A reliability, observability, capacity, and cost card defining at least one service-level indicator and objective with population and window, telemetry freshness, controlled metric dimensions, high-cardinality evidence location, arrival and service-time signals, eligible free slots, autoscaling bounds, headroom, hosted and self-hosted cost categories, and cost per useful result.",
+    "A migration and recovery design that dual-runs without duplicate production authority, compares semantic evidence instead of syntax, promotes one immutable artifact, reconciles cancellation or timeout by stable target identity, cuts over in cohorts, revokes old authority, and proves target and user outcomes.",
+    "A chronological evidence appendix containing exact non-sensitive commands and raw output, source and time, classification as observation or contract or calculation or inference or hypothesis or unknown, what each item proves, what it does not prove, and before/after local state. If blocked, include the exact blocker and proof that no bypass or mutation occurred.",
+    "A final proof-limit register containing at least twelve narrow statements, including limitations around provider execution, syntax review, selector truth, worker isolation, effective authority, cache compatibility, artifact safety, cancellation, target state, user recovery, future versions, and learner mastery."
+  ],
+  "evidenceRequirements": [
+    "Record independence, source material, authorization, environment, prior help, and first hypotheses before reading answered assessments or obtaining diagnostic guidance. A reviewer must be able to distinguish original reasoning from prior exposure.",
+    "Use only a normal-user Ubuntu 24.04 or Ubuntu WSL boundary for prescribed local commands. Do not use `sudo`, UID 0, package installation, provider login, external network, tokens, service connections, runners, controllers, cloud resources, production targets, or broad filesystem or process inspection.",
+    "Do not place a secret, credential, signed URL, private endpoint, confidential repository content, personal data, unrestricted event payload, or raw command line containing sensitive arguments in the response. Replace sensitive identity with a consistent sanitized token and state what was sanitized.",
+    "Capture raw observations before cleanup, rerun, restart, cache invalidation, selector change, or another mutation. If only static reviewed definitions exist, say so and do not manufacture run IDs, outputs, timing, worker state, permissions, or provider behavior.",
+    "Keep control-plane records separate from execution-plane observations and external target state. A dashboard, online icon, label, tag, capability, job result, cache hit, digest, approval, deployment response, health endpoint, or user sample proves only its explicit predicate.",
+    "For every command, state the question, exact path and scope, privilege, network behavior, expected branches, abort condition, output interpretation, what it changes, what it proves, and what it does not prove. Prefer existing LES-0025 read-only or in-memory commands.",
+    "For queue diagnosis, distinguish event-to-ready, approval or dependency wait, ready-to-assigned, provisioning or bootstrap, and execution service time. Partition evidence by trust, architecture, pool, provider and workload class; include sample count, window and collection freshness.",
+    "For provider comparison, preserve mechanism intent but identify different administrative, protection, selector, permission, reusable-code, artifact, cancellation, concurrency, and environment semantics. Similar YAML or a successful parser is not equivalence evidence.",
+    "For worker or controller change, specify inventory, exact candidate, canary, representative failure and security cases, in-flight-work handling, capacity headroom, abort threshold, rollback or restore or roll-forward limits, and recovery evidence before proposing rollout.",
+    "For any external effect discussed, define a stable logical operation identity, state owner, timeout, idempotency or reconciliation behavior, one retry owner, accepted and observed states, side effects, compensation or rollback limits, and user verification. Do not recommend blind replay of an unknown outcome.",
+    "For security, assume untrusted repository code can execute within its worker authority. Do not recommend sharing persistent privileged workers, writable trusted caches, production credentials, runtime control sockets, or sensitive network paths across untrusted and protected work.",
+    "For artifacts and caches, show a cold-cache correctness path, cache writer and namespace trust, exact artifact producer and digest, upload and consumer receipt, immutable promotion, and separate safety or policy evidence. A digest identifies content but does not prove correctness or safety.",
+    "Use exact units and denominators. Averages must not replace class-specific percentiles and oldest backlog. Capacity must count eligible available slots rather than total online workers. Cost must include hosted charges or self-hosted infrastructure plus engineering, security, idle headroom, and incident toil without inventing prices.",
+    "Do not use `ASM-0058.json`, `ASM-0059.json`, another learner response, generated solution, or model answer after the independence gate. If prior exposure occurred, disclose it and let the reviewer decide whether a fresh case or later attempt is needed.",
+    "State that reviewer acceptance demonstrates only the submitted evidence and explanation under this rubric. It does not certify a hosted platform, production environment, future provider behavior, security posture, employment readiness, or professional mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Independent reasoning, scope, and evidence integrity",
+      "points": 10,
+      "observableEvidence": "Records prior exposure and hypotheses first, stays within authorization, preserves raw non-sensitive evidence, labels unknowns, and does not copy answer material or invent provider execution."
+    },
+    {
+      "criterion": "Architecture, identity, and provider semantics",
+      "points": 10,
+      "observableEvidence": "Maps control and execution planes, state owners and identities, completes the portability contract, and accurately distinguishes all four provider mechanisms."
+    },
+    {
+      "criterion": "Diagnosis, security, and proof limits",
+      "points": 10,
+      "observableEvidence": "Uses falsifiable queue hypotheses, separates eligibility and availability, protects trust boundaries and effective authority, and states narrow limits for every evidence class."
+    },
+    {
+      "criterion": "Change, recovery, and migration operations",
+      "points": 10,
+      "observableEvidence": "Designs a pinned canary upgrade, bounded drain and rollout, target reconciliation, immutable artifact handoff, dual-run cutover, rollback or roll-forward limits, and user-level recovery proof."
+    },
+    {
+      "criterion": "Reliability, capacity, cost, and communication",
+      "points": 10,
+      "observableEvidence": "Defines class-specific fresh service evidence, qualified capacity and bounded scaling, total-cost trade-offs, clear diagrams and concise senior communication without unsupported mastery claims."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
