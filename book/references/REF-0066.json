@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0066",
+  "title": "RFC 1035: Domain Names - Implementation and Specification",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc1035",
+  "sourceType": "rfc",
+  "versionOrDate": "Internet Standard, November 1987; updates listed by RFC Editor; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["DNS messages", "resource records", "A", "NS", "CNAME", "SOA"],
+  "relevance": "Primary implementation source for DNS message sections, flags, query fields, resource-record encodings, types, and server and resolver behavior decoded in the lesson.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

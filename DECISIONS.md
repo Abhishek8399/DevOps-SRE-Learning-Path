@@ -45,6 +45,9 @@ This file records material project decisions so future contributors do not need 
 | `DEC-028` | 2026-08-02 | `PROVISIONAL` | Load canonical Markdown through an exact virtual-module registry |
 | `DEC-029` | 2026-08-02 | `ACCEPTED` | Render prerequisites as advisory navigation, never as access or mastery gates |
 | `DEC-030` | 2026-08-02 | `ACCEPTED` | Use Reliability Atlas as the official title and keep homepage journey states truthful |
+| `DEC-031` | 2026-08-02 | `ACCEPTED` | Preserve curriculum ownership while publishing cross-volume lesson batches atomically |
+| `DEC-032` | 2026-08-02 | `ACCEPTED` | Transfer deep connectivity curriculum ownership without changing the legacy lesson identity |
+| `DEC-033` | 2026-08-02 | `ACCEPTED` | Keep structured curriculum IDs in their canonical volume homes before publication |
 
 ## Decision records
 
@@ -277,3 +280,29 @@ The repository audits its dependency-free JSON Schema subset, rejects unknown or
 **Decision:** `Reliability Atlas` is the official title. The homepage presents one dependency-ordered nine-stage journey ending at Capstones & Interviews; only published stages are links, planned stages explicitly have no route, and reading progress remains separate from reviewed evidence and mastery.
 
 **Consequences:** Title migrations require source and rendered-route checks for stale labels and personal-name text. Homepage links, planned boundaries, evidence language, and non-mastery behavior remain release assertions; Git remote/history are unchanged.
+
+### DEC-031 - Cross-volume batches preserve existing ownership
+
+**Context:** A five-lesson editorial batch can cross volume boundaries, while the five established typed lessons permanently reserve their lesson, alias, route, state, and curriculum identities. In particular, legacy `LES-0004` currently owns `NET-003` through `NET-006`. Assigning those curriculum IDs to new DNS, HTTP, or TLS records would create two canonical owners and make future migration ambiguous.
+
+**Decision:** A cross-volume batch becomes a reader checkpoint only when every declared lesson, assessment, reference, lab, exact virtual-module registration, route, catalog/state identity, and relationship test is present and validated together. New lessons claim only currently unowned curriculum IDs. The first structured connectivity records therefore own `NET-001`, `NET-002`, and `NET-007`; `NET-003` through `NET-006` remain with `LES-0004` until a separately audited migration preserves its published identity or an explicit taxonomy migration supersedes this decision.
+
+**Consequences:** The repository cannot temporarily publish dangling references or duplicate curriculum ownership. Deep DNS, HTTP/proxy, and TLS/PKI chapters require deliberate legacy migration design rather than convenient new IDs. Editorial batch completion remains project evidence only and cannot advance learner state.
+
+### DEC-032 - Audited deep-connectivity ownership migration
+
+**Context:** Legacy `LES-0004` is a broad Linux request-path bridge. It historically reserved `NET-003` through `NET-006`, but the dedicated transport, DNS, HTTP/proxy, and TLS chapters need one unambiguous canonical curriculum owner each. Keeping every identity on the bridge would make the deeper chapters second-class duplicates; deleting or renaming the legacy lesson would break its published route, state key, aliases, and learner history.
+
+**Decision:** Preserve every published identity of `LES-0004` -- canonical lesson ID, state ID, slug, route, aliases, content, and reader position -- while narrowing its curriculum ownership to `NET-003`. Transfer `NET-004` to `LES-0014`, `NET-005` to `LES-0015`, and `NET-006` to `LES-0016`. Update the independently pinned legacy identity digest only after reviewing that exact map change. The validator rejects duplicate curriculum owners and rejects curriculum prefixes outside their canonical volume.
+
+This decision supersedes only the temporary ownership deferral in `DEC-031`; its atomic cross-volume checkpoint rule remains in force.
+
+**Consequences:** Old links and device-local reading state remain valid. Search resolves the deep curriculum IDs to their dedicated chapters while `LES-0004` remains the Linux request-path bridge and prerequisite owner for `NET-003`. Future ownership moves require another explicit migration record, updated baseline evidence, and regression tests; a convenient duplicate is never an acceptable intermediate state.
+
+### DEC-033 - Curriculum home controls pre-publication placement
+
+**Context:** `LES-0009` was first drafted beside its Volume 00 prerequisites, but it owns `SCM-001`, whose canonical subject is Volume 03 engineering and delivery. Publishing a source-control lesson under the safe-start volume would make routes, aliases, local order, navigation, and future prerequisite reasoning contradict the curriculum map.
+
+**Decision:** Before the lesson's first commit, place `LES-0009` in `book/volumes/03-engineering-delivery`, route it at `/book/engineering/safe-local-workbench`, assign alias `V03-L01`, and keep Volume 00 lessons as explicit prerequisites. Enforce the same prefix-to-volume rule for every structured curriculum ID: foundation and debugging in Volume 00, Linux in Volume 01, networking in Volume 02, engineering and delivery in Volume 03, reliability in Volume 04, infrastructure and platform in Volume 05, and distributed state in Volume 06.
+
+**Consequences:** Physical path, route, alias, local order, and curriculum identity tell one story. Prerequisites may cross volumes without moving lesson ownership. Because this correction happened before publication, it creates no redirect or browser-state migration; later moves of an already published lesson would require explicit compatibility handling.

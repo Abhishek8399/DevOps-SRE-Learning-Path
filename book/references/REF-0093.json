@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0093",
+  "title": "GNU Coreutils: mktemp invocation",
+  "organization": "GNU Project / Free Software Foundation",
+  "url": "https://www.gnu.org/software/coreutils/manual/html_node/mktemp-invocation.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "GNU Coreutils manual reviewed 2026-08-02",
+  "lessonIds": ["LES-0017"],
+  "topics": ["temporary files", "temporary directories", "race avoidance", "permissions"],
+  "relevance": "Authoritative behavior for securely creating unpredictable temporary files and directories rather than racing on a guessed name.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,316 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+umask 077
+
+SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+if [[ "$SCRIPT_SOURCE" == */* ]]; then
+  SCRIPT_PARENT="${SCRIPT_SOURCE%/*}"
+else
+  SCRIPT_PARENT="."
+fi
+SCRIPT_DIRECTORY="$(CDPATH='' cd -- "$SCRIPT_PARENT" && pwd -P)"
+readonly SCRIPT_SOURCE SCRIPT_PARENT SCRIPT_DIRECTORY
+readonly LAB_SCRIPT="$SCRIPT_DIRECTORY/lab.sh"
+readonly MODEL_SOURCE="$SCRIPT_DIRECTORY/fixtures/operation_model.py"
+LAB_UID="$EUID"
+readonly LAB_UID
+readonly STATE_FILE="/tmp/reliability-atlas-LES-0018-$LAB_UID.state"
+EXTERNAL_ROOT=""
+ORPHAN_ROOT=""
+LAB_ROOT=""
+SAVED_DESCRIPTOR=""
+RESTORE_MODEL=0
+RESTORE_BASELINE=0
+RESTORE_DESCRIPTOR=0
+
+fail() {
+  printf 'verification_error=%s\n' "$1" >&2
+  return 1
+}
+
+path_present() {
+  [[ -e "$1" || -L "$1" ]]
+}
+
+valid_lab_root_for_restore() {
+  local owner mode resolved
+  [[ -n "$LAB_ROOT" && "$LAB_ROOT" =~ ^/tmp/reliability-atlas-LES-0018\.[[:alnum:]]{8}$ \
+    && -d "$LAB_ROOT" && ! -L "$LAB_ROOT" ]] || return 1
+  owner="$(stat -c '%u' -- "$LAB_ROOT" 2>/dev/null || true)"
+  mode="$(stat -c '%a' -- "$LAB_ROOT" 2>/dev/null || true)"
+  resolved="$(realpath -e -- "$LAB_ROOT" 2>/dev/null || true)"
+  [[ "$owner" == "$LAB_UID" && "$mode" == "700" && "$resolved" == "$LAB_ROOT" ]]
+}
+
+restore_verifier_mutations() {
+  local target owner_links state_identity
+  if [[ "$RESTORE_DESCRIPTOR" -eq 1 && -n "$SAVED_DESCRIPTOR" && -f "$STATE_FILE" && ! -L "$STATE_FILE" ]]; then
+    state_identity="$(stat -c '%u:%h:%a' -- "$STATE_FILE" 2>/dev/null || true)"
+    if [[ "$state_identity" == "$LAB_UID:1:600" ]]; then
+      printf '%s\n' "$SAVED_DESCRIPTOR" > "$STATE_FILE" 2>/dev/null || true
+      chmod 600 -- "$STATE_FILE" 2>/dev/null || true
+    fi
+  fi
+  valid_lab_root_for_restore || return 0
+  if [[ "$RESTORE_MODEL" -eq 1 ]]; then
+    target="$LAB_ROOT/operation_model.py"
+    if [[ -f "$target" && ! -L "$target" ]]; then
+      owner_links="$(stat -c '%u:%h' -- "$target" 2>/dev/null || true)"
+      if [[ "$owner_links" == "$LAB_UID:1" ]]; then
+        install -m 0500 -- "$MODEL_SOURCE" "$target" 2>/dev/null || true
+      fi
+    elif ! path_present "$target"; then
+      install -m 0500 -- "$MODEL_SOURCE" "$target" 2>/dev/null || true
+    fi
+  fi
+  if [[ "$RESTORE_BASELINE" -eq 1 ]]; then
+    target="$LAB_ROOT/baseline.summary"
+    if [[ -L "$target" ]]; then
+      rm -- "$target" 2>/dev/null || true
+    elif [[ -f "$target" ]]; then
+      owner_links="$(stat -c '%u:%h' -- "$target" 2>/dev/null || true)"
+      if [[ "$owner_links" == "$LAB_UID:1" ]]; then rm -- "$target" 2>/dev/null || true; fi
+    fi
+    if ! path_present "$target"; then
+      PYTHONDONTWRITEBYTECODE=1 python3 "$MODEL_SOURCE" baseline > "$target" 2>/dev/null || true
+      if [[ -f "$target" && ! -L "$target" ]]; then chmod 600 -- "$target" 2>/dev/null || true; fi
+    fi
+  fi
+}
+
+cleanup_verifier_paths() {
+  local owner resolved
+  restore_verifier_mutations
+  if [[ -n "$EXTERNAL_ROOT" && "$EXTERNAL_ROOT" =~ ^/tmp/reliability-atlas-LES-0018-verifier\.[[:alnum:]]{8}$ \
+    && -d "$EXTERNAL_ROOT" && ! -L "$EXTERNAL_ROOT" ]]; then
+    owner="$(stat -c '%u' -- "$EXTERNAL_ROOT" 2>/dev/null || true)"
+    resolved="$(realpath -e -- "$EXTERNAL_ROOT" 2>/dev/null || true)"
+    if [[ "$owner" == "$LAB_UID" && "$resolved" == "$EXTERNAL_ROOT" ]]; then
+      if [[ -f "$EXTERNAL_ROOT/target" && ! -L "$EXTERNAL_ROOT/target" ]]; then rm -- "$EXTERNAL_ROOT/target" 2>/dev/null || true; fi
+      rmdir -- "$EXTERNAL_ROOT" 2>/dev/null || true
+    fi
+  fi
+  if [[ -n "$ORPHAN_ROOT" && "$ORPHAN_ROOT" =~ ^/tmp/reliability-atlas-LES-0018\.[[:alnum:]]{8}$ \
+    && -d "$ORPHAN_ROOT" && ! -L "$ORPHAN_ROOT" ]]; then
+    owner="$(stat -c '%u' -- "$ORPHAN_ROOT" 2>/dev/null || true)"
+    resolved="$(realpath -e -- "$ORPHAN_ROOT" 2>/dev/null || true)"
+    if [[ "$owner" == "$LAB_UID" && "$resolved" == "$ORPHAN_ROOT" ]]; then rmdir -- "$ORPHAN_ROOT" 2>/dev/null || true; fi
+  fi
+}
+
+trap cleanup_verifier_paths EXIT
+trap 'exit 130' INT TERM
+
+if [[ "$LAB_UID" -eq 0 ]]; then fail "run verifier as a normal non-root Ubuntu user"; exit 1; fi
+for tool in bash cat chmod cmp find grep install ln mktemp python3 realpath rm rmdir sha256sum stat; do
+  command -v "$tool" >/dev/null 2>&1 || { fail "required verifier command is missing: $tool"; exit 1; }
+done
+PYTHONDONTWRITEBYTECODE=1 python3 -c 'from pathlib import Path; import sys; p=Path(sys.argv[1]); compile(p.read_text(encoding="utf-8"),str(p),"exec")' "$MODEL_SOURCE"
+
+must_fail() {
+  local label="$1"
+  shift
+  if "$@" >/dev/null 2>&1; then
+    fail "$label unexpectedly succeeded"
+    return 1
+  fi
+}
+
+assert_contains() {
+  local value="$1" expected="$2" label="$3"
+  grep -Fq -- "$expected" <<< "$value" || { fail "$label did not contain: $expected"; return 1; }
+}
+
+assert_absent() {
+  local value="$1" forbidden="$2" label="$3"
+  if grep -Fiq -- "$forbidden" <<< "$value"; then
+    fail "$label exposed forbidden text: $forbidden"
+    return 1
+  fi
+}
+
+read_root() {
+  local root owner resolved
+  root="$(grep -E '^lab_root=' "$STATE_FILE")"
+  root="${root#lab_root=}"
+  if [[ ! "$root" =~ ^/tmp/reliability-atlas-LES-0018\.[[:alnum:]]{8}$ || ! -d "$root" || -L "$root" ]]; then
+    fail "registered root failed verifier boundary"
+    return 1
+  fi
+  owner="$(stat -c '%u' -- "$root")"
+  resolved="$(realpath -e -- "$root")"
+  if [[ "$owner" != "$LAB_UID" || "$resolved" != "$root" ]]; then
+    fail "registered root identity failed"
+    return 1
+  fi
+  printf '%s' "$root"
+}
+
+initial="$(bash "$LAB_SCRIPT" check)"
+assert_contains "$initial" 'state=absent' 'initial check'
+must_fail 'status before setup' bash "$LAB_SCRIPT" status
+must_fail 'unknown command' bash "$LAB_SCRIPT" unknown
+must_fail 'extra check argument' bash "$LAB_SCRIPT" check extra
+must_fail 'invalid run target' bash "$LAB_SCRIPT" run incident
+must_fail 'invalid case' bash "$LAB_SCRIPT" inject transfer
+must_fail 'scenario before case' bash "$LAB_SCRIPT" scenario
+must_fail 'verify before setup' bash "$LAB_SCRIPT" verify-operation
+
+run_case() {
+  local case_name="$1" value scenario view
+  value="$(bash "$LAB_SCRIPT" setup)"
+  assert_contains "$value" 'setup=complete' "$case_name setup"
+  value="$(bash "$LAB_SCRIPT" setup)"
+  assert_contains "$value" 'setup=already-present' "$case_name repeated setup"
+  value="$(bash "$LAB_SCRIPT" status)"
+  assert_contains "$value" 'baseline=pending' "$case_name initial status"
+  must_fail "$case_name recover before injection" bash "$LAB_SCRIPT" recover
+  must_fail "$case_name verify before recovery" bash "$LAB_SCRIPT" verify-operation
+
+  value="$(bash "$LAB_SCRIPT" run baseline)"
+  assert_contains "$value" 'record=baseline' "$case_name baseline"
+  assert_contains "$value" 'operation_success=true' "$case_name baseline"
+  must_fail "$case_name repeated baseline" bash "$LAB_SCRIPT" run baseline
+
+  value="$(bash "$LAB_SCRIPT" inject "$case_name")"
+  assert_contains "$value" "case=$case_name" "$case_name injection"
+  assert_contains "$value" 'answer_key=not_provided' "$case_name injection"
+  must_fail "$case_name second injection" bash "$LAB_SCRIPT" inject guided
+  must_fail "$case_name invalid view" bash "$LAB_SCRIPT" observe invalid
+
+  if [[ "$case_name" == "guided" ]]; then
+    must_fail 'guided scenario refusal' bash "$LAB_SCRIPT" scenario
+  else
+    scenario="$(bash "$LAB_SCRIPT" scenario)"
+    assert_contains "$scenario" 'record=scenario_input' 'independent scenario'
+    assert_contains "$scenario" 'operation_id=op-release-417' 'independent scenario operation ID'
+    assert_contains "$scenario" 'client_deadline_ms=30000' 'independent scenario deadline'
+    for forbidden in authoritative committed receipt diagnosis recovery answer_key duplicate_effects; do
+      assert_absent "$scenario" "$forbidden" 'independent scenario'
+    done
+  fi
+
+  for view in operation input runtime state outcome; do
+    value="$(bash "$LAB_SCRIPT" observe "$view")"
+    assert_contains "$value" 'record=observation' "$case_name $view"
+    assert_contains "$value" "case=$case_name" "$case_name $view"
+    assert_contains "$value" "view=$view" "$case_name $view"
+  done
+
+  if [[ "$case_name" == "guided" ]]; then
+    value="$(bash "$LAB_SCRIPT" observe input)"
+    assert_contains "$value" 'observed_type=string' 'guided validation evidence'
+  else
+    value="$(bash "$LAB_SCRIPT" observe outcome)"
+    assert_contains "$value" 'authoritative_state=committed' 'independent authoritative evidence'
+    assert_contains "$value" 'service_attempt_count=1' 'independent attempt evidence'
+  fi
+
+  value="$(bash "$LAB_SCRIPT" recover)"
+  assert_contains "$value" 'record=recovery' "$case_name recovery"
+  assert_contains "$value" 'operation_success=true' "$case_name recovery"
+  must_fail "$case_name repeated recovery" bash "$LAB_SCRIPT" recover
+  must_fail "$case_name observe after recovery" bash "$LAB_SCRIPT" observe operation
+  if [[ "$case_name" == "independent" ]]; then
+    assert_contains "$value" 'additional_mutation_attempts=0' 'independent no replay'
+  fi
+
+  value="$(bash "$LAB_SCRIPT" verify-operation)"
+  assert_contains "$value" 'record=verification' "$case_name verification"
+  assert_contains "$value" 'operation_success=true' "$case_name verification"
+  assert_contains "$value" 'duplicate_receipts=0' "$case_name duplicate verification"
+  assert_contains "$value" 'consumer_readback=valid' "$case_name consumer verification"
+  assert_contains "$value" 'verification_scope=deterministic_model_only' "$case_name scope"
+  must_fail "$case_name repeated verification" bash "$LAB_SCRIPT" verify-operation
+
+  value="$(bash "$LAB_SCRIPT" status)"
+  assert_contains "$value" "active_case=$case_name" "$case_name final status"
+  assert_contains "$value" 'verification=complete' "$case_name final status"
+  value="$(bash "$LAB_SCRIPT" cleanup)"
+  assert_contains "$value" 'cleanup_proven=true' "$case_name cleanup"
+  value="$(bash "$LAB_SCRIPT" check)"
+  assert_contains "$value" 'state=absent' "$case_name final check"
+}
+
+run_case guided
+run_case independent
+
+bash "$LAB_SCRIPT" setup >/dev/null
+bash "$LAB_SCRIPT" run baseline >/dev/null
+LAB_ROOT="$(read_root)"
+printf 'unexpected\n' > "$LAB_ROOT/unexpected.file"
+chmod 600 -- "$LAB_ROOT/unexpected.file"
+must_fail 'unexpected artifact status' bash "$LAB_SCRIPT" status
+must_fail 'unexpected artifact cleanup' bash "$LAB_SCRIPT" cleanup
+[[ -f "$LAB_ROOT/unexpected.file" ]] || { fail 'unexpected artifact was changed'; exit 1; }
+rm -- "$LAB_ROOT/unexpected.file"
+
+RESTORE_MODEL=1
+chmod 700 -- "$LAB_ROOT/operation_model.py"
+printf '\n# verifier tamper\n' >> "$LAB_ROOT/operation_model.py"
+chmod 500 -- "$LAB_ROOT/operation_model.py"
+must_fail 'changed model status' bash "$LAB_SCRIPT" status
+install -m 0500 -- "$MODEL_SOURCE" "$LAB_ROOT/operation_model.py"
+RESTORE_MODEL=0
+assert_contains "$(bash "$LAB_SCRIPT" status)" 'state=ready' 'restored model'
+
+EXTERNAL_ROOT="$(mktemp -d --tmpdir=/tmp 'reliability-atlas-LES-0018-verifier.XXXXXXXX')"
+printf 'must-survive\n' > "$EXTERNAL_ROOT/target"
+chmod 600 -- "$EXTERNAL_ROOT/target"
+RESTORE_BASELINE=1
+rm -- "$LAB_ROOT/baseline.summary"
+ln -s -- "$EXTERNAL_ROOT/target" "$LAB_ROOT/baseline.summary"
+must_fail 'symlink status' bash "$LAB_SCRIPT" status
+must_fail 'symlink cleanup' bash "$LAB_SCRIPT" cleanup
+cmp -s -- "$EXTERNAL_ROOT/target" <(printf 'must-survive\n') || { fail 'external symlink target changed'; exit 1; }
+rm -- "$LAB_ROOT/baseline.summary"
+PYTHONDONTWRITEBYTECODE=1 python3 "$MODEL_SOURCE" baseline > "$LAB_ROOT/baseline.summary"
+chmod 600 -- "$LAB_ROOT/baseline.summary"
+RESTORE_BASELINE=0
+
+descriptor="$(cat -- "$STATE_FILE")"
+SAVED_DESCRIPTOR="$descriptor"
+RESTORE_DESCRIPTOR=1
+printf 'state_version=1\nlesson_id=LES-0018\nowner_uid=%s\nlab_root=%s\n' "$LAB_UID" "$EXTERNAL_ROOT" > "$STATE_FILE"
+chmod 600 -- "$STATE_FILE"
+must_fail 'out-of-scope descriptor status' bash "$LAB_SCRIPT" status
+must_fail 'out-of-scope descriptor cleanup' bash "$LAB_SCRIPT" cleanup
+cmp -s -- "$EXTERNAL_ROOT/target" <(printf 'must-survive\n') || { fail 'out-of-scope target changed'; exit 1; }
+printf '%s\n' "$descriptor" > "$STATE_FILE"
+chmod 600 -- "$STATE_FILE"
+RESTORE_DESCRIPTOR=0
+bash "$LAB_SCRIPT" cleanup >/dev/null
+
+ORPHAN_ROOT="$(mktemp -d --tmpdir=/tmp 'reliability-atlas-LES-0018.XXXXXXXX')"
+must_fail 'orphan check' bash "$LAB_SCRIPT" check
+must_fail 'orphan setup' bash "$LAB_SCRIPT" setup
+must_fail 'orphan cleanup' bash "$LAB_SCRIPT" cleanup
+[[ -d "$ORPHAN_ROOT" && ! -L "$ORPHAN_ROOT" ]] || { fail 'orphan candidate changed'; exit 1; }
+rmdir -- "$ORPHAN_ROOT"
+ORPHAN_ROOT=""
+
+value="$(bash "$LAB_SCRIPT" cleanup)"
+assert_contains "$value" 'cleanup=already-clean' 'idempotent cleanup'
+assert_contains "$value" 'cleanup_proven=true' 'idempotent cleanup'
+if find "$SCRIPT_DIRECTORY" -type d -name __pycache__ -print -quit | grep -q .; then
+  fail 'Python bytecode cache residue found'
+  exit 1
+fi
+if find "$SCRIPT_DIRECTORY" -type f \( -name '*.pyc' -o -name '.coverage' \) -print -quit | grep -q .; then
+  fail 'generated Python residue found'
+  exit 1
+fi
+
+rm -- "$EXTERNAL_ROOT/target"
+rmdir -- "$EXTERNAL_ROOT"
+EXTERNAL_ROOT=""
+trap - EXIT INT TERM
+
+printf 'verification_passed=true\n'
+printf 'cases=guided,independent\n'
+printf 'refusals=invalid-input,invalid-transition,unexpected-artifact,changed-model,symlink,out-of-scope-descriptor,orphan-candidate\n'
+printf 'answer_isolation=raw-independent-inputs-no-derived-outcome-diagnosis-or-recovery\n'
+printf 'network_mutation=none\n'
+printf 'host_mutation=guarded-tmp-state-only\n'
+printf 'cleanup_proven=true\n'

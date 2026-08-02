@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0065",
+  "title": "RFC 1034: Domain Names - Concepts and Facilities",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc1034",
+  "sourceType": "rfc",
+  "versionOrDate": "Internet Standard, November 1987; updates listed by RFC Editor; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["DNS hierarchy", "zones", "delegation", "resolvers", "recursion", "caching"],
+  "relevance": "Primary DNS architecture source for the distributed namespace, authoritative zones, resolvers, iterative referrals, recursive service, and time-bounded caching model used throughout the lesson.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

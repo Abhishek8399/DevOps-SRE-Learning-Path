@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0088",
+  "title": "Manual Rotation of CA Certificates",
+  "organization": "Kubernetes Documentation",
+  "url": "https://kubernetes.io/docs/tasks/tls/manual-rotation-of-ca-certificates/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Continuously maintained; reviewed 2026-08-02",
+  "lessonIds": ["LES-0016"],
+  "topics": ["Kubernetes", "CA rotation", "trust overlap", "rolling restart", "verification"],
+  "relevance": "Official operational example showing that CA migration is a distributed trust rollout with an overlap period, component restarts, ordered verification, and delayed removal of the old trust anchor.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

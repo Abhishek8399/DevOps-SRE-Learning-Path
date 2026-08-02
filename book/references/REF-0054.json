@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0054",
+  "title": "RFC 3022: Traditional IP Network Address Translator",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc3022",
+  "sourceType": "rfc",
+  "versionOrDate": "January 2001",
+  "lessonIds": ["LES-0012"],
+  "topics": ["NAT", "NAPT", "address translation", "session state", "return path"],
+  "relevance": "Primary architectural reference for traditional NAT and port translation, including why translation creates state and why the return path must traverse compatible state.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

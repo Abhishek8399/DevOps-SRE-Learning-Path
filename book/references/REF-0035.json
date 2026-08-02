@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0035",
+  "title": "Documentation for /proc/sys/vm",
+  "organization": "Linux Kernel Documentation",
+  "url": "https://docs.kernel.org/admin-guide/sysctl/vm.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0010"],
+  "topics": ["dirty memory", "background writeback", "dirty thresholds", "writeback timing"],
+  "relevance": "Primary reference for dirty page, flusher, writeback interval, and writer-throttling controls; used to explain behavior while explicitly refusing casual production tuning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

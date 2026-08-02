@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0033",
+  "title": "I/O statistics fields",
+  "organization": "Linux Kernel Documentation",
+  "url": "https://docs.kernel.org/admin-guide/iostats.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0010"],
+  "topics": ["block device counters", "proc diskstats", "sysfs stat", "queue and busy time"],
+  "relevance": "Primary definition of the cumulative kernel counters from which common per-device rates, completion-time, outstanding-request, busy-time, and weighted-queue metrics are derived.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

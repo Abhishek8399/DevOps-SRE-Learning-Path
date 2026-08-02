@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0072",
+  "title": "DNS for Services and Pods",
+  "organization": "Kubernetes Documentation",
+  "url": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Kubernetes documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["Kubernetes DNS", "Services", "headless Services", "Pods", "search domains", "service discovery"],
+  "relevance": "Official source for Kubernetes DNS names and record behavior for Services and Pods, including the distinction between normal and headless service discovery used in production transfer.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

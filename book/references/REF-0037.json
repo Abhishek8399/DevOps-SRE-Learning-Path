@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0037",
+  "title": "sysstat performance monitoring tools",
+  "organization": "sysstat project",
+  "url": "https://github.com/sysstat/sysstat",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Upstream project documentation reviewed 2026-08-02; Ubuntu 24.04 package behavior must be checked locally",
+  "lessonIds": ["LES-0010"],
+  "topics": ["iostat", "pidstat", "sar", "sampling", "historical system activity"],
+  "relevance": "Upstream source and documentation home for the tools used to report block-device, task-level, live, and historical activity; command output remains version-sensitive.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

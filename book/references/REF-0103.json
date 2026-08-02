@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0103",
+  "title": "tempfile — Generate temporary files and directories",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3.12/library/tempfile.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3.12 standard-library documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0018"],
+  "topics": ["temporary files", "temporary directories", "secure creation", "cleanup", "file descriptors", "cross-platform behavior"],
+  "relevance": "Authoritative API reference for securely creating temporary state; the lesson adds explicit ownership, lifecycle, interruption, allowlist, and publication requirements for operational tools.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

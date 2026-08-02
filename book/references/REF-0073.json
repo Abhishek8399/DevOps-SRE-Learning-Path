@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0073",
+  "title": "RFC 9110: HTTP Semantics",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9110",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["HTTP semantics", "methods", "status codes", "fields", "content", "intermediaries"],
+  "relevance": "Current core HTTP semantics specification. It defines methods, safety, idempotency, status codes, field behavior, representation metadata, conditional requests, intermediaries, and connection-management semantics shared by HTTP versions.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0029",
+  "title": "git-restore Documentation",
+  "organization": "Git Project",
+  "url": "https://git-scm.com/docs/git-restore",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online Git manual reviewed 2026-08-02; installed-version behavior remains authoritative",
+  "lessonIds": ["LES-0009"],
+  "topics": ["working-tree restore", "index restore", "source selection", "pathspec", "conflicted entries"],
+  "relevance": "Primary command reference for making source and destination explicit when restoring selected working-tree or index paths.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

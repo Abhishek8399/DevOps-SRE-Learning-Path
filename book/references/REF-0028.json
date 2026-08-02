@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0028",
+  "title": "git-diff Documentation",
+  "organization": "Git Project",
+  "url": "https://git-scm.com/docs/git-diff",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online Git manual reviewed 2026-08-02; installed-version behavior remains authoritative",
+  "lessonIds": ["LES-0009"],
+  "topics": ["working-tree diff", "staged diff", "commit comparison", "pathspec", "whitespace checks"],
+  "relevance": "Primary command reference for separating working-tree-versus-index evidence from index-versus-HEAD and other object comparisons.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

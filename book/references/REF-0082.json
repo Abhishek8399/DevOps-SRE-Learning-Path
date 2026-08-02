@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0082",
+  "title": "RFC 5280: Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List Profile",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc5280",
+  "sourceType": "rfc",
+  "versionOrDate": "May 2008",
+  "lessonIds": ["LES-0016"],
+  "topics": ["X.509", "certification path", "certificate extensions", "CRL", "PKIX"],
+  "relevance": "Normative PKIX profile used to explain leaf, intermediate, and trust-anchor roles; critical extensions; basic constraints; key usage; validity; certification-path validation; and CRL structure.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

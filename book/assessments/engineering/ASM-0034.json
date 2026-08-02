@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0034",
+  "lessonId": "LES-0017",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A scheduled Bash reconciliation job reports exit status 0 and publishes `complete=true`, but 18 of 240 tenant records were never processed. The omitted names contain spaces or wildcard characters. The input producer also logged `permission denied` halfway through the run. The script uses `for item in $(producer)`, pipes the result through `tee`, enables only `set -e`, writes directly to the final report, retries the entire job on any error, and runs `rm -rf \"$work_dir\"` from an EXIT trap. Diagnose the immediate mechanisms and deeper design failures. Give a safe evidence path, bounded recovery, verification, and prevention plan without running the script against production data.",
+  "directAnswer": "This is not one Bash failure. Unquoted command substitution converts producer output into shell words, so spaces and glob characters can split or expand records. A pipeline normally reports its last command's status, so a successful `tee` can hide the producer's nonzero status unless the script captures the relevant statuses or deliberately enables and handles `pipefail`. `set -e` is context-dependent and is not a transaction or complete error policy. Direct final-report writes expose partial state; whole-job retries can repeat already completed side effects; and a broad cleanup command trusts a mutable path at the most dangerous moment. Preserve the exact invocation and artifacts, reproduce with synthetic hostile names, inspect `PIPESTATUS`, quoting, input framing, trap code, and operation identifiers, then replace the unsafe boundaries with structured records, explicit status handling, staged output plus atomic publication, validated cleanup, bounded idempotent retry, and concurrency control.",
+  "foundation": "Bash first parses text into commands, then performs expansions that can turn one piece of text into several arguments. A filename is data, not a safe line or word: it may contain spaces, tabs, wildcard characters, leading dashes, and even newlines. `$(producer)` collects text and removes trailing newlines; leaving that result unquoted allows word splitting and pathname expansion. A pipe connects processes but does not automatically combine their success. By default, the pipeline's exit status is normally the last command's status. `set -e` asks Bash to exit after some unhandled failures, but grammar contexts such as condition tests and parts of lists have exceptions. A retry repeats an operation; unless the operation is idempotent, repetition can duplicate its effect. A final report is committed state and should not be replaced until a complete candidate has been validated.",
+  "reasoningSteps": [
+    "Freeze mutation and preserve the scheduler invocation, script version, environment names without values, timestamps, exit status, standard output, standard error, report metadata, and a redacted list of missing record identifiers. Do not rerun against the same production target while the operation's idempotency is unknown.",
+    "State the violated contract: 240 input records should produce 240 terminal per-record outcomes and one final report only after all required work succeeds. Exit 0 plus 222 outcomes is internally inconsistent evidence.",
+    "Trace the shell boundary. `$(producer)` returns a text string, unquoted expansion is split using `IFS`, then matching wildcard characters undergo pathname expansion in the current directory. Therefore a logical record is not preserved as one array element.",
+    "Trace the pipeline boundary. A downstream `tee` can exit successfully after the producer failed; without deliberate pipeline-status handling the parent may observe only the last command. Capture `PIPESTATUS` immediately in Bash because a later command overwrites it.",
+    "Treat `set -e` as one option, not as error handling. Locate the failing command's syntactic context and make every expected failure explicit with `if`, `case`, or captured status. Never assume `errexit` will roll back prior effects.",
+    "Inspect state publication. Directly truncating or overwriting the final report means readers can observe empty or partial data. Generate a candidate in a same-directory secure temporary file, validate count and schema, then rename it atomically on the same filesystem when that publication contract is suitable.",
+    "Inspect side-effect identity. A whole-job retry may repeat the first 222 actions. Find whether each action has an idempotency key, compare-before-change check, transaction, or durable receipt. If none exists, reconcile actual state before retrying only missing operations.",
+    "Inspect cleanup independently. Prove `work_dir` was created by this invocation, is a direct child of the approved parent, is owned by the expected UID, has the expected prefix and sentinel, resolves to itself, and contains only allowlisted artifacts. Prefer removing named files and `rmdir` over broad recursive deletion.",
+    "Reproduce offline with synthetic records containing spaces, `*`, `?`, a leading dash, an empty field, and a simulated producer exit 23. Compare argument counts and statuses for the unsafe loop and a safe NUL-delimited or array-based implementation.",
+    "Recover with a reviewed one-shot reconciler that reads a preserved operation manifest, checks each operation's current state or durable receipt, performs only missing idempotent work, and writes a new validated report. Use a lock or scheduler concurrency policy so two recoveries cannot race.",
+    "Verify user-visible and internal outcomes: 240 unique terminal records, no duplicate side effects, expected target state, correct nonzero behavior under injected producer failure, unchanged prior report on failure, released lock, removed private temporary state, and sanitized logs.",
+    "Prevent recurrence with syntax parsing, ShellCheck, unit tests for functions, black-box tests for exit status and streams, hostile-input fixtures, failure injection, idempotency tests, concurrent-run tests, bounded retry tests, and CI execution under the declared Bash version."
+  ],
+  "seniorAnswer": "I would declare the published success untrustworthy and stop automatic retries, because they can amplify already completed side effects. I would preserve the exact script revision and scheduler evidence, then build a synthetic reproduction around the command boundary rather than experimenting on tenant data. There are at least four independent defects: record framing is destroyed by unquoted command substitution; globbing can reinterpret data as patterns; the pipeline observes `tee` instead of the failing producer; and `set -e` is being mistaken for transactional control. Direct publication creates partial-state visibility, the retry has no proven idempotency contract, and the EXIT trap has an unsafe deletion boundary. The corrected design would accept explicit arguments, use a lossless record protocol such as NUL-delimited paths or a structured manifest, store records in quoted arrays, use `--` where utilities support it, capture expected errors explicitly, stage and validate output before same-filesystem rename, attach a durable operation ID to side effects, retry only classified transient failures with capped exponential backoff and jitter, and serialize the shared state with an advisory lock plus a recheck after acquisition. Recovery would reconcile the 240 intended operations against durable receipts and actual target state, not blindly replay the batch. I would not call it recovered until the real consumer sees the complete report, duplicates are absent, failure injections return the documented statuses, the previous report survives a failed run, cleanup proves absence, and metrics expose per-record outcomes, retries, lock contention, and publication age.",
+  "weakAnswer": "Add `set -euo pipefail`, quote the variable, increase retries, and restart the job.",
+  "whyWeak": "Quoting is necessary but does not invent a record format, `pipefail` does not identify which stage failed or undo prior work, and strict options do not provide transactions, locks, validation, rollback, or idempotency. Increasing retries can duplicate side effects. A restart destroys the opportunity to reconcile what already happened. The answer also ignores the unsafe trap and partial final report.",
+  "evidence": [
+    {
+      "signal": "Synthetic input count is 240 but the called function receives 222 arguments, with splits around spaces and expansions around wildcard characters.",
+      "proves": "The current text-to-argument conversion does not preserve the input record boundary in that reproduction.",
+      "doesNotProve": "Which production records changed, whether the producer itself emitted all records, or whether a different working directory changes wildcard expansion."
+    },
+    {
+      "signal": "The producer exits 23, `tee` exits 0, the pipeline reports 0 without `pipefail`, and Bash `PIPESTATUS` immediately shows `23 0`.",
+      "proves": "The pipeline's selected status hid an upstream failure for that invocation.",
+      "doesNotProve": "That enabling `pipefail` alone makes the overall workflow correct, atomic, idempotent, or safely retryable."
+    },
+    {
+      "signal": "An injected failure leaves the old report replaced by a shorter candidate and a replay duplicates already completed operation IDs.",
+      "proves": "Publication and retry contracts are unsafe in the tested design.",
+      "doesNotProve": "That every production side effect duplicated or that rename alone would solve remote-system consistency."
+    },
+    {
+      "signal": "A candidate implementation retains the previous report on failure, publishes 240 unique outcomes after validation, and a second identical run performs zero additional side effects.",
+      "proves": "The tested candidate preserves the local publication invariant and is idempotent for those fixtures.",
+      "doesNotProve": "Correctness under every production dependency failure, concurrent scheduler, filesystem, Bash version, or hostile input."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is `for x in $(command)` unsafe even if `x` is quoted inside the loop?",
+      "answer": "Damage occurs before the loop body. Command substitution produces text, and the unquoted substitution is then subject to word splitting and filename expansion. By the time `\"$x\"` is used, one source record may already have become several words or a wildcard may already have expanded to unrelated paths. Preserve records at ingestion with an appropriate protocol, such as `while IFS= read -r` for lines that cannot contain newline or `readarray -d ''` and NUL-delimited input for arbitrary pathnames."
+    },
+    {
+      "prompt": "Does `set -o pipefail` make every pipeline safe?",
+      "answer": "No. It changes the selected pipeline status to failure when a stage fails, but the stages still run concurrently, upstream processes may receive SIGPIPE when downstream exits early, partial output and side effects may already exist, and the selected status may still lose detail. Design the data and side-effect contract, capture stage statuses when needed, validate output, and handle expected failure deliberately."
+    },
+    {
+      "prompt": "When is retry safe?",
+      "answer": "Retry is safe only when the failure is classified as transient, the attempt has a deadline and cap, the operation is idempotent or has a durable deduplication key, and retry demand cannot overload the dependency. Authentication, validation, permission, and syntax failures are normally permanent until something changes. A timeout is an unknown outcome for a remote mutation, so reconcile by operation ID before repeating it."
+    },
+    {
+      "prompt": "Why stage the report in the same directory as the final file?",
+      "answer": "A rename within one filesystem can provide an atomic name switch, so readers see the old complete file or the new complete file rather than a partially written file. Cross-filesystem moves may degrade to copy-and-delete behavior. Atomic visibility still does not guarantee durable storage after power loss or transactional consistency with a remote API; those are separate contracts."
+    },
+    {
+      "prompt": "What is the safer alternative to a cleanup trap containing `rm -rf \"$work_dir\"`?",
+      "answer": "Keep the root readonly after secure creation, validate canonical parent, basename prefix, owner, mode, sentinel, and allowlisted children, remove exact regular files, then use `rmdir` on the now-empty exact directory. Make cleanup idempotent and report refusal rather than guessing when an invariant fails."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Mechanism diagnosis",
+      "points": 10,
+      "observableEvidence": "Explains expansion order, record-boundary loss, globbing, default pipeline status, and the limits of `set -e` without collapsing them into one error."
+    },
+    {
+      "criterion": "State and retry safety",
+      "points": 10,
+      "observableEvidence": "Identifies partial publication, unknown side-effect state, idempotency or deduplication requirements, and retry amplification."
+    },
+    {
+      "criterion": "Cleanup and concurrency boundaries",
+      "points": 10,
+      "observableEvidence": "Requires validated exact cleanup and explains lock scope, contention behavior, and rechecking state after lock acquisition."
+    },
+    {
+      "criterion": "Evidence and reproduction",
+      "points": 10,
+      "observableEvidence": "Proposes a synthetic hostile-input reproduction, exact status and stream capture, count reconciliation, and no production-data experiment."
+    },
+    {
+      "criterion": "Recovery, verification, and prevention",
+      "points": 10,
+      "observableEvidence": "Provides bounded reconciliation, real outcome verification, failure injection, static analysis, tests, and observability."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

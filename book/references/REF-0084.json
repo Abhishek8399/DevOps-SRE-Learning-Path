@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0084",
+  "title": "RFC 6066: Transport Layer Security Extensions: Extension Definitions",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc6066",
+  "sourceType": "rfc",
+  "versionOrDate": "January 2011; consult current updates",
+  "lessonIds": ["LES-0016"],
+  "topics": ["SNI", "server_name", "TLS extensions", "certificate selection"],
+  "relevance": "Primary definition of the TLS server_name extension, used to explain how a shared endpoint can select a virtual service and certificate before HTTP is available.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

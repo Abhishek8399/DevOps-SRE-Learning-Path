@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0060",
+  "title": "RFC 6298: Computing TCP's Retransmission Timer",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc6298",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2011",
+  "lessonIds": ["LES-0013"],
+  "topics": ["TCP", "RTO", "RTT estimation", "retransmission", "timeout"],
+  "relevance": "Standards-track algorithm for TCP retransmission timeout calculation, providing the foundation for interpreting repeated retransmissions and latency amplification without guessing from one timeout message.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

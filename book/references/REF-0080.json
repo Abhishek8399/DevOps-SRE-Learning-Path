@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0080",
+  "title": "Kubernetes documentation: Service",
+  "organization": "The Kubernetes Authors",
+  "url": "https://kubernetes.io/docs/concepts/services-networking/service/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "continuously maintained; reviewed 2026-08-02",
+  "lessonIds": ["LES-0015"],
+  "topics": ["Kubernetes Service", "EndpointSlice", "load balancing", "traffic policy", "session affinity"],
+  "relevance": "Primary project documentation for the Service abstraction, EndpointSlices, implementation models, traffic policies, and session affinity used in the Kubernetes transfer section.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

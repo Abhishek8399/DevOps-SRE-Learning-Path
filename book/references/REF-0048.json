@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0048",
+  "title": "Resource Management for Pods and Containers",
+  "organization": "Kubernetes",
+  "url": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Kubernetes v1.36 documentation, reviewed 2026-08-02",
+  "lessonIds": ["LES-0011"],
+  "topics": ["resource requests", "resource limits", "CPU throttling", "memory enforcement", "pod scheduling"],
+  "relevance": "Official Kubernetes source for distinguishing scheduling requests from runtime limits and transferring Linux CPU and memory enforcement evidence into pod diagnosis.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

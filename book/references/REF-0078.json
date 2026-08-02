@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0078",
+  "title": "RFC 7239: Forwarded HTTP Extension",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc7239",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2014",
+  "lessonIds": ["LES-0015"],
+  "topics": ["Forwarded", "proxy identity", "client address", "host", "scheme", "privacy"],
+  "relevance": "Defines the standardized Forwarded field and its security and privacy considerations, useful for reasoning about which intermediary supplied client, host, and protocol metadata.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

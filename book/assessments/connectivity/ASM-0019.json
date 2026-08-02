@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0019",
+  "lessonId": "LES-0012",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "An Ubuntu application host at 10.42.1.17/24 cannot connect to a database at 10.42.8.25:5432. A teammate says the route exists and wants to change the database firewall. `ip route get 10.42.8.25` reports `10.42.8.25 via 10.42.1.1 dev eth0 src 10.42.1.17`, while `ip neigh show 10.42.1.1 dev eth0` reports `FAILED`. Hosts in a different source subnet still reach the database. Explain the first abnormal boundary, what each observation proves and cannot prove, the next safe evidence, and the smallest justified remediation and verification path.",
+  "directAnswer": "The host selected a route through next-hop 10.42.1.1 on eth0, but its neighbor entry for that next hop is FAILED. The first observed abnormal boundary is therefore local next-hop resolution, before TCP, the remote database, or its firewall. The route result proves the kernel's selected forwarding decision for that destination and source context; it does not prove that the gateway is reachable, that an Ethernet frame left the interface, that the forward path continues, or that replies return. The FAILED neighbor state proves that Linux did not complete neighbor resolution for that entry during its current state-machine attempt; it does not identify whether the gateway is down, the source is on the wrong VLAN, ARP is filtered, the address is duplicated, or local link state is bad. Preserve interface, route, link, and neighbor evidence; compare the same gateway from a healthy host in the same subnet; verify link/VLAN/gateway ownership; and, only with authorization, capture narrowly scoped ARP traffic. Repair the evidenced link or neighbor configuration. If an exact stale static neighbor entry is proven wrong, remove or replace only that entry through the managed configuration path. Verify neighbor resolution, the TCP operation, database response, and the return path; never call a route line or a successful ping end-to-end proof.",
+  "foundation": "An IP route answers 'where should this packet go next?' For an off-subnet IPv4 destination, the selected next hop is normally the gateway, not the remote destination. Ethernet cannot transmit to an IP address directly; the sender needs the next hop's link-layer address. ARP supplies that mapping and Linux records it in the neighbor table. A route can therefore be perfectly present while the packet is unable to cross the first link. TCP port checks and remote firewall changes are premature until there is evidence that the packet reached those boundaries. The same layered reasoning applies to IPv6, but Neighbor Discovery rather than ARP performs the local-neighbor work.",
+  "reasoningSteps": [
+    "Define the operation precisely: source network namespace and address 10.42.1.17, destination 10.42.8.25, TCP destination port 5432, expected response, failure interval, and a healthy comparison. 'Cannot connect' is still only a symptom.",
+    "Read the prefix relationship: 10.42.8.25 is outside 10.42.1.0/24, so the source cannot send directly to the database's Ethernet address. It must use a route-selected next hop on the local link.",
+    "Decode `ip route get`: destination 10.42.8.25, `via` next hop 10.42.1.1, egress `dev` eth0, and selected source 10.42.1.17. This is a kernel lookup result for the current policy and namespace, not proof of transmission or delivery.",
+    "Decode the neighbor evidence at the exact selected next hop. FAILED means the neighbor-unreachability process did not obtain usable reachability for 10.42.1.1 on eth0. It does not say the database IP failed ARP, because the database is not the local next hop.",
+    "Place the first abnormal boundary between route selection and link-layer frame emission. Until that boundary is healthy, there is no evidence that TCP SYN processing, remote routes, security policy, listener state, or the database application participated.",
+    "Collect bounded read-only context: `ip -brief link show dev eth0`, `ip -brief address show dev eth0`, `ip rule show`, `ip route show table all`, `ip route get 10.42.8.25`, and `ip neigh show to 10.42.1.1 dev eth0`. Record the network namespace and timestamps.",
+    "Compare a healthy host in the same source subnet, not merely a different subnet. A different subnet may use another gateway, VLAN, route, or security path and therefore cannot isolate this first-link mechanism.",
+    "Check the gateway's intended address and link ownership through configuration and network-control evidence. With approval, a narrow ARP capture can distinguish unanswered requests from no requests, wrong-interface emission, or unexpected replies; the capture scope and retention must be declared.",
+    "Do not flush every neighbor entry, bounce the interface, change the database firewall, or add a broad route. Each action changes multiple boundaries, can disrupt healthy traffic, and destroys the ability to learn which mechanism mattered.",
+    "Choose remediation from evidence: restore the correct VLAN/link/gateway, correct a managed static neighbor mapping, or fix the gateway/ARP policy. If one exact dynamic entry alone is corrupt and the underlying path is proven healthy, an authorized single-entry refresh is narrower than a table flush.",
+    "Verify in order: the selected route remains intended; the next-hop neighbor reaches a usable state with the expected identity; a TCP handshake reaches the intended listener; the database operation succeeds; and replies follow a compatible return path. Observe a healthy cohort for regression.",
+    "Prevent recurrence with gateway and neighbor-state telemetry, configuration validation, duplicate-address detection, source-subnet synthetic checks, and a runbook that requires `ip route get` plus exact-next-hop neighbor evidence before remote firewall changes."
+  ],
+  "seniorAnswer": "I would stop the proposed firewall change because our current evidence fails earlier. The route lookup selects 10.42.1.1 on eth0 with source 10.42.1.17; that is the intended forwarding decision, not a reachability test. Because the destination is outside 10.42.1.0/24, the host must resolve the gateway's link-layer identity. The exact next-hop entry is FAILED, so the first observed divergence is route-to-frame handoff on the source link. I would confirm namespace, interface carrier and address, rule/table selection, exact route lookup, and the timestamped neighbor state, then compare with a healthy source in the same subnet. I would correlate gateway/VLAN configuration and, if authorized, capture only ARP for host 10.42.1.1 on eth0 with a short duration. If requests are unanswered, ownership moves toward link, VLAN, gateway, or ARP policy; if no request leaves, the local interface/namespace/configuration path remains suspect; if a wrong reply appears, duplicate address or incorrect static mapping rises. Remediation changes only the proven mechanism through its managed owner. Recovery requires a usable neighbor entry, observed TCP outcome, successful database operation, and compatible reply path. I would then add source-subnet probes and alerting on sustained neighbor failures, because a global database check did not cover this failure domain.",
+  "weakAnswer": "The route is there, so networking is fine. Open port 5432 in the database firewall and flush ARP on every host.",
+  "whyWeak": "A route is only a forwarding decision. The exact selected next-hop resolution is already abnormal, so the packet may never reach the firewall or database. A broad firewall change expands exposure without evidence, while a fleet-wide neighbor flush disrupts unrelated traffic and destroys useful state. The answer ignores source-subnet failure domains, proof limits, return-path verification, and rollback.",
+  "evidence": [
+    {
+      "signal": "`ip route get 10.42.8.25` selects `via 10.42.1.1 dev eth0 src 10.42.1.17`",
+      "proves": "The current namespace's route policy selected that source, egress interface, and next hop for this destination at lookup time.",
+      "doesNotProve": "Carrier, neighbor resolution, frame transmission, intermediate forwarding, firewall permission, listener health, or return-path symmetry."
+    },
+    {
+      "signal": "`ip neigh show 10.42.1.1 dev eth0` reports FAILED",
+      "proves": "Linux currently has no usable resolved neighbor for the selected gateway after its neighbor-state attempt.",
+      "doesNotProve": "Whether the cause is the source interface, VLAN, gateway, ARP filtering, duplicate addressing, or a temporary event."
+    },
+    {
+      "signal": "A healthy host in the same subnet resolves 10.42.1.1 to the intended MAC and reaches the database",
+      "proves": "The shared gateway and downstream path can work from that matched subnet context, narrowing suspicion toward differences on the failing host or its attachment.",
+      "doesNotProve": "That both hosts share identical switch port, namespace, policy rules, MTU, source identity, or application behavior."
+    },
+    {
+      "signal": "After the managed link configuration is corrected, the expected neighbor identity resolves and a real database transaction succeeds",
+      "proves": "The corrected scope restored the observed next-hop boundary and the tested operation.",
+      "doesNotProve": "Long-term stability, every source subnet, every database operation, or that no secondary defect remains."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is checking a healthy host in a different subnet weak?",
+      "answer": "It may use a different first-hop gateway, VLAN, route table, firewall zone, NAT state, or return path. A matched comparison should differ in as few relevant dimensions as possible, so begin with the same source subnet and intended gateway."
+    },
+    {
+      "prompt": "Does STALE mean the same thing as FAILED?",
+      "answer": "No. STALE means a cached mapping exists but positive reachability confirmation is old; Linux may still use it while entering DELAY and PROBE. FAILED means the current neighbor-resolution process did not produce a usable entry. Neither state alone names the physical cause."
+    },
+    {
+      "prompt": "Would pinging the gateway prove the path?",
+      "answer": "A successful gateway ping would demonstrate one ICMP exchange with that gateway and would usually imply neighbor resolution for that moment. It would not test TCP 5432, downstream routes, NAT, firewall policy for the application tuple, the database listener, or the return path beyond the gateway."
+    },
+    {
+      "prompt": "When is deleting one neighbor entry reasonable?",
+      "answer": "Only after proving that the intended link and gateway are healthy, identifying an incorrect or irrecoverably stuck exact entry, confirming authority, and declaring verification and rollback. If a managed static entry caused the failure, correct its source configuration so reconciliation does not recreate it."
+    }
+  ],
+  "rubric": [
+    { "criterion": "Layer and first-boundary reasoning", "points": 3, "observableEvidence": "Places failure between route lookup and link-layer next-hop resolution without blaming TCP, the remote firewall, or the application prematurely." },
+    { "criterion": "Command decoding and proof limits", "points": 3, "observableEvidence": "Explains destination, via, dev, src, and FAILED accurately and states what neither observation establishes." },
+    { "criterion": "Matched evidence plan", "points": 3, "observableEvidence": "Uses namespace-aware interface, policy, route, exact-neighbor, same-subnet comparison, and narrowly authorized capture evidence." },
+    { "criterion": "Safe remediation", "points": 3, "observableEvidence": "Rejects broad flush/firewall changes and selects a bounded managed correction tied to the established mechanism." },
+    { "criterion": "Recovery and prevention", "points": 3, "observableEvidence": "Verifies neighbor, TCP, real database operation, return path, regression scope, and proposes mechanism-linked controls." }
+  ],
+  "maximumScore": 15,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

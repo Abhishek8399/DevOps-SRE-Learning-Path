@@ -51,7 +51,10 @@ function normalize(value: string): string {
 }
 
 function queryTokens(query: string): string[] {
-  return unique(normalize(query).split(/\s+/)).slice(0, 12);
+  const tokens = unique(normalize(query).split(/\s+/)).slice(0, 12);
+  const substantiveTokens = tokens.filter((token) => token.length > 1);
+
+  return substantiveTokens.length > 0 ? substantiveTokens : tokens;
 }
 
 function bestFieldScore(

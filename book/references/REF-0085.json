@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0085",
+  "title": "RFC 7301: Transport Layer Security Application-Layer Protocol Negotiation Extension",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc7301",
+  "sourceType": "rfc",
+  "versionOrDate": "July 2014",
+  "lessonIds": ["LES-0016"],
+  "topics": ["ALPN", "application protocol", "HTTP/2", "TLS negotiation"],
+  "relevance": "Primary definition of ALPN, used to distinguish successful TLS protection from agreement on the application protocol that will use the protected connection.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

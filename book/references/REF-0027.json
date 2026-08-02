@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0027",
+  "title": "git-status Documentation",
+  "organization": "Git Project",
+  "url": "https://git-scm.com/docs/git-status",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online Git manual reviewed 2026-08-02; installed-version behavior remains authoritative",
+  "lessonIds": ["LES-0009"],
+  "topics": ["working tree", "index", "HEAD", "porcelain format", "untracked files", "ignored files", "conflicts"],
+  "relevance": "Primary command reference for interpreting the two status columns and selecting stable machine-readable repository-state evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

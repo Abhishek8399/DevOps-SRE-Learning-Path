@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0062",
+  "title": "tcp(7) - Linux TCP protocol implementation",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man7/tcp.7.html",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream Linux manual page reviewed 2026-08-02",
+  "lessonIds": ["LES-0013"],
+  "topics": ["Linux TCP", "listen backlog", "socket buffers", "TIME_WAIT", "sysctls"],
+  "relevance": "Canonical Linux manual for implementation-specific TCP behavior and tunables, used with kernel evidence to avoid treating a sysctl name as a universal diagnosis or safe first remediation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

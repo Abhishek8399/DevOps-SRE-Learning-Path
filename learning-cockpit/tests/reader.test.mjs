@@ -82,6 +82,27 @@ const liveLessonDescriptors = [
     },
   },
   {
+    id: "LES-0009",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "03-engineering-delivery",
+      "LES-0009-safe-local-workbench",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V03-L01", "safe-local-workbench"],
+      curriculumIds: ["SCM-001"],
+      prerequisiteCurriculumIds: ["FND-001"],
+      prerequisiteLessonIds: ["LES-0007", "LES-0008"],
+      order: 1,
+      route: "/book/engineering/safe-local-workbench",
+      slug: "safe-local-workbench",
+      volume: "03-engineering-delivery",
+    },
+  },
+  {
     id: "LES-0006",
     path: join(
       repositoryRoot,
@@ -100,6 +121,195 @@ const liveLessonDescriptors = [
       route: "/book/linux/boot-kernel-systemd-journal",
       slug: "boot-kernel-systemd-journal",
       volume: "01-linux-systems",
+    },
+  },
+  {
+    id: "LES-0010",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "01-linux-systems",
+      "LES-0010-block-io-storage-performance",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V01-L07", "block-io-storage-performance"],
+      curriculumIds: ["LNX-006"],
+      prerequisiteCurriculumIds: ["LNX-001", "LNX-003"],
+      prerequisiteLessonIds: ["LES-0001", "LES-0003"],
+      order: 7,
+      route: "/book/linux/block-io-storage-performance",
+      slug: "block-io-storage-performance",
+      volume: "01-linux-systems",
+    },
+  },
+  {
+    id: "LES-0011",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "01-linux-systems",
+      "LES-0011-namespaces-cgroups-isolation",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V01-L08", "namespaces-cgroups-isolation"],
+      curriculumIds: ["LNX-007"],
+      prerequisiteCurriculumIds: ["LNX-002", "LNX-003", "LNX-004", "NET-003"],
+      prerequisiteLessonIds: ["LES-0002", "LES-0003", "LES-0004", "LES-0005"],
+      order: 8,
+      route: "/book/linux/namespaces-cgroups-isolation",
+      slug: "namespaces-cgroups-isolation",
+      volume: "01-linux-systems",
+    },
+  },
+  {
+    id: "LES-0012",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "02-connectivity",
+      "LES-0012-ethernet-ip-cidr-routing-nat",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V02-L01", "ethernet-ip-cidr-routing-nat"],
+      curriculumIds: ["NET-001", "NET-002"],
+      prerequisiteCurriculumIds: ["FND-001"],
+      prerequisiteLessonIds: ["LES-0007"],
+      order: 1,
+      route: "/book/connectivity/ethernet-ip-cidr-routing-nat",
+      slug: "ethernet-ip-cidr-routing-nat",
+      volume: "02-connectivity",
+    },
+  },
+  {
+    id: "LES-0013",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "02-connectivity",
+      "LES-0013-tcp-udp-sockets-exhaustion",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V02-L02", "tcp-udp-sockets-exhaustion"],
+      curriculumIds: ["NET-007"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006"],
+      prerequisiteLessonIds: ["LES-0012", "LES-0004"],
+      order: 2,
+      route: "/book/connectivity/tcp-udp-sockets-exhaustion",
+      slug: "tcp-udp-sockets-exhaustion",
+      volume: "02-connectivity",
+    },
+  },
+  {
+    id: "LES-0014",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "02-connectivity",
+      "LES-0014-dns-service-discovery",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V02-L03", "dns-service-discovery"],
+      curriculumIds: ["NET-004"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003"],
+      prerequisiteLessonIds: ["LES-0012", "LES-0013"],
+      order: 3,
+      route: "/book/connectivity/dns-service-discovery",
+      slug: "dns-service-discovery",
+      volume: "02-connectivity",
+    },
+  },
+  {
+    id: "LES-0015",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "02-connectivity",
+      "LES-0015-http-proxies-load-balancing",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V02-L04", "http-proxies-load-balancing"],
+      curriculumIds: ["NET-005"],
+      prerequisiteCurriculumIds: ["NET-003", "NET-004"],
+      prerequisiteLessonIds: ["LES-0013", "LES-0014"],
+      order: 4,
+      route: "/book/connectivity/http-proxies-load-balancing",
+      slug: "http-proxies-load-balancing",
+      volume: "02-connectivity",
+    },
+  },
+  {
+    id: "LES-0016",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "02-connectivity",
+      "LES-0016-tls-pki-mtls-rotation",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V02-L05", "tls-pki-mtls-rotation"],
+      curriculumIds: ["NET-006"],
+      prerequisiteCurriculumIds: ["NET-004", "NET-005"],
+      prerequisiteLessonIds: ["LES-0014", "LES-0015"],
+      order: 5,
+      route: "/book/connectivity/tls-pki-mtls-rotation",
+      slug: "tls-pki-mtls-rotation",
+      volume: "02-connectivity",
+    },
+  },
+  {
+    id: "LES-0017",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "03-engineering-delivery",
+      "LES-0017-bash-safe-automation",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V03-L02", "bash-safe-automation"],
+      curriculumIds: ["AUT-001"],
+      prerequisiteCurriculumIds: ["SCM-001", "LNX-002"],
+      prerequisiteLessonIds: ["LES-0009", "LES-0002"],
+      order: 2,
+      route: "/book/engineering/bash-safe-automation",
+      slug: "bash-safe-automation",
+      volume: "03-engineering-delivery",
+    },
+  },
+  {
+    id: "LES-0018",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "03-engineering-delivery",
+      "LES-0018-python-operational-automation",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V03-L03", "python-operational-automation"],
+      curriculumIds: ["AUT-002"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-001"],
+      prerequisiteLessonIds: ["LES-0009", "LES-0017"],
+      order: 3,
+      route: "/book/engineering/python-operational-automation",
+      slug: "python-operational-automation",
+      volume: "03-engineering-delivery",
     },
   },
 ];
@@ -355,11 +565,11 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("three live structured lessons preserve exact identities and canonical sections", () => {
+test("thirteen live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0007", "LES-0008", "LES-0006"],
+    ["LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018"],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -537,7 +747,7 @@ test("published legacy route and state identities remain immutable", () => {
   );
 });
 
-test("the volume-aware reader catalog publishes eight stable identities", () => {
+test("the volume-aware reader catalog publishes eighteen stable identities", () => {
   const linuxVolume = getReaderVolume("01-linux-systems");
   const legacyMap = readJson(join(
     repositoryRoot,
@@ -563,7 +773,7 @@ test("the volume-aware reader catalog publishes eight stable identities", () => 
   const structuredMetadata = loadLiveStructuredBundles().map(({ lesson }) => lesson.metadata);
   const catalog = createReaderCatalog(legacyEntries, structuredMetadata);
 
-  assert.equal(catalog.length, 8);
+  assert.equal(catalog.length, 18);
   assert.deepEqual(
     catalog.map((entry) => [
       entry.canonicalId,
@@ -578,11 +788,21 @@ test("the volume-aware reader catalog publishes eight stable identities", () => 
       ...expectedLegacyIdentities.map(([id, stateId, route], index) =>
         [id, stateId, route, "01-linux-systems", index + 1]),
       ["LES-0006", "LES-0006", "/book/linux/boot-kernel-systemd-journal", "01-linux-systems", 6],
+      ["LES-0010", "LES-0010", "/book/linux/block-io-storage-performance", "01-linux-systems", 7],
+      ["LES-0011", "LES-0011", "/book/linux/namespaces-cgroups-isolation", "01-linux-systems", 8],
+      ["LES-0012", "LES-0012", "/book/connectivity/ethernet-ip-cidr-routing-nat", "02-connectivity", 1],
+      ["LES-0013", "LES-0013", "/book/connectivity/tcp-udp-sockets-exhaustion", "02-connectivity", 2],
+      ["LES-0014", "LES-0014", "/book/connectivity/dns-service-discovery", "02-connectivity", 3],
+      ["LES-0015", "LES-0015", "/book/connectivity/http-proxies-load-balancing", "02-connectivity", 4],
+      ["LES-0016", "LES-0016", "/book/connectivity/tls-pki-mtls-rotation", "02-connectivity", 5],
+      ["LES-0009", "LES-0009", "/book/engineering/safe-local-workbench", "03-engineering-delivery", 1],
+      ["LES-0017", "LES-0017", "/book/engineering/bash-safe-automation", "03-engineering-delivery", 2],
+      ["LES-0018", "LES-0018", "/book/engineering/python-operational-automation", "03-engineering-delivery", 3],
     ],
   );
   for (const field of ["canonicalId", "stateId", "slug", "route"]) {
     const values = catalog.map((entry) => String(entry[field]));
-    assert.equal(new Set(values).size, 8, `${field} must be unique`);
+    assert.equal(new Set(values).size, 18, `${field} must be unique`);
   }
   const positions = catalog.map((entry) => `${entry.volumeId}:${entry.order}`);
   assert.equal(
@@ -639,8 +859,8 @@ test("the volume-aware reader catalog publishes eight stable identities", () => 
     () => resolveReaderPrerequisitesInCatalog(catalog, ["LES-9000"], []),
     /reader prerequisite LES-9000 is missing from the catalog/,
   );
-  assert.equal(new Set(positions).size, 8, "volume-local positions must be unique");
-  assert.equal(new Set(catalog.map((entry) => entry.order)).size, 6,
+  assert.equal(new Set(positions).size, 18, "volume-local positions must be unique");
+  assert.equal(new Set(catalog.map((entry) => entry.order)).size, 8,
     "the same local order is valid in different volumes");
   assert.equal(catalog.find((entry) => entry.canonicalId === "LES-0007").availability,
     "substantive-draft");
@@ -678,15 +898,39 @@ test("the volume-aware reader catalog publishes eight stable identities", () => 
   assert.equal(linuxStart.next?.canonicalId, "LES-0002");
   const linuxEnd = adjacentReaderEntriesInCatalog(
     catalog,
-    "boot-kernel-systemd-journal",
+    "namespaces-cgroups-isolation",
   );
-  assert.equal(linuxEnd.previous?.canonicalId, "LES-0005");
+  assert.equal(linuxEnd.previous?.canonicalId, "LES-0010");
   assert.equal(linuxEnd.next, undefined);
+  const connectivityStart = adjacentReaderEntriesInCatalog(catalog, "ethernet-ip-cidr-routing-nat");
+  assert.equal(connectivityStart.previous, undefined);
+  assert.equal(connectivityStart.next?.canonicalId, "LES-0013");
+  const connectivityMiddle = adjacentReaderEntriesInCatalog(catalog, "tcp-udp-sockets-exhaustion");
+  assert.equal(connectivityMiddle.previous?.canonicalId, "LES-0012");
+  assert.equal(connectivityMiddle.next?.canonicalId, "LES-0014");
+  const connectivityDns = adjacentReaderEntriesInCatalog(catalog, "dns-service-discovery");
+  assert.equal(connectivityDns.previous?.canonicalId, "LES-0013");
+  assert.equal(connectivityDns.next?.canonicalId, "LES-0015");
+  const connectivityHttp = adjacentReaderEntriesInCatalog(catalog, "http-proxies-load-balancing");
+  assert.equal(connectivityHttp.previous?.canonicalId, "LES-0014");
+  assert.equal(connectivityHttp.next?.canonicalId, "LES-0016");
+  const connectivityEnd = adjacentReaderEntriesInCatalog(catalog, "tls-pki-mtls-rotation");
+  assert.equal(connectivityEnd.previous?.canonicalId, "LES-0015");
+  assert.equal(connectivityEnd.next, undefined);
+  const engineeringStart = adjacentReaderEntriesInCatalog(catalog, "safe-local-workbench");
+  assert.equal(engineeringStart.previous, undefined);
+  assert.equal(engineeringStart.next?.canonicalId, "LES-0017");
+  const engineeringMiddle = adjacentReaderEntriesInCatalog(catalog, "bash-safe-automation");
+  assert.equal(engineeringMiddle.previous?.canonicalId, "LES-0009");
+  assert.equal(engineeringMiddle.next?.canonicalId, "LES-0018");
+  const engineeringEnd = adjacentReaderEntriesInCatalog(catalog, "python-operational-automation");
+  assert.equal(engineeringEnd.previous?.canonicalId, "LES-0017");
+  assert.equal(engineeringEnd.next, undefined);
 });
 
-test("a seven-entry v1 reading state gains LES-0008 without prior state loss", () => {
+test("an eight-entry v1 reading state gains ten lessons without prior state loss", () => {
   const legacyStateIds = expectedLegacyIdentities.map(([, stateId]) => stateId);
-  const priorStateIds = [...legacyStateIds, "LES-0006", "LES-0007"];
+  const priorStateIds = [...legacyStateIds, "LES-0006", "LES-0007", "LES-0008"];
   const priorLessons = Object.fromEntries(priorStateIds.map((lessonId, index) => [
     lessonId,
     {
@@ -704,7 +948,7 @@ test("a seven-entry v1 reading state gains LES-0008 without prior state loss", (
   assert.equal(loaded.recoveredInvalidData, false);
   assert.deepEqual(
     [...LEARNING_LIBRARY_LESSON_IDS],
-    [...priorStateIds, "LES-0008"],
+    [...priorStateIds, "LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018"],
   );
   assert.deepEqual(
     loaded.state.recentLessonIds,
@@ -713,11 +957,13 @@ test("a seven-entry v1 reading state gains LES-0008 without prior state loss", (
   for (const lessonId of priorStateIds) {
     assert.deepEqual(loaded.state.lessons[lessonId], priorLessons[lessonId]);
   }
-  assert.deepEqual(loaded.state.lessons["LES-0008"], {
-    bookmarked: false,
-    marker: "not-started",
-    lastOpenedAt: null,
-  });
+  for (const lessonId of ["LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018"]) {
+    assert.deepEqual(loaded.state.lessons[lessonId], {
+      bookmarked: false,
+      marker: "not-started",
+      lastOpenedAt: null,
+    });
+  }
 });
 
 test("structured bookmarks and finished-reading markers never create mastery data", () => {
@@ -725,6 +971,16 @@ test("structured bookmarks and finished-reading markers never create mastery dat
     ["LES-0006", "2026-08-02T06:00:00.000Z"],
     ["LES-0007", "2026-08-02T07:00:00.000Z"],
     ["LES-0008", "2026-08-02T08:00:00.000Z"],
+    ["LES-0009", "2026-08-02T09:00:00.000Z"],
+    ["LES-0010", "2026-08-02T10:00:00.000Z"],
+    ["LES-0011", "2026-08-02T11:00:00.000Z"],
+    ["LES-0012", "2026-08-02T12:00:00.000Z"],
+    ["LES-0013", "2026-08-02T13:00:00.000Z"],
+    ["LES-0014", "2026-08-02T14:00:00.000Z"],
+    ["LES-0015", "2026-08-02T15:00:00.000Z"],
+    ["LES-0016", "2026-08-02T16:00:00.000Z"],
+    ["LES-0017", "2026-08-02T17:00:00.000Z"],
+    ["LES-0018", "2026-08-02T18:00:00.000Z"],
   ]) {
     const initial = createEmptyLearningState();
     const bookmarked = toggleLessonBookmark(initial, lessonId);
@@ -743,7 +999,7 @@ test("structured bookmarks and finished-reading markers never create mastery dat
   }
 });
 
-test("the live production search set has eight unique lessons and stable golden rankings", () => {
+test("the live production search set has eighteen unique lessons and stable golden rankings", () => {
   const documents = liveProductionSearchDocuments();
   assert.deepEqual(
     documents.map((document) => document.id),
@@ -755,15 +1011,27 @@ test("the live production search set has eight unique lessons and stable golden 
       "identity-permissions",
       "LES-0007",
       "LES-0008",
+      "LES-0009",
       "LES-0006",
+      "LES-0010",
+      "LES-0011",
+      "LES-0012",
+      "LES-0013",
+      "LES-0014",
+      "LES-0015",
+      "LES-0016",
+      "LES-0017",
+      "LES-0018",
     ],
   );
-  assert.equal(new Set(documents.map((document) => document.id)).size, 8);
-  assert.equal(new Set(documents.map((document) => document.href)).size, 8);
+  assert.equal(new Set(documents.map((document) => document.id)).size, 18);
+  assert.equal(new Set(documents.map((document) => document.href)).size, 18);
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeNumber, "00");
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeTitle, "Start safely");
   assert.equal(documents.find((document) => document.id === "LES-0008")?.volumeNumber, "00");
   assert.equal(documents.find((document) => document.id === "LES-0008")?.volumeTitle, "Start safely");
+  assert.equal(documents.find((document) => document.id === "LES-0009")?.volumeNumber, "03");
+  assert.equal(documents.find((document) => document.id === "LES-0009")?.volumeTitle, "Engineering and delivery");
 
   const goldenQueries = new Map([
     ["LES-0001", "storage"],
@@ -791,6 +1059,36 @@ test("the live production search set has eight unique lessons and stable golden 
     ["V00-L02", "LES-0008"],
     ["DBG-001", "LES-0008"],
     ["FRAME", "LES-0008"],
+    ["LES-0009", "LES-0009"],
+    ["V03-L01", "LES-0009"],
+    ["SCM-001", "LES-0009"],
+    ["LES-0010", "LES-0010"],
+    ["V01-L07", "LES-0010"],
+    ["LNX-006", "LES-0010"],
+    ["LES-0011", "LES-0011"],
+    ["V01-L08", "LES-0011"],
+    ["LNX-007", "LES-0011"],
+    ["LES-0012", "LES-0012"],
+    ["V02-L01", "LES-0012"],
+    ["NET-001", "LES-0012"],
+    ["LES-0013", "LES-0013"],
+    ["V02-L02", "LES-0013"],
+    ["NET-007", "LES-0013"],
+    ["LES-0014", "LES-0014"],
+    ["V02-L03", "LES-0014"],
+    ["NET-004", "LES-0014"],
+    ["LES-0015", "LES-0015"],
+    ["V02-L04", "LES-0015"],
+    ["NET-005", "LES-0015"],
+    ["LES-0016", "LES-0016"],
+    ["V02-L05", "LES-0016"],
+    ["NET-006", "LES-0016"],
+    ["LES-0017", "LES-0017"],
+    ["V03-L02", "LES-0017"],
+    ["AUT-001", "LES-0017"],
+    ["LES-0018", "LES-0018"],
+    ["V03-L03", "LES-0018"],
+    ["AUT-002", "LES-0018"],
   ]);
   for (const [query, expectedId] of goldenQueries) {
     const results = searchLessons(documents, query);
@@ -798,11 +1096,21 @@ test("the live production search set has eight unique lessons and stable golden 
   }
 });
 
-test("all three independent transfers stay answer-isolated from their answered records", () => {
+test("all thirteen independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
     ["LES-0006", "ASM-0003"],
     ["LES-0007", "ASM-0006"],
     ["LES-0008", "ASM-0009"],
+    ["LES-0009", "ASM-0012"],
+    ["LES-0010", "ASM-0015"],
+    ["LES-0011", "ASM-0018"],
+    ["LES-0012", "ASM-0021"],
+    ["LES-0013", "ASM-0024"],
+    ["LES-0014", "ASM-0027"],
+    ["LES-0015", "ASM-0030"],
+    ["LES-0016", "ASM-0033"],
+    ["LES-0017", "ASM-0036"],
+    ["LES-0018", "ASM-0039"],
   ]);
   for (const { lesson, assessments } of loadLiveStructuredBundles()) {
     const independent = assessments.filter((assessment) =>

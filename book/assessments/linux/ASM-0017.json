@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0017",
+  "lessonId": "LES-0011",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "Senior platform/SRE interview: after a runtime-hardening and application rollout, one Kubernetes API cohort fails readiness. Some containers exit 137, a debug shell cannot see the API process, host localhost cannot reach the port that is listening inside the pod, node CPU and memory look healthy, and the team proposes privileged mode plus doubled limits. Lead diagnosis, restoration, and prevention without collapsing namespace, cgroup, and security boundaries.",
+  "directAnswer": "Treat the signals as separate claims until evidence joins them. Freeze pod/container/process identities and rollout dimensions; map the readiness data path; compare the relevant PID and network namespaces; resolve effective cgroup policy and event deltas; inspect capabilities, seccomp, LSM, and filesystem denial evidence separately; then restore with one reversible canary that targets the first proven abnormal boundary and verify the real API operation.",
+  "foundation": "A container is assembled from independent kernel mechanisms. A PID namespace controls process-number visibility, a network namespace owns localhost and sockets, cgroups account and constrain resources, and capabilities/seccomp/LSM/filesystem rules constrain operations. Host health is not workload health. Privileged mode changes several controls at once and therefore destroys discrimination while expanding security risk.",
+  "reasoningSteps": [
+    "Establish incident roles, customer impact, readiness definition, affected cohort, known-good cohort, accepted work, rollout timing, recovery objective, security constraints, and authority for pause or rollback.",
+    "Freeze immutable identity: Deployment revision, pod UID, node, container/runtime IDs, old and current start/finish times, host PIDs where retained, image/config/runtime policy digests, cgroup paths, and exact readiness source/destination.",
+    "Draw control and data paths. Controller acceptance and pod phase are control-path evidence; client-to-Service-to-pod-to-listener-to-dependency is the readiness data path.",
+    "For missing process visibility, compare PID namespace links and the debug method. A separate debug container may or may not share the target process namespace. Missing visibility is not proof the API process is absent.",
+    "For localhost refusal, compare network namespace links, inspect listeners inside the pod network view and on the host separately, and inspect Service target port or runtime publication. Each loopback belongs to its network namespace.",
+    "For exit 137, classify it as SIGKILL outcome, then compare memory.max/current/peak/events, CPU quota/throttle, pids events, ancestors, runtime termination reason, node pressure, and timestamps for the exact old container.",
+    "For hardening regression, inspect exact capability sets, NoNewPrivs, seccomp mode/profile, LSM denial/audit evidence, filesystem and device policy, and the first failing syscall or object access. Do not infer a seccomp denial merely from Seccomp: 2.",
+    "Build a two-axis comparison: old versus new revision in the affected environment, and new revision affected versus healthy environment. Find the first transition where matched input yields different state or outcome.",
+    "Restore through the owning control plane. Prefer rollout pause and a one-pod rollback or narrowly corrected policy canary. Do not enable privileged mode or double fleet-wide limits because those change multiple variables and enlarge blast radius.",
+    "Verify readiness from the intended source, a safe real API operation, correctness and durable effect, cgroup/security event stability, restart and replacement normalization, healthy-cohort non-regression, and rollback. Reconcile accepted work.",
+    "After restoration, separate trigger, precondition, mechanism, propagation, amplification, detection, containment, and impact; encode representative policy tests, namespace-aware diagnostics, resource guardrails, telemetry retention, and canary gates."
+  ],
+  "seniorAnswer": "I would first say that the facts do not yet form one cause. The debug shell's process view may be a PID-namespace mismatch; host localhost and pod localhost are different network namespaces; exit 137 is SIGKILL and needs cgroup/runtime correlation; and runtime hardening can cause a capability, seccomp, LSM, mount, or device denial independently. I would pause both rollouts, preserve old serving capacity and previous-container evidence, and record pod UID, container IDs, node, PIDs/start times, namespace links, exact cgroup paths, policy digests, and readiness path. I would compare old/new in one environment and new across affected/healthy environments. For visibility I would compare only the specific namespace type. For resource failure I would use two-sample controller events and ancestor/node evidence. For hardening I would locate an actual denial or failed syscall and keep permissions separate from namespace and cgroup claims. My recovery would target the first evidenced abnormal boundary with one canary: application rollback, corrected Service/runtime mapping, corrected finite limit with proven node headroom, or narrowly restored syscall/capability policy. Privileged mode and fleet-wide limit doubling are rejected because they change several variables, expose the host, and make the result uninterpretable. I would verify the real API and durable effects, not merely Running state, and then add tests and telemetry that preserve these identities and boundaries.",
+  "weakAnswer": "Run the pod privileged with host networking and host PID, double CPU and memory, and restart until readiness turns green.",
+  "whyWeak": "It removes or changes PID, network, capability, seccomp, filesystem, and resource boundaries simultaneously; expands attack and failure blast radius; destroys evidence; can overload the node; cannot distinguish the cause; and treats readiness color as complete correctness without workload reconciliation.",
+  "evidence": [
+    {
+      "signal": "Debug shell cannot see the API PID",
+      "proves": "The shell's current process view does not enumerate that PID under the expected number.",
+      "doesNotProve": "That the API process is absent, stopped, or unhealthy; the shell may be in another PID namespace or using a different PID number."
+    },
+    {
+      "signal": "Port 8080 listens on pod localhost but host localhost refuses",
+      "proves": "A listener exists in the inspected pod network namespace and no accepting listener was reached at the host loopback destination used by the test.",
+      "doesNotProve": "That Service routing, host publication, NetworkPolicy, or the intended external request path is correct."
+    },
+    {
+      "signal": "Node CPU and memory remain below alert thresholds",
+      "proves": "Those node aggregates did not cross those thresholds in the represented windows.",
+      "doesNotProve": "That the container avoided CPU throttling, cgroup OOM, PID exhaustion, pressure bursts, or security-policy denial."
+    },
+    {
+      "signal": "Seccomp mode is 2",
+      "proves": "At least one seccomp filter is active for the inspected process.",
+      "doesNotProve": "Which syscalls are permitted or denied, that seccomp caused readiness failure, or that other security layers allow the operation."
+    },
+    {
+      "signal": "Privileged canary becomes ready",
+      "proves": "A canary with many simultaneous boundary changes passed the observed readiness check.",
+      "doesNotProve": "Which removed restriction mattered, that privileged operation is safe, or that API correctness and tenant isolation are preserved."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "How would you debug a seccomp suspicion without disabling seccomp fleet-wide?",
+      "answer": "Reproduce with the exact image and profile in a disposable local environment, capture an authorized audit or runtime denial and failing syscall, compare policy digests, and canary the narrowest reviewed profile correction with negative security tests and rollback."
+    },
+    {
+      "prompt": "Can two containers in one pod see different PIDs but the same localhost?",
+      "answer": "Yes. Pod containers normally share the pod network namespace, while process namespace sharing depends on configuration such as shareProcessNamespace and runtime behavior. Namespace types are independent."
+    },
+    {
+      "prompt": "What if increasing the memory limit fixes the canary?",
+      "answer": "It supports a resource-boundary relationship and restores that scope, but it does not distinguish a regressed limit from changed legitimate demand, a leak, concurrency, or allocator behavior. Preserve profiles and compare effective state before declaring cause."
+    },
+    {
+      "prompt": "When would a VM boundary be preferable to containers?",
+      "answer": "When the threat model requires a separate guest kernel or stronger tenant boundary, or when workloads need kernel features that cannot safely share the host kernel. The decision also weighs startup, density, observability, patching, and operational cost."
+    },
+    {
+      "prompt": "What should the first incident update contain?",
+      "answer": "User impact and scope, known-good and affected cohorts, confirmed observations with boundaries, uncertainty, rollout containment, capacity and security constraints, current hypotheses, the next discriminating evidence or canary, decision owner, and next update time."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Mechanism separation",
+      "points": 4,
+      "observableEvidence": "Separates PID/network namespace views, cgroup enforcement, and capability/seccomp/LSM/filesystem controls instead of inventing one cause."
+    },
+    {
+      "criterion": "Identity and evidence",
+      "points": 4,
+      "observableEvidence": "Joins pod, container, process, namespace, cgroup, node, revision, policy, timestamp, and operation identity with proof limits."
+    },
+    {
+      "criterion": "Diagnostic strategy",
+      "points": 4,
+      "observableEvidence": "Uses control/data paths, two-axis matched comparisons, counter deltas, denial evidence, and the first abnormal boundary."
+    },
+    {
+      "criterion": "Safe restoration",
+      "points": 4,
+      "observableEvidence": "Rejects privileged and broad resource changes, selects a narrow reversible canary, defines abort/rollback, and verifies correctness."
+    },
+    {
+      "criterion": "Prevention and leadership",
+      "points": 4,
+      "observableEvidence": "Controls the incident, communicates uncertainty, reconciles work, and proposes tested policy, telemetry, rollout, and isolation improvements."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

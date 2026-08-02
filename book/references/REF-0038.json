@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0038",
+  "title": "vmstat manual source and procps-ng utilities",
+  "organization": "procps-ng project",
+  "url": "https://gitlab.com/procps-ng/procps/-/blob/master/man/vmstat.8",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream manual source reviewed 2026-08-02; Ubuntu 24.04 procps output must be checked locally",
+  "lessonIds": ["LES-0010"],
+  "topics": ["vmstat", "blocked tasks", "block input and output", "I/O wait", "sampling"],
+  "relevance": "Primary upstream manual source for the system-wide process, memory, paging, block-I/O, system, and CPU fields used to add context around a storage symptom.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

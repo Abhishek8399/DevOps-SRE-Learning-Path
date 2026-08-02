@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0024",
+  "lessonId": "LES-0013",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated transport transfer: from a clean normal-user Ubuntu 24.04 or WSL 2 Ubuntu 24.04 environment, complete the guarded LES-0013 independent case without reading fixture source, another learner's diagnosis, or a model answer. Before every observation, predict the socket tuple, TCP or UDP behavior, state transition, queue or allocation boundary, and expected application outcome. Identify the first abnormal boundary, reject at least two competing mechanisms, use only supported recovery, verify the modeled operation, and prove cleanup. Do not change host sysctls, firewall, routes, interfaces, namespaces, real sockets, or process limits; use no sudo, package installation, public endpoint, production data, credential, manual state edit, or broad deletion. No diagnosis or reviewer solution belongs in this assessment.",
+  "deliverables": [
+    "A sanitized environment card recording Ubuntu or WSL version, effective non-root identity, repository and lesson scope, available tools, offline boundary, expected time, stop conditions, supported recovery, and exact cleanup proof.",
+    "A hand-drawn bidirectional diagram from client socket through any stateful boundary to listener, accept path, application worker, and reply, labeling original and translated tuples, state ownership, queues, descriptors, and proof boundaries.",
+    "A prediction ledger written before observation for TCP handshake and close states, UDP send and reply semantics, source-port allocation, backlog behavior, retransmission, receiver flow control, congestion response, and TIME-WAIT ownership.",
+    "A timestamped supported-command transcript that decodes every modeled field and states what each observation proves, what it cannot prove, its scope, and the next discriminating check.",
+    "At least three mechanism hypotheses for the changed constraint, including one local socket-resource mechanism, one path or stateful-boundary mechanism, and one listener or application mechanism; reject two with direct evidence and identify the first healthy-input/abnormal-output boundary.",
+    "Capacity calculations for the supplied connection rate and duration, local ephemeral range, source identities, TIME-WAIT population, descriptor limits, listen queues, translation or conntrack table, memory budget, and failover or retry multiplier, with assumptions and units shown.",
+    "A bounded recovery and verification record using only the supported lab interface, replaying the same modeled user operation, checking both directions and headroom, recording abort conditions, and separating restored service from final causal confidence.",
+    "Guarded cleanup followed by an absence check, plus disclosure of assistance and an explanation of why no host networking or kernel mutation was necessary.",
+    "A production transfer to one Kubernetes, proxy, load-balancer, service-mesh, or high-throughput API path that maps ownership, observability, security, failure domains, capacity, rollout, rollback, and residual uncertainty without claiming the model measured production."
+  ],
+  "evidenceRequirements": [
+    "Begin clean and retain the accepted non-root offline preflight. Use only documented check, setup, status, baseline, independent injection, observation, recovery, operation verification, and cleanup commands.",
+    "Do not inspect fixture implementation, immutable result artifacts, descriptors, sentinel contents, model answers, or another learner's work before submission. Disclose accidental exposure immediately.",
+    "For every TCP state, identify which endpoint owns it, what event entered it, what event can leave it, and why its count alone neither proves a leak nor identifies the failed boundary.",
+    "For UDP, distinguish local send acceptance, network delivery, remote receipt, remote processing, and reply delivery. Never call a successful send, open socket, or lack of an error an application-health proof.",
+    "Keep source-endpoint allocation, process and system descriptors, socket memory, SYN queue, completed accept queue, workers, NAT translation, and conntrack as separate resource pools with separate evidence.",
+    "Show units and workload distribution in capacity math. Include rate, concurrent lifetime, source and destination concentration, failover and retry effects, and safety headroom rather than quoting one theoretical maximum.",
+    "Use supported recovery only and replay the identical operation. Record protocol progress, application result, both path directions, resource headroom, unaffected cohort, remaining unknowns, and a mechanism-linked prevention control.",
+    "Run guarded cleanup and a following check. A refusal is evidence for mentor review and must never be bypassed with recursive deletion, symlink traversal, permission weakening, host tuning, or manual descriptor repair."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    { "criterion": "Safety and independent evidence", "points": 4, "observableEvidence": "Uses the clean non-root offline lifecycle, preserves predictions and proof limits, discloses assistance, and proves cleanup without bypass." },
+    { "criterion": "Transport mental model", "points": 4, "observableEvidence": "Explains socket identity, TCP and UDP semantics, state ownership, retransmission, flow and congestion control, queues, and TIME-WAIT accurately." },
+    { "criterion": "Capacity and boundary reasoning", "points": 4, "observableEvidence": "Calculates and separates tuple, descriptor, memory, backlog, worker, translation, conntrack, failover, and retry constraints with units and assumptions." },
+    { "criterion": "Diagnosis and recovery", "points": 4, "observableEvidence": "Ranks mechanisms, rejects two with evidence, locates the first divergence, performs bounded recovery, and verifies the same bidirectional application operation." },
+    { "criterion": "Production transfer", "points": 4, "observableEvidence": "Maps the mechanism to a new system with ownership, observability, security, rollout, rollback, failure-domain, headroom, and uncertainty analysis." }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

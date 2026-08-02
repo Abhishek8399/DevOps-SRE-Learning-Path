@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0053",
+  "title": "RFC 1812: Requirements for IP Version 4 Routers",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc1812",
+  "sourceType": "rfc",
+  "versionOrDate": "June 1995",
+  "lessonIds": ["LES-0012"],
+  "topics": ["IPv4 forwarding", "TTL", "routing", "ICMP", "router behavior"],
+  "relevance": "Normative router-behavior reference for IPv4 forwarding, TTL handling, route decisions, and ICMP feedback used to distinguish host, router, and path failures.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

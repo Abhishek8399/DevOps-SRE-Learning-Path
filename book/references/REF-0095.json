@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0095",
+  "title": "flock(1) - manage locks from shell scripts",
+  "organization": "util-linux project",
+  "url": "https://man7.org/linux/man-pages/man1/flock.1.html",
+  "sourceType": "manual",
+  "versionOrDate": "util-linux manual page reviewed 2026-08-02",
+  "lessonIds": ["LES-0017"],
+  "topics": ["advisory locking", "concurrency", "file descriptors", "lock scope"],
+  "relevance": "Upstream utility manual for advisory file locks, nonblocking acquisition, timeout behavior, exit codes, and file-descriptor-scoped lock lifetime.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0049",
+  "title": "RFC 826: An Ethernet Address Resolution Protocol",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc826",
+  "sourceType": "rfc",
+  "versionOrDate": "November 1982",
+  "lessonIds": ["LES-0012"],
+  "topics": ["ARP", "IPv4 neighbor resolution", "Ethernet address mapping"],
+  "relevance": "Primary protocol reference for understanding why an IPv4 sender must resolve the next-hop IP address to a link-layer address before emitting an Ethernet frame.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

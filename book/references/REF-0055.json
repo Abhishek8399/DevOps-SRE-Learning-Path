@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0055",
+  "title": "ip-route(8) — Linux routing table management",
+  "organization": "iproute2 project / Linux manual pages",
+  "url": "https://man7.org/linux/man-pages/man8/ip-route.8.html",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream iproute2 manual page reviewed 2026-08-02",
+  "lessonIds": ["LES-0012"],
+  "topics": ["Linux routes", "route lookup", "route types", "metrics", "policy routing"],
+  "relevance": "Canonical command manual for decoding Linux route entries and route queries without pretending that a configured route proves neighbor reachability or return-path correctness.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

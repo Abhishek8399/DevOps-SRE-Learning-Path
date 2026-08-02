@@ -16,14 +16,14 @@ The dashboard never raises mastery by itself. The repository ledger remains the 
 
 ## Ready lessons
 
-The reader currently publishes eight lessons across two volumes.
+The reader publishes eighteen lessons across four volumes.
 
-Volume 00 starts with:
+Volume 00 publishes two safe-start lessons:
 
 1. Systems thinking: state, queues, dependencies, and failure domains.
 2. Evidence-driven troubleshooting: FRAME, hypotheses, and safe moves.
 
-Volume 01 publishes six Linux foundation lessons:
+Volume 01 publishes eight Linux lessons:
 
 1. Filesystems, blocks, inodes, and ENOSPC.
 2. Processes, signals, exit codes, and systemd.
@@ -31,8 +31,24 @@ Volume 01 publishes six Linux foundation lessons:
 4. DNS, routing, TCP, TLS, HTTP, and sockets.
 5. Identity, permissions, traversal, and least privilege.
 6. Boot, kernel, initramfs, systemd, and the journal.
+7. Block I/O, page cache, writeback, queues, latency, throughput, and durability.
+8. Linux namespaces, cgroups v2, resource policy, and the container isolation model.
 
-`LES-0007` and `LES-0008` in Volume 00 and `LES-0006` in Volume 01 are schema-backed `substantive-draft` lessons: available to study, but still subject to review. `LES-0008` adds the reusable FRAME worksheet, a bounded virtual Ubuntu incident lab, two complete-answer assessments, and answer-isolated `ASM-0009`; its project gates and mentor-operated Ubuntu verifier pass, while formal acceptance and learner evidence remain open. Linux lessons 1-5 retain their established reader implementations, routes, and device-local state IDs. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
+Volume 02 publishes five connectivity lessons:
+
+1. Ethernet, IP, CIDR, route selection, neighbors, NAT, return paths, and MTU.
+2. TCP, UDP, sockets, queues, retransmission, flow/congestion control, TIME_WAIT, and exhaustion.
+3. DNS resolution, delegation, caches, negative answers, split DNS, and service discovery.
+4. HTTP semantics, proxies, caching, health checks, load balancing, pools, retries, and request identity.
+5. TLS handshakes, X.509 identity, PKI trust, mTLS, termination, failure diagnosis, and safe rotation.
+
+Volume 03 publishes three engineering-and-delivery lessons:
+
+1. Safe local engineering: Ubuntu/WSL shell behavior, Git states, secrets, rollback, and cleanup.
+2. Safe Bash automation: parsing, quoting, statuses, traps, inputs, concurrency, retries, tests, and recovery.
+3. Python operational automation: typed boundaries, subprocesses, exceptions, durable state, retries, concurrency, packaging, testing, and telemetry.
+
+`LES-0006` through `LES-0018` are schema-backed `substantive-draft` lessons: available to study, but still subject to review. Each has two complete-answer assessments, one answer-isolated independent transfer, eight primary references, and a bounded practice contract. Linux lessons 1-5 retain their established reader implementations, routes, and device-local state IDs. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
 
 Each explanatory lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and teaching checkpoints and product-company questions include answers from first-year foundations through senior production reasoning. Independent transfer assessments intentionally store no model answer. The page always separates:
 
@@ -48,6 +64,10 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 - `/book/start/<lesson-id>` - one Volume 00 lesson per URL.
 - `/book/linux` - Ubuntu-first Volume 01 index and preflight.
 - `/book/linux/<lesson-id>` - one statically generated lesson per URL.
+- `/book/connectivity` - Volume 02 packet-to-application transport index and preflight.
+- `/book/connectivity/<lesson-id>` - one statically generated connectivity lesson per URL.
+- `/book/engineering` - Volume 03 engineering-and-delivery index and safe workbench preflight.
+- `/book/engineering/<lesson-id>` - one statically generated engineering lesson per URL.
 - `/practice/storage` - practice separated from the explanatory chapter.
 - `/search` - offline search by symptom, command, term, title, or stable lesson ID.
 - `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.
@@ -100,9 +120,9 @@ npm audit  # optional network-backed advisory check
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
-The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The current corpus has three lessons, nine assessments, and 24 references. Content validation reports `root-memory=6/6 markdown=35 local-links=47 explicit-anchors=0 heading-anchors=640 curriculum-ids=107 requirements=46/46`; the 39-case schema suite reports 38 passes plus one Windows `EPERM` symlink skip. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus. Run the file-symlink case on Linux or symlink-capable Windows before a public release.
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, canonical curriculum homes, and live cross-record relationships without adding another package dependency. The current corpus has thirteen lessons, 39 assessments, and 104 references. Exact current counters are recorded in `VERIFICATION.md`; the Windows schema suite retains one documented `EPERM` symlink-policy skip that must run on Linux or symlink-capable Windows before a public release. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, canonical volume ownership, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus.
 
-The 21-case reader suite passes for all eight lessons, including canonical `LES-0001` through `LES-0008` search, LES-0008 catalog/state migration, trusted prerequisite resolution, advisory prerequisite rendering, and `ASM-0009` answer isolation. The suite exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, volume-local adjacency, additive state migration, schema-backed lesson parsing, CommonMark heading/fence parity, answer isolation, safe links, multi-volume search ranking, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
+The reader suite covers all eighteen lessons, including canonical `LES-0001` through `LES-0018` search, additive catalog/state migration, four-volume adjacency, trusted prerequisite resolution, advisory prerequisite rendering, and all thirteen independent-transfer answer-isolation contracts. It also exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, schema-backed lesson parsing, CommonMark heading/fence parity, safe links, multi-volume search ranking, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
 
 `npm run dev` now validates canonical content before startup. Build and development load each structured lesson through an exact virtual-module registry that reads only its declared canonical Markdown path and registers that file for change watching. Unknown or path-like lesson IDs fail closed. Adding a structured lesson therefore requires an explicit registry entry until the planned generated manifest replaces this small fixed catalog.
 

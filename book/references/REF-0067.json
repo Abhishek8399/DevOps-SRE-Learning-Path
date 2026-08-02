@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0067",
+  "title": "RFC 2308: Negative Caching of DNS Queries",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc2308",
+  "sourceType": "rfc",
+  "versionOrDate": "Standards Track, March 1998; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["negative caching", "NXDOMAIN", "NODATA", "SOA", "negative TTL"],
+  "relevance": "Primary source for distinguishing name error from empty requested-type data and for reasoning about cached negative responses after a record is created.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

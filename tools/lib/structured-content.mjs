@@ -38,7 +38,7 @@ const requiredLegacyLessonIds = Object.freeze([
 ]);
 const legacyMapFileName = "legacy-content-map.json";
 const legacyIdentityBaselineSha256 =
-  "a580aafb1bbbfb555d0fcb1fc47ba882ef3cdcc04b8d3668cfa02c925f05539d";
+  "f160ccff9ba35ec2ea808e2dbad5570b076688ebbf93cccf9e5d9344ff618046";
 const schemaDocumentBaselineSha256 = Object.freeze({
   lesson: "ac78b459aa1d7bd0509b482c4fc30a8f65304792e78265b7ec649563cd99f9fe",
   assessment: "1eb11a7c61d371d1ae54a39ad7145bc5cc767da9a9d517941d3b5581bac5540d",
@@ -62,6 +62,36 @@ const artifactSuffixByField = Object.freeze({
   commands: "CMD",
   labs: "LAB",
   incidents: "INC",
+});
+
+// Structured lessons must live in the canonical volume declared by BOOK_SPEC.md
+// and CONTENT_MATRIX.md. Legacy typed lessons are validated separately because
+// their curriculum ownership is migrated only through an explicit compatibility audit.
+const canonicalCurriculumVolumeByPrefix = Object.freeze({
+  FND: "00-start-safely",
+  DBG: "00-start-safely",
+  DOC: "00-start-safely",
+  LNX: "01-linux-systems",
+  NET: "02-connectivity",
+  SCM: "03-engineering-delivery",
+  AUT: "03-engineering-delivery",
+  BLD: "03-engineering-delivery",
+  REL: "03-engineering-delivery",
+  CI: "03-engineering-delivery",
+  GITOPS: "03-engineering-delivery",
+  CTR: "03-engineering-delivery",
+  OBS: "04-reliability-operations",
+  SRE: "04-reliability-operations",
+  PERF: "04-reliability-operations",
+  RES: "04-reliability-operations",
+  DR: "04-reliability-operations",
+  CHAOS: "04-reliability-operations",
+  IAC: "05-infrastructure-platforms",
+  TFM: "05-infrastructure-platforms",
+  CFG: "05-infrastructure-platforms",
+  K8S: "05-infrastructure-platforms",
+  PLT: "05-infrastructure-platforms",
+  DST: "06-state-distributed-systems",
 });
 
 function isPlainObject(value) {
@@ -1555,6 +1585,7 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
   const curriculumIds = collectCurriculumIds(repositoryRoot);
   const legacy = validateLegacyContentMap(repositoryRoot, curriculumIds, issues);
   const definitions = new Map();
+  const curriculumOwners = new Map();
   const lessons = [];
   const assessments = [];
   const references = [];
@@ -1565,10 +1596,18 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
   const volumeRouteSegments = new Map([
     ["00-start-safely", "start"],
     ["01-linux-systems", "linux"],
+    ["02-connectivity", "connectivity"],
+    ["03-engineering-delivery", "engineering"],
   ]);
   for (const entry of legacy.entries) {
     const id = entry.record.id;
     const owner = { id, file: `${entry.file} (${id})`, legacy: true };
+    for (const curriculumId of Array.isArray(entry.record.curriculumIds)
+      ? entry.record.curriculumIds : []) {
+      if (!curriculumOwners.has(curriculumId)) {
+        curriculumOwners.set(curriculumId, owner);
+      }
+    }
     if (!definitions.has(id)) definitions.set(id, { ...owner, kind: "lesson" });
     if (!routes.has(entry.record.route)) routes.set(entry.record.route, owner);
     if (!slugs.has(entry.record.slug)) slugs.set(entry.record.slug, owner);
@@ -1612,6 +1651,21 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
             ...issue("LESSON_ID_BELOW_NEW_RANGE", "$.id",
               `new lesson IDs must be greater than LES-${String(legacy.maxLessonNumber).padStart(4, "0")}`),
             file,
+          });
+        }
+      }
+      for (const curriculumId of Array.isArray(result.metadata.curriculumIds)
+        ? result.metadata.curriculumIds : []) {
+        const firstOwner = curriculumOwners.get(curriculumId);
+        if (firstOwner && firstOwner.id !== result.metadata.id) {
+          issues.push({
+            ...issue("DUPLICATE_CURRICULUM_OWNER", "$.curriculumIds",
+              `curriculum ID "${curriculumId}" is already owned by ${firstOwner.file}`),
+            file,
+          });
+        } else if (!firstOwner) {
+          curriculumOwners.set(curriculumId, {
+            id: result.metadata.id, file, legacy: false,
           });
         }
       }
@@ -1840,6 +1894,16 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
         issues.push({
           ...issue("CURRICULUM_ID_UNKNOWN", "$.curriculumIds",
             `curriculum ID "${curriculumId}" is not in CONTENT_MATRIX.md`),
+          file,
+        });
+      }
+      const curriculumPrefix = typeof curriculumId === "string"
+        ? curriculumId.split("-", 1)[0] : "";
+      const expectedVolume = canonicalCurriculumVolumeByPrefix[curriculumPrefix];
+      if (expectedVolume && record.volume !== expectedVolume) {
+        issues.push({
+          ...issue("CURRICULUM_VOLUME_HOME_MISMATCH", "$.curriculumIds",
+            `curriculum ID "${curriculumId}" belongs to volume "${expectedVolume}", not "${record.volume}"`),
           file,
         });
       }

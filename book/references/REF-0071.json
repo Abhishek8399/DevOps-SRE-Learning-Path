@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0071",
+  "title": "resolv.conf(5) - Linux manual page",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man5/resolv.conf.5.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux resolver manual rendered from current man-pages sources; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["resolv.conf", "nameserver", "search list", "ndots", "timeout", "attempts"],
+  "relevance": "Authoritative Linux manual for the resolver configuration fields decoded by the safe Ubuntu commands, including search expansion and retry-related options.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

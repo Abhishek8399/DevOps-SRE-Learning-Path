@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0090",
+  "title": "POSIX.1-2024 Shell Command Language",
+  "organization": "The Open Group / IEEE",
+  "url": "https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html",
+  "sourceType": "standard",
+  "versionOrDate": "POSIX.1-2024, Issue 8",
+  "lessonIds": ["LES-0017"],
+  "topics": ["portable shell", "token recognition", "quoting", "expansion", "redirection", "command language"],
+  "relevance": "Normative baseline for portable shell syntax and behavior, used to separate POSIX shell guarantees from Bash-specific facilities.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

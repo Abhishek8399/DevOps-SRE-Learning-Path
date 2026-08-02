@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0012",
+  "lessonId": "LES-0009",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated transfer: in a clean normal-user Ubuntu 24.04 or WSL 2 Ubuntu 24.04 environment, use only the supported lifecycle for the transfer case in book/labs/LES-0009-safe-local-workbench. Without reading another learner's work or seeking a model answer, classify every Git state across HEAD, index, working tree, untracked, and ignored boundaries; decide what evidence and work would require preservation in a real repository; predict selective recovery; recover through the supported interface; verify the modeled operation; and prove cleanup. Use no sudo, network, remote, real credential, employer data, production path, manual descriptor/root editing, force, reset --hard, clean, broad deletion, package installation, port, Docker, or background process.",
+  "deliverables": [
+    "A sanitized safety card naming OS, kernel or WSL boundary, Bash and Git versions, effective UID, exact lesson scope, no-network/no-remote contract, changed resources, time box, abort conditions, supported recovery, and cleanup proof.",
+    "The clean baseline record followed by transfer status; a path-by-path table classifying HEAD, index, worktree, untracked, and ignored state without including placeholder-value content.",
+    "Ordinary and cached diff evidence with a three-version explanation wherever both status columns differ; each observation states what it proves, does not prove, and which concurrent-change limit applies.",
+    "A repository state diagram from shell and canonical root through working tree, index, object database, branch and conceptual remote boundary, labeling trust, ownership, mutation, and evidence points.",
+    "A written decision for each changed path: preserve, review, stage, unstage, restore, or remove in a real repository, with owner/intent evidence required before action.",
+    "A recovery prediction written before the supported recover command, including expected branch, HEAD, tracked bytes, clean status, remote count, fixture-local ignored/untracked absence, abort, and response to refusal.",
+    "Operation-verification and status evidence after recovery, explaining why fixture success does not prove production rollback, secret safety, remote policy, or learner mastery.",
+    "Exact guarded cleanup plus a following check showing absent state; no personal path, hostname, remote URL, credential-like value, employer identifier, or raw sensitive output may be submitted.",
+    "A production transfer to one unfamiliar setting (CI/CD, GitOps/Kubernetes, data pipeline, or private-cloud IaC) that maps commit, artifact/desired state, promotion, runtime, user outcome, credential handling, rollback compatibility, observability, capacity/cost, and collaboration policy.",
+    "A short later-recall record, completed without the lesson open, answering why MM needs two diffs, why ignore is not secret remediation, and why source rollback is not operational recovery."
+  ],
+  "evidenceRequirements": [
+    "Begin with bash lab.sh check showing ready environment and absent state; use setup, run baseline, and exactly inject transfer. A second case requires guarded reset and is outside this submission.",
+    "Use only supported observe status|worktree|staged|ignored|history and status commands before recovery. Do not inspect or edit .git internals, descriptor, sentinel, lifecycle records, or fixture files directly.",
+    "Record the question and prediction before every mutating supported command. A post-hoc explanation does not satisfy prediction evidence.",
+    "Decode every porcelain state exactly. Untracked or ignored must never be equated with disposable or safe, and the placeholder content must not be printed in submitted evidence.",
+    "Show both ordinary and cached diff views and relate each to the correct source/destination boundary; identify what neither view contains.",
+    "State which work a real incident would preserve and which human or policy authority would be needed. The fixture recover command is allowed only after this decision is written.",
+    "Use supported recover and verify-operation. Verify branch, HEAD, tracked baseline bytes, clean status, zero remotes, fixture-local temporary-file absence, and lifecycle status; distinguish restoration from root-cause or mastery claims.",
+    "Run supported cleanup and a following check. If any guard refuses because of a changed path, link, owner, top-level entry, descriptor, or lifecycle condition, stop and preserve the diagnostic rather than bypassing it.",
+    "The production transfer must preserve the separation between repository ref, build/render output, immutable artifact or desired state, promotion/reconciliation, runtime, durable external effects, and user verification.",
+    "Submit original sanitized reasoning and disclose assistance. Reading guided answers is allowed only before starting a fresh transfer attempt; obtaining transfer-specific answers or inspecting fixture implementation to extract them invalidates independence."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Safety and reproducibility",
+      "points": 4,
+      "observableEvidence": "Uses clean normal-user bounded lifecycle, records predictions and refusals, protects sensitive context, and proves exact cleanup without unsupported mutation."
+    },
+    {
+      "criterion": "Git state accuracy",
+      "points": 4,
+      "observableEvidence": "Correctly maps every path and both status columns across HEAD, index, worktree, untracked, and ignored boundaries using both diffs."
+    },
+    {
+      "criterion": "Evidence, intent, and ownership",
+      "points": 4,
+      "observableEvidence": "Separates observation from interpretation, states proof limits, and names preservation/authority requirements before recovery."
+    },
+    {
+      "criterion": "Recovery and verification",
+      "points": 4,
+      "observableEvidence": "Predicts selective recovery, uses the supported path, verifies branch/HEAD/content/status/remotes/temp state, and avoids overclaiming."
+    },
+    {
+      "criterion": "Independent production transfer",
+      "points": 4,
+      "observableEvidence": "Maps source through consumer outcome with secrets, collaboration, rollback, external state, reliability, observability, capacity/cost, limitations, and later recall."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

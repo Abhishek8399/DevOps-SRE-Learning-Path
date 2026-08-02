@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0104",
+  "title": "pyproject.toml specification",
+  "organization": "Python Packaging Authority",
+  "url": "https://packaging.python.org/en/latest/specifications/pyproject-toml/",
+  "sourceType": "standard",
+  "versionOrDate": "PyPA interoperability specification reviewed 2026-08-02",
+  "lessonIds": ["LES-0018"],
+  "topics": ["project metadata", "build systems", "dependency declarations", "entry points", "packaging interoperability"],
+  "relevance": "Primary Python packaging interoperability specification used to frame build-system and project metadata as declared interfaces rather than relying on working-directory imports or ad hoc execution.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

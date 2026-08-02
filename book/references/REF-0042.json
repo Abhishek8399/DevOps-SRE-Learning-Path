@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0042",
+  "title": "pid_namespaces(7) - Linux PID namespaces",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man7/pid_namespaces.7.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux man-pages 6.18 online edition, reviewed 2026-08-02",
+  "lessonIds": ["LES-0011"],
+  "topics": ["PID namespace nesting", "namespace init", "process visibility", "signals"],
+  "relevance": "Primary manual for explaining why one process has different PID values across namespaces and why namespace PID 1 has special lifecycle responsibilities.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

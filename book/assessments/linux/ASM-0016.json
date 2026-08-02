@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0016",
+  "lessonId": "LES-0011",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A containerized report worker exits with code 137. The node has 24 GiB available, the replacement container's free output appears healthy, and its current cgroup shows memory.max=536870912. During an affected interval, memory.events changes from oom 2 and oom_kill 0 to oom 4 and oom_kill 1. Explain the most defensible conclusion, what remains unknown, the next evidence, safe restoration, and prevention.",
+  "directAnswer": "Exit 137 records a SIGKILL-style outcome, and the matching cgroup's new oom_kill event strongly supports a cgroup-local OOM kill despite available node memory. This does not prove a memory leak or identify the allocation owner. Preserve exact instance identity and timing, correlate runtime termination with memory counters and workload demand, then use a bounded rollback, traffic or concurrency reduction, or reviewed limit correction and verify the real report operation.",
+  "foundation": "A container is a Linux process in namespaces and cgroups. Host memory availability answers a machine-wide question, while memory.max is a hierarchical workload ceiling. The value 536870912 is 512 MiB. Cgroup event files contain cumulative counters, so the change from oom_kill 0 to 1 during the identified interval matters. Exit code 137 is conventionally 128 plus signal 9, SIGKILL; without the cgroup and runtime evidence it would not identify OOM.",
+  "reasoningSteps": [
+    "Freeze the pod or job UID, container ID, node, host PID where retained, process and container start/finish times, cgroup path, image/config revision, and the affected request or report IDs.",
+    "Classify each field: node available memory is a point-in-time host gauge; memory.max is a cgroup byte configuration; oom and oom_kill are cumulative event counters; exit 137 is a terminal outcome.",
+    "Confirm both memory.events samples belong to the same relevant cgroup object and interval. A recreated container or cgroup can reset or replace the counters.",
+    "Use the positive oom_kill delta plus matching runtime or Kubernetes OOMKilled state and timestamps to support cgroup-local OOM enforcement. Check memory.events.local and ancestors to locate the enforcing scope.",
+    "Do not label the mechanism a leak yet. Compare working set, memory.peak where available, memory.stat, heap and native allocations, tmpfs, page cache, request size, concurrency, threads, sidecars, and old/new revision under matched load.",
+    "Protect capacity and accepted work. Pause rollout or retries if authorized, preserve the old healthy cohort, and choose a reversible canary restoration based on the strongest discriminating evidence.",
+    "Verify the actual report is generated correctly once, accepted work is reconciled, no new OOM or max events occur, memory trajectory is stable for a declared window, node and healthy cohorts remain safe, and rollback is available.",
+    "Prevent the evidenced mechanism with representative memory testing, allocation and cgroup telemetry, rollout gates, safe concurrency and retry budgets, sized requests/limits, and tested termination reconciliation."
+  ],
+  "seniorAnswer": "I would report a strongly supported cgroup-local OOM kill, not simply a generic host shortage and not yet a leak. The 512 MiB memory.max can be enforced even with 24 GiB available elsewhere. The incident-window oom_kill delta from zero to one discriminates OOM from other SIGKILL sources if the cgroup identity matches the terminated container, and runtime OOMKilled plus timestamps closes that join. I would compare local and hierarchical events and ancestors, preserve memory.stat/peak and application allocation evidence, and compare the affected revision with an old healthy cohort under matched workload. During impact I would pause expansion, protect old capacity, control retry or concurrency amplification, and choose one rollback or resource-policy canary with explicit node-headroom and correctness aborts. Recovery requires the real report operation, no duplicate or lost accepted work, a stable memory/event trajectory, and no node or healthy-cohort regression. Prevention depends on the result: fix allocation retention, bound concurrency/input, restore a regressed limit, or size legitimate demand using representative profiles. I would not remove every memory limit because that moves containment failure to the node.",
+  "weakAnswer": "The node has lots of memory, so Kubernetes made a mistake. Remove the memory limit and restart the worker.",
+  "whyWeak": "It asks a host gauge to disprove a cgroup-local limit, ignores the positive event delta and instance identity, treats restart as diagnosis, can destroy volatile evidence and duplicate accepted work, expands node blast radius, and provides no explanation of demand or operation-level recovery.",
+  "evidence": [
+    {
+      "signal": "Node reports 24 GiB available",
+      "proves": "At that sample, the node memory view reported substantial memory not currently classified unavailable by that tool.",
+      "doesNotProve": "That the workload cgroup had no finite maximum, that memory was reclaimable for it, or that a past cgroup OOM did not occur."
+    },
+    {
+      "signal": "memory.max=536870912 in the exact workload cgroup",
+      "proves": "That cgroup exposes a 512 MiB hard memory maximum at this level.",
+      "doesNotProve": "Which ancestor is tighter, whether demand is legitimate, or which allocation crossed the boundary."
+    },
+    {
+      "signal": "oom_kill changes from 0 to 1 in the incident interval",
+      "proves": "At least one task in the represented hierarchical scope was killed by cgroup OOM handling during the delta, assuming identity continuity.",
+      "doesNotProve": "The exact killed PID, a memory leak, or that the current replacement owns the past event."
+    },
+    {
+      "signal": "Process exit code is 137",
+      "proves": "The process termination was represented as 128 plus SIGKILL.",
+      "doesNotProve": "Who sent SIGKILL or that OOM was the cause without correlated evidence."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why do you need memory.events.local as well as memory.events?",
+      "answer": "memory.events can aggregate descendants. memory.events.local helps distinguish events originating directly at the selected cgroup from descendant contributions. Ancestor files and the actual hierarchy are still needed to locate the effective boundary."
+    },
+    {
+      "prompt": "Would memory.current just below memory.max disprove the OOM?",
+      "answer": "No. It is a point-in-time gauge, often from a replacement or post-kill state. Usage may have peaked between samples and dropped when a task died. Use identity, peak/history, counter deltas, and termination timing."
+    },
+    {
+      "prompt": "When is a temporary limit increase defensible?",
+      "answer": "When evidence shows the current limit is the immediate containment boundary, node and ancestor headroom are quantified, workload correctness and security constraints are preserved, one small canary has success and abort signals, rollback is ready, and the change does not replace causal follow-up."
+    },
+    {
+      "prompt": "Why inspect accepted work after recovery?",
+      "answer": "A killed worker may have accepted, partially processed, or committed work before termination. Restart health does not prove exactly-once outcome. Reconcile completed, retryable, duplicate, lost, corrupt, and unknown report IDs."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Boundary and units",
+      "points": 4,
+      "observableEvidence": "Separates host memory from the 512 MiB cgroup ceiling and classifies gauges, configuration, cumulative counters, and exit outcome correctly."
+    },
+    {
+      "criterion": "Causal confidence",
+      "points": 4,
+      "observableEvidence": "Uses the incident-window oom_kill delta and identity/timestamp join to support cgroup OOM while refusing to infer a leak or exact allocation owner."
+    },
+    {
+      "criterion": "Investigation quality",
+      "points": 4,
+      "observableEvidence": "Requests local/ancestor controller evidence, runtime state, allocation and workload dimensions, and matched healthy comparison."
+    },
+    {
+      "criterion": "Safe recovery",
+      "points": 4,
+      "observableEvidence": "Chooses a bounded reversible response, protects capacity/evidence, and verifies the real operation and reconciliation."
+    },
+    {
+      "criterion": "Prevention",
+      "points": 4,
+      "observableEvidence": "Connects prevention to measured demand, limits, concurrency, telemetry, rollout gates, and termination behavior without removing containment blindly."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

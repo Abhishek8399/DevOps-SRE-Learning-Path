@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0030",
+  "title": "git-reset Documentation",
+  "organization": "Git Project",
+  "url": "https://git-scm.com/docs/git-reset",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online Git manual reviewed 2026-08-02; installed-version behavior remains authoritative",
+  "lessonIds": ["LES-0009"],
+  "topics": ["ref movement", "index reset", "working-tree reset", "reset modes", "undo", "revert comparison"],
+  "relevance": "Primary command reference for understanding why reset modes cross different state boundaries and why published changes usually require a collaboration-safe recovery mechanism.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

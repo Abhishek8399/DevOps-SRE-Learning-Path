@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0074",
+  "title": "RFC 9111: HTTP Caching",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9111",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["HTTP caching", "cache keys", "freshness", "validation", "Cache-Control", "Vary"],
+  "relevance": "Current HTTP caching specification. It defines cache keys, freshness, Age calculations, request and response directives, validation, invalidation, and shared-cache handling rules.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

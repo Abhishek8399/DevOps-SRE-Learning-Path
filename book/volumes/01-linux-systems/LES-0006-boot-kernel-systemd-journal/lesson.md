@@ -197,8 +197,8 @@
       "id": "LES-0006-CMD-006",
       "question": "What exact lifecycle state and last result does systemd hold for one unit?",
       "risk": "read-only",
-      "command": "systemctl show <unit> --no-pager -p LoadState -p ActiveState -p SubState -p Result -p ExecMainCode -p ExecMainStatus -p NRestarts",
-      "runFrom": "Ubuntu 24.04 after replacing <unit> with a reviewed unit name",
+      "command": ": \"${UNIT_NAME:?set UNIT_NAME to one reviewed systemd unit name}\"; case \"$UNIT_NAME\" in ''|-*|*[!A-Za-z0-9_.@:-]*) printf '%s\\n' 'refusing: UNIT_NAME must be one reviewed unit name using only letters, digits, dot, underscore, at, colon, or hyphen' >&2; exit 64;; esac; systemctl show --no-pager -p LoadState -p ActiveState -p SubState -p Result -p ExecMainCode -p ExecMainStatus -p NRestarts -- \"$UNIT_NAME\"",
+      "runFrom": "Ubuntu 24.04 after exporting UNIT_NAME as one exact reviewed unit name; the preflight refuses empty, option-like, whitespace, slash, wildcard, and shell-metacharacter values",
       "expectedBranches": [
         {
           "when": "LoadState=loaded and ActiveState=active",
@@ -218,8 +218,8 @@
       "id": "LES-0006-CMD-007",
       "question": "What did this unit and its manager report during the current boot?",
       "risk": "read-only",
-      "command": "journalctl -b -u <unit> -o short-monotonic -n 100 --no-pager",
-      "runFrom": "The affected Ubuntu boot after replacing <unit>; normal user if authorized, otherwise through the reviewed read-only support path",
+      "command": ": \"${UNIT_NAME:?set UNIT_NAME to one reviewed systemd unit name}\"; case \"$UNIT_NAME\" in ''|-*|*[!A-Za-z0-9_.@:-]*) printf '%s\\n' 'refusing: UNIT_NAME must be one reviewed unit name using only letters, digits, dot, underscore, at, colon, or hyphen' >&2; exit 64;; esac; journalctl -b --unit \"$UNIT_NAME\" -o short-monotonic -n 100 --no-pager",
+      "runFrom": "The affected Ubuntu boot after exporting UNIT_NAME as one exact reviewed unit; use a normal user if authorized, otherwise the reviewed read-only support path",
       "expectedBranches": [
         {
           "when": "Entries appear with monotonic timestamps",
@@ -323,8 +323,8 @@
       "id": "LES-0006-CMD-012",
       "question": "Which unit-file fragments and drop-ins define the reviewed unit?",
       "risk": "read-only",
-      "command": "systemctl cat <unit> --no-pager",
-      "runFrom": "A local Ubuntu 24.04 terminal after replacing <unit> with the exact reviewed unit name; inspect before recording because unit fragments can contain Environment= secrets or internal URLs",
+      "command": ": \"${UNIT_NAME:?set UNIT_NAME to one reviewed systemd unit name}\"; case \"$UNIT_NAME\" in ''|-*|*[!A-Za-z0-9_.@:-]*) printf '%s\\n' 'refusing: UNIT_NAME must be one reviewed unit name using only letters, digits, dot, underscore, at, colon, or hyphen' >&2; exit 64;; esac; systemctl cat --no-pager -- \"$UNIT_NAME\"",
+      "runFrom": "A local Ubuntu 24.04 terminal after exporting UNIT_NAME as the exact reviewed unit name; inspect locally before recording because unit fragments can contain Environment= secrets or internal URLs",
       "expectedBranches": [
         {
           "when": "One or more source paths and unit fragments are printed",

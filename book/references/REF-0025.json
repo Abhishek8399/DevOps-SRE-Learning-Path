@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0025",
+  "title": "Bash Reference Manual",
+  "organization": "GNU Project",
+  "url": "https://www.gnu.org/software/bash/manual/bash.html",
+  "sourceType": "manual",
+  "versionOrDate": "GNU Bash 5.3 manual, dated 2025-05-18; reviewed 2026-08-02",
+  "lessonIds": ["LES-0009"],
+  "topics": ["shell operation", "quoting", "expansion", "redirection", "exit status", "pipelines", "traps", "shell options"],
+  "relevance": "Primary shell-language reference for explaining what Bash does before a command executes and why quoting, redirection, pipeline status, strict options, and traps need explicit reasoning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

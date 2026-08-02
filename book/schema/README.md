@@ -44,7 +44,7 @@ book/
 Existing TypeScript lessons remain authoritative until a separately reviewed typed-to-structured-Markdown migration. Adding this contract must not change their URLs, IDs, text, or learner state.
 The five typed lessons are reserved in `legacy-content-map.json` as `LES-0001` through `LES-0005`. The validator checks every mapped source file and compares the complete identity set to an independently pinned SHA-256 baseline, permanently reserving their routes, slugs, aliases, and curriculum mappings. New content cannot reuse those identities. A migrated record is accepted only when it preserves the complete reserved identity. Source paths may move during a reviewed migration; published identities may not.
 
-`LES-0006` is the first schema-backed lesson. The validated authored corpus contains `LES-0006` through `LES-0008`, nine assessments, and 24 references; content validation passes and the 39-case schema suite reports 38 passes plus one Windows `EPERM` symlink skip. Use the next unused opaque ID for new work (`LES-0009` at this checkpoint); an ID is permanent once published and is never recycled.
+`LES-0006` is the first schema-backed lesson. The validated authored corpus contains thirteen structured lessons (`LES-0006` through `LES-0018`) across Volumes 00 through 03, thirty-nine assessments, and 104 references. Together with the five reserved typed lessons, the reader exposes eighteen routed identities. Content validation passes, and the 39-case schema suite reports 38 passes, zero failures, and one Windows `EPERM` symlink skip. Use the next unused opaque ID for new work (`LES-0019` at this checkpoint); an ID is permanent once published and is never recycled.
 
 
 ## Identity rules

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0079",
+  "title": "RFC 9209: The Proxy-Status HTTP Response Header Field",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9209",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["Proxy-Status", "intermediary errors", "debugging", "privacy", "observability"],
+  "relevance": "Defines a structured response field through which intermediaries can report handling outcomes while documenting security and information-disclosure constraints.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

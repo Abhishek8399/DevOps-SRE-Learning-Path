@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0036",
+  "lessonId": "LES-0017",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Complete the answer-isolated `independent` case in `book/labs/LES-0017-bash-automation` without opening the model source or any answer artifact. A concurrent automation run has an ambiguous timeout after a side effect and a stale-looking local record. Use only the raw-input view first, write your prediction, then gather the allowed evidence. Produce a safe diagnosis, reconciliation and recovery plan, verification, and prevention proposal. Do not use root, install software, make a network call, change the fixture, inspect another user's process, or delete any unregistered path.",
+  "deliverables": [
+    "A pre-observation prediction naming the exact operation, state owners, likely failure boundary, alternative hypotheses, and evidence that would discriminate them.",
+    "A chronological command transcript from `check` through setup, baseline, independent injection, raw input, selected observations, recovery, operation verification, and cleanup proof, including exit statuses for any expected refusal.",
+    "An evidence table that labels each item as observation, documented fact, calculation, inference, hypothesis, or unknown and states what it proves and cannot prove.",
+    "A state-machine diagram showing intent, attempt, unknown outcome, reconciliation, commit or resume, lock ownership, interruption points, and evidence locations, plus a text alternative.",
+    "A proposed Bash pseudocode or patch outline with explicit CLI validation, quoting, record framing, lock acquisition, idempotency key handling, bounded retry classification, trap behavior, secure temporary state, and rollback boundaries.",
+    "A verification matrix covering success, injected permanent failure, timeout after effect, repeated run, concurrent run, SIGTERM or simulated interruption, hostile input, partial candidate output, and cleanup refusal.",
+    "A production transfer note for CI and Kubernetes that identifies namespace, identity, durable-state, secret, log, retry, and controller-concurrency differences without claiming the local model proves production behavior.",
+    "A concise incident update and post-incident prevention list that separates immediate mitigation, recovery proof, contributing conditions, root cause, and follow-up ownership."
+  ],
+  "evidenceRequirements": [
+    "The raw-input view and written prediction are captured before any derived observation view.",
+    "All executable evidence comes from the guarded normal-user offline lab; the repository fixture and registered evidence remain byte-identical to reviewed sources where the verifier requires it.",
+    "The response distinguishes a failed response from an unknown remote outcome and does not recommend blind replay, broad deletion, unbounded retry, `eval`, disabling validation, or using sudo.",
+    "The response explains why a local advisory lock, a PID file, and a remote idempotency key solve different problems.",
+    "Recovery identifies committed effects before retry and verifies the real user or delivery operation rather than trusting only an exit code or local marker.",
+    "The final transcript includes `bash verify.sh`, a separate root-refusal observation supplied by the reviewer when necessary, and cleanup output proving state absence."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Prediction discipline and state model",
+      "points": 10,
+      "observableEvidence": "Captures raw input first and maps operation, local and remote state, lock, ownership, interruption points, and competing hypotheses before derived evidence."
+    },
+    {
+      "criterion": "Shell mechanism accuracy",
+      "points": 10,
+      "observableEvidence": "Correctly applies parsing, quoting, record framing, status propagation, strict-mode limitations, functions or arrays, traps, and exit-code contracts."
+    },
+    {
+      "criterion": "Safe reconciliation and recovery",
+      "points": 10,
+      "observableEvidence": "Handles timeout as unknown, uses durable operation identity, checks actual state, avoids replay, scopes locks, and gives rollback or compensation boundaries."
+    },
+    {
+      "criterion": "Verification depth",
+      "points": 10,
+      "observableEvidence": "Tests user outcome, idempotency, concurrency, failure, interruption, prior-state preservation, cleanup, and refusal paths with clear proves and does-not-prove statements."
+    },
+    {
+      "criterion": "Production transfer and communication",
+      "points": 10,
+      "observableEvidence": "Explains CI and Kubernetes differences, secrets and logs, bounded retries and capacity, and communicates uncertainty, mitigation, recovery, root cause, and prevention clearly."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

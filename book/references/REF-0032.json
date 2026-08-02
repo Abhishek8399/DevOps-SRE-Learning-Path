@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0032",
+  "title": "Removing sensitive data from a repository",
+  "organization": "GitHub Docs",
+  "url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online GitHub documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0009"],
+  "topics": ["credential rotation", "sensitive data", "history rewriting", "clones", "forks", "pull requests", "recontamination"],
+  "relevance": "Primary hosted-Git operational guidance supporting the sequence of revoking or rotating an exposed credential first and coordinating the significant side effects and incomplete reach of history rewriting.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

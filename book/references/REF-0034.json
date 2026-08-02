@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0034",
+  "title": "Multi-Queue Block I/O Queueing Mechanism",
+  "organization": "Linux Kernel Documentation",
+  "url": "https://docs.kernel.org/block/blk-mq.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0010"],
+  "topics": ["blk-mq", "software staging queues", "hardware dispatch queues", "I/O schedulers"],
+  "relevance": "Primary architecture reference for how Linux turns block I/O into requests, stages or merges work, dispatches to hardware queues, and tracks tagged completions without guaranteeing completion order.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

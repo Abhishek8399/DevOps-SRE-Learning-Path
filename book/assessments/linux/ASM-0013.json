@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0013",
+  "lessonId": "LES-0010",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A checkout service becomes slow during a normal traffic interval. `df -hT /srv/checkout` shows 62 percent space used. A matched one-minute sample shows application p95 rising from 70 ms to 1.2 s, commit p95 rising from 8 ms to 980 ms, `iostat -xz` write `await` rising from 5 ms to 720 ms, `aqu-sz` rising from 0.8 to 91, and `%util` at 99 percent. Write throughput remains near 45 MiB/s. What can you conclude, what can you not conclude, and what should you inspect next?",
+  "directAnswer": "Capacity exhaustion is not supported by the 62-percent block-use observation. The aligned application, commit, device-completion, and queue changes support a slow durable-write path on the device mapped to `/srv/checkout`, even though byte throughput stayed similar. They do not identify the physical cause, prove that 99-percent utilization means every device is at its absolute limit, or attribute the workload to one process. First verify the path-to-device mapping and sampling scope, compare a healthy interval, inspect dirty/writeback and blocked-task context, identify contributing processes or cgroups, and check lower storage layers and error telemetry before changing anything.",
+  "foundation": "Disk capacity and storage performance are different questions. `df` reports filesystem allocation; it does not measure how long reads or writes take. Throughput is bytes completed per unit time. Latency is time per operation. A device can complete roughly the same bytes per second while each synchronous commit waits much longer because more requests are in flight and queued. `await` is an interval average for requests represented by the device statistics, `aqu-sz` is an average concurrency or backlog measure, and `%util` is the fraction of sample time with at least one request in progress. Those fields describe the observed logical device, not automatically a physical disk or a root cause.",
+  "reasoningSteps": [
+    "Anchor the user-visible symptom and align every comparison to the same one-minute interval, host, workload cohort, path, and device identity.",
+    "Separate the capacity branch from the performance branch. Filesystem blocks at 62 percent weaken an ENOSPC explanation but say nothing about completion latency or a device queue.",
+    "Locate where time accumulates. Application p95 and commit p95 rise together, and most of the application increase appears in the commit stage, so a pre-commit CPU-only explanation becomes less likely.",
+    "Interpret the device fields together. Write await rising with aqu-sz means completed write requests took longer while more requests were queued or active on average. Similar throughput means the system still moved bytes; it does not mean operations were timely.",
+    "Treat 99-percent util as busy-time evidence for that device and interval. Modern or virtual devices may serve many requests concurrently, so util is not a universal percent-of-maximum-capacity gauge.",
+    "Verify `findmnt -T /srv/checkout` and the `MAJ:MIN` relationship, then use `lsblk` to trace device-mapper, partition, virtual, or physical parents. Do not diagnose a device selected only by a familiar name.",
+    "Compare `/proc/meminfo` Dirty and Writeback plus `vmstat 1` blocked tasks and I/O wait. This distinguishes accumulating writeback pressure from a device-only dashboard interpretation, while preserving each signal's proof limit.",
+    "Use `pidstat -d` or approved cgroup/container telemetry to identify processes producing I/O. Process attribution shows activity, not necessarily who created device delay or owns the remediation.",
+    "Inspect kernel, hypervisor, cloud-volume, array, or storage-network latency and errors at the next owned boundary. A guest logical device cannot reveal a hidden shared lower-layer cause by itself.",
+    "Choose a bounded mitigation from the mechanism and workload semantics: protect correctness, reduce admitted write concurrency or nonessential background work through approved controls, preserve evidence, and verify the real checkout and durable outcome rather than only watching `%util`."
+  ],
+  "seniorAnswer": "I would report a latency and queueing incident on the mapped write path, not a disk-full incident. The strongest join is temporal and layered: the user p95 increase is concentrated in durable commit, and during the same scoped interval the mapped device's write completion time and average outstanding work rise sharply. Stable 45 MiB/s is compatible with this: larger latency multiplied by roughly stable operation demand creates more in-flight work, while byte throughput alone hides request size, sync frequency, and tail latency. I would validate the mount and device chain, field units, first-sample semantics, workload mix, and healthy baseline. Then I would correlate dirty/writeback memory, blocked tasks, process or cgroup I/O, request-size and read/write mix, filesystem errors, and lower-layer service-time or throttling evidence. I would not tune dirty ratios, change an I/O scheduler, drop caches, remount, kill writers, or resize storage from this snapshot. If checkout correctness is safe and the queue is still growing, I would use an authorized reversible admission or background-work control with a prediction and rollback, then verify checkout success, p95/p99, commit durability, queue drainage, errors, and no shifted bottleneck. Root cause remains open until the first abnormal lower boundary is established.",
+  "weakAnswer": "The disk is 99 percent full or busy. Delete files, run `drop_caches`, and increase the disk size.",
+  "whyWeak": "It confuses filesystem capacity with device busy time, treats `%util` as space or a universal saturation percentage, ignores the latency and queue fields, and proposes changes that can destroy useful cache, data, or evidence. Increasing capacity may not change IOPS, latency, throttling, queue policy, shared-array contention, filesystem behavior, or application sync frequency.",
+  "evidence": [
+    {
+      "signal": "`df -hT /srv/checkout` reports 62 percent filesystem block use",
+      "proves": "The mounted filesystem reports that proportion of its block capacity allocated at the observation time.",
+      "doesNotProve": "That inodes, quotas, thin pools, lower devices, latency, IOPS, throughput, writeback, or durability are healthy."
+    },
+    {
+      "signal": "Application p95 and commit p95 rise together during the same interval",
+      "proves": "For the measured cohort, the commit stage accounts for most of the observed tail-latency increase.",
+      "doesNotProve": "That the filesystem, block layer, device, storage network, or hardware is the first cause."
+    },
+    {
+      "signal": "Write await rises to 720 ms and aqu-sz to 91 on the mapped logical device",
+      "proves": "Completed write requests represented by the sample had much higher average completion time while substantially more work was outstanding on average.",
+      "doesNotProve": "A physical-media defect, exact queue location, one responsible process, or that every request took 720 ms."
+    },
+    {
+      "signal": "Write throughput remains near 45 MiB/s",
+      "proves": "A similar byte rate completed during the two compared intervals.",
+      "doesNotProve": "Stable operation rate, request size, sync behavior, tail latency, remaining headroom, or acceptable user experience."
+    },
+    {
+      "signal": "An approved admission reduction is followed by queue drainage and restored durable checkout outcomes",
+      "proves": "Within that bounded experiment, offered load influenced the queued condition and the declared operation recovered.",
+      "doesNotProve": "Why service capacity fell, whether the lower fault is resolved, or whether the same limit is correct at peak traffic."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why can throughput stay flat while latency becomes terrible?",
+      "answer": "Throughput counts completed bytes per time; latency measures time per operation. The same byte rate can consist of more small synchronous requests, deeper concurrency, or long waits hidden behind parallel completions. Little's Law connects them: average in-flight work is approximately arrival rate multiplied by average time in the system, when scope and steady-state assumptions hold."
+    },
+    {
+      "prompt": "Is `%util=100` always saturation?",
+      "answer": "No. It means the represented device had at least one request in progress for nearly the whole sample under the source counter semantics. That strongly suggests continuous activity, but a parallel device can still have headroom, and a virtual device may hide lower layers. Combine workload demand, await, queue depth, throughput, errors, and a known healthy baseline."
+    },
+    {
+      "prompt": "What is wrong with using the first `iostat` report?",
+      "answer": "Without `-y`, the first report commonly reflects averages since boot rather than only the current interval. A short incident can disappear inside that long history. Record the exact command and version, skip the first report when appropriate, and interpret subsequent interval samples."
+    },
+    {
+      "prompt": "Would you run `sync` during the incident to see whether writes finish?",
+      "answer": "Not casually. A system-wide sync can create a large flush burst and alter the condition. Prefer read-only evidence and an application-scoped durability probe in a disposable environment. Any production experiment needs authorization, a bounded target, a prediction, abort conditions, and user-operation verification."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Capacity versus performance distinction",
+      "points": 3,
+      "observableEvidence": "Separates filesystem allocation from I/O latency, throughput, queueing, and durability."
+    },
+    {
+      "criterion": "Field interpretation and proof limits",
+      "points": 3,
+      "observableEvidence": "Correctly interprets await, aqu-sz, util, throughput, interval, average, logical-device scope, and what each cannot prove."
+    },
+    {
+      "criterion": "Layered investigation",
+      "points": 2,
+      "observableEvidence": "Maps the path, compares baseline, and joins application, writeback, task, process or cgroup, device, and lower-layer evidence."
+    },
+    {
+      "criterion": "Safe decision and verification",
+      "points": 2,
+      "observableEvidence": "Avoids unsafe tuning and benchmarks, proposes a bounded mechanism-based action, and verifies the real durable checkout outcome."
+    }
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0033",
+  "lessonId": "LES-0016",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Use the answer-isolated independent case in `book/labs/LES-0016-tls-trust-path`. Before derived observations, capture the raw input view and write the exact operation, phase, direction, identity expectations, clock, and three competing mechanisms. Then collect handshake, certificate, trust, rotation, and ownership views. Produce a production-grade incident note and a zero-downtime recovery plan without reading the fixture source. The assessment deliberately provides no diagnosis or model answer.",
+  "deliverables": [
+    "A timestamped statement of the failed user operation, client and server roles, TCP endpoint, TLS termination point, SNI, reference identifier, client-auth expectation, deadline, and first visible error.",
+    "A text or diagram path from name resolution and TCP through ClientHello, certificate selection, server path validation, optional client certificate validation, TLS Finished, ALPN-selected application protocol, and the real transaction.",
+    "An evidence table containing observation, unit, owner, scope, collection time, comparison, what it proves, what it cannot prove, and the next disconfirming check.",
+    "At least three independently testable mechanisms spanning presented certificate material, verifier trust or policy, clock, identity match, algorithm negotiation, and deployment skew.",
+    "A distinction between encryption, server authentication, client authentication, identity authorization, and application correctness in this case.",
+    "A certificate and trust inventory that uses only public metadata: issuer, subject, SAN category, serial or fingerprint token, validity window, purpose, chain length, anchor generation, endpoint cohort, and reload generation; no key material.",
+    "One smallest safe recovery owned by the first abnormal boundary, with blast radius, prerequisite gate, canary cohort, approval owner, rollback trigger, and executable rollback description.",
+    "Separate verification for a fresh handshake, a resumed or long-lived connection where applicable, full path construction, hostname and purpose, mTLS authorization if used, real application correctness, endpoint cohorts, and a defined observation window.",
+    "A prevention plan covering certificate issuance, chain packaging, trust distribution, reload evidence, expiry, clock health, rotation rehearsal, security review, capacity, and ownership.",
+    "A five-minute incident explanation that leads with impact and evidence, states uncertainty, rejects unsafe bypasses, and names the next decision gate."
+  ],
+  "evidenceRequirements": [
+    "Run as a normal non-root user on Ubuntu 24.04 or supported WSL Ubuntu and retain the output of `bash lab.sh check`.",
+    "Use `bash lab.sh observe inputs` before any other incident view and preserve the learner hypothesis written before derived observations.",
+    "Record all five observation views with their field names and compare each count, percentage, epoch, seconds-remaining value, or boolean only with a compatible unit.",
+    "Do not inspect `fixtures/tls_trust_model.py`, use sudo, generate certificates or keys, start a listener, contact a public endpoint, modify a trust store, change the clock, edit system crypto policy, or access a cluster/cloud account.",
+    "Run modeled recovery only after selecting an evidence-owned mechanism; treat its success as change execution rather than proof, then run the separate operation verification.",
+    "Finish with guarded cleanup and a clean `bash lab.sh check`; attach `bash verify.sh` output as lab-integrity evidence, not as a score or diagnosis.",
+    "Have a human reviewer evaluate the incident note and verbal explanation against the rubric; repository publication and verifier success cannot grant mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Operation and phase", "points": 3, "observableEvidence": "Names exact roles, endpoint, TLS phase, SNI, reference identity, client-auth expectation, clock, deadline, and error without calling everything SSL."},
+    {"criterion": "Architecture and ownership", "points": 3, "observableEvidence": "Maps termination, presentation, path construction, trust, reload, authorization, and application owners across the full connection."},
+    {"criterion": "PKI and TLS correctness", "points": 3, "observableEvidence": "Correctly separates key exchange, signatures, cipher suite, leaf/intermediate/anchor, SAN, time, purpose, SNI, ALPN, and mTLS direction."},
+    {"criterion": "Evidence discipline", "points": 3, "observableEvidence": "Uses raw input before derived evidence, compatible units, scope, comparisons, proves/does-not-prove, and disconfirming checks without inspecting the answer source."},
+    {"criterion": "Competing hypotheses", "points": 3, "observableEvidence": "Tests at least three mechanisms and identifies first abnormal and last known-good boundaries without anchoring on expiry alone."},
+    {"criterion": "Safe remediation", "points": 3, "observableEvidence": "Chooses a narrow owner-correct action, preserves authentication, handles key material safely, defines prerequisites and canary, and avoids broad restarts or trust bypass."},
+    {"criterion": "Rollback and zero-downtime sequence", "points": 3, "observableEvidence": "Defines a valid rollback, ordered trust/presentation overlap, explicit triggers, failure domains, and residual security exposure."},
+    {"criterion": "Verification", "points": 3, "observableEvidence": "Verifies fresh and reused paths, identity and purpose, each cohort, authorization, the real operation, telemetry, and an adequate time window."},
+    {"criterion": "Prevention and operations", "points": 3, "observableEvidence": "Covers issuance, inventory, chain lint, trust adoption, reload, expiry, clocks, rehearsal, SLOs, capacity, cost, and ownership."},
+    {"criterion": "Communication", "points": 3, "observableEvidence": "Explains impact, evidence, uncertainty, decision, safety, rollback, and follow-up clearly enough for engineering and incident-command audiences."}
+  ],
+  "maximumScore": 30,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

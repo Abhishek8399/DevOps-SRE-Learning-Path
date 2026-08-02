@@ -51,19 +51,30 @@ Readers may stop after the layer appropriate to their goal. The deeper layers re
 
 Systems thinking, Ubuntu setup, shell survival, Git workflow, command risk labels, evidence handling, cleanup, secrets, FRAME incidents, OPERATES reviews, and SCALE design decisions.
 
-The current routed Volume 00 path begins with `LES-0007` / `V00-L01` systems thinking, followed by `LES-0008` / `V00-L02` evidence-driven troubleshooting. The latter adds the reusable [`FRAME` incident worksheet](frameworks/FRAME.md), an answer-isolated independent transfer, and a bounded virtual Ubuntu incident lab. Both remain `substantive-draft`; LES-0008 project gates and the mentor-operated Ubuntu verifier pass, but formal acceptance, learner execution, transfer review, and mastery remain open.
+The current routed Volume 00 path contains:
+
+- `LES-0007` / `V00-L01` - systems thinking, state, queues, dependencies, and failure domains; and
+- `LES-0008` / `V00-L02` - evidence-driven troubleshooting with the reusable [`FRAME` incident worksheet](frameworks/FRAME.md).
+
+Both are `substantive-draft` lessons with guarded practice and answer-isolated transfer. Passing project gates makes the artifacts available to study; formal acceptance, learner execution, reviewed transfer, delayed recall, and mastery remain separate.
 
 ### Volume 01 - Linux systems
 
 Filesystems, processes, descriptors, signals, systemd, CPU scheduling, memory, swap, OOM, identity, permissions, boot, logs, libraries, time, block I/O, namespaces, cgroups, performance, and hardening.
 
+The routed Linux path contains five established typed lessons plus schema-backed boot/journal, block-I/O, and namespaces/cgroups chapters. The new storage-performance chapter follows an application operation through page cache, filesystem, block queues, virtualization, and durability. The isolation chapter separates namespace views, cgroup resource policy, and adjacent container security controls instead of treating a container as a small virtual machine.
+
 ### Volume 02 - Connectivity
 
 Ethernet, ARP, IP, CIDR, routing, NAT, UDP, TCP, sockets, retransmission, MTU, port exhaustion, DNS, HTTP, proxies, caching, load balancing, TLS, PKI, mTLS, and private or hybrid connectivity.
 
+The five routed connectivity chapters build one continuous request path. `LES-0012` follows addressing, route selection, neighbors, translation, return routing, and MTU. `LES-0013` develops TCP/UDP sockets, queues, retransmission, ports, TIME_WAIT, and stateful-boundary exhaustion. `LES-0014` traces DNS recursion, delegation, caching, negative answers, split views, and service discovery. `LES-0015` follows HTTP through proxies, caches, health checks, pools, and load-balancing decisions. `LES-0016` completes the path with TLS handshakes, certificate identity, trust chains, mTLS, termination, and rotation. Each chapter includes decoded Ubuntu evidence, incidents, complete-answer assessments, an answer-isolated transfer, primary references, and a bounded offline lab.
+
 ### Volume 03 - Engineering and delivery
 
 Git internals, Bash, Python, Go foundations, APIs, serialization, tests, packaging, dependencies, artifacts, release engineering, OCI containers, CI/CD, deployment strategies, GitOps, and software supply-chain security.
+
+The routed volume begins with `LES-0009` / `V03-L01`, a safe local Ubuntu/WSL workbench for shell evaluation, Git state, secret handling, rollback, and exact cleanup. `LES-0017` then turns Bash into a deliberate automation interface: quoting, records, statuses, traps, validation, idempotency, deadlines, locks, tests, and failure-safe cleanup. `LES-0018` builds the same operational discipline in Python through typed boundaries, subprocess safety, exception taxonomy, durable publication, reconciliation, bounded concurrency, packaging, tests, and observability. Its `SCM` and `AUT` identities remain in the canonical engineering-and-delivery home while Volume 00 and Linux remain prerequisite foundations.
 
 ### Volume 04 - Reliability and operations
 
@@ -111,9 +122,9 @@ Data + distributed systems + SRE ------> data/ML platforms
 All core branches ----------------------> architecture leadership
 ```
 
-Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The next content-first batch reserves `LES-0009` through `LES-0013`, beginning with the next unused ID `LES-0009`. Every lesson will eventually declare stable prerequisite IDs.
+Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The `LES-0009` through `LES-0013` and `LES-0014` through `LES-0018` batches extend the safe-start, Linux, connectivity, and engineering paths in dependency order. Future content begins with `LES-0019` and must preserve all published lesson, route, state, assessment, reference, and curriculum ownership.
 
-The local reader currently exposes eight lessons across Volumes 00 and 01: five established typed lessons plus three schema-backed structured lessons, with nine structured assessments and 24 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
+The local reader exposes eighteen lessons across Volumes 00 through 03: five established typed lessons plus thirteen schema-backed structured lessons, with 39 structured assessments and 104 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
 
 ## Planned repository shape
 
@@ -129,7 +140,7 @@ book/
 |-- tracks/
 `-- schema/
 
-labs/             executable local labs
+book/labs/        executable local labs
 projects/         portfolio systems
 incidents/        simulations and reviews
 evidence/         learner submissions
@@ -137,7 +148,7 @@ progress/         reviewed competency state
 learning-cockpit/ website renderer
 ```
 
-Lesson prose will move out of React code into validated, versioned content files as the routed book structure is introduced. Stable IDs must never be reused.
+New lesson prose lives in validated, versioned content files. The five established typed lessons retain pinned legacy identities until each receives a separately verified structured migration. Stable IDs must never be reused.
 
 ## Learning state
 

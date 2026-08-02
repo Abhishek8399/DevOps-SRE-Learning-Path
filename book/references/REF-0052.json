@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0052",
+  "title": "RFC 4632: Classless Inter-domain Routing (CIDR)",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc4632",
+  "sourceType": "rfc",
+  "versionOrDate": "August 2006, Best Current Practice 122",
+  "lessonIds": ["LES-0012"],
+  "topics": ["CIDR", "prefix length", "route aggregation", "longest-prefix match"],
+  "relevance": "Primary reference for classless prefixes, aggregation, and longest-match forwarding, which underpin the chapter's subnet calculations and route-selection method.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0027",
+  "lessonId": "LES-0014",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the independent case in book/labs/LES-0014-dns-path without consulting another case's interpretation. Before requesting derived observation views, capture the raw scenario and predict the candidate names, query-volume bound, likely failure boundaries, and evidence that would disconfirm each. Produce a reviewer-ready incident record that localizes the first failed boundary, proposes only a bounded recovery, verifies the original modeled operation, and transfers the reasoning to one Kubernetes or private-cloud situation. Store your answer outside the lab directory; the lab and verifier must not read it.",
+  "deliverables": [
+    "A timestamped scope card containing the modeled client, namespace, resolver policy, exact input name, query types, deadline, and distinction between virtual evidence and the real host.",
+    "A candidate-name expansion and upper-bound transaction calculation derived from the raw search list, ndots value, record types, and attempts, with assumptions and implementation uncertainty stated.",
+    "A table for application, stub policy, recursive resolver/cache, authority, DNS transport, and endpoint-use boundaries, including what every observation proves and cannot prove.",
+    "At least two plausible hypotheses, a predicted observation for each, and a disconfirming test that changes only one evidence variable.",
+    "A diagnosis naming the first failed boundary and owner, supported by timestamps, RCODE or outcome, TTL or cache state, authority data, response-size and transport evidence where relevant.",
+    "A bounded recovery plan with actor, target, blast radius, preconditions, abort threshold, rollback, and actions explicitly rejected as unsupported.",
+    "A verification plan for the original lookup and selected endpoint plus resolver latency, response-code, query-rate, retry, cache, and downstream guardrails across a meaningful time window.",
+    "A Kubernetes or private-cloud transfer that explains which resolver, view, cache, service-discovery, namespace, and authorization boundaries change.",
+    "A prevention plan covering name contracts, TTL and negative-cache-aware rollout, client refresh, retry control, UDP/TCP support, observability privacy, capacity, and ownership runbooks.",
+    "The exact output of bash verify.sh plus an explicit statement that verifier success proves lifecycle safety and answer isolation, not technical mastery."
+  ],
+  "evidenceRequirements": [
+    "Use only outputs produced by the independent scenario and ordinary safe environment checks; do not reuse guided-case values or an external answer key.",
+    "Preserve raw scenario output before derived views and show that it contains inputs rather than a computed transaction count, diagnosis, or recovery.",
+    "Include exact names, query types, resolver identities, timings, TTL units, response size units, transport, and modeled scope wherever supplied.",
+    "For every conclusion, cite at least one supporting observation and one limitation or disconfirming check.",
+    "Separate DNS lookup success from address selection, transport connection, TLS, and application transaction success.",
+    "Demonstrate normal-user execution, root refusal, guarded cleanup, final state absence, and no network or resolver mutation.",
+    "Mark all Kubernetes, private-cloud, and production proposals as transfer reasoning rather than evidence produced by the offline lab."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent scoping and prediction", "points": 10, "observableEvidence": "Raw inputs are captured before observations; candidate and transaction reasoning includes units, assumptions, and no copied answer."},
+    {"criterion": "Evidence-based localization", "points": 10, "observableEvidence": "The response separates all DNS boundaries, uses exact outputs, and states proof limits plus disconfirming tests."},
+    {"criterion": "Safe recovery and verification", "points": 10, "observableEvidence": "The action is bounded and reversible, rejects unsupported changes, and verifies the original operation with guardrails."},
+    {"criterion": "Transfer and prevention", "points": 10, "observableEvidence": "The response transfers scope accurately and covers cache, transport, security, privacy, capacity, observability, and ownership."}
+  ],
+  "maximumScore": 40,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

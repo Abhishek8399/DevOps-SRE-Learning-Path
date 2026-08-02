@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0086",
+  "title": "RFC 9325 / BCP 195: Recommendations for Secure Use of TLS and DTLS",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9325",
+  "sourceType": "rfc",
+  "versionOrDate": "November 2022; consult listed updates",
+  "lessonIds": ["LES-0016"],
+  "topics": ["TLS deployment", "protocol versions", "cipher suites", "forward secrecy", "secure configuration"],
+  "relevance": "Best Current Practice baseline for version and algorithm policy. The RFC Editor status page must be checked for updates before changing a production security profile.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

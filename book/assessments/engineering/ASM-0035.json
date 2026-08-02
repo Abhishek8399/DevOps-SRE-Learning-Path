@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0035",
+  "lessonId": "LES-0017",
+  "type": "interview",
+  "difficulty": "expert",
+  "prompt": "Design a Bash command-line tool used by CI and engineers to reconcile a directory of release metadata with a remote deployment API. Inputs may be hostile, two invocations may overlap, the API can time out after accepting a request, logs enter a central platform, and an interrupted run must be safely resumable. Explain when Bash is appropriate, the CLI and data contracts, error and exit-status policy, temporary and durable state, locking, idempotency, retries, signal handling, secrets, tests, rollout, rollback, and observability. Then identify the point at which you would stop using Bash.",
+  "directAnswer": "Use Bash only as a thin, bounded orchestrator when the workflow is mostly invoking stable commands and the data model remains small. Define an explicit CLI, structured or NUL-safe input contract, documented exit codes, validated path and environment boundaries, and no code generation or `eval`. Serialize shared local publication with a scoped advisory lock, but use a durable remote idempotency key and reconciliation receipt because a local lock cannot coordinate distributed workers. Stage local files securely and publish only validated state. Classify failures before bounded retry; a timeout after a mutation is an unknown outcome and must be queried by operation ID. Trap TERM and INT to stop admitting work and preserve resumable state, while EXIT performs only validated idempotent cleanup. Keep secrets in inherited descriptors or approved secret tooling, never arguments, tracing, reports, or logs. Test syntax, static analysis, functions, black-box behavior, hostile inputs, injected failures, concurrent invocations, resume, and cleanup. Move to Python, Go, or another typed program when structured data, concurrency, protocol logic, state machines, testing needs, or security risk outgrow shell orchestration.",
+  "foundation": "A command-line interface is a contract between a caller and a program: arguments and input enter, standard output, standard error, files, side effects, and an exit status leave. Bash is strong at connecting operating-system tools but weak at rich data structures and large state machines. A lock is an agreement among cooperating programs, not a magical database transaction. Idempotency means repeating the same logical request produces no additional effect beyond the first successful application. An idempotency key names that logical request so a server can recognize a retry. A signal is an asynchronous process notification; a trap schedules shell code when Bash handles a trappable signal or exits. Cleanup and rollback are different: cleanup removes temporary resources, while rollback restores or compensates committed state.",
+  "reasoningSteps": [
+    "Start with fitness. Bash is acceptable if the tool mainly validates inputs, invokes versioned utilities, and coordinates a modest sequential workflow. Reject it for deeply nested structured data, high concurrency, complex protocol clients, long-lived daemons, cryptographic handling, or a state machine whose invariants cannot be tested clearly.",
+    "Specify a CLI grammar before code: required subcommand, long options, positional-argument count, `--` handling, help on standard output, errors on standard error, version output, noninteractive default, and a stable exit-code table. Reject unknown options and unexpected extra arguments.",
+    "Specify data framing. Do not parse JSON with text matching or represent arbitrary paths as newline-separated words. Use a real JSON-capable tool with validated schema when it is an approved dependency, or accept a NUL-delimited path stream and quoted Bash arrays for pathname work.",
+    "Define trust boundaries. Canonicalize and validate roots before mutation, reject symbolic-link or ownership surprises, treat names beginning with dash as data by using `--`, avoid `eval`, and never concatenate hostile data into shell source, regular expressions, SQL, or remote command strings.",
+    "Separate ephemeral state from durable workflow state. Use `mktemp` under an approved parent with restrictive `umask` for transient candidates. Persist an operation manifest and per-item receipt before or after the remote effect according to a documented protocol so interruption can be reconciled.",
+    "Acquire a nonblocking or bounded-wait advisory lock for the exact local shared state. Report a distinct contention status. After acquisition, reread state because it may have changed while waiting. Keep the lock descriptor open only for the critical section and document that noncooperating processes ignore advisory locks.",
+    "Make remote mutations idempotent with a stable operation key derived from immutable intent or issued once and persisted. On timeout, query by that key before retrying. Do not confuse a local PID, timestamp, or random retry attempt with the logical operation identity.",
+    "Classify validation, authentication, authorization, conflict, rate-limit, server, network, and timeout outcomes. Retry only the reviewed transient set, respect server guidance, cap attempts and elapsed time, use exponential backoff with jitter, and include the overall deadline in capacity estimates.",
+    "Handle signals as state transitions. TERM and INT set a stop-request flag or exit at a safe boundary, no new work begins, in-flight command status is captured, resumable state is flushed, and cleanup remains idempotent. Do not promise cleanup on SIGKILL or power loss; startup recovery must handle leftovers.",
+    "Publish local output through create, write, validate, permission-set, and same-filesystem rename. Keep the prior known-good artifact until publication. If durability matters, explicitly design file and directory synchronization rather than calling rename durable by itself.",
+    "Keep standard output machine-readable and standard error diagnostic. Log timestamp, severity, run ID, operation ID, step, attempt, duration, result class, and sanitized error. Never log secret values, authorization headers, full signed URLs, or unreviewed payloads.",
+    "Verify with parser checks, ShellCheck, unit tests around pure functions, black-box subprocess tests of arguments, streams, files, and status, property-style hostile inputs, fault injection at each state transition, concurrent invocations, restart and resume, timeout, and cleanup refusal.",
+    "Roll out in dry-run against synthetic and read-only environments, compare decisions with the existing path, canary one noncritical scope, limit concurrency, retain the previous tool and state format, and define rollback as both code reversion and safe reconciliation of already accepted remote operations.",
+    "Measure useful outcomes: reconciled and failed item counts by reason, attempt distribution, end-to-end duration, oldest unreconciled operation, lock contention, unknown-outcome count, resume success, and sanitized version identity. Page on user or delivery impact, not every retry."
+  ],
+  "seniorAnswer": "I would first decide whether Bash is still the right implementation. If the tool is a thin local coordinator around stable binaries, one sequential state machine, and a small configuration surface, Bash can be reliable. I would freeze the runtime to Bash, declare required utilities and versions, and design a strict subcommand interface with reject-by-default parsing and documented statuses. Paths would enter through NUL-safe streams or explicit arguments, remain quoted in arrays, and cross utility boundaries after `--`; structured API payloads would be created and validated by a purpose-built serializer, not string concatenation. One advisory lock would protect only the local manifest and publication critical section. Every remote mutation would carry a durable idempotency key persisted with intent, and resume would query that key before applying missing work. Retries would be bounded by attempt and elapsed-time budgets, restricted to classified transient outcomes, and jittered; unknown timeout outcomes would enter reconciliation, not immediate replay. TERM and INT would stop admission and preserve a resumable checkpoint; EXIT cleanup would remove only validated invocation-owned temporary files, and startup would recover from the signals that cannot be trapped. Output would be staged, validated, permissioned, and atomically named while retaining the previous known-good artifact. Secrets would come from an approved provider or inherited file descriptor and be redacted before any trace or central log. CI would run `bash -n`, ShellCheck at an agreed severity, unit and black-box tests, hostile-filename cases, fault injection around every commit point, two-run contention, and interrupted-resume tests. I would canary it with a kill switch and reconcile remote operations during rollback. If we need native JSON models, many concurrent requests, durable distributed coordination, complex authentication, a growing plugin API, or types to express invariants, I would move the core to Python or Go and leave Bash as a small launcher.",
+  "weakAnswer": "I would use `set -euo pipefail`, curl with three retries, a lock file, and a trap that deletes `/tmp/tool-*`; Bash is portable and fast enough.",
+  "whyWeak": "The answer treats options as architecture, does not define data or exit contracts, cannot distinguish an accepted remote request from a failed one, and mistakes existence of a lock file for an acquired lock. A wildcard cleanup is unsafe. Bash-specific strict options also contradict an unexplained portability claim. It omits durable operation identity, resume protocol, secret exposure, testing, rollout, and the boundary for changing languages.",
+  "evidence": [
+    {
+      "signal": "The CLI contract tests reject unknown flags and extra arguments, preserve hostile pathnames, separate machine output from diagnostics, and return the documented status for each outcome class.",
+      "proves": "The tested executable boundary behaves according to the declared contract for those cases.",
+      "doesNotProve": "Remote API correctness, all shell versions, distributed idempotency, or security of dependencies."
+    },
+    {
+      "signal": "Two simultaneous invocations produce one lock winner, one bounded contention result, one validated final manifest, and no mixed temporary state.",
+      "proves": "Cooperating local invocations serialize the tested critical section.",
+      "doesNotProve": "Coordination across hosts, containers, runners, network filesystems with different lock semantics, or noncooperating writers."
+    },
+    {
+      "signal": "An injected timeout after remote acceptance is reconciled by operation key, and the resumed invocation observes one remote effect rather than applying a second.",
+      "proves": "The tested client-server idempotency and reconciliation protocol handles that unknown outcome.",
+      "doesNotProve": "That every API endpoint honors the key, that keys never collide, or that the server retains deduplication state for the required window."
+    },
+    {
+      "signal": "Static checks, tests, redaction assertions, fault injection, concurrent-run tests, and interrupted-resume tests pass under the pinned CI image.",
+      "proves": "The reviewed artifact satisfies those automated checks in that environment.",
+      "doesNotProve": "Production mastery, absence of every vulnerability, or behavior outside tested inputs and dependency versions."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why can a local `flock` not guarantee exactly-once remote deployment?",
+      "answer": "The lock coordinates only processes that see and honor the same lock object and filesystem semantics. A remote service has independent state, another host can bypass the lock, and a response can be lost after the server commits. Exactly-once is usually replaced by at-least-once delivery plus server-side idempotency and reconciliation using a durable logical operation key."
+    },
+    {
+      "prompt": "What should the tool do when SIGTERM arrives during a remote request?",
+      "answer": "Record that stop was requested, allow the command boundary to return or end it according to a documented deadline, capture its status, and persist an unknown outcome if acceptance cannot be proven. Release only validated local resources and exit with a signal-aware status. On restart, reconcile by operation key before deciding whether to retry. It cannot promise handler execution for SIGKILL or abrupt host loss."
+    },
+    {
+      "prompt": "How would you pass a secret without exposing it in process listings or trace logs?",
+      "answer": "Prefer the platform's approved credential provider and let the called client read from a protected file descriptor, restricted temporary file, or environment only when the client's documented model and threat analysis permit it. Disable xtrace around secret handling, never put the value in an argument or URL, sanitize error bodies, restrict permissions, and rotate on suspected exposure. Environment variables are not automatically safe because child processes and diagnostic tooling may expose them."
+    },
+    {
+      "prompt": "What concrete signal tells you to rewrite the core in Python or Go?",
+      "answer": "Rewrite when shell quoting and subprocess orchestration are no longer the dominant problem: the tool needs rich validated data models, complex protocol logic, substantial concurrency, persistent state transitions, libraries instead of commands, precise exception types, fuzzing, long-term API compatibility, or security properties that typed structures make clearer. Measure defect and change cost rather than rewriting merely because the file is long."
+    },
+    {
+      "prompt": "What is rollback after the new client has already sent accepted requests?",
+      "answer": "Code rollback only stops future behavior. The operational rollback must inventory durable operation IDs, query actual remote state, allow safe completions to remain when reversal is riskier, compensate reviewed reversible changes, and record any irreversible results. The previous binary and manifest format must remain able to read or migrate the state left by the canary."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Language fitness and interface contracts",
+      "points": 10,
+      "observableEvidence": "Defines when Bash is appropriate, exact CLI and data framing, hostile-input boundaries, exit statuses, and a justified rewrite threshold."
+    },
+    {
+      "criterion": "State, concurrency, and idempotency",
+      "points": 10,
+      "observableEvidence": "Separates local advisory locking from durable remote operation identity, resume, reconciliation, and unknown outcomes."
+    },
+    {
+      "criterion": "Failure, signal, retry, and publication design",
+      "points": 10,
+      "observableEvidence": "Provides bounded classified retries, signal-aware state transitions, staged validation, atomic naming, cleanup, and limits."
+    },
+    {
+      "criterion": "Security and observability",
+      "points": 10,
+      "observableEvidence": "Protects secrets and hostile data while defining structured sanitized logs, metrics, and useful alert conditions."
+    },
+    {
+      "criterion": "Testing, rollout, and rollback",
+      "points": 10,
+      "observableEvidence": "Covers static, functional, hostile-input, fault, concurrency, resume, canary, kill-switch, and remote reconciliation evidence."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

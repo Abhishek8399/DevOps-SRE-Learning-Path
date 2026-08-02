@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0039",
+  "lessonId": "LES-0018",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0018-python-automation`. Capture raw scenario inputs and write a prediction before requesting derived observation views. Diagnose the first failed boundary and state owner, decide whether retry is permitted, design bounded reconciliation and recovery, verify the original modeled operation and duplicate count, and transfer the design to one CI or Kubernetes automation workflow. Do not inspect the fixture implementation, another case's answer, or any external answer key; do not use root, install software, make a network call, alter the fixture, or manually delete state.",
+  "deliverables": [
+    "An independence declaration and runtime scope card with Ubuntu/WSL boundary, interpreter, effective UID, repository path, network boundary, expected changes, abort conditions, and sanitization policy.",
+    "The baseline and raw independent scenario transcript, followed by a prediction timestamped before all `observe` output.",
+    "A state-ownership diagram covering launcher/interpreter, raw input, typed request, client attempt, local durable intent, modeled authoritative service, receipt, publication, verification, and exit result, with a text alternative.",
+    "At least three competing outcomes or hypotheses, the predicted evidence for each, and one disconfirming check per hypothesis.",
+    "A chronological evidence table labeling each item observation, documented model fact, calculation, inference, hypothesis, or unknown and stating what it proves and cannot prove.",
+    "A Python design outline showing runtime validation, immutable internal model, pure planning, exception translation, subprocess or API adapter contract, deadline, operation ID, reconciliation, retry eligibility, publication, and exit statuses.",
+    "A recovery card naming actor, exact target, preconditions, blast radius, abort threshold, prior-state preservation, rollback or compensation, and evidence required before expanding scope.",
+    "A verification matrix covering committed outcome, proven no-effect, unknown outcome, repeat delivery, concurrent runner, timeout after effect, invalid input, partial candidate, secret-bearing exception, cleanup refusal, and original operation readback.",
+    "A CI or Kubernetes transfer that identifies changed interpreter/image, identity, filesystem, controller retry, durable-state, secret, namespace, concurrency, observability, capacity, and rollback boundaries without claiming the local model tested them.",
+    "The complete normal-user verifier output, a reviewer-supplied root-refusal result when available, final state-absence proof, and a concise incident update separating mitigation, recovery, root cause, contributing conditions, and prevention."
+  ],
+  "evidenceRequirements": [
+    "Record `scenario` before any derived `observe` view and prove the raw output contains no authoritative outcome, diagnosis, computed recovery, or answer key.",
+    "Use only the guarded offline model and safe read-only environment checks; all learner notes remain outside the lab-owned state directory.",
+    "Distinguish Python process evidence, local checkpoint state, and modeled service authority; do not infer remote failure from timeout or local phase.",
+    "Keep one stable logical operation ID across attempts and explain why a new ID would defeat deduplication.",
+    "Do not recommend blind replay, unbounded retry, shell=True with data, broad exception swallowing, sudo, package installation, permission bypass, or recursive/wildcard deletion.",
+    "For each proposed production action, state authorization, target, scope, deadline, abort, rollback or compensation, and user-operation verification.",
+    "Demonstrate that verifier success proves deterministic lifecycle guards and answer isolation only, not diagnosis quality, real API behavior, security certification, or mastery.",
+    "Include exact units for times, counts, byte sizes, concurrency, retry budget, and observation window wherever they are used."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent scope and prediction", "points": 10, "observableEvidence": "Captures raw inputs first, declares independence, maps state owners, and records competing hypotheses plus disconfirming tests before derived evidence."},
+    {"criterion": "Python mechanism accuracy", "points": 10, "observableEvidence": "Explains runtime validation, type limits, exception/status translation, child/API boundaries, deadlines, publication, and verification without mechanism myths."},
+    {"criterion": "Unknown-outcome reasoning and recovery", "points": 10, "observableEvidence": "Preserves stable operation identity, reconciles at authority before retry, bounds action, protects prior state, and distinguishes rollback from compensation."},
+    {"criterion": "Evidence and verification depth", "points": 10, "observableEvidence": "Uses scoped observations with proof limits and tests duplicate, missing, concurrent, interrupted, invalid, partial, secret, refusal, cleanup, and original operation outcomes."},
+    {"criterion": "Production transfer and communication", "points": 10, "observableEvidence": "Transfers accurately to CI or Kubernetes, covers identity, state, secrets, controller behavior, observability, capacity, rollout, and provides a clear incident record."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

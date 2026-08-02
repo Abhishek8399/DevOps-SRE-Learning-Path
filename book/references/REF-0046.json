@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0046",
+  "title": "OCI Runtime Specification - Linux container configuration",
+  "organization": "Open Container Initiative",
+  "url": "https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md",
+  "sourceType": "standard",
+  "versionOrDate": "OCI Runtime Specification 1.3 series Linux configuration, reviewed 2026-08-02",
+  "lessonIds": ["LES-0011"],
+  "topics": ["runtime namespaces", "cgroup paths", "resource configuration", "capabilities", "devices"],
+  "relevance": "Primary interoperability specification connecting container-runtime configuration to Linux namespaces, cgroups, devices, identity mappings, and related controls.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

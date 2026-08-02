@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0051",
+  "title": "RFC 8200: Internet Protocol, Version 6 Specification",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc8200",
+  "sourceType": "rfc",
+  "versionOrDate": "July 2017, Internet Standard STD 86",
+  "lessonIds": ["LES-0012"],
+  "topics": ["IPv6 header", "hop limit", "extension headers", "fragmentation", "MTU"],
+  "relevance": "Standards-track source for IPv6 packet structure, forwarding fields, minimum link MTU expectations, and source-only fragmentation behavior used in the packet-path and MTU sections.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

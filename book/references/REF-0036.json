@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0036",
+  "title": "fsync(2) — synchronize a file's in-core state with storage device",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man2/fsync.2.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux man-pages 6.18, 2026-02-08",
+  "lessonIds": ["LES-0010"],
+  "topics": ["fsync", "fdatasync", "durability", "file and directory metadata"],
+  "relevance": "Primary system-call manual for the blocking durability contract and its important limitation that syncing a file does not necessarily persist the containing directory entry.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

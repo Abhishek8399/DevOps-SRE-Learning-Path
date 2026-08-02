@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0089",
+  "title": "Bash Reference Manual",
+  "organization": "GNU Project / Free Software Foundation",
+  "url": "https://www.gnu.org/software/bash/manual/bash.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Bash 5.3 manual, 18 May 2025",
+  "lessonIds": ["LES-0017"],
+  "topics": ["shell operation", "quoting", "expansion", "redirection", "pipelines", "exit status", "traps", "arrays"],
+  "relevance": "Authoritative Bash language and builtin documentation used for parsing order, expansion behavior, pipeline status, options, functions, arrays, signals, and traps.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

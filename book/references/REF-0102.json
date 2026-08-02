@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0102",
+  "title": "Logging HOWTO",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3.12/howto/logging.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3.12 documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0018"],
+  "topics": ["logging", "severity", "logger hierarchy", "exception information", "configuration", "operational diagnostics"],
+  "relevance": "Authoritative guidance for Python logging levels, logger use, configuration, and exception diagnostics, complemented by the lesson's structured-event, redaction, privacy, and cardinality contracts.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

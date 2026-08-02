@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0014",
+  "lessonId": "LES-0010",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "Product-company incident interview: an online payments API has normal CPU and memory, no filesystem-capacity alert, and no error spike, but p99 authorization latency triples after a reporting job begins. API pods and the reporting job use separate Kubernetes PersistentVolumeClaims, yet both volumes are provisioned from the same storage class. Guest `iostat` on API nodes shows high write await and queue depth on a device-mapper volume. Reporting throughput is within its documented limit. As incident lead, explain your first five minutes, evidence path, competing hypotheses, safe mitigation, recovery verification, root-cause boundary, and prevention. Include why separate volumes and an in-limit workload do not settle the diagnosis.",
+  "directAnswer": "Treat the shared lower storage path as one hypothesis, not a conclusion. Separate Kubernetes claim identity from node, attachment, backend pool, storage network, and array failure domains. First protect payment correctness, freeze further reporting fan-out through an approved control, preserve aligned application, pod, node, volume, and backend evidence, and establish incident roles. Compare an affected API operation with a healthy cohort, map each path to its PVC, persistent volume, attachment, node device, and backend placement, and distinguish application commit wait, node writeback, per-volume throttling, shared-pool contention, and a coincident API change. Use the smallest reversible mitigation supported by the first divergence—often pausing or rate-limiting the noncritical report job, moving it only through a pretested path, or restoring a faulty storage component—not blind pod restarts. Verify payment success, tail latency, durable outcomes, queues, retries, storage errors, and backend recovery. Separate reported volume limits from shared service capacity and noisy-neighbor isolation guarantees.",
+  "foundation": "A Kubernetes PersistentVolumeClaim is an application's request and binding object for storage; it is not necessarily a dedicated physical device. A StorageClass describes provisioning behavior and parameters. Two claims can become two logical volumes while still sharing a node path, network link, controller, cache, storage pool, failure domain, quota, or backend device. A per-volume throughput limit describes one policy boundary and usually does not promise latency under every mixed workload. Tail latency is a percentile: p99 is the value at or below which 99 percent of observations fall in a stated window. Averages and error counts can remain normal while a small but critical tail becomes slow.",
+  "reasoningSteps": [
+    "Frame impact around authorization correctness and latency, affected regions, zones, nodes, revisions, and payment cohorts. State the recovery objective and the rule that no mitigation may duplicate, lose, or reorder a financial outcome.",
+    "Create incident command, operations, storage, application, and communication ownership. Stop escalation of the noncritical reporting workload only through its approved reversible control if queue growth or tail latency threatens the objective.",
+    "Preserve a shared monotonic timeline: reporting start, API latency change, pod and node placement, volume attachments, device statistics, retries, timeouts, backend pool signals, and any configuration or deployment events.",
+    "Draw the API data path from request to application state transition, filesystem, mounted PVC, kernel page cache and writeback, device mapper, node block device, storage transport, backend volume and pool, then durable acknowledgement. Draw the reporting path separately and mark where it converges.",
+    "Verify mappings rather than relying on PVC names. Record pod UID, node, mount, volume attachment, persistent volume and storage-class identities, device major:minor, device-mapper parents, backend volume or pool placement, and zone.",
+    "Normalize storage evidence by interval and layer. Guest await and queue depth describe a logical node device; backend latency and throttling describe another boundary. Do not add or compare counters with different units, aggregation windows, reset points, or request definitions.",
+    "Rank mechanisms: shared backend contention from the reporting access pattern; an API-side synchronous-write or flush change; per-volume or node-level throttle; storage-network or backend degradation coincident with the report; writeback interaction; or mapping the wrong logical device.",
+    "Use discriminating comparisons: API volumes on the same versus different pools, affected versus healthy nodes, reporting-on versus reporting-off bounded intervals, old versus new API revision, read versus write latency, and guest versus backend queue and error timelines.",
+    "Before mitigation, state the prediction. If report contention is causal enough, reducing only report concurrency should reduce shared backend queue and API commit latency without changing API revision. Set duration, scope, authorization, abort, automatic restoration, and data-reconciliation rules.",
+    "Do not restart API pods as a default. Restart can relocate the symptom, increase attach and initialization work, erase process evidence, or remove serving capacity while leaving the shared boundary unchanged.",
+    "Verify the payment operation end to end after restoration: correct authorization state, exactly-once durable record, response and downstream publication, p95/p99, error and timeout rates, retry attempts, queue drainage, dirty/writeback normalization, and no harm to healthy cohorts.",
+    "Complete the causal chain after restoration. The root boundary may be missing workload isolation, an incorrect performance contract, a backend defect, or an API durability-pattern regression. 'The report ran' is a trigger; 'storage was slow' is a symptom class, not sufficient root cause.",
+    "Prevention must be tested: storage-class service objectives that include latency and mixed-workload behavior, topology-aware placement, per-tenant I/O controls where supported, report admission and scheduling, application-level latency SLIs, queue alerts, workload fingerprints, capacity tests, and rehearsed safe degradation."
+  ],
+  "seniorAnswer": "My first statement is: payment authorization tail latency is degraded, correctness is not yet reported lost, and a reporting job is temporally correlated with high logical-device write completion and queueing. Separate PVCs do not prove separate failure domains, and 'within throughput limit' does not prove latency isolation. In five minutes I establish roles, preserve a failed and healthy operation timeline, stop report fan-out through an approved reversible control if it is safe, and protect current payment capacity. I map both workloads through pod, node, mount, `MAJ:MIN`, device-mapper, attachment, backend volume, storage network, and pool. I align API commit latency, Linux dirty/writeback and blocked tasks, guest device await/queue/util, per-process or cgroup I/O, Kubernetes events, provider throttle counters, and backend latency/errors. I compare same-pool and different-pool cohorts and report-on/report-controlled intervals with prewritten predictions. If reducing report concurrency drains the shared queue and restores API commits while nothing else changes, that supports contention but still does not tell us whether the violated contract is backend capacity, placement, QoS, report design, or an API pattern change. Recovery requires correct exactly-once authorization, normal tail latency and retries, durable reconciliation, stable ready capacity, and storage recovery over a representative interval. Prevention then targets the evidenced control failure: measurable mixed-workload SLOs, workload isolation or scheduling, topology and pool visibility, bounded concurrency, capacity models using IOPS and latency rather than only GiB and MiB/s, and a tested runbook.",
+  "weakAnswer": "The reporting pod is a noisy neighbor. Kill it, restart the payment pods on new nodes, and provision bigger PVCs.",
+  "whyWeak": "The answer assumes causation from timing, treats pod and claim identity as physical isolation, and confuses storage capacity with performance. It has no mapping, baseline, workload semantics, financial-integrity guard, reversible experiment, backend evidence, or end-to-end recovery proof. Pod replacement may amplify attachment and writeback work and move the symptom without fixing the shared boundary.",
+  "evidence": [
+    {
+      "signal": "API and reporting workloads use separate PVC names",
+      "proves": "Kubernetes exposes distinct claim objects and bindings for the two workloads.",
+      "doesNotProve": "Dedicated physical media, separate backend pools, independent network paths, separate node bottlenecks, or latency isolation."
+    },
+    {
+      "signal": "Reporting throughput is below its documented per-volume limit",
+      "proves": "The measured reporting byte rate is below that named policy threshold during the stated interval.",
+      "doesNotProve": "Latency headroom, IOPS headroom, burst-credit availability, queue fairness, shared-pool capacity, or harmlessness to another workload."
+    },
+    {
+      "signal": "API commit p99, guest write await, and backend pool queue rise after reporting starts on shared placement",
+      "proves": "The three observed boundaries degrade in temporal alignment for workloads mapped to the same backend placement.",
+      "doesNotProve": "Whether report load, an API change, a backend fault, or a common third factor caused the first divergence."
+    },
+    {
+      "signal": "A bounded reduction in report concurrency is followed by lower backend queue and restored API commit latency, while a different-pool API cohort does not change",
+      "proves": "Within the experiment, report offered concurrency influenced the affected shared path and the affected cohort recovered differently from the control.",
+      "doesNotProve": "That the report is defective, that the backend met its contract, that all future load mixes are safe, or that placement is the only root control gap."
+    },
+    {
+      "signal": "Payment authorization state and downstream durable record reconcile exactly once after latency recovery",
+      "proves": "The checked recovery operations completed with the declared correctness invariant.",
+      "doesNotProve": "Every historical operation is reconciled, long-term performance is stable, or prevention has been verified."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "How does Kubernetes change your Linux investigation?",
+      "answer": "It adds identity and ownership layers; it does not remove the Linux path. Map pod and container to node, mount, PVC/PV, volume attachment, device or network filesystem, cgroup, and backend. Node tools may aggregate multiple pods, while storage-provider telemetry may aggregate multiple volumes. Preserve both mappings and scopes."
+    },
+    {
+      "prompt": "What if the report job cannot be paused because it has a regulatory deadline?",
+      "answer": "Bring the business and compliance owner into the decision. Consider a tested concurrency cap, priority or QoS control, rescheduling to a genuinely isolated pool, or controlled API traffic shaping while preserving payment correctness. Quantify both deadlines and capacity; do not silently sacrifice one obligation."
+    },
+    {
+      "prompt": "Would moving payment pods to another node prove a node fault?",
+      "answer": "No. It changes node, attachment, path, cache state, and often backend placement together. Recovery after the move is useful mitigation evidence but a confounded causal experiment. Prefer comparisons that hold more variables constant and retain the original evidence."
+    },
+    {
+      "prompt": "How would you capacity-plan this storage class?",
+      "answer": "Model workload classes by operation size, read/write mix, sync frequency, concurrency, burst duration, tail-latency objective, and growth. Test representative mixed workloads on the real topology, include rebuild and failure states, reserve recovery headroom, and monitor both offered demand and completion. GiB and peak MiB/s alone are insufficient."
+    },
+    {
+      "prompt": "What security concern appears in storage evidence collection?",
+      "answer": "Mount sources, device labels, pod names, paths, tenant identities, and process command lines can expose topology or sensitive data. Collect least privilege, sanitize artifacts, restrict access and retention, and never paste raw production identifiers or file content into an unapproved system."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Incident leadership and integrity",
+      "points": 4,
+      "observableEvidence": "Frames payment impact and correctness, establishes owners, controls expansion, preserves evidence, and communicates uncertainty."
+    },
+    {
+      "criterion": "Cross-layer storage mapping",
+      "points": 4,
+      "observableEvidence": "Maps application, pod, node, mount, device mapper, attachment, backend volume, transport, pool, and durable boundary without equating names with isolation."
+    },
+    {
+      "criterion": "Hypothesis and measurement quality",
+      "points": 4,
+      "observableEvidence": "Aligns intervals and units, compares controlled cohorts, interprets tail latency and queues, and distinguishes load, throttle, degradation, mapping, and application mechanisms."
+    },
+    {
+      "criterion": "Safe mitigation and recovery",
+      "points": 4,
+      "observableEvidence": "Uses a bounded authorized action with prediction, scope, abort, rollback, and exactly-once user-operation verification."
+    },
+    {
+      "criterion": "Root boundary and prevention",
+      "points": 4,
+      "observableEvidence": "Separates trigger and restoration from cause, then proposes testable isolation, workload, capacity, observability, and runbook controls."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

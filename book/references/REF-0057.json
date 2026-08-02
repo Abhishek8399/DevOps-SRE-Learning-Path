@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0057",
+  "title": "RFC 9293: Transmission Control Protocol (TCP)",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9293",
+  "sourceType": "rfc",
+  "versionOrDate": "August 2022",
+  "lessonIds": ["LES-0013"],
+  "topics": ["TCP", "connection state", "sequence numbers", "flow control", "retransmission"],
+  "relevance": "Current Internet Standard specification for TCP behavior, including connection establishment, state transitions, acknowledgment, sequencing, reset handling, and endpoint requirements.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

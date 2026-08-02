@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0059",
+  "title": "RFC 5681: TCP Congestion Control",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc5681",
+  "sourceType": "rfc",
+  "versionOrDate": "September 2009",
+  "lessonIds": ["LES-0013"],
+  "topics": ["congestion window", "slow start", "congestion avoidance", "fast retransmit", "fast recovery"],
+  "relevance": "Standards-track description of TCP sender congestion-control behavior needed to distinguish network congestion response from receiver flow control and application delay.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

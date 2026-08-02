@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0015",
+  "lessonId": "LES-0010",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated changed-constraint transfer: diagnose an unfamiliar local-only storage-performance evidence package supplied by your reviewer, or collect an approved read-only package from a disposable Ubuntu 24.04 VM. The affected operation is a latency-sensitive read path, not the guided lab's synchronous write path. One logical device is layered over another, cache state differs between baseline and incident, and at least one high-looking metric is a red herring. Determine the first observed abnormal boundary, reject at least three mechanisms, propose at most one bounded experiment, and design recovery verification. Use no sudo, package installation, benchmark, cache drop, raw-device access, mount change, loop device, production data, credential, network call, or destructive action. No model solution is stored; use `ASM-0015-response-template.md` only as a blank evidence structure.",
+  "deliverables": [
+    "A sanitized safety card naming Ubuntu and kernel versions, virtualization boundary, effective UID, exact read-only commands, path and process scope, sampling duration, package availability, stop conditions, prohibited actions, and cleanup or no-change proof.",
+    "A diagram from the affected read operation through application, system call, page cache, filesystem, logical device, parent device and lower storage boundary, with state owners, evidence points, identities, units, failure domains, and the first observed divergence.",
+    "A normalized evidence table for a healthy and affected interval. Include application operation rate and p50/p95/p99, cache context, `vmstat`, `iostat`, process or cgroup evidence, path-to-device mapping, errors, and lower-layer signals where available. For every field state source, scope, interval, unit, statistic, reset behavior, what it proves, and what it cannot prove.",
+    "At least four ranked mechanism hypotheses, including cache-state difference, device or lower-layer latency, application access-pattern change, and incorrect path/device attribution. For each, provide supporting evidence, contradicting evidence, a falsifier, and the safest next observation.",
+    "A calculation connecting request rate, average response time, and average in-flight work only if steady-state scope and compatible request definitions are defensible; otherwise explain why Little's Law cannot be applied to the supplied values.",
+    "A decision record for at most one experiment. Write its prediction before execution, authorization, exact maximum path/process/time/resource scope, control cohort, success, rejection, abort, rollback, evidence-preservation, and data-integrity conditions. If no experiment is safe or informative, identify the missing evidence instead.",
+    "A recovery plan and verification matrix that checks the real read operation, correctness, tail latency, error and timeout rates, queues, retries, cache-dependent behavior, affected and healthy cohorts, lower layers, recurrence window, and cleanup or absence of mutation.",
+    "A production transfer to either a Kubernetes volume, virtual-machine disk, network block device, or database storage path. Identify which local observations transfer as method, which do not transfer as facts, and how ownership, telemetry, security, availability, capacity, and cost change."
+  ],
+  "evidenceRequirements": [
+    "Use a reviewer-supplied sanitized package or read-only observations from a disposable local VM. Record source and timestamps; do not invent output or call the deterministic guided values measured host evidence.",
+    "Resolve the exact target path with `findmnt -T` and trace `MAJ:MIN`, logical, and parent-device identities before interpreting per-device statistics. If a layer is hidden, retain it as an unknown.",
+    "Use at least two post-baseline interval samples when a command's first report is since-boot or otherwise differently scoped. Never compare cumulative and interval rates as if they share a window.",
+    "Decode every used field, including whether it is a count, rate, average, percentile, percentage, bytes or kibibytes, milliseconds, clock ticks, tasks, or outstanding requests. State tool versions because field names and semantics can vary.",
+    "Do not infer cache misses from read throughput alone, physical-device saturation from one logical `%util`, or process causality from correlated process I/O. Reject at least three explanations with positive or negative evidence.",
+    "Do not run `dd`, `fio`, `hdparm`, `sync`, cache-dropping sysctls, raw-device reads or writes, remounts, scheduler changes, queue-depth changes, filesystem repair, or provider mutations. A proposal for such work belongs only in a separately authorized disposable experiment design.",
+    "Keep a high-looking metric in the evidence table even if it is irrelevant; explain its scope and why it fails to account for the user operation instead of deleting inconvenient evidence.",
+    "Verify recovery at the user-operation and correctness boundary. A lower `await`, shorter queue, restarted process, relocated pod, or completed command alone is insufficient.",
+    "Submit original reasoning through the blank response template. Reading another submission, receiving a diagnosis, or using a model-generated solution before review invalidates independence and must be disclosed."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Safety, provenance, and scope",
+      "points": 4,
+      "observableEvidence": "Uses authorized read-only local evidence, declares versions and boundaries, preserves provenance, avoids load and mutation, sanitizes identifiers, and proves no unintended state remains."
+    },
+    {
+      "criterion": "Path and metric model",
+      "points": 4,
+      "observableEvidence": "Maps the read path and layered devices correctly and decodes interval, unit, statistic, scope, reset, cache, virtualization, and proof limits for every used field."
+    },
+    {
+      "criterion": "Independent diagnosis",
+      "points": 4,
+      "observableEvidence": "Finds the first evidenced abnormal boundary, ranks at least four mechanisms, rejects three with evidence, retains the red herring, and avoids treating correlation as cause."
+    },
+    {
+      "criterion": "Experiment and recovery judgment",
+      "points": 4,
+      "observableEvidence": "Selects no more than one informative bounded experiment with prediction and controls, or refuses it coherently, then verifies real-operation correctness and sustained recovery."
+    },
+    {
+      "criterion": "Production transfer and independence",
+      "points": 4,
+      "observableEvidence": "Transfers the method without transferring fixture facts, addresses ownership, observability, reliability, security, capacity and cost, and discloses assistance honestly."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0026",
+  "title": "Working across Windows and Linux file systems",
+  "organization": "Microsoft Learn",
+  "url": "https://learn.microsoft.com/en-us/windows/wsl/filesystems",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Online WSL documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0009"],
+  "topics": ["WSL", "Linux filesystem", "Windows filesystem", "path interoperability", "performance", "case sensitivity"],
+  "relevance": "Primary platform guidance for choosing the working filesystem according to whether Linux or Windows tools drive the repository and for understanding the cross-filesystem boundary.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

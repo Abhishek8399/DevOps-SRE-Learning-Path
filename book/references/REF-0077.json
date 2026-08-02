@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0077",
+  "title": "RFC 9114: HTTP/3",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9114",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["HTTP/3", "QUIC", "streams", "connection migration", "version translation"],
+  "relevance": "Defines HTTP semantics over QUIC, including request streams, control streams, connection behavior, and the boundaries that differ from TCP-based HTTP versions.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

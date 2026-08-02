@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0021",
+  "lessonId": "LES-0012",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated packet-path transfer: from a clean normal-user Ubuntu 24.04 or WSL 2 Ubuntu 24.04 environment, use the guarded LES-0012 lab's independent case without reading another learner's diagnosis or obtaining a model answer. Predict the source prefix, selected route, next hop, neighbor requirement, forward and return paths, translation state, and MTU outcome before revealing each modeled observation. Identify the first abnormal boundary, reject at least two competing mechanisms, use only supported recovery, verify the modeled user operation, and prove cleanup. Do not change the host route table, interfaces, firewall, sysctls, namespaces, or real network; use no sudo, package installation, public endpoint, production data, credential, manual state edit, or broad deletion. No diagnosis or reviewer solution belongs in this assessment.",
+  "deliverables": [
+    "A sanitized environment card with Ubuntu/WSL version, effective non-root identity, repository and lesson scope, tools checked, offline boundary, expected time, stop conditions, supported recovery, and cleanup proof.",
+    "A hand-calculated CIDR worksheet for every supplied source and destination: address family, prefix length, mask, network, address range, on-link decision, and any reserved-address caveat used by the model.",
+    "A forward-and-return packet-path diagram labeling process, namespace, socket intent, source and destination IP, policy rule/table, chosen prefix, next hop, egress interface, neighbor identity requirement, router or translation boundary, rewritten tuple if any, service, and reply path.",
+    "Predictions written before observation for longest-prefix selection, next-hop neighbor target, TTL or hop-limit change, translation mapping, and whether the modeled packet fits each effective MTU.",
+    "A timestamped command and evidence record using only the supported lab interface, with each field decoded and every observation stating what it proves, what it does not prove, and which boundary owns it.",
+    "At least three mechanism hypotheses for the changed constraint, two rejected with direct evidence, and the first healthy-input/abnormal-output boundary identified without treating a route entry, neighbor cache row, control-plane health, or error string as end-to-end proof.",
+    "A bounded recovery and verification record that restores the supported modeled state, replays the same operation in both directions, checks translation and MTU outcomes, and distinguishes restoration from final causal certainty.",
+    "Exact guarded cleanup evidence followed by the lab's absence check, plus disclosure of assistance and an explanation of why no host network mutation was necessary.",
+    "A production transfer to one container, Kubernetes, private-cloud, or hybrid-network path that maps namespaces, routes, neighbor domains, stateful boundaries, MTU overhead, observability, security, capacity, rollback, and residual uncertainty without claiming the model measured production."
+  ],
+  "evidenceRequirements": [
+    "Start from clean state and retain the accepted read-only preflight. Use only documented setup, baseline, independent injection, observation, recovery, verification, status, and cleanup operations.",
+    "Do not inspect fixture source, immutable result artifacts, descriptors, sentinel contents, another learner's work, or any model answer before submission. Disclose any accidental exposure immediately.",
+    "Show manual prefix reasoning before using the model or Python `ipaddress` as a check. A correct tool result without explainable bit and prefix reasoning is insufficient.",
+    "For each route decision, name all matching prefixes and explain why the winning prefix, route type, metric, and policy context win. State when a default route is irrelevant because a more-specific route matched.",
+    "Resolve the link-layer identity of the selected next hop, not automatically the final remote destination. Explain the corresponding IPv6 Neighbor Discovery boundary when the model uses IPv4 ARP.",
+    "Trace both directions through every stateful translation or policy owner. A forward-only diagram, successful route lookup, or created translation entry does not satisfy operation verification.",
+    "Calculate the packet size at each modeled encapsulation boundary and classify any MTU result without recommending broad ICMP blocking, global MTU change, or unbounded fragmentation.",
+    "Run supported recovery and replay the exact operation. Record success and abort conditions, proof of return-path correctness, remaining unknowns, and one mechanism-linked prevention control.",
+    "Run guarded cleanup and a following check. A refusal is evidence for mentor review and must never be bypassed with recursive deletion, symlink traversal, permission weakening, or manual descriptor repair."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    { "criterion": "Safety and independent evidence", "points": 4, "observableEvidence": "Uses only the clean, non-root, offline guarded lifecycle; preserves predictions and proof limits; discloses assistance; and proves cleanup without bypass." },
+    { "criterion": "CIDR and route reasoning", "points": 4, "observableEvidence": "Calculates prefixes manually, identifies every relevant route match, and explains policy, longest-prefix, route type, metric, source, next hop, and interface." },
+    { "criterion": "Complete bidirectional path", "points": 4, "observableEvidence": "Maps next-hop neighbor scope, per-hop ownership, translation state, return route, MTU, and the first abnormal boundary in both directions." },
+    { "criterion": "Hypothesis and recovery quality", "points": 4, "observableEvidence": "Ranks at least three mechanisms, rejects two with evidence, uses bounded supported recovery, and verifies the exact operation rather than one component signal." },
+    { "criterion": "Production transfer and prevention", "points": 4, "observableEvidence": "Transfers the mechanism accurately to a new environment with observability, security, capacity, failure-domain, rollback, and uncertainty analysis." }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

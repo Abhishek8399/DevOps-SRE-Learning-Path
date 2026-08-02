@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0050",
+  "title": "RFC 4861: Neighbor Discovery for IP version 6",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc4861",
+  "sourceType": "rfc",
+  "versionOrDate": "September 2007",
+  "lessonIds": ["LES-0012"],
+  "topics": ["IPv6 Neighbor Discovery", "router discovery", "neighbor reachability"],
+  "relevance": "Primary IPv6 reference for neighbor and router discovery, reachability state, address resolution, and the operational differences that prevent treating IPv6 as IPv4 with longer addresses.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

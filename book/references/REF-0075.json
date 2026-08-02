@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0075",
+  "title": "RFC 9112: HTTP/1.1",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9112",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["HTTP/1.1", "message framing", "persistent connections", "hop-by-hop fields", "request smuggling"],
+  "relevance": "Defines HTTP/1.1 wire syntax, message framing, connection persistence, transfer coding, and security requirements relevant to proxy parsing and request-smuggling prevention.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

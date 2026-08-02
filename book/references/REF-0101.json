@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0101",
+  "title": "json — JSON encoder and decoder",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3.12/library/json.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3.12 standard-library documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0018"],
+  "topics": ["JSON parsing", "JSON serialization", "types", "encoding", "decoder limits", "command-line validation"],
+  "relevance": "Authoritative standard-library behavior for decoding and encoding JSON; the lesson uses it to distinguish syntactic parsing from runtime schema and business validation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

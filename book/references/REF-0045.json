@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0045",
+  "title": "Seccomp BPF (secure computing with filters)",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/userspace-api/seccomp_filter.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current upstream kernel userspace API documentation, reviewed 2026-08-02",
+  "lessonIds": ["LES-0011"],
+  "topics": ["system call filtering", "no new privileges", "filter actions", "sandbox limitations"],
+  "relevance": "Authoritative description of seccomp filter mechanics and the explicit warning that syscall filtering is one sandbox building block rather than a complete isolation system.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

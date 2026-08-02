@@ -300,7 +300,11 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
   const labNetworks = [...new Set(metadata.labs.map((lab) => lab.network))].join(" / ");
   const volumeEndLink = entry.volumeId === "00-start-safely"
     ? <Link href="/book/linux">Continue: Volume 01 -&gt;</Link>
-    : <Link href="/practice/storage">Practise this volume -&gt;</Link>;
+    : entry.volumeId === "01-linux-systems"
+      ? <Link href="/book/connectivity">Continue: Volume 02 -&gt;</Link>
+      : entry.volumeId === "02-connectivity"
+        ? <Link href="/book/engineering">Continue: Volume 03 -&gt;</Link>
+        : <Link href="/book#knowledge-map">Continue through the knowledge map -&gt;</Link>;
   return (
     <article className={styles.article} id={metadata.slug}>
       <header className={styles.hero}>

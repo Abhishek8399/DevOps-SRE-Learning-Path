@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0010",
+  "lessonId": "LES-0009",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "You enter an Ubuntu repository during a failed release. The prompt shows the expected project name, but you have not resolved the root. git status --short reports 'MM service.conf', '?? incident-notes.txt', and a deletion staged for scripts/deploy.sh. A teammate says all changes are disposable and asks you to run git reset --hard followed by git clean -fd. Production uses an artifact allegedly built from this branch, but no artifact digest is available. Explain the state, the first evidence you collect, the action you refuse, and a bounded recovery path.",
+  "directAnswer": "Do not reset or clean. First prove the host, effective UID, canonical repository root, branch, full HEAD, filesystem, and ownership of the worktree. Interpret MM as three versions of service.conf: HEAD, a staged index version, and a later worktree version. The staged deletion is part of the proposed next snapshot; incident-notes.txt is untracked but not thereby disposable. Capture ordinary and cached path diffs, status including ignored files when relevant, HEAD and reflog, and ask the owners of each path. Separately identify the deployed artifact and its source/provenance; a branch claim is not deployment evidence. Preserve any needed edits through an owner-approved patch, branch, or worktree, then choose path-scoped restore, an auditable revert, or the release system's bounded rollback according to publication and operational state. Verify the real user operation, data integrity, and exact cleanup.",
+  "foundation": "Git exposes several state layers. HEAD names a committed snapshot. The index is the next proposed snapshot. The working tree is the editable copy. The two status columns compare index-to-HEAD and worktree-to-index. Reset and clean operate on different layers and cannot infer ownership or intent. A production artifact is another state boundary: changing a branch does not prove what was built, promoted, or deployed. Strong operators establish identity and evidence before selecting an undo mechanism.",
+  "reasoningSteps": [
+    "Resolve the environment first: Ubuntu release, kernel/WSL boundary, non-root identity, lexical and canonical directory, backing filesystem when relevant, Git top level, metadata directory, branch, and full HEAD.",
+    "Freeze broad mutation because the teammate's ownership claim is unverified and the requested commands can discard tracked and untracked work.",
+    "Decode MM service.conf as HEAD version A, index version B, and worktree version C; inspect cached A-to-B and ordinary B-to-C diffs separately.",
+    "Inspect the staged deletion with git diff --cached -- scripts/deploy.sh and confirm its human owner and intent. Do not assume deletion means obsolete.",
+    "Classify incident-notes.txt by file type, owner, sensitivity, and purpose without publishing raw content. Untracked means outside the index, not disposable.",
+    "Check ignored state and secret boundaries without printing values. A clean or ignored path would not prove absence from history.",
+    "Identify artifact digest, build job, exact source commit, dependency inputs, promotion record, runtime revision, and one failing user path; do not equate branch name with deployment state.",
+    "Preserve volatile evidence and useful edits through an explicitly owned patch, new branch, or separate worktree when policy permits.",
+    "Choose the smallest state-specific recovery: path-scoped restore for confirmed disposable local state, revert or forward fix for shared history, and a compatible authorized release rollback for production.",
+    "Predeclare success, abort, integrity, and rollback-of-rollback conditions; then verify the real operation, artifact identity, healthy cohorts, and no data loss before cleanup."
+  ],
+  "seniorAnswer": "I would say: I cannot authorize reset or clean from this evidence. The directory label and a teammate's statement do not establish repository identity or ownership. I will first capture the canonical top level, effective UID, branch, full HEAD, status, and both diffs. MM means the index and worktree each differ, so one diff cannot represent all pending work. I will inspect the staged deletion and classify the untracked notes with their owners, preserve anything needed, and avoid exposing sensitive content. In parallel I will trace commit to build to immutable artifact digest to promotion to runtime. If the release is implicated and compatibility is known, I will use the approved bounded release rollback or an auditable revert, not a forceful local cleanup. Recovery is proven only when the expected artifact is running, the customer operation succeeds, integrity checks pass, and unrelated work remains intact. Cleanup is exact and separately verified.",
+  "weakAnswer": "The teammate owns the repository, so I would reset hard, clean everything untracked, and push the old branch because production is failing.",
+  "whyWeak": "It trusts unverified path and ownership assumptions, fails to decode the two Git comparisons, destroys potentially valuable staged and untracked work, confuses a source ref with the deployed artifact, and has no evidence preservation, authorization, compatibility check, canary, abort condition, data-integrity check, user verification, or bounded cleanup.",
+  "evidence": [
+    {
+      "signal": "MM service.conf",
+      "proves": "The index differs from HEAD for the path and the worktree differs from the index at the observed instant.",
+      "doesNotProve": "Which version is intended, who owns either change, or whether production uses any version."
+    },
+    {
+      "signal": "D in the left status column for scripts/deploy.sh",
+      "proves": "The index proposes deletion of that tracked path relative to HEAD.",
+      "doesNotProve": "That the deletion was intentional, reviewed, committed, pushed, built, or deployed."
+    },
+    {
+      "signal": "?? incident-notes.txt",
+      "proves": "The selected status scope sees an untracked nonignored path.",
+      "doesNotProve": "That it is disposable, safe to publish, owned by the current operator, or absent elsewhere."
+    },
+    {
+      "signal": "A branch name is said to be deployed",
+      "proves": "Only that someone made a claim about deployment.",
+      "doesNotProve": "The exact commit, artifact digest, promotion, runtime revision, or user outcome."
+    },
+    {
+      "signal": "A canary runs the verified prior artifact and the failing user path recovers without integrity regression",
+      "proves": "The bounded canary path recovered with that artifact during the observation window.",
+      "doesNotProve": "Global safety, final cause, compatibility at all scales, or that local files may be discarded."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why not create one stash immediately?",
+      "answer": "A stash is a mutation and can omit or include paths depending on options. First establish ownership and inspect staged, unstaged, untracked, ignored, and conflicted state. If policy and owners approve, a named preservation branch, patch, worktree, or carefully scoped stash may be used with explicit contents and recovery proof."
+    },
+    {
+      "prompt": "What would git reset --hard leave behind?",
+      "answer": "It normally resets tracked index and worktree state to the selected commit but does not remove ordinary untracked or ignored files. Exact behavior also depends on operands and special states. Combining it with clean expands blast radius rather than making ownership known."
+    },
+    {
+      "prompt": "How do you preserve evidence without leaking incident data?",
+      "answer": "Record commands, object IDs, status codes, path classifications, timestamps, and narrow sanitized diffs. Redact credential values, customer data, internal hosts, and personal paths at collection time. Retain originals only in approved restricted systems under incident policy."
+    },
+    {
+      "prompt": "What if the deletion is the urgent production fix?",
+      "answer": "Review its cached patch, ownership, dependency and packaging effect, then validate it through the normal or emergency approved path. Urgency changes the time budget and command structure, not the need for evidence, authorization, bounded rollout, abort criteria, and user verification."
+    },
+    {
+      "prompt": "When may cleanup proceed?",
+      "answer": "After owners classify all state, required work and evidence are preserved, the selected recovery is independently verified, and the cleanup target is exact, canonical, owned, bounded, free of links or unexpected state, and followed by absence proof."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Boundary and ownership",
+      "points": 4,
+      "observableEvidence": "Resolves environment and repository identity, refuses unverified destructive scope, and identifies owners for every path."
+    },
+    {
+      "criterion": "Git state model",
+      "points": 4,
+      "observableEvidence": "Correctly explains HEAD, index, worktree, MM, staged deletion, and untracked state using both diffs."
+    },
+    {
+      "criterion": "Evidence and production separation",
+      "points": 4,
+      "observableEvidence": "Preserves sanitized evidence and distinguishes branch, commit, build, artifact, promotion, runtime, and user outcome."
+    },
+    {
+      "criterion": "Bounded recovery",
+      "points": 4,
+      "observableEvidence": "Selects path-scoped or auditable mechanisms by publication state with authorization, compatibility, prediction, abort, and recovery."
+    },
+    {
+      "criterion": "Verification and cleanup",
+      "points": 4,
+      "observableEvidence": "Verifies artifact, real operation, integrity, healthy scope, preserved work, and exact cleanup rather than reporting command success."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

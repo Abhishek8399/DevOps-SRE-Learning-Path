@@ -84,7 +84,7 @@ book/
 `-- schema/
 ```
 
-Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0009` at this checkpoint), and run both contract commands before review. The next content-first editorial batch is `LES-0009` through `LES-0013`; each record still requires its own review and remains non-mastery evidence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0019` at this checkpoint), and run both contract commands before review. The next content-first editorial batch is `LES-0019` through `LES-0023`; each record still requires its own review and remains non-mastery evidence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
 
 Declare prerequisite lesson IDs only when the referenced concept is genuinely required. The reader resolves them through the trusted catalog and displays them as advisory links; contributors must not use a prerequisite to hide content, mutate reading state, infer completion, or award mastery. Unknown identities must fail validation rather than be converted into guessed routes.
 

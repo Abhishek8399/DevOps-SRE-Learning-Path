@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0092",
+  "title": "GNU Coreutils: timeout invocation",
+  "organization": "GNU Project / Free Software Foundation",
+  "url": "https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "GNU Coreutils manual reviewed 2026-08-02",
+  "lessonIds": ["LES-0017"],
+  "topics": ["timeouts", "signals", "exit status", "bounded execution"],
+  "relevance": "Authoritative documentation for bounding command duration and interpreting timeout-specific exit status and signal behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

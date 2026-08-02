@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0068",
+  "title": "RFC 6891: Extension Mechanisms for DNS (EDNS(0))",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc6891",
+  "sourceType": "rfc",
+  "versionOrDate": "Internet Standard, April 2013; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["EDNS", "UDP payload size", "OPT record", "extended response codes", "DNS transport"],
+  "relevance": "Primary source for EDNS capability signaling and advertised UDP payload size, used to explain large-response and fragmentation hypotheses without treating a buffer value as path-MTU proof.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

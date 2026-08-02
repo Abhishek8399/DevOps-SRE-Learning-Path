@@ -113,8 +113,8 @@ function createFixtureRepository(options = {}) {
     secondLesson.slug = "schema-fixture-two";
     secondLesson.route = "/book/linux/schema-fixture-two";
     secondLesson.order = 9002;
-    secondLesson.curriculumIds = ["LNX-002"];
-    secondLesson.prerequisiteCurriculumIds = ["LNX-001"];
+    secondLesson.curriculumIds = ["LNX-006"];
+    secondLesson.prerequisiteCurriculumIds = ["LNX-005"];
     secondLesson.prerequisiteLessonIds = ["LES-9001"];
     model.lessons.push(secondLesson);
     model.assessments.push(replaceIds(firstAssessment, replacements));
@@ -669,6 +669,7 @@ test("repository order and route identity are volume-aware", () => {
     twoLessons: true,
     mutate(model) {
       model.lessons[1].volume = "00-start-safely";
+      model.lessons[1].curriculumIds = ["FND-001"];
       model.lessons[1].order = model.lessons[0].order;
       model.lessons[1].route = "/book/start/schema-fixture-two";
     },
@@ -687,6 +688,8 @@ test("repository order and route identity are volume-aware", () => {
   const startVolume = validateFixtureRepository({
     mutate(model) {
       model.lessons[0].volume = "00-start-safely";
+      model.lessons[0].curriculumIds = ["FND-001"];
+      model.lessons[0].prerequisiteCurriculumIds = [];
       model.lessons[0].route = "/book/start/schema-fixture";
     },
   });
@@ -696,9 +699,20 @@ test("repository order and route identity are volume-aware", () => {
   const wrongStartSegment = validateFixtureRepository({
     mutate(model) {
       model.lessons[0].volume = "00-start-safely";
+      model.lessons[0].curriculumIds = ["FND-001"];
+      model.lessons[0].prerequisiteCurriculumIds = [];
     },
   });
   assert.ok(codes(wrongStartSegment.issues).includes("LESSON_ROUTE_IDENTITY_MISMATCH"));
+
+  const wrongCurriculumHome = validateFixtureRepository({
+    mutate(model) {
+      model.lessons[0].volume = "00-start-safely";
+      model.lessons[0].route = "/book/start/schema-fixture";
+    },
+  });
+  assert.ok(codes(wrongCurriculumHome.issues).includes("CURRICULUM_VOLUME_HOME_MISMATCH"),
+    "a structured lesson cannot claim a curriculum ID from another canonical volume");
 });
 
 test("repository validation rejects identity collisions and legacy reuse", () => {
@@ -718,6 +732,26 @@ test("repository validation rejects identity collisions and legacy reuse", () =>
     },
   });
   assert.ok(codes(legacyRoute.issues).includes("DUPLICATE_LESSON_ROUTE"));
+
+  const structuredCurriculumCollision = validateFixtureRepository({
+    twoLessons: true,
+    mutate(model) {
+      model.lessons[1].curriculumIds = [...model.lessons[0].curriculumIds];
+      model.lessons[1].prerequisiteCurriculumIds = [];
+    },
+  });
+  assert.ok(codes(structuredCurriculumCollision.issues).includes("DUPLICATE_CURRICULUM_OWNER"));
+
+  const legacyCurriculumCollision = validateFixtureRepository({
+    mutate(model) {
+      model.lessons[0].volume = "02-connectivity";
+      model.lessons[0].route = "/book/connectivity/schema-fixture";
+      model.lessons[0].curriculumIds = ["NET-003"];
+      model.lessons[0].prerequisiteCurriculumIds = [];
+    },
+  });
+  assert.ok(codes(legacyCurriculumCollision.issues).includes("DUPLICATE_CURRICULUM_OWNER"),
+    "structured ownership cannot overlap a published legacy curriculum owner");
 
   const legacyId = validateFixtureRepository({
     mutate(model) {
@@ -745,7 +779,7 @@ test("a structured migration may preserve an exact legacy identity", () => {
       model.lessons[0].curriculumIds = [...identity.curriculumIds];
       model.lessons[0].slug = identity.slug;
       model.lessons[0].route = identity.route;
-      model.lessons[0].volume = "01-linux";
+      model.lessons[0].volume = "01-linux-systems";
       model.lessons[0].order = 1;
       model.lessons[0].prerequisiteLessonIds = ["LES-0002"];
       model.assessments[0] = replaceIds(model.assessments[0], replacements);
@@ -1043,12 +1077,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes three lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes thirteen lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 3);
-  assert.equal(result.metrics.assessments, 9);
-  assert.equal(result.metrics.references, 24);
+  assert.equal(result.metrics.lessons, 13);
+  assert.equal(result.metrics.assessments, 39);
+  assert.equal(result.metrics.references, 104);
 
   const expectations = [
     {
@@ -1086,6 +1120,23 @@ test("the live structured corpus publishes three lessons with exact ownership an
       independentId: "ASM-0009",
     },
     {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0009-safe-local-workbench", "lesson.md"),
+      id: "LES-0009",
+      domain: "engineering",
+      route: "/book/engineering/safe-local-workbench",
+      volume: "03-engineering-delivery",
+      order: 1,
+      prerequisiteLessonIds: ["LES-0007", "LES-0008"],
+      prerequisiteCurriculumIds: ["FND-001"],
+      assessmentIds: ["ASM-0010", "ASM-0011", "ASM-0012"],
+      referenceIds: [
+        "REF-0025", "REF-0026", "REF-0027", "REF-0028",
+        "REF-0029", "REF-0030", "REF-0031", "REF-0032",
+      ],
+      independentId: "ASM-0012",
+    },
+    {
       path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
         "LES-0006-boot-kernel-systemd-journal", "lesson.md"),
       id: "LES-0006",
@@ -1101,6 +1152,159 @@ test("the live structured corpus publishes three lessons with exact ownership an
         "REF-0005", "REF-0006", "REF-0007", "REF-0008",
       ],
       independentId: "ASM-0003",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0010-block-io-storage-performance", "lesson.md"),
+      id: "LES-0010",
+      domain: "linux",
+      route: "/book/linux/block-io-storage-performance",
+      volume: "01-linux-systems",
+      order: 7,
+      prerequisiteLessonIds: ["LES-0001", "LES-0003"],
+      prerequisiteCurriculumIds: ["LNX-001", "LNX-003"],
+      assessmentIds: ["ASM-0013", "ASM-0014", "ASM-0015"],
+      referenceIds: [
+        "REF-0033", "REF-0034", "REF-0035", "REF-0036",
+        "REF-0037", "REF-0038", "REF-0039", "REF-0040",
+      ],
+      independentId: "ASM-0015",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0011-namespaces-cgroups-isolation", "lesson.md"),
+      id: "LES-0011",
+      domain: "linux",
+      route: "/book/linux/namespaces-cgroups-isolation",
+      volume: "01-linux-systems",
+      order: 8,
+      prerequisiteLessonIds: ["LES-0002", "LES-0003", "LES-0004", "LES-0005"],
+      prerequisiteCurriculumIds: ["LNX-002", "LNX-003", "LNX-004", "NET-003"],
+      assessmentIds: ["ASM-0016", "ASM-0017", "ASM-0018"],
+      referenceIds: [
+        "REF-0041", "REF-0042", "REF-0043", "REF-0044",
+        "REF-0045", "REF-0046", "REF-0047", "REF-0048",
+      ],
+      independentId: "ASM-0018",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "02-connectivity",
+        "LES-0012-ethernet-ip-cidr-routing-nat", "lesson.md"),
+      id: "LES-0012",
+      domain: "connectivity",
+      route: "/book/connectivity/ethernet-ip-cidr-routing-nat",
+      volume: "02-connectivity",
+      order: 1,
+      prerequisiteLessonIds: ["LES-0007"],
+      prerequisiteCurriculumIds: ["FND-001"],
+      assessmentIds: ["ASM-0019", "ASM-0020", "ASM-0021"],
+      referenceIds: [
+        "REF-0049", "REF-0050", "REF-0051", "REF-0052",
+        "REF-0053", "REF-0054", "REF-0055", "REF-0056",
+      ],
+      independentId: "ASM-0021",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "02-connectivity",
+        "LES-0013-tcp-udp-sockets-exhaustion", "lesson.md"),
+      id: "LES-0013",
+      domain: "connectivity",
+      route: "/book/connectivity/tcp-udp-sockets-exhaustion",
+      volume: "02-connectivity",
+      order: 2,
+      prerequisiteLessonIds: ["LES-0012", "LES-0004"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006"],
+      assessmentIds: ["ASM-0022", "ASM-0023", "ASM-0024"],
+      referenceIds: [
+        "REF-0057", "REF-0058", "REF-0059", "REF-0060",
+        "REF-0061", "REF-0062", "REF-0063", "REF-0064",
+      ],
+      independentId: "ASM-0024",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "02-connectivity",
+        "LES-0014-dns-service-discovery", "lesson.md"),
+      id: "LES-0014",
+      domain: "connectivity",
+      route: "/book/connectivity/dns-service-discovery",
+      volume: "02-connectivity",
+      order: 3,
+      prerequisiteLessonIds: ["LES-0012", "LES-0013"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003"],
+      assessmentIds: ["ASM-0025", "ASM-0026", "ASM-0027"],
+      referenceIds: [
+        "REF-0065", "REF-0066", "REF-0067", "REF-0068",
+        "REF-0069", "REF-0070", "REF-0071", "REF-0072",
+      ],
+      independentId: "ASM-0027",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "02-connectivity",
+        "LES-0015-http-proxies-load-balancing", "lesson.md"),
+      id: "LES-0015",
+      domain: "connectivity",
+      route: "/book/connectivity/http-proxies-load-balancing",
+      volume: "02-connectivity",
+      order: 4,
+      prerequisiteLessonIds: ["LES-0013", "LES-0014"],
+      prerequisiteCurriculumIds: ["NET-003", "NET-004"],
+      assessmentIds: ["ASM-0028", "ASM-0029", "ASM-0030"],
+      referenceIds: [
+        "REF-0073", "REF-0074", "REF-0075", "REF-0076",
+        "REF-0077", "REF-0078", "REF-0079", "REF-0080",
+      ],
+      independentId: "ASM-0030",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "02-connectivity",
+        "LES-0016-tls-pki-mtls-rotation", "lesson.md"),
+      id: "LES-0016",
+      domain: "connectivity",
+      route: "/book/connectivity/tls-pki-mtls-rotation",
+      volume: "02-connectivity",
+      order: 5,
+      prerequisiteLessonIds: ["LES-0014", "LES-0015"],
+      prerequisiteCurriculumIds: ["NET-004", "NET-005"],
+      assessmentIds: ["ASM-0031", "ASM-0032", "ASM-0033"],
+      referenceIds: [
+        "REF-0081", "REF-0082", "REF-0083", "REF-0084",
+        "REF-0085", "REF-0086", "REF-0087", "REF-0088",
+      ],
+      independentId: "ASM-0033",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0017-bash-safe-automation", "lesson.md"),
+      id: "LES-0017",
+      domain: "engineering",
+      route: "/book/engineering/bash-safe-automation",
+      volume: "03-engineering-delivery",
+      order: 2,
+      prerequisiteLessonIds: ["LES-0009", "LES-0002"],
+      prerequisiteCurriculumIds: ["SCM-001", "LNX-002"],
+      assessmentIds: ["ASM-0034", "ASM-0035", "ASM-0036"],
+      referenceIds: [
+        "REF-0089", "REF-0090", "REF-0091", "REF-0092",
+        "REF-0093", "REF-0094", "REF-0095", "REF-0096",
+      ],
+      independentId: "ASM-0036",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0018-python-operational-automation", "lesson.md"),
+      id: "LES-0018",
+      domain: "engineering",
+      route: "/book/engineering/python-operational-automation",
+      volume: "03-engineering-delivery",
+      order: 3,
+      prerequisiteLessonIds: ["LES-0009", "LES-0017"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-001"],
+      assessmentIds: ["ASM-0037", "ASM-0038", "ASM-0039"],
+      referenceIds: [
+        "REF-0097", "REF-0098", "REF-0099", "REF-0100",
+        "REF-0101", "REF-0102", "REF-0103", "REF-0104",
+      ],
+      independentId: "ASM-0039",
     },
   ];
 

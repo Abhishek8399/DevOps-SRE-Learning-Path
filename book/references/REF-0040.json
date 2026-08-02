@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0040",
+  "title": "findmnt(8) manual source",
+  "organization": "util-linux project",
+  "url": "https://github.com/util-linux/util-linux/blob/master/misc-utils/findmnt.8.adoc",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream manual source reviewed 2026-08-02; Ubuntu 24.04 behavior must be checked locally",
+  "lessonIds": ["LES-0010"],
+  "topics": ["mount lookup", "target path resolution", "filesystem source", "mount options", "major and minor numbers"],
+  "relevance": "Primary upstream manual source for resolving the filesystem that contains an exact path and selecting stable output fields for the first path-to-device mapping step.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

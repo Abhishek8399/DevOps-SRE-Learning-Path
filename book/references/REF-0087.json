@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0087",
+  "title": "OpenSSL s_client command documentation",
+  "organization": "OpenSSL Project",
+  "url": "https://docs.openssl.org/3.6/man1/openssl-s_client/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OpenSSL 3.6 documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0016"],
+  "topics": ["openssl", "s_client", "SNI", "hostname verification", "certificate chain"],
+  "relevance": "Versioned command reference for safe diagnostic flags. It also documents the crucial limitation that s_client is a test tool and continues after verification errors unless verification failure is made fatal.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

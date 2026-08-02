@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0069",
+  "title": "RFC 7766: DNS Transport over TCP - Implementation Requirements",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc7766",
+  "sourceType": "rfc",
+  "versionOrDate": "Standards Track, March 2016; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["DNS over TCP", "TCP fallback", "connection reuse", "truncation", "transport capacity"],
+  "relevance": "Primary source establishing TCP as a required part of ordinary DNS operation, supporting the lesson's refusal to treat TCP port 53 as zone-transfer-only traffic.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0043",
+  "title": "Control Group v2",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current upstream kernel documentation, reviewed 2026-08-02 against the Ubuntu 24.04 interface",
+  "lessonIds": ["LES-0011"],
+  "topics": ["unified hierarchy", "controller delegation", "CPU controller", "memory controller", "PID controller", "pressure stall information"],
+  "relevance": "Authoritative kernel contract for cgroup v2 hierarchy rules, controller files, accounting, protection, throttling, limits, event counters, delegation, and pressure semantics.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

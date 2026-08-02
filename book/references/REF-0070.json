@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0070",
+  "title": "RFC 4033: DNS Security Introduction and Requirements",
+  "organization": "RFC Editor and Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc4033",
+  "sourceType": "rfc",
+  "versionOrDate": "Standards Track, March 2005; updates listed by RFC Editor; reviewed 2026-08-02",
+  "lessonIds": ["LES-0014"],
+  "topics": ["DNSSEC", "authentication", "data integrity", "trust anchors", "security limitations"],
+  "relevance": "Primary introduction to DNSSEC services, resolver and server requirements, and explicit security limitations used to separate DNS authenticity from confidentiality and application health.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0011",
+  "lessonId": "LES-0009",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "A valid production API credential was committed, merged to a protected branch, copied into a build log, and used by a deployed job. The repository is private. A manager asks you to remove the file, rewrite Git history, force-push, and declare the incident closed. Give the first 15-minute response, the coordinated repository plan, verification, and prevention. Explain what each action proves and does not prove.",
+  "directAnswer": "Treat the credential as exposed regardless of repository visibility. Establish security, credential-owner, repository, CI, application, and communications ownership; stop further distribution without destroying evidence; revoke or rotate the credential first; verify old-credential rejection; and assess misuse and affected data. Scope every known copy across refs, reviews, forks, clones, reflogs, CI logs and caches, artifacts, registries, deployed workloads, secret stores, and backups according to policy. Remove the value from current source and logs through approved systems, then decide whether a coordinated history rewrite is required. A rewrite changes commit identities and ordinary reachability but cannot recall existing copies. Coordinate branch protection, open work, clones, forks, signatures, pull requests, caches, redeployments, and recontamination prevention. Verify new identity works only where authorized, old identity fails, affected systems no longer contain or emit the value under the stated scope, production operation succeeds, and audit evidence is retained. Prevention includes runtime secret delivery, least privilege, short lifetime, pre-commit feedback, server-side scanning and push protection, log redaction, artifact policy, rotation drills, and tested response runbooks.",
+  "foundation": "A secret is safe only while it stays inside its intended trust and lifecycle boundary. Once published to Git or logs, deletion is not revocation. Private repositories still have users, integrations, clones, backups, caches, and compromised-account risk. Git history rewriting replaces reachable commit graphs; it cannot erase a copy already fetched or logged. Incident containment, evidence, credential lifecycle, repository hygiene, deployment, and prevention are related but separate workstreams.",
+  "reasoningSteps": [
+    "Declare a security incident and establish named incident command, credential owner, repository/CI owner, application owner, communications owner, and evidence handling.",
+    "Do not repeat the credential in tickets or commands; capture identifiers, time, paths, commit IDs, log locations, and access evidence through approved restricted channels.",
+    "Stop ongoing distribution through the smallest authorized controls, such as pausing the affected pipeline or job while preserving unaffected service and evidence.",
+    "Revoke or rotate the credential at its source of authority; reduce privileges or block the principal if rotation cannot be immediate, according to incident policy.",
+    "Verify the old credential is rejected at the actual authentication boundary and inspect audit logs for suspicious use, affected resources, and data exposure.",
+    "Scope Git refs, branches, tags, pull requests, forks, clones, reflogs, caches, CI logs, artifacts, registries, deployments, configuration stores, backups, and notifications.",
+    "Remove the value from current source and exposed logs/artifacts through owner-approved mechanisms without claiming this revokes it.",
+    "Decide with repository/security owners whether coordinated history rewriting is proportionate; plan changed object IDs, signatures, branch protections, reviews, releases, forks, clones, and recontamination.",
+    "Redeploy workloads with the new credential through approved secret delivery, verify least privilege, and ensure no old value remains in current runtime configuration or emitted telemetry under the declared scope.",
+    "Close only after containment, misuse/data assessment, user-operation verification, evidence retention, owners and dates for prevention, and a later verification plan are explicit."
+  ],
+  "seniorAnswer": "My first sentence is: this is a credential incident, not primarily a Git-cleanliness task. In the first 15 minutes I assign roles, prevent further propagation through bounded controls, preserve restricted evidence without copying the value, rotate or revoke at the authority, verify the old credential fails, and start an audit for misuse and affected data. Private visibility reduces some exposure but does not make the credential safe. I map every distribution plane: Git refs and reviews, developer clones and forks, CI logs/caches, artifacts and registries, deployed jobs, configuration stores, and backups. Repository cleanup follows containment. If a rewrite is required, repository and security owners coordinate open work, branch protections, changed commit IDs and signatures, clones/forks, cache invalidation, and recontamination protection. I redeploy with approved runtime secret delivery and verify old rejection, new least-privilege operation, no current emission, customer function, and audit completeness. Prevention is layered and tested. I do not declare closure merely because a force push succeeded.",
+  "weakAnswer": "Because the repository is private, delete the file, add it to .gitignore, force-push cleaned history, and tell everyone to pull again.",
+  "whyWeak": "It leaves the credential valid during response, ignores logs, artifacts, deployments, clones, forks, caches and misuse, repeats risky history operations without coordination, risks recontamination and lost work, and has no identity verification, data assessment, operational validation, evidence policy, or tested prevention.",
+  "evidence": [
+    {
+      "signal": "Credential authentication now fails at the issuing system after rotation",
+      "proves": "The tested old credential is no longer accepted at that boundary at that time.",
+      "doesNotProve": "That no copied credential was misused earlier, every replica is gone, or other credentials remain safe."
+    },
+    {
+      "signal": "History rewrite and protected force update succeed",
+      "proves": "Selected refs now point to rewritten commits on that remote.",
+      "doesNotProve": "Deletion from clones, forks, caches, logs, artifacts, backups, pull requests, or already deployed configuration."
+    },
+    {
+      "signal": "The source path is matched by an ignore rule",
+      "proves": "Git would ignore the selected untracked path under current rules.",
+      "doesNotProve": "That the path is untracked, absent from history, encrypted, revoked, or excluded from non-Git tools."
+    },
+    {
+      "signal": "Audit log shows no suspicious requests in a selected interval",
+      "proves": "No event matching the query and retained telemetry was observed in that scope.",
+      "doesNotProve": "No misuse, complete logging, correct attribution, absence outside the interval, or no data exposure."
+    },
+    {
+      "signal": "Redeployed job authenticates with the new least-privilege identity and completes its real operation",
+      "proves": "The observed job path works with the new identity and declared permissions.",
+      "doesNotProve": "All workloads rotated, all old copies disappeared, or every prevention control works."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why rotate before rewriting?",
+      "answer": "Rotation changes the credential's ability to authenticate and immediately limits future abuse. Rewriting changes repository reachability and takes coordination; it cannot recall copies. Containment must not wait for repository hygiene."
+    },
+    {
+      "prompt": "Would you delete CI logs immediately?",
+      "answer": "Use the CI and security incident policy. Restrict access and stop further exposure first, preserve required evidence in an approved protected system, then redact or expire exposed logs through supported controls. Unreviewed deletion can destroy audit evidence without revoking the secret."
+    },
+    {
+      "prompt": "How do you prevent recontamination after rewrite?",
+      "answer": "Freeze relevant pushes, inventory collaborators and automation, provide verified cleanup or fresh-clone instructions, reject old object IDs where supported, invalidate caches, coordinate forks and open reviews, restore branch protection, and monitor for the old blob or value fingerprint without logging the secret."
+    },
+    {
+      "prompt": "Are pre-commit hooks enough?",
+      "answer": "No. They are useful fast feedback but can be missing or bypassed. Combine them with server-side scanning or push protection, review, runtime secret delivery, least privilege, short expiry, log redaction, and response drills."
+    },
+    {
+      "prompt": "When is the incident closed?",
+      "answer": "When authority-level containment is verified, misuse and data impact are assessed, known distribution surfaces are treated, production operates on the replacement path, required evidence is retained, stakeholders are informed, and preventive actions have owners, dates, and validation methods. Residual unknowns remain explicit."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Immediate containment",
+      "points": 4,
+      "observableEvidence": "Assigns roles, bounds propagation, preserves protected evidence, rotates or revokes first, and verifies old-credential rejection."
+    },
+    {
+      "criterion": "Exposure and impact scope",
+      "points": 4,
+      "observableEvidence": "Covers Git, collaboration, CI, logs, caches, artifacts, deployments, backups, audit, resources, and data without overclaiming."
+    },
+    {
+      "criterion": "Coordinated repository response",
+      "points": 4,
+      "observableEvidence": "Explains rewrite limitations and coordinates identities, signatures, branch policy, clones, forks, open work, and recontamination."
+    },
+    {
+      "criterion": "Operational verification",
+      "points": 4,
+      "observableEvidence": "Verifies new least-privilege delivery, old rejection, current emission boundary, real job operation, and evidence retention."
+    },
+    {
+      "criterion": "Prevention and communication",
+      "points": 4,
+      "observableEvidence": "Builds layered tested prevention and communicates facts, uncertainties, owners, dates, and closure criteria."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

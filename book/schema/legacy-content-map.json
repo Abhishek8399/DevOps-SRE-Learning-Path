@@ -44,7 +44,7 @@
     {
       "id": "LES-0004",
       "aliases": ["V01-L04", "network-request-path"],
-      "curriculumIds": ["NET-003", "NET-004", "NET-005", "NET-006"],
+      "curriculumIds": ["NET-003"],
       "slug": "network-request-path",
       "route": "/book/linux/network-request-path",
       "sources": [

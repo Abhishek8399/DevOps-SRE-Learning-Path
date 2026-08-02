@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0018",
+  "lessonId": "LES-0011",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated transfer: from clean state in book/labs/LES-0011-namespaces-cgroups-isolation, run the normal-user lifecycle, record the baseline, inject only the transfer case, and diagnose the modeled failed operation without reading the fixture source or obtaining a solution. Separate namespace view, cgroup resource policy, adjacent security controls, runtime status, and operation outcome; recover and verify only through the supported interface; then prove cleanup. Do not use sudo, install packages, use network or cloud resources, start Docker or Kubernetes resources, create pressure, edit cgroups, or manually edit/remove lab state.",
+  "deliverables": [
+    "A sanitized environment and safety card naming Ubuntu and WSL context, Bash and Python versions, effective UID, cgroup filesystem branch, exact lab scope, no-network boundary, changed resources, stop conditions, recovery interface, and cleanup proof.",
+    "A boundary diagram that labels the modeled application process, each relevant namespace view, cgroup hierarchy and controller owner, adjacent privilege controls, virtual runtime status, and user operation.",
+    "The exact clean-state check, setup, status, baseline, transfer injection, observation, recovery, verification, cleanup, and final absent-state sequence with command exit results and no private random path copied into repository history.",
+    "A field dictionary for every observed key stating value, type (identity, configuration, point-in-time gauge, cumulative counter, outcome, or status), unit, scope, collection time, what it proves, what it does not prove, and safest next evidence.",
+    "At least three ranked mechanism hypotheses. For each, state supporting and contradicting evidence, one falsifiable prediction, and the observation that would reject it.",
+    "An explanation of the first observed abnormal boundary and why the loudest error, host-like capacity value, process label, status word, or recent change is not sufficient attribution.",
+    "A recovery record using only bash lab.sh recover plus a separate bash lab.sh verify result; explain the difference between modeled restoration, causal confidence, and production remediation.",
+    "A production transfer to one unfamiliar Docker, Kubernetes, systemd service, CI runner, or private-cloud VM scenario, including immutable identities, namespace and cgroup owner views, security boundaries, counter-delta method, safe rollback, operation verification, capacity/cost effects, and limitations.",
+    "A disclosure of every hint, lesson answer, tool, or person used. If fixture source or a diagnosis was revealed, label the attempt guided and do not claim independence."
+  ],
+  "evidenceRequirements": [
+    "Begin with bash lab.sh check reporting state=absent. Use one lifecycle command at a time as a normal non-root user and preserve every refusal as evidence rather than weakening a guard.",
+    "Run bash lab.sh host-observe only as optional read-only context. Missing namespace link, cgroup file, or permission is an unavailable evidence branch, not permission to install, escalate, remount, or claim absence.",
+    "Record baseline before injection and inject exactly transfer. A second case, repeated baseline, unknown argument, or manual artifact is outside the independent attempt.",
+    "Use all four supported observation views: identity, resources, events, and operation. Do not inspect fixtures/isolation_model.py, the copied model, verifier expectations, another learner's work, generated distributions, or repository history for a solution.",
+    "Treat gauges as point-in-time, configurations as boundaries, and event values as cumulative. Demonstrate which baseline/current comparison is a valid delta and discuss identity continuity and reset risk.",
+    "Reject at least two plausible mechanisms using evidence. A familiar error, status, low host utilization, finite limit, namespace difference, or correlated rollout does not by itself establish the complete cause.",
+    "Use only bash lab.sh recover, then bash lab.sh verify. Verification must name the modeled operation and its limitations; it cannot be converted into evidence about real Linux pressure or learner mastery.",
+    "Use guarded cleanup and a following check. If cleanup refuses, stop and retain the exact message; never use a recursive delete, unlink a suspicious path, or edit descriptor, sentinel, ownership, mode, content, type, or link count to force success.",
+    "Sanitize usernames, hostnames, random paths, addresses, employer data, credentials, and unrelated process command text before review."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Safety and lifecycle integrity",
+      "points": 4,
+      "observableEvidence": "The run starts clean, stays non-root/offline/bounded, uses only the guarded interface, retains refusals, recovers separately from verification, and proves cleanup plus absent state."
+    },
+    {
+      "criterion": "Boundary model",
+      "points": 4,
+      "observableEvidence": "The diagram and explanation distinguish namespace views, cgroup hierarchy/controllers, adjacent security controls, runtime status, and user operation with explicit owners."
+    },
+    {
+      "criterion": "Evidence interpretation",
+      "points": 4,
+      "observableEvidence": "Every field has identity, type, unit, scope, proof limit, and collection time; cumulative deltas and reset/recreation risk are handled correctly."
+    },
+    {
+      "criterion": "Independent diagnosis and recovery",
+      "points": 4,
+      "observableEvidence": "At least three mechanisms are ranked, two are rejected, the first abnormal boundary is supported, and the modeled operation is restored/verified without answer leakage."
+    },
+    {
+      "criterion": "Production transfer and judgment",
+      "points": 4,
+      "observableEvidence": "An unfamiliar environment is mapped to stable identities, safe evidence, reversible remediation, operation/data verification, security, reliability, capacity, cost, and honest fixture limitations."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

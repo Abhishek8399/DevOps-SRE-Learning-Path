@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0091",
+  "title": "ShellCheck official project",
+  "organization": "ShellCheck maintainers",
+  "url": "https://www.shellcheck.net/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Project documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0017"],
+  "topics": ["shell static analysis", "quoting defects", "portability diagnostics", "CI validation"],
+  "relevance": "Official entry point for the shell static-analysis tool used to detect common parsing, quoting, expansion, test, and portability mistakes before execution.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -10,11 +10,11 @@ const availableVolumes: readonly Readonly<{
 }>[] = [
   { id: "00-start-safely", number: "00", title: "Start safely", route: "/book/start" },
   { id: "01-linux-systems", number: "01", title: "Linux systems", route: "/book/linux" },
+  { id: "02-connectivity", number: "02", title: "Connectivity", route: "/book/connectivity" },
+  { id: "03-engineering-delivery", number: "03", title: "Engineering & delivery", route: "/book/engineering" },
 ];
 
 const plannedVolumes = [
-  ["02", "Connectivity"],
-  ["03", "Engineering & delivery"],
   ["04", "Reliability & operations"],
   ["05", "Infrastructure & platforms"],
   ["06", "Distributed systems"],
@@ -23,7 +23,7 @@ const plannedVolumes = [
 function NavigationLinks() {
   return (
     <nav aria-label="Book contents">
-      <NavigationLink className="nav-home" href="/"><span>FIELD MANUAL</span><strong>Systems Reliability</strong></NavigationLink>
+      <NavigationLink className="nav-home" href="/"><span>RELIABILITY ATLAS</span><strong>DevOps / SRE / Platform</strong></NavigationLink>
       <NavigationLink className="library-link" href="/book">Knowledge library</NavigationLink>
       {availableVolumes.map((volume) => (
         <div className="nav-volume current-volume" key={volume.id}>

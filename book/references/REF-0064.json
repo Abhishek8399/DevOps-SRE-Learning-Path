@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0064",
+  "title": "Linux kernel IP sysctl documentation",
+  "organization": "The Linux Kernel documentation project",
+  "url": "https://docs.kernel.org/networking/ip-sysctl.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0013"],
+  "topics": ["ephemeral ports", "listen backlog", "TCP state", "network namespaces", "kernel tunables"],
+  "relevance": "Authoritative Linux documentation for the meaning and scope of transport-related sysctls such as the local port range and listen queues, including namespace-sensitive behavior and operational cautions.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

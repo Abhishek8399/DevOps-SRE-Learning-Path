@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0083",
+  "title": "RFC 9525: Service Identity in TLS",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9525",
+  "sourceType": "rfc",
+  "versionOrDate": "November 2023",
+  "lessonIds": ["LES-0016"],
+  "topics": ["service identity", "reference identifier", "SAN", "DNS name", "IP address"],
+  "relevance": "Current service-identity guidance used to separate path validation from matching the client-selected reference identifier against certificate identifiers.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0039",
+  "title": "lsblk(8) manual source",
+  "organization": "util-linux project",
+  "url": "https://github.com/util-linux/util-linux/blob/master/lsblk-cmd/lsblk.8.adoc",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream manual source reviewed 2026-08-02; explicit columns required because defaults can change",
+  "lessonIds": ["LES-0010"],
+  "topics": ["block device topology", "major and minor numbers", "device type", "filesystem and mount association"],
+  "relevance": "Primary upstream manual source for listing Linux block-device topology; supports the rule to request explicit columns and verify parent-child relationships rather than parse unstable defaults.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

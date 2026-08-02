@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0076",
+  "title": "RFC 9113: HTTP/2",
+  "organization": "RFC Editor / Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9113",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022",
+  "lessonIds": ["LES-0015"],
+  "topics": ["HTTP/2", "streams", "multiplexing", "flow control", "connection-specific fields"],
+  "relevance": "Defines HTTP/2 framing, streams, multiplexing, stream and connection flow control, errors, and restrictions on connection-specific fields.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

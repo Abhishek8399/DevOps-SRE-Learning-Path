@@ -31,11 +31,15 @@ const stages = [
     number: "03",
     title: "Networking",
     detail: "Packets to requests: routing, DNS, TCP, TLS, HTTP, proxies, load balancers, and failure localization.",
+    state: availableLessons(readerEntriesForVolume("02-connectivity").length),
+    href: "/book/connectivity",
   },
   {
     number: "04",
     title: "Engineering & Delivery",
     detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, rollback, and software supply chains.",
+    state: availableLessons(readerEntriesForVolume("03-engineering-delivery").length),
+    href: "/book/engineering",
   },
   {
     number: "05",
@@ -127,7 +131,7 @@ export default function Home() {
             <h2 id="journey-title">One route through the systems that production depends on.</h2>
           </div>
           <p>
-            Start with the two published stages. Planned stages reserve the curriculum order;
+            Start with the four available stages. Planned stages reserve the curriculum order;
             they have no lesson route and do not imply that content or competency exists yet.
           </p>
         </header>

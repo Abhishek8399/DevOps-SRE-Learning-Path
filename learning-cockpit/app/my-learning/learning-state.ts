@@ -8,6 +8,16 @@ export const LEARNING_LIBRARY_LESSON_IDS = [
   "LES-0006",
   "LES-0007",
   "LES-0008",
+  "LES-0009",
+  "LES-0010",
+  "LES-0011",
+  "LES-0012",
+  "LES-0013",
+  "LES-0014",
+  "LES-0015",
+  "LES-0016",
+  "LES-0017",
+  "LES-0018",
 ] as const;
 
 export type LearningLessonId = (typeof LEARNING_LIBRARY_LESSON_IDS)[number];
