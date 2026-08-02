@@ -23,4 +23,4 @@ if not exist "node_modules\next\package.json" (
 start "" powershell.exe -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 2; Start-Process 'http://127.0.0.1:3000'"
 echo Learning cockpit: http://127.0.0.1:3000
 echo Keep this window open. Press Ctrl+C to stop the local server.
-call npm.cmd run dev -- --host 127.0.0.1
+call npm.cmd run dev -- --hostname 127.0.0.1

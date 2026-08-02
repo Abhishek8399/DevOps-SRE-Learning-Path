@@ -23,6 +23,8 @@ import styles from "./my-learning.module.css";
 export type LearningLibraryLesson = {
   id: LearningLessonId;
   number: string;
+  volumeNumber: string;
+  volumeTitle: string;
   title: string;
   summary: string;
   href: string;
@@ -209,7 +211,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
           <span className={styles.cardLabel}>RESUME READING</span>
           {resumeLesson ? (
             <>
-              <p className={styles.lessonNumber}>Lesson {resumeLesson.number}</p>
+              <p className={styles.lessonNumber}>Volume {resumeLesson.volumeNumber} / Lesson {resumeLesson.number}</p>
               <h2>{resumeLesson.title}</h2>
               <p>
                 Last opened {formatOpenedAt(getLessonConvenienceState(learningState, resumeLesson.id).lastOpenedAt) ?? "recently"}.
@@ -223,7 +225,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
               <h2>No recent lesson yet</h2>
               <p>Open any lesson below. This page will remember it as your return point when device storage works.</p>
               <Link href={lessons[0].href} onClick={() => rememberOpen(lessons[0])}>
-                Start with Lesson {lessons[0].number} <span aria-hidden="true">-&gt;</span>
+                Start with Volume {lessons[0].volumeNumber}, Lesson {lessons[0].number} <span aria-hidden="true">-&gt;</span>
               </Link>
             </>
           )}
@@ -250,7 +252,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
               return (
                 <li key={lesson.id}>
                   <Link href={lesson.href} onClick={() => rememberOpen(lesson)}>
-                    {lesson.number}. {lesson.title}
+                    V{lesson.volumeNumber} L{lesson.number}. {lesson.title}
                   </Link>
                   {openedAt && openedLabel ? (
                     <time dateTime={openedAt}>{openedLabel}</time>
@@ -264,7 +266,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
 
       <div className={styles.libraryHeading}>
         <div>
-          <span className={styles.cardLabel}>VOLUME 01 / LINUX SYSTEMS</span>
+          <span className={styles.cardLabel}>CORE BOOK / AVAILABLE VOLUMES</span>
           <h2>Choose your next reading move</h2>
           <p>Open a lesson, bookmark it for later, or set a private reading marker.</p>
         </div>
@@ -286,7 +288,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
             return (
               <article className={styles.lessonCard} key={lesson.id} aria-labelledby={titleId}>
                 <div className={styles.lessonCardTopline}>
-                  <span>LESSON {lesson.number}</span>
+                  <span>VOLUME {lesson.volumeNumber} / LESSON {lesson.number}</span>
                   <button
                     type="button"
                     className={styles.bookmarkButton}

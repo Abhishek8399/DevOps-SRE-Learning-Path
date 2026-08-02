@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0006",
+  "lessonId": "LES-0007",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Changed-constraint transfer: on a disposable local Ubuntu 24.04 environment, create and investigate a small Python 3.12 work pipeline whose normal baseline is stable. Then impose this unfamiliar constraint: for one bounded interval, one downstream stage must stop making progress while ingress continues, memory must remain within a limit you declare before the run, and every accepted item must remain auditable as completed, waiting, explicitly rejected, or failed. Choose the control behavior yourself. Use no network, sudo, employer endpoint, production data, credential, or destructive host action. Submit sanitized evidence and reasoning; no model answer is stored for this task.",
+  "deliverables": [
+    "A pre-run environment and safety card naming Ubuntu and Python versions, CPU and memory budget, expected duration, lesson-owned temporary path, process scope, stop conditions, recovery action, and exact cleanup proof.",
+    "A diagram that labels every queue or handoff, state owner, control decision, data-processing path, observation point, and failure domain in the experiment.",
+    "A written prediction made before fault injection, including expected arrival, completion, queue-depth or age, latency, memory, rejection, failure, and recovery behavior with units and stated measurement windows.",
+    "A monotonic-time evidence table covering the healthy baseline, constrained interval, and recovery interval. For every signal, include collection scope, observed value, what it proves, what it does not prove, and the next hypothesis.",
+    "An accounting reconciliation showing that accepted work equals the mutually exclusive terminal and nonterminal categories you declared, with any discrepancy treated as an unresolved defect rather than silently ignored.",
+    "A decision record explaining the chosen control behavior, at least two alternatives rejected with evidence, user and operator consequences, rollback trigger, and how the decision would change under a different work-durability or priority requirement.",
+    "Sanitized cleanup evidence proving the exact lesson-owned processes and temporary resources are absent, plus a statement of artifacts intentionally retained for reviewer evidence."
+  ],
+  "evidenceRequirements": [
+    "Record a stable baseline before the constraint and use the same item definition, counters, units, monotonic clock, and observation boundaries throughout the run.",
+    "Capture at least arrival rate, useful completion rate, queue depth or oldest-item age, queue-wait or end-to-end latency, process memory, and each declared work outcome over bounded intervals.",
+    "Demonstrate the imposed no-progress interval and recovery without exceeding the declared duration, memory stop condition, process scope, or local-only boundary.",
+    "Identify the first observed abnormal boundary and reject at least two plausible alternative explanations using measured evidence rather than implementation assumptions.",
+    "Provide enough source or configuration evidence and exact commands for a reviewer to reproduce the experiment, while excluding credentials, personal paths, hostnames, addresses, employer data, and production identifiers.",
+    "Do not include or seek a model answer; the reviewer evaluates the submitted evidence and reasoning against the observable rubric only."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Safety and reproducibility",
+      "points": 4,
+      "observableEvidence": "The run remains local, disposable, bounded, non-root, and within declared resource and time limits; exact setup, stop, recovery, and cleanup evidence allow independent reproduction."
+    },
+    {
+      "criterion": "System and boundary model",
+      "points": 4,
+      "observableEvidence": "The submission distinguishes state ownership, control decisions, data movement, observation points, and failure domains without collapsing the pipeline into one component."
+    },
+    {
+      "criterion": "Measurement integrity",
+      "points": 4,
+      "observableEvidence": "Aligned monotonic measurements use explicit scopes, intervals, units, counter semantics, and proof boundaries across baseline, constraint, and recovery."
+    },
+    {
+      "criterion": "Independent diagnosis and accounting",
+      "points": 4,
+      "observableEvidence": "The learner identifies the first observed divergence, rejects alternatives with evidence, and reconciles accepted work without unexplained loss or double counting."
+    },
+    {
+      "criterion": "Decision quality and transfer",
+      "points": 4,
+      "observableEvidence": "The chosen response follows from evidence and stated semantics, includes trade-offs and rollback, and is reconsidered coherently when durability, priority, or recovery constraints change."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

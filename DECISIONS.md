@@ -40,6 +40,9 @@ This file records material project decisions so future contributors do not need 
 | `DEC-023` | 2026-08-02 | `ACCEPTED` | Commit and push logical validated training changes to `origin/main` |
 | `DEC-024` | 2026-08-02 | `ACCEPTED` | Permit exact legacy-fixture cleanup only as a one-way migration to the hardened fixture |
 | `DEC-025` | 2026-08-02 | `ACCEPTED` | A container ownership descriptor covers every safety-relevant runtime boundary it claims |
+| `DEC-026` | 2026-08-02 | `ACCEPTED` | Use opaque IDs and strict JSON front matter for structured content |
+| `DEC-027` | 2026-08-02 | `ACCEPTED` | Scope lesson order and adjacency to a volume while keeping routes explicit |
+| `DEC-028` | 2026-08-02 | `PROVISIONAL` | Load canonical Markdown through an exact virtual-module registry |
 
 ## Decision records
 
@@ -240,3 +243,19 @@ Only `progress/ledger.md`, updated after reviewed learner evidence, changes comp
 The repository audits its dependency-free JSON Schema subset, rejects unknown or malformed keywords, validates cross-record ownership and cycles, and compares all published legacy identities to an independently pinned baseline. Durable reference URLs cannot contain credentials, queries, or fragments. Raw HTML cannot define lesson structure. Independent-transfer records exclude model answers by construction. Command risk labels remain review assertions, not automated proof.
 
 **Consequences:** A typed lesson can migrate only with exact identity preservation and separate route/content/state parity evidence. Schema v1 is capped at `review-required`; neither author metadata, a passing build, reading activity, nor answer reveal can award verified-chapter status or learner mastery. Full prerequisite-cycle analysis of range expressions in `CONTENT_MATRIX.md` remains planned and explicitly documented.
+
+### DEC-027 - Volume-local order and explicit routes
+
+**Context:** Volume 00 and Volume 01 both need a Lesson 01. Treating lesson order as globally unique made the curriculum taxonomy fight the reader, while deriving a route from the lesson domain would route Volume 00 foundations under the wrong URL. Global pagination also mislabeled a cross-volume transition as the next lesson in the same volume.
+
+**Decision:** Lesson `order` is unique within its declared volume. Volume IDs map explicitly to reader route segments, and each canonical route must equal that volume route plus the lesson slug. Slugs, canonical IDs, state IDs, and full routes remain globally unique in the current reader. Previous/next adjacency stays within the current volume; crossing a volume boundary uses an explicitly labeled continuation link.
+
+**Consequences:** A new volume requires an explicit route descriptor in the reader and validator plus route/order tests. Search and progress records carry volume metadata rather than inferring Volume 01 from a local lesson number. This navigation decision changes no learner competency or mastery state.
+
+### DEC-028 - Exact virtual modules bridge canonical book content into the reader
+
+**Context:** Canonical lesson Markdown lives under `book/`, outside the application root. Direct parent-directory raw imports worked in production builds but failed in the Cloudflare-backed development module runner. Broad filesystem allowances or request-derived file paths would expand the read boundary.
+
+**Decision:** Development and build resolve structured lesson source through an exact allowlisted virtual-module registry. Each registered opaque lesson ID maps to one fixed canonical `lesson.md` path. The loader validates the ID in both resolution and loading, reads UTF-8 source, and registers the exact file for change watching. Unknown IDs and traversal-shaped IDs fail closed. Development runs content validation before the server starts.
+
+**Consequences:** The local reader and production build consume the same canonical Markdown without copying lesson text into application code or exposing arbitrary filesystem reads. Every new structured lesson must be added deliberately to both the content registry and server bundle, with rejection/load tests. This fixed list is safe for the current small corpus; replace it with a validated generated manifest before manual registration becomes a scaling or drift risk.

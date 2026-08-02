@@ -1,6 +1,10 @@
 import Link from "next/link";
 import CopyCommand from "./copy-command";
-import { adjacentReaderEntries, readerCatalog } from "./lessons/reader-catalog";
+import {
+  adjacentReaderEntries,
+  findReaderEntry,
+  readerEntriesForVolume,
+} from "./lessons/reader-catalog";
 import {
   headingAnchor,
   type AnsweredAssessment,
@@ -229,18 +233,25 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
   const { lesson } = bundle;
   const metadata = lesson.metadata;
   const adjacent = adjacentReaderEntries(metadata.slug);
+  const entry = findReaderEntry(metadata.slug);
+  if (!entry) throw new Error(`reader entry is missing for ${metadata.id}`);
+  const volumeLessons = readerEntriesForVolume(entry.volumeId);
+  const labNetworks = [...new Set(metadata.labs.map((lab) => lab.network))].join(" / ");
+  const volumeEndLink = entry.volumeId === "00-start-safely"
+    ? <Link href="/book/linux">Continue: Volume 01 -&gt;</Link>
+    : <Link href="/practice/storage">Practise this volume -&gt;</Link>;
   return (
     <article className={styles.article} id={metadata.slug}>
       <header className={styles.hero}>
-        <div className={styles.lessonNumber}>{String(metadata.order).padStart(2, "0")}</div>
-        <div><p>VOLUME 01 / {metadata.id} / {metadata.contentStatus.replaceAll("-", " ").toUpperCase()}</p><h1>{metadata.title}</h1><span>{metadata.summary}</span></div>
+        <div className={styles.lessonNumber}>{entry.number}</div>
+        <div><p>VOLUME {entry.volumeNumber} / {metadata.id} / {metadata.contentStatus.replaceAll("-", " ").toUpperCase()}</p><h1>{metadata.title}</h1><span>{metadata.summary}</span></div>
       </header>
       <aside className={styles.masteryBoundary}><strong>AVAILABLE TO STUDY, NOT MASTERED</strong><span>Reading, revealing answers, copying commands, or marking this page finished never changes competency. Independent evidence still requires review.</span></aside>
       <div className={styles.factGrid}>
         <article><span>LEVEL</span><strong>{metadata.level.from} to {metadata.level.to}</strong></article>
         <article><span>STUDY TIME</span><strong>{metadata.estimatedMinutes} minutes</strong></article>
         <article><span>TESTED BASELINE</span><strong>{metadata.testedEnvironments[0].platform} {metadata.testedEnvironments[0].version}</strong></article>
-        <article><span>NETWORK</span><strong>None for the guided lab</strong></article>
+        <article><span>NETWORK</span><strong>{labNetworks}</strong></article>
       </div>
       <nav className={styles.jumpNav} aria-label={`${metadata.title} sections`}>{lesson.sections.map((section) => <a href={`#${section.anchor}`} key={section.anchor}>{section.title}</a>)}</nav>
       {lesson.sections.map((section, index) => (
@@ -252,9 +263,9 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
       ))}
       <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>
       <nav className="lesson-pagination" aria-label={`Lesson ${metadata.order} navigation`}>
-        {adjacent.previous ? <Link href={adjacent.previous.route}>&lt;- Previous: {adjacent.previous.number}</Link> : <Link href="/book/linux">&lt;- Volume index</Link>}
-        <Link href="/book/linux">{readerCatalog.length}-lesson index</Link>
-        {adjacent.next ? <Link href={adjacent.next.route}>Next: {adjacent.next.number} -&gt;</Link> : <Link href="/practice/storage">Practise this volume -&gt;</Link>}
+        {adjacent.previous ? <Link href={adjacent.previous.route}>&lt;- Previous: {adjacent.previous.number}</Link> : <Link href={entry.volumeRoute}>&lt;- Volume index</Link>}
+        <Link href={entry.volumeRoute}>{volumeLessons.length}-lesson index</Link>
+        {adjacent.next ? <Link href={adjacent.next.route}>Next: {adjacent.next.number} -&gt;</Link> : volumeEndLink}
       </nav>
     </article>
   );

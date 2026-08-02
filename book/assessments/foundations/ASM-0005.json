@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0005",
+  "lessonId": "LES-0007",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "Product-company systems interview: a regional platform's configuration controller becomes unavailable in one availability zone. Existing application instances in all zones still serve requests using their last accepted configuration, but new deployments and configuration changes stall. Ten minutes later, one team proposes making every request proxy synchronously call the controller as a health safeguard. Explain the control plane, data plane, and failure domains; diagnose the incident; choose safe recovery; and design prevention.",
+  "directAnswer": "The controller is on the control plane because it computes and distributes desired configuration; the request proxies are on the data plane because they serve user traffic. The evidence shows control-plane availability is degraded while the existing data plane remains useful, so adding a synchronous controller call to every request would expand the blast radius and turn a deployment outage into a serving outage. Preserve the working data plane, locate the controller's first failed dependency and affected failure domain, restore or fail over the control plane through a tested path, and design explicit last-known-good, freshness, rollout, and security semantics.",
+  "foundation": "A control plane decides what state should exist and coordinates changes. A data plane performs the useful work using accepted state, such as routing a request with an already loaded configuration. A failure domain is a boundary within which one fault can affect multiple components: a process, host, rack, availability zone, region, identity provider, database, network path, software version, or shared operator action can all be failure domains. Separating planes allows existing work to continue when change coordination is temporarily unavailable, but only when the data plane knows how long old state is safe and what to do when it expires or is revoked.",
+  "reasoningSteps": [
+    "Clarify the user objective and exact scope: current-request success, new-instance readiness, deployment completion, configuration freshness, security revocation, affected zones, and whether the controller and its state store share a failure domain.",
+    "Draw the state path from desired configuration through controller reconciliation, durable state, distribution, proxy acknowledgement, active version, and user request. Mark which steps are control plane and which are data plane.",
+    "Use per-zone and per-version evidence to find the first abnormal boundary: controller request success, work-queue age, reconciliation lag, state-store quorum, distribution attempts, proxy acknowledgements, active configuration version, and request service-level indicators.",
+    "Preserve the serving data plane and freeze risky configuration changes while evidence is gathered. Do not add an untested synchronous control-plane dependency to the request path.",
+    "Restore the controller using the reviewed failover, replacement, or rollback path after proving the unhealthy failure domain. Confirm reconciliation resumes, queued changes drain in order, proxies acknowledge the intended version, and user traffic remains healthy.",
+    "Design independent failure domains for control-plane replicas and their durable state, then test zone loss, stale state, partial distribution, rollback, and recovery rather than assuming replica count equals resilience.",
+    "Define last-known-good behavior explicitly: version identity, integrity validation, bounded staleness, restart persistence, expiration, emergency revocation, and the data-plane action when no safe configuration exists.",
+    "Instrument separate objectives for data-plane requests and control-plane convergence so one dashboard does not hide a stalled rollout behind healthy traffic or declare a serving outage merely because deployment is blocked."
+  ],
+  "seniorAnswer": "I would treat this as partial failure with two different objectives. Existing proxies serving their last accepted version tell me the data plane is currently meeting at least part of its request objective; stalled deployments and changes tell me the control plane is not meeting its convergence objective. I would map the controller, its queue, durable store, distribution channel, acknowledgements, and proxy active-version state by zone and release cohort. The first abnormal boundary might be controller reachability, a zonal dependency, state-store quorum, or reconciliation backlog; controller-down is only the visible symptom. I would freeze change intake or make it explicitly read-only, preserve current serving state, fail over or replace affected control-plane instances through a tested path, and verify ordered convergence before reopening changes. I would reject synchronous per-request controller checks because they couple user availability to the less-available coordination path. The durable design uses independently placed control-plane replicas and state, cell or zone containment where appropriate, authenticated and versioned configuration, atomic last-known-good activation, explicit freshness and revocation policy, bounded queues, staged rollout, rollback, and distinct data-plane and control-plane service-level indicators. I would also test correlated dependencies and operator actions because different zones do not help when every replica depends on one identity service, database, bad release, or global configuration.",
+  "weakAnswer": "Run three controller replicas across zones and have proxies call any healthy replica before each request; that removes the single point of failure.",
+  "whyWeak": "Replica count does not prove independent failure domains, and all replicas may share a state store, credentials, network route, release, or operator error. A synchronous request-path call makes controller latency and availability part of every user request. The proposal also omits configuration freshness, revocation, partial rollout, recovery ordering, and proof that the selected failover preserves consistent state.",
+  "evidence": [
+    {
+      "signal": "Existing proxies continue successful requests with configuration version 184 while new version 185 receives no controller acknowledgements in one zone",
+      "proves": "The observed data-plane cohort can serve with version 184 while the version-185 control-plane convergence path is incomplete in that zone.",
+      "doesNotProve": "That version 184 is indefinitely safe, that all user journeys are healthy, or which controller dependency caused the missing acknowledgements."
+    },
+    {
+      "signal": "Controller reconciliation age rises only for work assigned to one zone while controller replicas and the durable store in other zones remain within baseline",
+      "proves": "The measured backlog is contained to the identified zonal work partition during the interval.",
+      "doesNotProve": "That the physical zone itself is the root cause or that a shared dependency cannot later affect the healthy zones."
+    },
+    {
+      "signal": "A failover canary reconciles one inert test object, distributes a signed version, receives proxy acknowledgement, and leaves request SLIs unchanged",
+      "proves": "The tested failover path completed that bounded control-plane transaction without an observed regression in the monitored request cohort.",
+      "doesNotProve": "That full backlog replay, every object type, every tenant, or every correlated failure is safe."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "When should the data plane stop using last-known-good configuration?",
+      "answer": "The policy depends on the risk represented by stale state. Define integrity, version, maximum age, revocation class, and a safe fallback per configuration type. Routing weights may tolerate bounded staleness, while an explicitly revoked authorization policy may require a faster fail-closed or restricted mode. The decision must be designed and tested before the incident."
+    },
+    {
+      "prompt": "Are availability zones always independent failure domains?",
+      "answer": "They are useful infrastructure boundaries, not a complete independence guarantee. Shared regional stores, identity, DNS, software releases, quotas, network control, and global operator actions can correlate failures across zones. Model both physical placement and logical dependencies."
+    },
+    {
+      "prompt": "How do you know the control plane has recovered?",
+      "answer": "Controller health alone is insufficient. Verify accepted change intake, bounded queue age, successful reconciliation, durable-state progress, distribution and acknowledgements, intended active versions, no unexpected rollback, and unchanged data-plane request indicators."
+    },
+    {
+      "prompt": "Changed constraint: version 184 contains a policy that has just been revoked for a security incident. What changes?",
+      "answer": "Availability cannot justify serving a known-revoked policy. Activate the predesigned emergency revocation path, restrict or fail closed only at the affected authorization boundary, authenticate and audit the emergency change, and verify propagation from controller state to active data-plane enforcement. If no safe revocation path exists, explicitly choose and communicate the security-versus-availability impact rather than silently treating stale state as safe."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Plane and state-path model",
+      "points": 4,
+      "observableEvidence": "Correctly separates desired-state reconciliation and distribution from request serving, and traces versioned state through acknowledgement and activation."
+    },
+    {
+      "criterion": "Failure-domain reasoning",
+      "points": 4,
+      "observableEvidence": "Evaluates physical and logical correlated failures instead of assuming replicas or zones automatically provide independence."
+    },
+    {
+      "criterion": "Safe incident control",
+      "points": 4,
+      "observableEvidence": "Preserves the useful data plane, freezes risky changes, identifies the first abnormal boundary, uses a tested recovery path, and verifies ordered convergence."
+    },
+    {
+      "criterion": "Resilient design and objectives",
+      "points": 3,
+      "observableEvidence": "Defines last-known-good, freshness, revocation, staged rollout, rollback, backlog, and separate control-plane and data-plane indicators."
+    }
+  ],
+  "maximumScore": 15,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

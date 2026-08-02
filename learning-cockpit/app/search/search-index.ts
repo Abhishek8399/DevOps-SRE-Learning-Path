@@ -18,6 +18,8 @@ type SearchField = Readonly<{
 export type SearchDocument = Readonly<{
   id: string;
   number: string;
+  volumeNumber: string;
+  volumeTitle: string;
   title: string;
   subtitle: string;
   href: string;
@@ -125,6 +127,8 @@ export function searchLessons(
 
   return results.sort((left, right) =>
       right.score - left.score
-      || left.document.number.localeCompare(right.document.number),
+      || left.document.volumeNumber.localeCompare(right.document.volumeNumber)
+      || left.document.number.localeCompare(right.document.number)
+      || left.document.id.localeCompare(right.document.id),
   );
 }

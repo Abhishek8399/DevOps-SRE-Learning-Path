@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0011",
+  "title": "Monitoring Distributed Systems",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition",
+  "lessonIds": ["LES-0007"],
+  "topics": ["latency", "traffic", "errors", "saturation", "monitoring design"],
+  "relevance": "Provides the operational signal model used to connect traffic, latency, errors, and saturation to explicit system boundaries instead of relying on one component metric.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

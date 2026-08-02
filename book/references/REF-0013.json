@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0013",
+  "title": "Addressing Cascading Failures",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/addressing-cascading-failures/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition",
+  "lessonIds": ["LES-0007"],
+  "topics": ["cascading failure", "retry amplification", "resource exhaustion", "queue growth", "recovery"],
+  "relevance": "Connects local saturation, retries, resource depletion, and recovery behavior to cross-service failure propagation and evidence-based prevention.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0004",
+  "lessonId": "LES-0007",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A work queue receives 100 items per second and completes 80 items per second for five minutes. Queue depth and p95 end-to-end latency rise throughout the interval while worker CPU stays near 45 percent. What can you conclude, what can you not conclude, and how do you find the first abnormal boundary?",
+  "directAnswer": "Accepted work exceeds completed work by about 20 items per second, so the backlog should grow by roughly 6,000 items over five minutes if the measurements cover the same population and interval. The rising queue and latency establish an accumulating flow imbalance, not its cause. Find the first abnormal boundary by aligning monotonic, interval-based evidence at acceptance, enqueue, dequeue, processing start, processing finish, and response delivery, then identify the earliest boundary whose output no longer matches its healthy input contract.",
+  "foundation": "Think of the system as water moving through connected stages. Arrival rate is how quickly work enters; completion throughput is how quickly useful work leaves. A queue holds work that arrived but has not started the next stage. When arrival rate remains higher than completion throughput, the number waiting grows. End-to-end latency includes both waiting time and processing time, so latency can rise even when each worker processes an individual item at its normal speed. CPU utilization is one observation about one resource; moderate CPU does not prove spare system capacity because the workers may be waiting on a lock, storage, network, downstream service, concurrency limit, or retry timer.",
+  "reasoningSteps": [
+    "Verify that the 100-per-second arrival rate and 80-per-second completion rate use the same item definition, scope, interval, and success policy; accepted, attempted, retried, rejected, and successfully completed work are different counters.",
+    "Calculate the observed imbalance: 100 minus 80 equals about 20 additional queued items per second, and 20 multiplied by 300 seconds equals about 6,000 items over five minutes. Compare that estimate with the measured queue-depth delta and account for retries, drops, expiry, or sampling differences if they disagree.",
+    "Separate end-to-end latency into queue wait, service time, and downstream or response time. A rising p95 alone does not identify which component grew.",
+    "Build one ordered boundary table using monotonic timestamps or counters for accepted, enqueued, dequeued, processing started, processing completed, and response emitted events.",
+    "Compare each stage's input, output, errors, saturation, and oldest-work age with a healthy baseline. The first abnormal boundary is the earliest stage where the input remains within its expected contract but the corresponding output rate, delay, or correctness first departs from baseline.",
+    "Test hypotheses at that boundary: worker concurrency, blocking dependencies, lock contention, storage latency, rate limits, retries, and poison work. Do not infer the cause from CPU or queue depth alone.",
+    "Choose recovery only after stating the work semantics: whether work may be rejected, delayed, retried, expired, prioritized, or replayed, and whether duplicate processing is safe. Continue measuring drain rate and oldest-item age until the backlog and user-facing latency recover."
+  ],
+  "seniorAnswer": "I would first normalize the signals into one cohort and interval. If ingress accepted 100 unique items per second while 80 unique successful items per second completed for 300 seconds, the expected backlog increase is approximately 6,000. I would compare that with queue depth and oldest-item age; disagreement would make me inspect retry amplification, rejection, expiry, duplicate accounting, or telemetry gaps. I would decompose latency into queue wait and service time, then instrument boundary counters and monotonic timestamps from acceptance through completion. The first abnormal boundary is not the loudest downstream symptom: it is the earliest handoff where healthy input produces abnormal output. Moderate worker CPU only weakens a pure CPU-saturation hypothesis. I would inspect concurrency occupancy, dependency latency, locks, I/O waits, error and retry rates, and work-item skew. Restoration depends on semantics and capacity: protect the user path, stop amplification, preserve work when required, and verify positive drain rate. Prevention includes admission policy, bounded backlog objectives, oldest-age alerts, per-stage service-level indicators, load tests that include downstream slowness, and capacity headroom tied to burst duration and recovery time.",
+  "weakAnswer": "The queue is the bottleneck, so add workers until queue depth reaches zero.",
+  "whyWeak": "Queue growth is a symptom of input exceeding useful output, not proof that worker count is the limiting mechanism. More workers can overload a shared database, increase lock contention, amplify retries, or process duplicates faster. Driving depth to zero can also be the wrong goal when normal bursts are expected. The safe decision requires work semantics, per-stage evidence, downstream capacity, and a measurable recovery condition.",
+  "evidence": [
+    {
+      "signal": "Same-scope counters show 100 unique accepted items per second and 80 unique successful completions per second for 300 seconds",
+      "proves": "During that interval, measured accepted work exceeded measured successful output by about 20 items per second, implying an approximately 6,000-item accumulation if no other flow removes or duplicates work.",
+      "doesNotProve": "Which component constrained completion, whether every accepted item remained queued, or whether retries and telemetry definitions distorted the comparison."
+    },
+    {
+      "signal": "Oldest-item age and queue-wait p95 rise while per-item processing-time p95 remains near baseline",
+      "proves": "For the observed population, delay is accumulating primarily before processing begins rather than inside the measured processing interval.",
+      "doesNotProve": "Why dequeue or admission is slow, whether priorities are fair, or whether an unmeasured downstream step is also unhealthy."
+    },
+    {
+      "signal": "Worker CPU remains near 45 percent while all configured worker concurrency slots are occupied waiting on a downstream dependency",
+      "proves": "The configured concurrency boundary is occupied and the sampled CPU signal is not saturated while the observed operations wait on that dependency.",
+      "doesNotProve": "That increasing concurrency is safe, that the dependency is the original cause, or that host-wide CPU and throttling are healthy."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is queue depth alone a weak alert?",
+      "answer": "A depth of 10,000 may be harmless if work drains quickly and the objective permits the delay, while a depth of 100 may be critical if each item is old or expensive. Pair depth with arrival and completion rates, oldest-item age, queue-wait latency, errors, capacity limits, and the user objective."
+    },
+    {
+      "prompt": "What if the five-minute averages are both 90 items per second?",
+      "answer": "Equal averages can hide a burst that temporarily exceeded capacity and created a backlog. Inspect shorter aligned intervals, cumulative counters, maximum and oldest-item age, and the later drain period. Sampling resolution and percentile windows must match the timescale of the incident."
+    },
+    {
+      "prompt": "How do monotonic timestamps help?",
+      "answer": "A monotonic clock measures elapsed duration without moving backward when wall time is corrected. Recording stage transitions from the same process or a carefully calibrated measurement boundary lets you calculate queue wait and service duration without confusing clock synchronization with real latency."
+    },
+    {
+      "prompt": "When is adding workers a reasonable experiment?",
+      "answer": "After evidence shows work is ready to run, worker concurrency rather than a shared dependency is limiting output, downstream systems have headroom, processing semantics tolerate the change, and the increase is bounded with rollback and success criteria. Compare throughput, dependency saturation, errors, and tail latency before and after."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Flow arithmetic and scope",
+      "points": 3,
+      "observableEvidence": "Calculates the approximate 6,000-item growth and qualifies it with aligned scope, interval, item identity, success, retry, and removal semantics."
+    },
+    {
+      "criterion": "First abnormal boundary",
+      "points": 3,
+      "observableEvidence": "Orders evidence across acceptance, queue, worker, dependency, completion, and response boundaries and identifies the earliest observed divergence rather than the loudest symptom."
+    },
+    {
+      "criterion": "Proof boundaries",
+      "points": 2,
+      "observableEvidence": "Separates queue wait from service time and refuses to treat moderate CPU, queue depth, or correlation as a complete causal diagnosis."
+    },
+    {
+      "criterion": "Safe recovery and prevention",
+      "points": 2,
+      "observableEvidence": "Ties remediation to work semantics and verifies drain rate, oldest age, user latency, admission control, capacity, and retry-amplification prevention."
+    }
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

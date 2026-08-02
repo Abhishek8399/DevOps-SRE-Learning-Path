@@ -10,7 +10,7 @@ This repository will become a durable, local-first field manual for DevOps, Site
 
 The manual must help a committed reader move from first principles to production judgment. It must explain why systems behave as they do, provide safe ways to observe and change them, and require evidence before claiming skill. It is not complete because a table of contents exists, a page renders, or a learner has read a chapter.
 
-The current repository is an early implementation. Five foundation lessons are available in the website, and the storage lesson has a dedicated isolated incident lab. Most curriculum domains remain planned or not started. `CONTENT_MATRIX.md` is the authoritative coverage audit; `progress/ledger.md` remains the authoritative learner-evidence record.
+The current repository is an early implementation. Seven lessons are available across Volumes 00 and 01. The storage lesson has a dedicated isolated incident lab, and the systems-thinking lesson has a bounded non-root queue-model lab. Most curriculum domains remain planned or not started. `CONTENT_MATRIX.md` is the authoritative coverage audit; `progress/ledger.md` remains the authoritative learner-evidence record.
 
 ## Sources of truth
 
@@ -86,7 +86,7 @@ A reader who completes the required evidence—not merely the reading—should b
 
 ### Core volumes
 
-1. **Volume 00 — Start safely.** Ubuntu setup, shell survival, safe Git workflow, command-risk labels, evidence handling, cleanup, secrets, and the FRAME, OPERATES, and SCALE reasoning models.
+1. **Volume 00 — Start safely.** Systems thinking, Ubuntu setup, shell survival, safe Git workflow, command-risk labels, evidence handling, cleanup, secrets, and the FRAME, OPERATES, and SCALE reasoning models.
 2. **Volume 01 — Linux systems.** Filesystems, processes, descriptors, signals, systemd, CPU and memory, identity, permissions, boot, logs, libraries, time, block I/O, namespaces, cgroups, performance, and hardening.
 3. **Volume 02 — Connectivity.** Ethernet, ARP, IP, CIDR, routing, NAT, UDP, TCP, sockets, MTU, DNS, HTTP, proxies, caching, load balancing, TLS, PKI, mTLS, and private or hybrid connectivity.
 4. **Volume 03 — Engineering and delivery.** Git internals, Bash, Python, Go foundations, APIs, tests, packaging, dependencies, artifacts, release engineering, OCI containers, CI/CD, deployment strategies, GitOps, and software supply-chain foundations.

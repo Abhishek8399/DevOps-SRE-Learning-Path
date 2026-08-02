@@ -1,9 +1,18 @@
 import Link from "next/link";
-import { readerCatalog } from "./lessons/reader-catalog";
+import { readerEntriesForVolume, type ReaderVolumeId } from "./lessons/reader-catalog";
 import NavigationLink from "./navigation-link";
 
+const availableVolumes: readonly Readonly<{
+  id: ReaderVolumeId;
+  number: string;
+  title: string;
+  route: string;
+}>[] = [
+  { id: "00-start-safely", number: "00", title: "Start safely", route: "/book/start" },
+  { id: "01-linux-systems", number: "01", title: "Linux systems", route: "/book/linux" },
+];
+
 const plannedVolumes = [
-  ["00", "Start safely"],
   ["02", "Connectivity"],
   ["03", "Engineering & delivery"],
   ["04", "Reliability & operations"],
@@ -16,12 +25,15 @@ function NavigationLinks() {
     <nav aria-label="Book contents">
       <NavigationLink className="nav-home" href="/"><span>FIELD MANUAL</span><strong>Systems Reliability</strong></NavigationLink>
       <NavigationLink className="library-link" href="/book">Knowledge library</NavigationLink>
-      <div className="nav-volume current-volume">
-        <div><span>VOLUME 01</span><strong>Linux systems</strong></div>
-        {readerCatalog.map((lesson) => (
-          <NavigationLink href={lesson.route} key={lesson.canonicalId}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
-        ))}
-      </div>
+      {availableVolumes.map((volume) => (
+        <div className="nav-volume current-volume" key={volume.id}>
+          <div><span>VOLUME {volume.number}</span><strong>{volume.title}</strong></div>
+          <NavigationLink href={volume.route}><b>{volume.number}</b> Volume index</NavigationLink>
+          {readerEntriesForVolume(volume.id).map((lesson) => (
+            <NavigationLink href={lesson.route} key={lesson.canonicalId}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
+          ))}
+        </div>
+      ))}
       <div className="planned-volumes">
         <span>KNOWLEDGE MAP</span>
         {plannedVolumes.map(([number, title]) => (

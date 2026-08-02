@@ -4,11 +4,18 @@ import {
   adjacentReaderEntriesInCatalog,
   createReaderCatalog,
   findReaderEntryInCatalog,
+  getReaderVolume,
+  readerEntriesForVolumeInCatalog,
   type ReaderCatalogEntry,
+  type ReaderVolumeId,
 } from "./reader-catalog-core";
 import { structuredLessonBundles } from "./structured-lessons.server";
 
-export type { ReaderCatalogEntry, ReaderRenderKind } from "./reader-catalog-core";
+export type {
+  ReaderCatalogEntry,
+  ReaderRenderKind,
+  ReaderVolumeId,
+} from "./reader-catalog-core";
 
 type LegacyRecord = Readonly<{
   id: string;
@@ -33,12 +40,14 @@ function numberFromAlias(aliases: readonly string[]): number {
 }
 
 const storageIdentity = legacyRecord("LES-0001");
+const linuxVolume = getReaderVolume("01-linux-systems");
 const legacyEntries: ReaderCatalogEntry[] = [
   {
     canonicalId: storageIdentity.id,
     stateId: storageIdentity.slug,
     slug: storageIdentity.slug,
     route: storageIdentity.route,
+    ...linuxVolume,
     order: numberFromAlias(storageIdentity.aliases),
     number: String(numberFromAlias(storageIdentity.aliases)).padStart(2, "0"),
     title: "Filesystems, blocks, inodes, and ENOSPC",
@@ -56,6 +65,7 @@ const legacyEntries: ReaderCatalogEntry[] = [
       stateId: identity.slug,
       slug: identity.slug,
       route: identity.route,
+      ...linuxVolume,
       order: numberFromAlias(identity.aliases),
       number: lesson.number,
       title: lesson.title,
@@ -79,6 +89,12 @@ export const readerCatalog = createReaderCatalog(
 
 export function findReaderEntry(slug: string): ReaderCatalogEntry | undefined {
   return findReaderEntryInCatalog(readerCatalog, slug);
+}
+
+export function readerEntriesForVolume(
+  volumeId: ReaderVolumeId,
+): readonly ReaderCatalogEntry[] {
+  return readerEntriesForVolumeInCatalog(readerCatalog, volumeId);
 }
 
 export function adjacentReaderEntries(slug: string): Readonly<{

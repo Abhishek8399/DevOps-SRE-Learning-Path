@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0014",
+  "title": "Controllers",
+  "organization": "Kubernetes Authors",
+  "url": "https://kubernetes.io/docs/concepts/architecture/controller/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Kubernetes concepts documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0007"],
+  "topics": ["control loops", "desired state", "current state", "reconciliation", "controller ownership"],
+  "relevance": "Provides a concrete production example of a control loop observing current state and acting toward desired state, while separating reconciliation decisions from workload request processing.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

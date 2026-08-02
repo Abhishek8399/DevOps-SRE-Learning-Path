@@ -44,7 +44,7 @@ book/
 Existing TypeScript lessons remain authoritative until a separately reviewed typed-to-structured-Markdown migration. Adding this contract must not change their URLs, IDs, text, or learner state.
 The five typed lessons are reserved in `legacy-content-map.json` as `LES-0001` through `LES-0005`. The validator checks every mapped source file and compares the complete identity set to an independently pinned SHA-256 baseline, permanently reserving their routes, slugs, aliases, and curriculum mappings. New content cannot reuse those identities. A migrated record is accepted only when it preserves the complete reserved identity. Source paths may move during a reviewed migration; published identities may not.
 
-New lessons begin at `LES-0006`.
+`LES-0006` is the first schema-backed lesson. Use the next unused opaque ID for new work (`LES-0008` at this checkpoint); an ID is permanent once published and is never recycled.
 
 
 ## Identity rules
@@ -58,7 +58,7 @@ Canonical record identity is deliberately independent of taxonomy and navigation
 | Reference ID | `REF-0001` | Opaque, immutable, and reusable |
 | Curriculum domain | `LNX-005` | Existing `CONTENT_MATRIX.md` identity; several lessons may map to one domain |
 | Public alias | `V01-L06` | Preserved after publication |
-| Route | `/book/linux/boot-kernel-journal` | Explicit and never derived from the directory |
+| Route | `/book/linux/boot-kernel-systemd-journal` | Explicit and never derived from the directory |
 
 Child diagrams, commands, labs, and incidents extend the lesson ID, for example `LES-0001-CMD-001`. A slug or volume may change with a redirect; the lesson ID never changes. This separation matters because the existing request-path lesson is routed under Linux but maps to several `NET-*` domains.
 

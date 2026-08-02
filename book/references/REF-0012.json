@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0012",
+  "title": "Handling Overload",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/handling-overload/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition",
+  "lessonIds": ["LES-0007"],
+  "topics": ["overload", "capacity", "load shedding", "graceful degradation", "request cost"],
+  "relevance": "Explains why demand beyond useful capacity requires an explicit overload policy and why preserving useful work can be more important than accepting every request.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

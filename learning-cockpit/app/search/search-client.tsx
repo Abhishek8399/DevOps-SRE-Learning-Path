@@ -16,6 +16,7 @@ const exampleQueries = [
   "curl -v",
   "UID 10001",
   "journalctl",
+  "backpressure",
 ] as const;
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -167,9 +168,9 @@ export default function SearchClient({
           <p>
             Try one boundary at a time: the exact error, a command name, or one
             mechanism such as inode, route, OOM, PID, ACL, TLS, or journal. Only the
-            {documents.length} published Linux lessons are searchable today.
+            {documents.length} locally published lessons are searchable today.
           </p>
-          <Link href="/book/linux">Browse the Linux volume</Link>
+          <Link href="/book">Browse the knowledge library</Link>
         </section>
       ) : (
         <section className={styles.results} aria-label="Search results">
@@ -180,7 +181,7 @@ export default function SearchClient({
               </div>
               <div className={styles.resultBody}>
                 <div className={styles.resultMeta}>
-                  <span>VOLUME 01 / LESSON {document.number}</span>
+                  <span>VOLUME {document.volumeNumber} / {document.volumeTitle.toUpperCase()} / LESSON {document.number}</span>
                   <code>{document.id}</code>
                 </div>
                 <h2><Link href={document.href}>{document.title}</Link></h2>

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0015",
+  "title": "Kubernetes Components",
+  "organization": "Kubernetes Authors",
+  "url": "https://kubernetes.io/docs/concepts/architecture/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Kubernetes architecture documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0007"],
+  "topics": ["control plane", "worker nodes", "API server", "scheduler", "controllers"],
+  "relevance": "Shows how a widely used platform divides control-plane components from the worker and runtime components that execute application workloads.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

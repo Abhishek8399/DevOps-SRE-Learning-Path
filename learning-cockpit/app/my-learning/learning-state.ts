@@ -6,6 +6,7 @@ export const LEARNING_LIBRARY_LESSON_IDS = [
   "network-request-path",
   "identity-permissions",
   "LES-0006",
+  "LES-0007",
 ] as const;
 
 export type LearningLessonId = (typeof LEARNING_LIBRARY_LESSON_IDS)[number];

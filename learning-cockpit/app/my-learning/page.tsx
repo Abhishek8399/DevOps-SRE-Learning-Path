@@ -17,6 +17,8 @@ const lessons: LearningLibraryLesson[] = readerCatalog.map((lesson) => {
   return {
     id: lesson.stateId,
     number: lesson.number,
+    volumeNumber: lesson.volumeNumber,
+    volumeTitle: lesson.volumeTitle,
     title: lesson.title,
     summary: lesson.summary,
     href: lesson.route,

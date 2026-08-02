@@ -625,7 +625,7 @@ function parseFenceOpening(line) {
   return { character, length: marker[1].length };
 }
 
-function extractLevelTwoHeadings(body) {
+function extractHeadings(body, level) {
   const headings = [];
   const lines = body.split(/\r?\n/);
   let fence = null;
@@ -646,16 +646,19 @@ function extractLevelTwoHeadings(body) {
       fence = marker;
       continue;
     }
-    const heading = /^\s{0,3}##(?:[ \t]+|$)/.test(originalLine)
-      ? line.match(/^\s{0,3}##(?:[ \t]+|$)(.*)$/) : null;
-    if (heading) {
+    const heading = line.match(/^\s{0,3}(#{1,2})(?:[ \t]+|$)(.*)$/);
+    if (heading && heading[1].length === level) {
       headings.push({
-        text: heading[1].replace(/[ \t]+#+[ \t]*$/, "").trim(),
+        text: heading[2].replace(/[ \t]+#+[ \t]*$/, "").trim(),
         line: index + 1,
       });
     }
   }
   return headings;
+}
+
+function extractLevelTwoHeadings(body) {
+  return extractHeadings(body, 2);
 }
 
 const rawHtmlBlockTagPattern = /^\s{0,3}<\/?(address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|pre|script|search|section|style|summary|table|tbody|td|textarea|tfoot|th|thead|title|tr|track|ul)(?:\s|\/?>|$)/i;
@@ -737,6 +740,10 @@ function markdownDestinationIssues(body) {
 
 function obviousMutationInReadOnlyCommand(command) {
   if (typeof command !== "string") return false;
+  const trimmed = command.trim();
+  if (/^command[ \t]+-v(?:[ \t]+--)?(?:[ \t]+[A-Za-z0-9][A-Za-z0-9._+-]*)+$/.test(trimmed)) {
+    return false;
+  }
   const mutator = /\b(?:rm|mv|cp|touch|mkdir|rmdir|chmod|chown|chgrp|ln|truncate|mkfs|fdisk|parted|dd|mount|umount|kill|pkill|killall|reboot|shutdown)\b|\b(?:systemctl|service)\s+(?:start|stop|restart|reload|enable|disable|mask|unmask)\b|\b(?:apt|apt-get|dnf|yum|apk)\s+(?:install|remove|purge|upgrade|dist-upgrade)\b|\b(?:docker|podman)\s+(?:run|rm|rmi|stop|kill|exec|build|pull)\b|\bkubectl\s+(?:apply|create|delete|edit|patch|replace|scale|rollout)\b|\bterraform\s+(?:apply|destroy|import)\b|\b(?:sed|perl)\s+-i\b|\bfind\b[^\n]*\s-delete\b/i;
   return mutator.test(command);
 }
@@ -850,6 +857,23 @@ export function validateLessonDocument(text, schema) {
   issues.push(...markdownDestinationIssues(parsed.body).map((entry) => ({
     ...entry, line: parsed.bodyStartLine + entry.line - 1,
   })));
+  const titleHeadings = extractHeadings(parsed.body, 1);
+  if (titleHeadings.length === 0) {
+    issues.push(issue("LESSON_TITLE_HEADING_MISSING", "body.#",
+      "lesson body requires one level-one title", parsed.bodyStartLine));
+  } else {
+    if (titleHeadings.length > 1) {
+      issues.push(issue("LESSON_TITLE_HEADING_DUPLICATE", "body.#",
+        "lesson body must contain exactly one level-one title",
+        parsed.bodyStartLine + titleHeadings[1].line - 1));
+    }
+    if (typeof parsed.metadata?.title === "string"
+      && titleHeadings[0].text !== parsed.metadata.title) {
+      issues.push(issue("LESSON_TITLE_HEADING_MISMATCH", "body.#",
+        "level-one body title must exactly match metadata.title",
+        parsed.bodyStartLine + titleHeadings[0].line - 1));
+    }
+  }
   const headings = extractLevelTwoHeadings(parsed.body);
   const positions = new Map();
   const bodyLines = parsed.body.split(/\r?\n/);
@@ -1538,6 +1562,10 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
   const routes = new Map();
   const aliases = new Map();
   const lessonOrders = new Map();
+  const volumeRouteSegments = new Map([
+    ["00-start-safely", "start"],
+    ["01-linux-systems", "linux"],
+  ]);
   for (const entry of legacy.entries) {
     const id = entry.record.id;
     const owner = { id, file: `${entry.file} (${id})`, legacy: true };
@@ -1604,26 +1632,30 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
           routes.set(result.metadata.route, { id: result.metadata.id, file, legacy: false });
         }
       }
-      if (Number.isInteger(result.metadata.order)) {
-        const firstOrder = lessonOrders.get(result.metadata.order);
+      if (Number.isInteger(result.metadata.order)
+        && typeof result.metadata.volume === "string") {
+        const orderKey = `${result.metadata.volume}:${result.metadata.order}`;
+        const firstOrder = lessonOrders.get(orderKey);
         if (firstOrder && firstOrder.id !== result.metadata.id) {
           issues.push({
             ...issue("DUPLICATE_LESSON_ORDER", "$.order",
-              `order is already used by ${firstOrder.file}`),
+              `order is already used in ${result.metadata.volume} by ${firstOrder.file}`),
             file,
           });
         } else if (!firstOrder) {
-          lessonOrders.set(result.metadata.order, { id: result.metadata.id, file });
+          lessonOrders.set(orderKey, { id: result.metadata.id, file });
         }
       }
       if (typeof result.metadata.domain === "string"
         && typeof result.metadata.slug === "string"
         && typeof result.metadata.route === "string") {
-        const expectedRoute = `/book/${result.metadata.domain}/${result.metadata.slug}`;
+        const routeSegment = volumeRouteSegments.get(result.metadata.volume)
+          ?? result.metadata.domain;
+        const expectedRoute = `/book/${routeSegment}/${result.metadata.slug}`;
         if (result.metadata.route !== expectedRoute) {
           issues.push({
             ...issue("LESSON_ROUTE_IDENTITY_MISMATCH", "$.route",
-              `route must equal "${expectedRoute}" for this domain and slug`),
+              `route must equal "${expectedRoute}" for this volume and slug`),
             file,
           });
         }

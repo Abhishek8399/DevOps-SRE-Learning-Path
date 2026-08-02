@@ -2,6 +2,7 @@ import type {
   MarkdownInline,
   StructuredLessonBundle,
 } from "../lessons/structured-lesson-parser";
+import { getReaderVolume } from "../lessons/reader-catalog-core.ts";
 import type { SearchDocument } from "./search-index";
 
 function unique(values: readonly string[]): string[] {
@@ -17,6 +18,7 @@ export function createStructuredSearchDocument(
 ): SearchDocument {
   const { lesson } = bundle;
   const metadata = lesson.metadata;
+  const volume = getReaderVolume(metadata.volume);
   const termsSection = lesson.sections.find((section) =>
     section.title === "Terms before commands");
   const sectionTerms = termsSection?.blocks.flatMap((block) =>
@@ -25,6 +27,8 @@ export function createStructuredSearchDocument(
   return {
     id: metadata.id,
     number: String(metadata.order).padStart(2, "0"),
+    volumeNumber: volume.volumeNumber,
+    volumeTitle: volume.volumeTitle,
     title: metadata.title,
     subtitle: metadata.summary,
     href: metadata.route,

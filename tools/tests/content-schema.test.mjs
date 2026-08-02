@@ -266,7 +266,7 @@ test("lesson identity, prerequisite, level, path, and section invariants reject 
   trailingWhitespace.title = "Invalid trailing line break\n";
   assert.deepEqual(
     codes(validateLessonDocument(lessonText(trailingWhitespace), lessonSchema).issues),
-    ["SCHEMA_PATTERN"],
+    ["SCHEMA_PATTERN", "LESSON_TITLE_HEADING_MISMATCH"],
   );
 
   const reversed = clone(parsedValidLesson.metadata);
@@ -320,6 +320,46 @@ test("lesson identity, prerequisite, level, path, and section invariants reject 
     ).issues),
     ["LESSON_HEADING_MISSING"],
   );
+});
+
+test("lesson title H1 is unique, exact, and ignores fenced or commented lookalikes", () => {
+  const titleHeading = `# ${parsedValidLesson.metadata.title}`;
+  const withoutTitle = parsedValidLesson.body.replace(`${titleHeading}\n`, "");
+
+  assert.deepEqual(
+    codes(validateLessonDocument(
+      lessonText(parsedValidLesson.metadata, withoutTitle), lessonSchema,
+    ).issues),
+    ["LESSON_TITLE_HEADING_MISSING"],
+  );
+
+  const duplicateTitle = parsedValidLesson.body.replace(
+    titleHeading, `${titleHeading}\n\n${titleHeading}`,
+  );
+  assert.deepEqual(
+    codes(validateLessonDocument(lessonText(parsedValidLesson.metadata, duplicateTitle),
+      lessonSchema).issues),
+    ["LESSON_TITLE_HEADING_DUPLICATE"],
+  );
+
+  const mismatchedTitle = parsedValidLesson.body.replace(titleHeading, "# Wrong lesson title");
+  assert.deepEqual(
+    codes(validateLessonDocument(lessonText(parsedValidLesson.metadata, mismatchedTitle),
+      lessonSchema).issues),
+    ["LESSON_TITLE_HEADING_MISMATCH"],
+  );
+
+  for (const pseudoTitle of [
+    `~~~text\n${titleHeading}\n~~~`,
+    `<!--\n${titleHeading}\n-->`,
+  ]) {
+    const pseudoCodes = codes(validateLessonDocument(
+      lessonText(parsedValidLesson.metadata, `${pseudoTitle}\n${withoutTitle}`), lessonSchema,
+    ).issues);
+    assert.ok(pseudoCodes.includes("LESSON_TITLE_HEADING_MISSING"));
+    assert.equal(pseudoCodes.includes("LESSON_TITLE_HEADING_DUPLICATE"), false);
+    assert.equal(pseudoCodes.includes("LESSON_TITLE_HEADING_MISMATCH"), false);
+  }
 });
 
 test("fenced literals cannot corrupt heading state and raw HTML cannot fake headings", () => {
@@ -440,6 +480,23 @@ test("mutating commands require cleanup and artifact IDs belong to the lesson", 
       "CHILD_ID_MISMATCH",
       "DUPLICATE_CHILD_ID",
     ],
+  );
+});
+
+test("bare command -v dependency inspection cannot hide a later mutation", () => {
+  const dependencyInspection = clone(parsedValidLesson.metadata);
+  dependencyInspection.commands[0].command =
+    "command -v bash basename cat chmod cmp dirname find id install mktemp python3 realpath rmdir rm stat";
+  assert.deepEqual(
+    validateLessonDocument(lessonText(dependencyInspection), lessonSchema).issues,
+    [],
+  );
+
+  const appendedMutation = clone(dependencyInspection);
+  appendedMutation.commands[0].command += "; rm -f -- /tmp/unsafe-fixture";
+  assert.deepEqual(
+    codes(validateLessonDocument(lessonText(appendedMutation), lessonSchema).issues),
+    ["READ_ONLY_COMMAND_MUTATION_HINT"],
   );
 });
 
@@ -605,6 +662,43 @@ test("a disposable repository proves valid cross-record relationships", () => {
     references: 2,
     legacyLessons: 5,
   });
+});
+
+test("repository order and route identity are volume-aware", () => {
+  const crossVolume = validateFixtureRepository({
+    twoLessons: true,
+    mutate(model) {
+      model.lessons[1].volume = "00-start-safely";
+      model.lessons[1].order = model.lessons[0].order;
+      model.lessons[1].route = "/book/start/schema-fixture-two";
+    },
+  });
+  assert.deepEqual(crossVolume.issues, [],
+    "the same local order must remain valid in different volumes");
+
+  const sameVolume = validateFixtureRepository({
+    twoLessons: true,
+    mutate(model) {
+      model.lessons[1].order = model.lessons[0].order;
+    },
+  });
+  assert.ok(codes(sameVolume.issues).includes("DUPLICATE_LESSON_ORDER"));
+
+  const startVolume = validateFixtureRepository({
+    mutate(model) {
+      model.lessons[0].volume = "00-start-safely";
+      model.lessons[0].route = "/book/start/schema-fixture";
+    },
+  });
+  assert.deepEqual(startVolume.issues, [],
+    "Volume 00 must use the public start route segment");
+
+  const wrongStartSegment = validateFixtureRepository({
+    mutate(model) {
+      model.lessons[0].volume = "00-start-safely";
+    },
+  });
+  assert.ok(codes(wrongStartSegment.issues).includes("LESSON_ROUTE_IDENTITY_MISMATCH"));
 });
 
 test("repository validation rejects identity collisions and legacy reuse", () => {
@@ -949,30 +1043,73 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes the first production lesson with answer isolation", () => {
+test("the live structured corpus publishes both lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 1);
-  assert.equal(result.metrics.assessments, 3);
-  assert.equal(result.metrics.references, 8);
+  assert.equal(result.metrics.lessons, 2);
+  assert.equal(result.metrics.assessments, 6);
+  assert.equal(result.metrics.references, 16);
 
-  const lessonPath = join(repositoryRoot, "book", "volumes", "01-linux-systems",
-    "LES-0006-boot-kernel-systemd-journal", "lesson.md");
-  const lesson = parseJsonFrontMatter(readFileSync(lessonPath, "utf8"));
-  assert.equal(lesson.metadata.id, "LES-0006");
-  assert.equal(lesson.metadata.route, "/book/linux/boot-kernel-systemd-journal");
-  assert.deepEqual(lesson.metadata.prerequisiteLessonIds, ["LES-0002"]);
-  assert.deepEqual(lesson.metadata.prerequisiteCurriculumIds, ["LNX-002"]);
-  assert.deepEqual(lesson.metadata.assessmentIds, ["ASM-0001", "ASM-0002", "ASM-0003"]);
+  const expectations = [
+    {
+      path: join(repositoryRoot, "book", "volumes", "00-start-safely",
+        "LES-0007-systems-thinking", "lesson.md"),
+      id: "LES-0007",
+      domain: "foundations",
+      route: "/book/start/systems-thinking",
+      volume: "00-start-safely",
+      order: 1,
+      prerequisiteLessonIds: [],
+      prerequisiteCurriculumIds: [],
+      assessmentIds: ["ASM-0004", "ASM-0005", "ASM-0006"],
+      referenceIds: [
+        "REF-0009", "REF-0010", "REF-0011", "REF-0012",
+        "REF-0013", "REF-0014", "REF-0015", "REF-0016",
+      ],
+      independentId: "ASM-0006",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0006-boot-kernel-systemd-journal", "lesson.md"),
+      id: "LES-0006",
+      domain: "linux",
+      route: "/book/linux/boot-kernel-systemd-journal",
+      volume: "01-linux-systems",
+      order: 6,
+      prerequisiteLessonIds: ["LES-0002"],
+      prerequisiteCurriculumIds: ["LNX-002"],
+      assessmentIds: ["ASM-0001", "ASM-0002", "ASM-0003"],
+      referenceIds: [
+        "REF-0001", "REF-0002", "REF-0003", "REF-0004",
+        "REF-0005", "REF-0006", "REF-0007", "REF-0008",
+      ],
+      independentId: "ASM-0003",
+    },
+  ];
 
-  const assessments = lesson.metadata.assessmentIds.map((id) => JSON.parse(readFileSync(
-    join(repositoryRoot, "book", "assessments", "linux", `${id}.json`), "utf8",
-  )));
-  assert.ok(assessments.some((assessment) => assessment.type !== "independent-transfer"));
-  const independent = assessments.find((assessment) => assessment.type === "independent-transfer");
-  assert.ok(independent);
-  for (const field of [
-    "directAnswer", "foundation", "reasoningSteps", "seniorAnswer", "weakAnswer",
-    "whyWeak", "evidence", "followUps",
-  ]) assert.equal(Object.hasOwn(independent, field), false);
+  for (const expected of expectations) {
+    const lesson = parseJsonFrontMatter(readFileSync(expected.path, "utf8"));
+    for (const field of ["id", "route", "volume", "order"]) {
+      assert.equal(lesson.metadata[field], expected[field], `${expected.id} ${field}`);
+    }
+    assert.deepEqual(lesson.metadata.prerequisiteLessonIds, expected.prerequisiteLessonIds);
+    assert.deepEqual(
+      lesson.metadata.prerequisiteCurriculumIds,
+      expected.prerequisiteCurriculumIds,
+    );
+    assert.deepEqual(lesson.metadata.assessmentIds, expected.assessmentIds);
+    assert.deepEqual(lesson.metadata.referenceIds, expected.referenceIds);
+
+    const assessments = lesson.metadata.assessmentIds.map((id) => JSON.parse(readFileSync(
+      join(repositoryRoot, "book", "assessments", expected.domain, `${id}.json`), "utf8",
+    )));
+    assert.ok(assessments.some((assessment) => assessment.type !== "independent-transfer"));
+    const independent = assessments.find((assessment) =>
+      assessment.type === "independent-transfer");
+    assert.equal(independent?.id, expected.independentId);
+    for (const field of [
+      "directAnswer", "foundation", "reasoningSteps", "seniorAnswer", "weakAnswer",
+      "whyWeak", "evidence", "followUps",
+    ]) assert.equal(Object.hasOwn(independent, field), false, `${independent.id} leaked ${field}`);
+  }
 });

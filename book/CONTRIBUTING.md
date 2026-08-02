@@ -84,7 +84,7 @@ book/
 `-- schema/
 ```
 
-Follow [`schema/README.md`](schema/README.md), begin new lesson IDs at `LES-0006`, and run both contract commands before review. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0008` at this checkpoint), and run both contract commands before review. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
 
 The website should remain a renderer over structured content. Do not grow a single page or one giant TypeScript constant indefinitely. Do not migrate a typed lesson until route, text, diagram, answer, lab, search, and device-state compatibility are separately proven.
 

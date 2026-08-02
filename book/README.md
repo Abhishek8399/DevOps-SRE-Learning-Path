@@ -49,11 +49,11 @@ Readers may stop after the layer appropriate to their goal. The deeper layers re
 
 ### Volume 00 - Start safely
 
-Ubuntu setup, shell survival, Git workflow, command risk labels, evidence handling, cleanup, secrets, FRAME incidents, OPERATES reviews, and SCALE design decisions.
+Systems thinking, Ubuntu setup, shell survival, Git workflow, command risk labels, evidence handling, cleanup, secrets, FRAME incidents, OPERATES reviews, and SCALE design decisions.
 
 ### Volume 01 - Linux systems
 
-Systems thinking, filesystems, processes, descriptors, signals, systemd, CPU scheduling, memory, swap, OOM, identity, permissions, boot, logs, libraries, time, block I/O, namespaces, cgroups, performance, and hardening.
+Filesystems, processes, descriptors, signals, systemd, CPU scheduling, memory, swap, OOM, identity, permissions, boot, logs, libraries, time, block I/O, namespaces, cgroups, performance, and hardening.
 
 ### Volume 02 - Connectivity
 

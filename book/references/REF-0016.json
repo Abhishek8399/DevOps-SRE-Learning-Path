@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0016",
+  "title": "Avoiding insurmountable queue backlogs",
+  "organization": "Amazon Web Services",
+  "url": "https://builder.aws.com/content/3EuRcgkTP1MI0c7zM8W6HL3WIqA/avoiding-insurmountable-queue-backlogs",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Builder article reviewed 2026-08-02",
+  "lessonIds": ["LES-0007"],
+  "topics": ["queue backlog", "arrival rate", "processing rate", "backlog age", "capacity recovery"],
+  "relevance": "Provides an operational queue-backlog case study for reasoning about arrival rate, processing rate, backlog growth, age, recovery capacity, and prevention.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

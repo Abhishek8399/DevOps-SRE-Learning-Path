@@ -8,7 +8,7 @@ The cockpit trains five complementary learning behaviors:
 
 - **See the system:** architecture, request path, state, and failure-flow diagrams.
 - **Break the system:** choose-the-next-move incident decisions with immediate reasoning feedback.
-- **Read the field manual:** retain the complete explanation, signal map, safe-recovery path, and lab instructions for each completed topic.
+- **Read the field manual:** retain the complete explanation, signal map, safe-recovery path, and lab instructions for each available topic.
 - **Recall the system:** compact flashcards that require an answer before reveal.
 - **Teach and defend:** Feynman notes and product-company interview drills.
 
@@ -16,7 +16,13 @@ The dashboard never raises mastery by itself. The repository ledger remains the 
 
 ## Ready lessons
 
-Volume 1 currently publishes six Linux foundation lessons:
+The reader currently publishes seven lessons across two volumes.
+
+Volume 00 starts with:
+
+1. Systems thinking: state, queues, dependencies, and failure domains.
+
+Volume 01 publishes six Linux foundation lessons:
 
 1. Filesystems, blocks, inodes, and ENOSPC.
 2. Processes, signals, exit codes, and systemd.
@@ -25,7 +31,7 @@ Volume 1 currently publishes six Linux foundation lessons:
 5. Identity, permissions, traversal, and least privilege.
 6. Boot, kernel, initramfs, systemd, and the journal.
 
-Lessons 1-5 retain their established reader implementations. Lesson 6 is the first schema-backed lesson and is published as a `substantive-draft`: available to study, but still subject to review. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
+`LES-0007` in Volume 00 and `LES-0006` in Volume 01 are schema-backed `substantive-draft` lessons: available to study, but still subject to review. Linux lessons 1-5 retain their established reader implementations, routes, and device-local state IDs. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
 
 Each explanatory lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and teaching checkpoints and product-company questions include answers from first-year foundations through senior production reasoning. Independent transfer assessments intentionally store no model answer. The page always separates:
 
@@ -37,13 +43,15 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 
 - `/` - lightweight home, current mission, and learning map.
 - `/book` - complete knowledge library and planned volumes.
+- `/book/start` - Volume 00 index and safe operator foundation.
+- `/book/start/<lesson-id>` - one Volume 00 lesson per URL.
 - `/book/linux` - Ubuntu-first Volume 01 index and preflight.
 - `/book/linux/<lesson-id>` - one statically generated lesson per URL.
 - `/practice/storage` - practice separated from the explanatory chapter.
 - `/search` - offline search by symptom, command, term, title, or stable lesson ID.
 - `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.
 
-The routed structure keeps individual pages lightweight as the manual grows. Desktop uses a persistent table of contents; smaller screens use a collapsible book menu. Previous and next links preserve the reading path.
+The routed structure keeps individual pages lightweight as the manual grows. Desktop uses a persistent table of contents; smaller screens use a collapsible book menu. Previous and next links stay inside a volume; an explicit continuation link crosses into the next volume.
 
 ## Local use
 
@@ -91,9 +99,11 @@ npm audit  # optional network-backed advisory check
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
-The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The 36-case schema suite builds disposable repositories to exercise malformed or weakened schemas, answer leakage, identity collisions, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live structured corpus. File-symlink creation can skip with `EPERM` on restricted Windows; run that case on Linux or symlink-capable Windows before a public release.
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The 39-case schema suite builds disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus of two lessons, six assessments, and sixteen references. File-symlink creation can skip with `EPERM` on restricted Windows; run that case on Linux or symlink-capable Windows before a public release.
 
-The 17-case reader suite exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, catalog collisions, schema-backed lesson parsing, CommonMark fence parity, answer isolation, safe links, and local search normalization/ranking using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
+The 20-case reader suite exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, volume-local adjacency, additive state migration, schema-backed lesson parsing, CommonMark heading/fence parity, answer isolation, safe links, multi-volume search ranking, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
+
+`npm run dev` now validates canonical content before startup. Build and development load each structured lesson through an exact virtual-module registry that reads only its declared canonical Markdown path and registers that file for change watching. Unknown or path-like lesson IDs fail closed. Adding a structured lesson therefore requires an explicit registry entry until the planned generated manifest replaces this small fixed catalog.
 
 ---
 

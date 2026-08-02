@@ -326,6 +326,36 @@ function closesFence(value: string, fence: MarkdownFence): boolean {
     && marker[1].length >= fence.length);
 }
 
+type HtmlCommentState = { open: boolean };
+
+function visibleOutsideHtmlComments(value: string, state: HtmlCommentState): string {
+  let visible = "";
+  let cursor = 0;
+  while (cursor < value.length) {
+    if (state.open) {
+      const closing = value.indexOf("-->", cursor);
+      if (closing === -1) return visible;
+      cursor = closing + 3;
+      state.open = false;
+      continue;
+    }
+    const opening = value.indexOf("<!--", cursor);
+    if (opening === -1) return visible + value.slice(cursor);
+    visible += value.slice(cursor, opening);
+    const closing = value.indexOf("-->", opening + 4);
+    if (closing === -1) {
+      state.open = true;
+      return visible;
+    }
+    cursor = closing + 3;
+  }
+  return visible;
+}
+
+function normalizeAtxHeading(value: string): string {
+  return value.replace(/[ \t]+#+[ \t]*$/, "").trim();
+}
+
 function startsBlock(lines: readonly string[], index: number): boolean {
   const value = lines[index] ?? "";
   if (value.trim() === "") return true;
@@ -442,33 +472,45 @@ export function parseStructuredLesson(raw: string): ParsedStructuredLesson {
   if (!Number.isInteger(metadataRecord.order)) throw new Error("lesson.order must be an integer");
 
   const bodyLines = lines.slice(closing + 1);
-  const titleLine = bodyLines.find((line) => /^#\s+/.test(line));
-  if (!titleLine) throw new Error("structured lesson body requires one level-one title");
-  const title = titleLine.replace(/^#\s+/, "").trim();
+  const titles: string[] = [];
   const sectionSources: { title: string; lines: string[] }[] = [];
   let active: { title: string; lines: string[] } | null = null;
   let fence: MarkdownFence | null = null;
-  for (const line of bodyLines) {
+  const commentState: HtmlCommentState = { open: false };
+  for (const originalLine of bodyLines) {
     if (fence) {
-      if (active) active.lines.push(line);
-      if (closesFence(line, fence)) fence = null;
+      if (active) active.lines.push(originalLine);
+      if (closesFence(originalLine, fence)) fence = null;
       continue;
     }
+    const line = visibleOutsideHtmlComments(originalLine, commentState);
     const openingFence = parseFenceOpening(line);
     if (openingFence) {
       fence = openingFence;
-      if (active) active.lines.push(line);
+      if (active) active.lines.push(originalLine);
       continue;
     }
-    const heading = line.match(/^##\s+(.+)$/);
-    if (heading) {
-      active = { title: heading[1].trim(), lines: [] };
+    const heading = line.match(/^\s{0,3}(#{1,2})(?:[ \t]+|$)(.*)$/);
+    if (heading?.[1] === "#") {
+      titles.push(normalizeAtxHeading(heading[2]));
+      continue;
+    }
+    if (heading?.[1] === "##") {
+      active = { title: normalizeAtxHeading(heading[2]), lines: [] };
       sectionSources.push(active);
     } else if (active) {
       active.lines.push(line);
     }
   }
   if (fence) throw new Error("structured lesson body has an unclosed code fence");
+  if (commentState.open) throw new Error("structured lesson body has an unclosed HTML comment");
+  if (titles.length !== 1) {
+    throw new Error("structured lesson body requires exactly one level-one title");
+  }
+  if (titles[0] !== metadataRecord.title) {
+    throw new Error("structured lesson body title must exactly match metadata.title");
+  }
+  const title = titles[0];
   const actualTitles = sectionSources.map((section) => section.title);
   if (JSON.stringify(actualTitles) !== JSON.stringify(REQUIRED_STRUCTURED_SECTIONS)) {
     throw new Error("structured lesson sections do not match the canonical ordered set");

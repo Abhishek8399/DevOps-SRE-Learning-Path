@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0010",
+  "title": "time - Time access and conversions",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3.12/library/time.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3.12 documentation",
+  "lessonIds": ["LES-0007"],
+  "topics": ["monotonic clocks", "elapsed time", "clock metadata", "measurement precision"],
+  "relevance": "Defines monotonic time and clock metadata needed to measure elapsed queue wait, processing duration, and recovery intervals without treating wall-clock adjustment as system latency.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

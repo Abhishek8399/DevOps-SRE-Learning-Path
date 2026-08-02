@@ -7,7 +7,10 @@ import {
   lessonGlossaries,
   type LessonGlossaryId,
 } from "../lessons/lesson-glossaries.ts";
+import { getReaderVolume } from "../lessons/reader-catalog-core.ts";
 import type { SearchDocument } from "./search-index.ts";
+
+const linuxVolume = getReaderVolume("01-linux-systems");
 
 const canonicalIds: Readonly<Record<FoundationLessonId, readonly string[]>> = {
   "processes-signals-systemd": ["02", "V01-L02", "LNX-002"],
@@ -35,6 +38,8 @@ function decoderCommands(lessonId: LessonGlossaryId): string[] {
 const storageDocument: SearchDocument = {
   id: "storage",
   number: "01",
+  volumeNumber: linuxVolume.volumeNumber,
+  volumeTitle: linuxVolume.volumeTitle,
   title: "Linux storage: blocks, inodes, and ENOSPC",
   subtitle:
     "Map the exact path, identify the exhausted allocation, and recover without blind deletion.",
@@ -104,6 +109,8 @@ function createFoundationDocument(
     id: lessonId,
     number: lesson.number,
     title: lesson.title,
+    volumeNumber: linuxVolume.volumeNumber,
+    volumeTitle: linuxVolume.volumeTitle,
     subtitle: lesson.subtitle,
     href: `/book/linux/${lessonId}`,
     fields: [

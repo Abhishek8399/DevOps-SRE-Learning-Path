@@ -1,51 +1,80 @@
 import Link from "next/link";
 import CopyCommand from "./copy-command";
 import { foundationLessons, type FoundationLesson } from "./lessons/foundation-lessons";
-import { adjacentReaderEntries, readerCatalog } from "./lessons/reader-catalog";
+import {
+  adjacentReaderEntries,
+  findReaderEntry,
+  readerCatalog,
+  readerEntriesForVolume,
+  type ReaderVolumeId,
+} from "./lessons/reader-catalog";
 import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
 
 function availabilityLabel(value: (typeof readerCatalog)[number]["availability"]): string {
   return value.replaceAll("-", " ").toUpperCase();
 }
 
+type VolumeBookIndexProps = Readonly<{
+  volumeId: ReaderVolumeId;
+  eyebrow: string;
+  heading: string;
+  introduction: string;
+}>;
+
+export function VolumeBookIndex({
+  volumeId,
+  eyebrow,
+  heading,
+  introduction,
+}: VolumeBookIndexProps) {
+  const lessons = readerEntriesForVolume(volumeId);
+  return (
+    <section className="book-index" id="book-index">
+      <div className="section-heading light">
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2>{heading}</h2>
+          <p className="section-intro">{introduction}</p>
+        </div>
+        <span className="volume-count">{lessons.length} {lessons.length === 1 ? "LESSON" : "LESSONS"}</span>
+      </div>
+      <div className="lesson-shelf">
+        {lessons.map((lesson) => (
+          <Link href={lesson.route} className="shelf-card" key={lesson.canonicalId}>
+            <div><span>{lesson.number}</span><small>{availabilityLabel(lesson.availability)}</small></div>
+            <strong>{lesson.title}</strong>
+            <p>{lesson.summary}</p>
+            <b>Open lesson -&gt;</b>
+          </Link>
+        ))}
+      </div>
+      <aside className="study-protocol">
+        <strong>How to use this volume</strong>
+        <span>Read the picture first.</span><b>-&gt;</b>
+        <span>Translate each signal.</span><b>-&gt;</b>
+        <span>Run the bounded lab.</span><b>-&gt;</b>
+        <span>Explain the incident path.</span>
+      </aside>
+    </section>
+  );
+}
+
 export function BookIndex() {
   return (
-      <section className="book-index" id="book-index">
-        <div className="section-heading light">
-          <div>
-            <p className="eyebrow">VOLUME 01 / LINUX SYSTEMS</p>
-            <h2>{readerCatalog.length} Linux lessons that everything else will stand on.</h2>
-            <p className="section-intro">
-              Read in order. A lesson being available means it is ready to learn;
-              it does not mean the competency gate has been passed.
-            </p>
-          </div>
-          <span className="volume-count">{readerCatalog.length} LESSONS</span>
-        </div>
-        <div className="lesson-shelf">
-          {readerCatalog.map((lesson) => (
-            <Link href={lesson.route} className="shelf-card" key={lesson.canonicalId}>
-              <div><span>{lesson.number}</span><small>{availabilityLabel(lesson.availability)}</small></div>
-              <strong>{lesson.title}</strong>
-              <p>{lesson.summary}</p>
-              <b>Open lesson -&gt;</b>
-            </Link>
-          ))}
-        </div>
-        <aside className="study-protocol">
-          <strong>How to use this volume</strong>
-          <span>Read the picture first.</span><b>-&gt;</b>
-          <span>Translate each signal.</span><b>-&gt;</b>
-          <span>Run the bounded lab.</span><b>-&gt;</b>
-          <span>Explain the incident path.</span>
-        </aside>
-      </section>
-
+    <VolumeBookIndex
+      volumeId="01-linux-systems"
+      eyebrow="VOLUME 01 / LINUX SYSTEMS"
+      heading="Linux lessons that everything else will stand on."
+      introduction="Read in order. A lesson being available means it is ready to learn; it does not mean the competency gate has been passed."
+    />
   );
 }
 
 export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }) {
   const adjacent = adjacentReaderEntries(lesson.id);
+  const entry = findReaderEntry(lesson.id);
+  if (!entry) throw new Error(`reader entry is missing for ${lesson.id}`);
+  const volumeLessons = readerEntriesForVolume(entry.volumeId);
   return (
     <article className="foundation-lesson routed-lesson" id={lesson.id}>
           <header className="lesson-heading">
@@ -161,8 +190,8 @@ export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }
           <nav className="lesson-pagination" aria-label={`Lesson ${lesson.number} navigation`}>
             {adjacent.previous
               ? <Link href={adjacent.previous.route}>&lt;- Previous: {adjacent.previous.number}</Link>
-              : <Link href="/book/linux">&lt;- Volume index</Link>}
-            <Link href="/book/linux">{readerCatalog.length}-lesson index</Link>
+              : <Link href={entry.volumeRoute}>&lt;- Volume index</Link>}
+            <Link href={entry.volumeRoute}>{volumeLessons.length}-lesson index</Link>
             {adjacent.next
               ? <Link href={adjacent.next.route}>Next: {adjacent.next.number} -&gt;</Link>
               : <Link href="/practice/storage">Practise this volume -&gt;</Link>}

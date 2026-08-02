@@ -1,9 +1,16 @@
 import Link from "next/link";
-import { readerCatalog } from "../lessons/reader-catalog";
+import { readerEntriesForVolume } from "../lessons/reader-catalog";
+
+function lessonState(count: number): string {
+  return `${count} ${count === 1 ? "LESSON" : "LESSONS"} AVAILABLE`;
+}
+
+const startLessonCount = readerEntriesForVolume("00-start-safely").length;
+const linuxLessonCount = readerEntriesForVolume("01-linux-systems").length;
 
 const volumes = [
-  { number: "00", title: "Start safely", detail: "Ubuntu setup, evidence, cleanup, command risk, and learning workflow.", state: "NEXT" },
-  { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: `${readerCatalog.length} LESSONS AVAILABLE`, href: "/book/linux" },
+  { number: "00", title: "Start safely", detail: "Systems thinking, evidence, cleanup, command risk, and a reliable learning workflow.", state: lessonState(startLessonCount), href: "/book/start" },
+  { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: lessonState(linuxLessonCount), href: "/book/linux" },
   { number: "02", title: "Connectivity", detail: "Ethernet through TLS: routing, TCP, DNS, HTTP, proxies, load balancers, and PKI.", state: "PLANNED" },
   { number: "03", title: "Engineering and delivery", detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, and supply chain.", state: "PLANNED" },
   { number: "04", title: "Reliability and operations", detail: "Observability, SLOs, capacity, overload, incidents, toil, backup, and recovery.", state: "PLANNED" },
@@ -28,12 +35,12 @@ export default function BookLibraryPage() {
         <p className="eyebrow">THE COMPLETE LEARNING MAP</p>
         <h1>One field manual.<br /><em>Foundation to staff-level systems.</em></h1>
         <p>
-          Begin with Ubuntu and move outward into containers, Kubernetes, cloud,
-          private infrastructure, data platforms, reliability, security, and architecture.
-          Every chapter connects mechanism to production judgment.
+          Begin with systems thinking and Ubuntu, then move outward into containers,
+          Kubernetes, cloud, private infrastructure, data platforms, reliability,
+          security, and architecture. Every chapter connects mechanism to production judgment.
         </p>
         <div className="library-actions">
-          <Link href="/book/linux">Open Volume 01</Link>
+          <Link href="/book/start">Begin with Volume 00</Link>
           <Link href="/my-learning">Resume and bookmarks</Link>
           <Link href="/search">Search lessons</Link>
         </div>
