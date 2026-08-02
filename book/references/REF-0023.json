@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0023",
+  "title": "Pipelines",
+  "organization": "GNU Project",
+  "url": "https://www.gnu.org/software/bash/manual/html_node/Pipelines.html",
+  "sourceType": "manual",
+  "versionOrDate": "GNU Bash Reference Manual page reviewed 2026-08-02; installed-version behavior must be checked locally",
+  "lessonIds": ["LES-0008"],
+  "topics": ["shell pipelines", "exit status", "PIPESTATUS", "pipefail"],
+  "relevance": "Primary shell reference for explaining why displayed output and pipeline success are different evidence, how exit status is selected, and why a diagnostic command must preserve failure branches.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -3,8 +3,8 @@ import "./globals.css";
 import ReaderControls from "./reader-controls";
 
 export const metadata: Metadata = {
-  title: "Systems Reliability Field Manual",
-  description: "An Ubuntu-first field manual for DevOps, SRE, platform, data, and production engineering.",
+  title: "Reliability Atlas",
+  description: "The DevOps, SRE & Platform Engineering Field Manual — an Ubuntu-first guide to production systems and judgment.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

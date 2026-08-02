@@ -28,7 +28,7 @@ export default function StorageChapter() {
           <p className="eyebrow">BOOK / CHAPTER 01</p>
           <h1>Linux storage: blocks, inodes, and ENOSPC</h1>
           <p>
-            Abhishek, when you see <code>ENOSPC</code>, read it as: Linux could not
+            When you see <code>ENOSPC</code>, read it as: Linux could not
             allocate a required storage resource. Do not translate it immediately
             into &quot;the disk is full.&quot;
           </p>

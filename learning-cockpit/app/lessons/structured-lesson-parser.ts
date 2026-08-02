@@ -463,7 +463,14 @@ export function parseStructuredLesson(raw: string): ParsedStructuredLesson {
   for (const field of ["id", "slug", "route", "title", "summary", "domain", "volume"] as const) {
     requireString(metadataRecord, field, "lesson");
   }
-  for (const field of ["aliases", "curriculumIds", "assessmentIds", "referenceIds"] as const) {
+  for (const field of [
+    "aliases",
+    "curriculumIds",
+    "prerequisiteLessonIds",
+    "prerequisiteCurriculumIds",
+    "assessmentIds",
+    "referenceIds",
+  ] as const) {
     requireStringArray(metadataRecord, field, "lesson");
   }
   if (metadataRecord.schemaVersion !== 1 || metadataRecord.kind !== "lesson") {

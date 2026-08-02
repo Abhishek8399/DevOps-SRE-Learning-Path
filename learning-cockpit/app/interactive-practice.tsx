@@ -114,7 +114,7 @@ export default function InteractivePractice() {
             <h3>Explain inode exhaustion to a developer whose upload just failed.</h3>
             <p>Cover the symptom, exact filesystem, blocks versus inodes, safe remediation, and verification.</p>
             <label className="sr-only" htmlFor="inode-teachback">Your inode exhaustion explanation</label>
-            <textarea id="inode-teachback" value={teachBack} onChange={(event) => { setTeachBack(event.target.value); setSaved(false); }} placeholder="Abhishek, when you see ENOSPC..." />
+            <textarea id="inode-teachback" value={teachBack} onChange={(event) => { setTeachBack(event.target.value); setSaved(false); }} placeholder="When you see ENOSPC..." />
             <div className="teach-actions">
               <div><button type="button" onClick={saveTeachBack}>Save on this device</button>
               <button className="load-note" type="button" onClick={loadTeachBack}>Load saved note</button></div>

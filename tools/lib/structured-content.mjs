@@ -40,9 +40,9 @@ const legacyMapFileName = "legacy-content-map.json";
 const legacyIdentityBaselineSha256 =
   "a580aafb1bbbfb555d0fcb1fc47ba882ef3cdcc04b8d3668cfa02c925f05539d";
 const schemaDocumentBaselineSha256 = Object.freeze({
-  lesson: "0b5a52e5003cacac78fb925f2b6be4bf621be18cb52d7b7969ca25dc045fcc61",
-  assessment: "b7bd1d83cfb3ca62462938f0dcea555bf542f6c58c38124cfef84969eb9c875d",
-  reference: "1e9b02c99b0a83fe29192957a30ddfc1528afb2bb9920708907c6149661247d3",
+  lesson: "ac78b459aa1d7bd0509b482c4fc30a8f65304792e78265b7ec649563cd99f9fe",
+  assessment: "1eb11a7c61d371d1ae54a39ad7145bc5cc767da9a9d517941d3b5581bac5540d",
+  reference: "6737b4398c0af66164fd7ee0425f5227b475ca7541bbc4ffbfab721f3d7febb6",
 });
 const assessmentAnswerFields = Object.freeze([
   "directAnswer", "foundation", "reasoningSteps", "seniorAnswer", "weakAnswer",

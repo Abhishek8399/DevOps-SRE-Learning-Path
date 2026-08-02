@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0009",
+  "lessonId": "LES-0008",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Answer-isolated changed-constraint transfer: in a clean Ubuntu 24.04 or WSL 2 Ubuntu 24.04 normal-user environment, investigate the `transfer` case in `book/labs/LES-0008-frame-troubleshooting` without reading another learner's diagnosis or seeking a model answer. Use the guarded lifecycle and the reusable FRAME worksheet. Find the first observed abnormal boundary, reject competing hypotheses with evidence, choose at most one bounded experiment only if justified, recover through the supported interface, verify the real modeled operation, and prove cleanup. Use no sudo, installation, network, port, Docker, background worker, host pressure, employer data, credential, manual state edit, or broad deletion. The case name is not a hint; no diagnosis or reviewer solution is stored in this assessment.",
+  "deliverables": [
+    "A sanitized environment and safety card naming Ubuntu, WSL status if applicable, Bash and Python versions, effective UID, repository and lab scope, no-network boundary, expected time, exact changed resources, stop conditions, recovery interface, and cleanup proof.",
+    "A completed FRAME record based on `book/frameworks/FRAME.md` that defines the modeled user operation, expected behavior, observed impact, affected and healthy scopes, recovery target, constraints, and help or hints used.",
+    "A diagram of the modeled operation that labels each state owner, handoff, evidence point, control decision, user-visible outcome, trust or process boundary, and the first observed abnormal transition.",
+    "A table that keeps supplied facts, local observations, assumptions, bounded inferences, hypotheses, and unknowns separate; every important observation must state what it proves, what it does not prove, and its scope.",
+    "A time-ordered evidence record from baseline through injected case, including the exact supported commands used, predictions recorded before each probe or experiment, observed fields and units, command exit status, and any refusal retained as evidence.",
+    "At least three ranked mechanism hypotheses with supporting and contradicting evidence, a falsification test for each, and an explanation of why the loudest symptom or most recent change is not automatically the cause.",
+    "If one bounded experiment is used, a prewritten control envelope containing the selected hypothesis, support and rejection outcomes, authorization boundary, maximum scope, success, abort, rollback or recovery, and evidence preserved before mutation. If no experiment is justified, explain which missing evidence prevents it.",
+    "A restoration and verification record showing supported recovery, `verify-operation`, relevant post-recovery evidence, reconciliation of modeled outcomes, and the difference between service restoration and final causal confidence.",
+    "Exact cleanup evidence showing the registered lesson root and UID-scoped state are absent through the supported cleanup and check behavior; retain no credential, personal path, hostname, address, employer identifier, or unsanitized output.",
+    "A production transfer for one environment not named by the fixture—container platform, Kubernetes controller, CI/CD system, data pipeline, or private-cloud control plane—that maps the same evidence method, safety envelope, rollback, failure domains, observability, and cost or capacity trade-off without claiming the fixture proves that system."
+  ],
+  "evidenceRequirements": [
+    "Start from clean state, run `check`, and preserve the preflight result. Use `setup`, `run baseline`, and exactly `inject transfer`; do not inject a second case without guarded reset and a new declared attempt.",
+    "Use only supported `observe symptoms|timeline|path|changes`, `probe app-only|dependency-only|queue`, and, when justified by a written prediction, at most one supported `experiment retry-off|known-good-workers`. Do not edit the descriptor, sentinel, manifest, copied model, or immutable result artifacts.",
+    "Show at least one matched baseline/current or affected/healthy comparison and identify the first boundary where healthy input is followed by abnormal state, rate, wait, correctness, or outcome.",
+    "For every probe and experiment, record the question and prediction before execution. A post-hoc story without a falsifiable prediction does not satisfy the evidence requirement.",
+    "Reject at least two plausible mechanisms using observed evidence. A component name, error string, recent deployment, low CPU, active process, or successful control-plane report is not by itself a mechanism diagnosis.",
+    "Do not infer host performance from the deterministic virtual-time model. State which timing is virtual, which shell duration is wall time, and why neither measures production latency or capacity.",
+    "Use supported `recover` and `verify-operation`, then check status. Explain what the verified modeled operation proves and what remains unknown about causal chain, recurrence, scale, and other environments.",
+    "Run guarded `cleanup` and a following `check`, or retain an exact refusal for mentor review. Never replace a refusal with manual recursive deletion or weakened ownership, path, sentinel, mode, type, link, or allowlist checks.",
+    "Submit original sanitized reasoning. Reading the guided or changed-case answer, copying chapter phrasing without applying it to observed transfer evidence, or obtaining the hidden diagnosis from another person invalidates independence and must be disclosed."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Safety, lifecycle, and reproducibility",
+      "points": 4,
+      "observableEvidence": "The attempt is clean-state, local, non-root, bounded, interface-only, and reproducible; predictions, refusals, supported recovery, operation verification, and exact cleanup are retained without unsafe workarounds."
+    },
+    {
+      "criterion": "Frame and evidence integrity",
+      "points": 4,
+      "observableEvidence": "Impact, scope, operation, constraints and recovery target are precise, and facts, observations, assumptions, inferences, hypotheses and unknowns retain source, boundary, interval and proof limits."
+    },
+    {
+      "criterion": "Path and first abnormal boundary",
+      "points": 4,
+      "observableEvidence": "The submission maps owners and transitions, uses matched comparisons, and identifies the earliest observed divergence instead of selecting the loudest symptom or most recent event."
+    },
+    {
+      "criterion": "Hypothesis and experiment quality",
+      "points": 4,
+      "observableEvidence": "At least three mechanisms are ranked and two rejected with evidence; any experiment is selected from a written falsifiable prediction and constrained by scope, abort, recovery and preserved evidence."
+    },
+    {
+      "criterion": "Evaluation, prevention, transfer, and independence",
+      "points": 4,
+      "observableEvidence": "The real modeled operation and cleanup are verified, restoration is separated from causal certainty, prevention follows the evidenced mechanism, production transfer respects limitations, and assistance is disclosed honestly."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

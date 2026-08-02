@@ -7,6 +7,7 @@ export const LEARNING_LIBRARY_LESSON_IDS = [
   "identity-permissions",
   "LES-0006",
   "LES-0007",
+  "LES-0008",
 ] as const;
 
 export type LearningLessonId = (typeof LEARNING_LIBRARY_LESSON_IDS)[number];

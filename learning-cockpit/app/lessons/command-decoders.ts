@@ -928,16 +928,16 @@ sre-network-response=true`,
       prerequisiteExplanation:
         "Run in the same Ubuntu shell or execution context as the operation being investigated. No sudo is needed. Identity can differ across SSH sessions, systemd units, containers, and Kubernetes pods.",
       sampleOutput:
-        "uid=1000(abhishek) gid=1000(abhishek) groups=1000(abhishek),27(sudo),998(docker)",
+        "uid=1000(sreuser) gid=1000(sreuser) groups=1000(sreuser),27(sudo),998(docker)",
       fields: [
         {
-          token: "uid=1000(abhishek)",
+          token: "uid=1000(sreuser)",
           plainMeaning: "The current user ID and its resolved account name.",
           operationalUse: "Provides the identity used for owner-bit checks and many access-control/audit decisions.",
           trap: "A name is a local resolution of a numeric ID. Containers, NFS, LDAP, and user namespaces can map the same number or name differently.",
         },
         {
-          token: "gid=1000(abhishek)",
+          token: "gid=1000(sreuser)",
           plainMeaning: "The current primary group ID and resolved group name.",
           operationalUse: "Explains the group assigned by default to new files unless directory setgid or another mechanism changes it.",
           trap: "The primary group is not the only group considered during access checks.",
@@ -991,10 +991,10 @@ sre-network-response=true`,
       sampleOutput: `f: /tmp/sre-permissions.Ab12Cd34/app/config/settings
 drwxr-xr-x root     root     /
 drwxrwxrwt root     root     tmp
-drwx------ abhishek abhishek sre-permissions.Ab12Cd34
-drwxr-x--- abhishek abhishek app
-drwxr-x--- abhishek abhishek config
--rw-r----- abhishek abhishek settings`,
+drwx------ sreuser sreuser sre-permissions.Ab12Cd34
+drwxr-x--- sreuser sreuser app
+drwxr-x--- sreuser sreuser config
+-rw-r----- sreuser sreuser settings`,
       fields: [
         {
           token: "f:",
@@ -1027,7 +1027,7 @@ drwxr-x--- abhishek abhishek config
           trap: "Opening other permissions to fix one service can expose data to every local identity and is rarely the least-privilege correction.",
         },
         {
-          token: "root root / abhishek abhishek",
+          token: "root root / sreuser sreuser",
           plainMeaning: "Resolved owner and group for each path component.",
           operationalUse: "Lets you select the applicable mode class using id output.",
           trap: "Names can hide numeric mapping differences. Use numeric stat fields when containers, NFS, or user namespaces are involved.",
@@ -1068,7 +1068,7 @@ drwxr-x--- abhishek abhishek config
       prerequisiteExplanation:
         "Read this decoder now, but run it only after Guided Local Lab Step 1 creates and verifies LAB_DIR in the same normal-user shell. GNU stat is provided by coreutils. The custom format is read-only.",
       sampleOutput:
-        "name=/tmp/sre-permissions.Ab12Cd34/app/config/settings type=regular file mode=-rw-r----- octal=640 owner=abhishek:abhishek uid=1000 gid=1000 size=9 inode=524381 links=1",
+        "name=/tmp/sre-permissions.Ab12Cd34/app/config/settings type=regular file mode=-rw-r----- octal=640 owner=sreuser:sreuser uid=1000 gid=1000 size=9 inode=524381 links=1",
       fields: [
         {
           token: "%n / name=",

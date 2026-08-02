@@ -33,6 +33,7 @@ const localBindingConfig = {
 };
 
 export default defineConfig({
+  server: { strictPort: true },
   plugins: [
     bookContent(),
     vinext(),

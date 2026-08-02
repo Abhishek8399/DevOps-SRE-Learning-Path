@@ -6,7 +6,7 @@ Use this guide only with the disposable `devops-sre-p1-enospc` lab container. Th
 
 ## The decision you are making
 
-Abhishek, zero free inodes tells you why file creation fails. It does not tell you which files are safe to delete.
+Zero free inodes tells you why file creation fails. It does not tell you which files are safe to delete.
 
 Keep these as two separate decisions:
 

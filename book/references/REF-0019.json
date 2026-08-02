@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0019",
+  "title": "Incident Response",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/workbook/incident-response/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Workbook online edition reviewed 2026-08-02",
+  "lessonIds": ["LES-0008"],
+  "topics": ["incident response", "roles", "mitigation", "communication", "preparedness"],
+  "relevance": "Provides primary operational context for controlling an incident, separating response work, coordinating decisions, and preferring prepared reversible actions over improvised broad changes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

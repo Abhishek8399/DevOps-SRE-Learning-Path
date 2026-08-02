@@ -13,10 +13,10 @@ import type { SearchDocument } from "./search-index.ts";
 const linuxVolume = getReaderVolume("01-linux-systems");
 
 const canonicalIds: Readonly<Record<FoundationLessonId, readonly string[]>> = {
-  "processes-signals-systemd": ["02", "V01-L02", "LNX-002"],
-  "cpu-memory-pressure": ["03", "V01-L03", "LNX-003"],
-  "network-request-path": ["04", "V01-L04", "NET-003", "NET-004", "NET-005", "NET-006"],
-  "identity-permissions": ["05", "V01-L05", "LNX-004"],
+  "processes-signals-systemd": ["LES-0002", "02", "V01-L02", "LNX-002"],
+  "cpu-memory-pressure": ["LES-0003", "03", "V01-L03", "LNX-003"],
+  "network-request-path": ["LES-0004", "04", "V01-L04", "NET-003", "NET-004", "NET-005", "NET-006"],
+  "identity-permissions": ["LES-0005", "05", "V01-L05", "LNX-004"],
 };
 
 const incidentAliases: Partial<Record<FoundationLessonId, readonly string[]>> = {
@@ -47,7 +47,7 @@ const storageDocument: SearchDocument = {
   fields: [
     {
       category: "Lesson ID",
-      values: ["storage", "01", "V01-L01", "LNX-001"],
+      values: ["storage", "LES-0001", "01", "V01-L01", "LNX-001"],
       weight: 16,
     },
     {

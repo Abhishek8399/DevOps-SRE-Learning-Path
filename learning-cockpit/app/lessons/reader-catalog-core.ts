@@ -51,6 +51,11 @@ export type ReaderCatalogEntry = Readonly<{
   availability: ReaderAvailability;
 }>;
 
+export type ReaderPrerequisiteContext = Readonly<{
+  lessons: readonly ReaderCatalogEntry[];
+  curriculumIds: readonly string[];
+}>;
+
 export type StructuredReaderMetadata = Readonly<{
   id: string;
   slug: string;
@@ -139,6 +144,32 @@ export function findReaderEntryInCatalog(
   slug: string,
 ): ReaderCatalogEntry | undefined {
   return catalog.find((entry) => entry.slug === slug);
+}
+
+export function findReaderEntryByCanonicalIdInCatalog(
+  catalog: readonly ReaderCatalogEntry[],
+  canonicalId: string,
+): ReaderCatalogEntry | undefined {
+  return catalog.find((entry) => entry.canonicalId === canonicalId);
+}
+
+export function resolveReaderPrerequisitesInCatalog(
+  catalog: readonly ReaderCatalogEntry[],
+  prerequisiteLessonIds: readonly string[],
+  prerequisiteCurriculumIds: readonly string[],
+): ReaderPrerequisiteContext {
+  const lessons = prerequisiteLessonIds.map((canonicalId) => {
+    const entry = findReaderEntryByCanonicalIdInCatalog(catalog, canonicalId);
+    if (!entry) {
+      throw new Error(`reader prerequisite ${canonicalId} is missing from the catalog`);
+    }
+    return entry;
+  });
+
+  return {
+    lessons,
+    curriculumIds: prerequisiteCurriculumIds,
+  };
 }
 
 export function adjacentReaderEntriesInCatalog(

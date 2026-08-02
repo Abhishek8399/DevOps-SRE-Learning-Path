@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0008",
+  "lessonId": "LES-0008",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "Product-company incident interview: ten minutes after a routine platform rollout, checkout success falls from 99.95 percent to 91 percent for one availability zone while the regional average remains above 98 percent. New instances in that zone repeatedly fail readiness and are replaced. Existing instances still serve some traffic. Application CPU is low, a shared identity dependency shows a small regional error increase, and each replacement immediately retries configuration and identity requests. The deployment controller reports the desired revision accepted. As incident lead, use FRAME to give your first five minutes, your next fifteen minutes, the safest restoration decision, recovery verification, causal follow-up, and prevention. Explain what each major signal proves and does not prove.",
+  "directAnswer": "Treat checkout success in the affected zone as the primary symptom and separate it from controller acceptance, process replacement, CPU, and regional averages. In the first five minutes, declare scope and recovery objective, stop further rollout through the approved reversible control, assign incident roles, preserve revision and per-zone evidence, and prevent uncontrolled replacement or retry amplification without destroying useful existing capacity. In the next fifteen minutes, compare one failed new instance, one serving old instance in the zone, and one healthy instance elsewhere across configuration retrieval, identity, readiness, routing, and checkout. Rank a bad revision or zonal configuration, a zonal identity path, and retry-driven dependency overload as competing mechanisms. Restore using the smallest tested action supported by that evidence—typically a zonal canary rollback or pause plus bounded retry/replacement control—then verify ready capacity, route membership, real checkout success, identity health, retry rate, and backlog. Complete causality and prevention only after restoration; controller acceptance and rollback success are not a root-cause proof.",
+  "foundation": "An availability zone is a deployment and failure boundary, but not every dependency is isolated by zone. A deployment controller belongs to the control path: it records and reconciles desired state. Checkout requests use the data path. `Accepted` means the controller stored or accepted the requested revision at its boundary; it does not mean instances became ready, routing selected them correctly, identity calls succeeded, or checkout completed. Readiness is a gate that should keep an instance out of normal traffic until required conditions pass. Replacement is a feedback loop: if every replacement repeats calls to an impaired shared dependency, the recovery mechanism can increase the failure. Regional averages can hide severe zonal impact because healthy zones dominate the calculation.",
+  "reasoningSteps": [
+    "Frame the incident with two objectives: restore correct checkout for the affected population and prevent the control loop from reducing remaining useful capacity. Record start time, affected zone, release cohort, successful old instances, data-integrity constraints, and decision authority.",
+    "In the first five minutes, establish incident command, operations, communications, and subject-matter ownership appropriate to the organization. Announce current facts and uncertainty, freeze further rollout through the reviewed mechanism, and set the next update time.",
+    "Do not terminate existing serving instances merely because they are old. Preserve last-known-good capacity while determining whether it is correct and safe. Do not increase replacement rate; it may amplify configuration and identity traffic.",
+    "Build separate control- and data-path diagrams. Control path: desired revision, controller acceptance, scheduling, instance start, configuration and identity access, readiness result, route membership. Data path: customer, entry point, routed instance, identity or authorization as applicable, checkout dependencies, durable result, response.",
+    "Normalize telemetry by zone, revision, instance age, request type, endpoint, and interval. Regional 98 percent is not the relevant objective when one zone is at 91 percent. Low CPU weakens only a CPU-saturation explanation for the measured instances.",
+    "Trace a failed new instance. Preserve its revision, configuration identity, startup and readiness reasons, selected identity endpoint, authentication result, retry schedule, and replacement decision. Compare with an old serving instance in the same zone to separate revision from zone, then a healthy new instance elsewhere to separate zone from revision.",
+    "Rank three hypotheses. First: the revision or configuration is incompatible with that zonal environment. Second: the zonal route or identity access is partially failing and blocks readiness or checkout. Third: immediate retries and replacement amplify a small shared dependency fault until new instances cannot converge. Keep correlated deployment timing and identity errors as evidence, not conclusions.",
+    "Use the comparison matrix to locate the first abnormal transition. For example, configuration retrieval may succeed but identity token acquisition may first diverge; or both may succeed while readiness validation differs by revision. The earliest evidenced divergence determines the next specialist and safe experiment.",
+    "Choose the smallest tested restoration. If revision is the discriminator and state compatibility is established, request a one-instance zonal rollback canary while pausing rollout and replacement amplification. If the identity path is first abnormal, preserve old capacity and use the preapproved dependency failover or traffic control instead of disguising the condition with restarts.",
+    "Before mutation, state expected support and rejection evidence, maximum cohort and time, authorization, abort criteria, rollback-forward path, integrity checks, and which volatile evidence is already preserved.",
+    "Verify every transition: the canary obtains required configuration and identity, passes readiness, joins the intended route, completes a synthetic or approved real checkout, writes the correct durable result exactly once, and returns the expected response. Then watch zonal success, tail latency, retry and replacement rates, ready capacity, dependency saturation, and healthy-zone regression long enough to cover the incident timescale.",
+    "After restoration, construct the causal chain with evidence labels. Determine the trigger, first abnormal mechanism, amplification, failed containment, detection gap, and customer impact. Do not label the deployment, identity service, or controller the root cause unless the chain and counterfactual evidence support it.",
+    "Prevention should change controls: representative zonal canaries, readiness that distinguishes permanent from retryable failure, bounded exponential backoff with jitter and budgets, rollout stops tied to zonal checkout and convergence, last-known-good preservation, dependency capacity protection, configuration/revision identity in telemetry, and rehearsed rollback or failover."
+  ],
+  "seniorAnswer": "I would say: we have a severe zonal checkout regression after a rollout, partial old capacity remains, and the causal mechanism is not established. The controller accepting a desired revision is control-plane evidence, not data-plane success. Low CPU does not exclude waiting on identity, configuration, readiness, routing, or another dependency. A small regional identity error rate may be enormous for the affected zonal path, and replacement retries can turn a small fault into a convergence outage. In five minutes I establish command, operations, communications, and subject owners; freeze the rollout; preserve old serving capacity and failed-instance evidence; cap only the approved amplification loop; and publish scope, constraints, hypotheses, actions, and next update. In fifteen minutes I compare old-versus-new in-zone and new-in-zone versus new-out-of-zone. I trace revision and configuration identity, startup, configuration retrieval, identity endpoint and outcome, readiness, route membership, and one checkout with correlated identities and monotonic durations. That two-axis comparison discriminates revision from zone and exposes the first abnormal boundary. I choose restoration from evidence: a bounded rollback canary if revision is causal enough and compatible, or the pretested identity-path failover/control if that boundary diverges first. I predeclare abort conditions for checkout success, data integrity, identity saturation, healthy-zone impact, route correctness, and time. Recovery means zonal checkout returns to objective, intended instances become ready and routed, retry/replacement pressure falls, identity recovers, accepted work is reconciled, and no duplicate or lost durable outcome appears. Only then do we complete a blameless causal analysis and verify preventive actions with zone-loss, dependency-slowdown, bad-revision, and retry-amplification tests.",
+  "weakAnswer": "The rollout broke readiness. Roll back the whole region, restart all instances, and scale the identity service because the controller and CPU look healthy.",
+  "whyWeak": "It turns correlation into diagnosis, discards surviving capacity, expands blast radius from one zone to the region, and may multiply identity requests. Controller acceptance and low CPU do not prove application or dependency health. The answer has no matched comparison, work or data-integrity semantics, authorization, prediction, canary, abort condition, rollback of the rollback, end-to-end checkout verification, or distinction between restoration and causal follow-up.",
+  "evidence": [
+    {
+      "signal": "Per-zone checkout success is 91 percent in one zone while other zones remain near objective",
+      "proves": "The measured user impact is concentrated in the selected zone and is diluted by the regional aggregate during the stated interval.",
+      "doesNotProve": "That physical zonal infrastructure is the cause or that every dependency is isolated across zones."
+    },
+    {
+      "signal": "The deployment controller records revision 214 accepted but new zonal instances never pass readiness",
+      "proves": "The desired revision was accepted at the controller boundary and convergence fails later for those instances.",
+      "doesNotProve": "Whether scheduling, configuration, identity, application initialization, readiness logic, routing, or a dependency is the first failing mechanism."
+    },
+    {
+      "signal": "Old and new instances in the same zone select different identity configuration, while new instances in a healthy zone match the old working identity path",
+      "proves": "For those comparisons, the effective identity configuration differs by the affected cohort and precedes the observed identity failure.",
+      "doesNotProve": "Which configuration producer introduced the difference, whether every failure follows it, or that a broad rollback is safe."
+    },
+    {
+      "signal": "Replacement attempts rise fivefold and each new attempt repeats failed configuration and identity requests",
+      "proves": "The replacement feedback loop amplifies calls to those dependencies during the measured interval.",
+      "doesNotProve": "That amplification caused the first failure or that stopping all replacements preserves availability."
+    },
+    {
+      "signal": "An authorized zonal rollback canary becomes ready, joins only the intended route, completes an exactly-once test checkout, and does not increase identity errors",
+      "proves": "The rollback restored the declared canary path within the observed control envelope.",
+      "doesNotProve": "Full-zone safety, final root cause, recovery under peak load, or that prevention controls work."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why compare old and new instances inside the zone and new instances across zones?",
+      "answer": "Old-versus-new in one zone holds much of the zonal environment constant and tests revision or cohort differences. New-in-zone versus new-out-of-zone holds the revision more nearly constant and tests zonal differences. Neither comparison is perfect, but together they discriminate hypotheses faster than a regional aggregate."
+    },
+    {
+      "prompt": "What if the old instances contain a newly discovered security vulnerability?",
+      "answer": "Last-known-good is no longer automatically acceptable. Bring security into command, define the exploited or exposed boundary, use the preplanned restricted or fail-closed mode where required, and choose the smallest action that meets both safety objectives. Do not silently trade a known security breach for availability; record the explicit risk decision and verify enforcement."
+    },
+    {
+      "prompt": "Would you suppress readiness failures to keep new instances serving?",
+      "answer": "No. A failing readiness condition may be correctly protecting users. First identify what readiness tests and whether it represents a required dependency or an overly coupled optional function. Any degraded mode must be designed, authorized, observable, and tested; bypassing the gate during an incident can route customers into known-bad instances."
+    },
+    {
+      "prompt": "How do you control retries without losing required checkout work?",
+      "answer": "Separate synchronous customer attempts from durable work, understand idempotency and deadlines, and apply the approved bounded control: backoff, jitter, retry budget, admission limit, circuit behavior, or queued replay. Reconcile original operations and attempts so the control neither drops required work silently nor duplicates durable effects."
+    },
+    {
+      "prompt": "What belongs in the post-incident causal record?",
+      "answer": "An evidence-sourced timeline; trigger and preconditions; first abnormal mechanism; propagation and amplification; failed detection or containment; response decisions and their effects; customer and data impact; counterfactuals; and actions with owners, dates, verification methods, and rollback. Avoid blame and unsupported single-root labels."
+    },
+    {
+      "prompt": "How would your answer change if every zone failed simultaneously?",
+      "answer": "I would prioritize correlated failure domains: global revision, shared identity or configuration, regional network control, credentials, quota, or operator action. Preserve any unaffected data path, stop global amplification, compare the earliest global transition, and use the tested global rollback or dependency recovery path rather than repeating independent zonal actions."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Incident framing and command",
+      "points": 4,
+      "observableEvidence": "Defines zonal checkout impact and recovery target, establishes roles and communication, freezes unsafe expansion, preserves evidence, and protects surviving capacity."
+    },
+    {
+      "criterion": "Control/data path and proof boundaries",
+      "points": 4,
+      "observableEvidence": "Separates controller acceptance, readiness, routing, identity and checkout; explains limits of CPU, aggregates, retries, and component health."
+    },
+    {
+      "criterion": "Competing hypotheses and discrimination",
+      "points": 4,
+      "observableEvidence": "Uses old/new and zone comparisons to rank revision, partial dependency path, and feedback amplification and finds the first evidenced divergence."
+    },
+    {
+      "criterion": "Safe restoration and verification",
+      "points": 4,
+      "observableEvidence": "Chooses a bounded authorized canary from evidence with prediction, abort and rollback, then verifies readiness, routing, exactly-once checkout, dependency and cohort recovery."
+    },
+    {
+      "criterion": "Causal follow-up and prevention",
+      "points": 4,
+      "observableEvidence": "Separates restoration from root-cause confidence and proposes testable controls for rollout, readiness, retries, failure domains, telemetry, and recovery."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -18,7 +18,7 @@ customer signal
     -> explain the trade-off and leave a usable runbook
 ```
 
-Abhishek, this is the part to remember: a tool name may get you through a resume filter. The loop above is what makes an experienced engineer trusted during a real incident.
+Here is the part to remember: a tool name may get you through a resume filter. The loop above is what makes an experienced engineer trusted during a real incident.
 
 ## Requirement heat map
 

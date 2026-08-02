@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0007",
+  "lessonId": "LES-0008",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A report-export service began missing 12 percent of customer exports six minutes after a deployment. The service manager reports every process active; fleet CPU, memory, and disk dashboards remain near baseline. Failures appear only in release cohort B. One application log says downstream timeout, the fleet-wide downstream p95 is normal, and retry attempts in cohort B have tripled. You may not restart, roll back, disable retries, or change production state without approval. Use FRAME: separate facts from assumptions, rank at least three hypotheses, choose the first evidence, and define the safest next move with prediction, authorization, abort, rollback, and recovery verification.",
+  "directAnswer": "Frame the failed operation as an export requested by an affected customer in cohort B, not as an unhealthy process. Treat the observed cohort failure, active process state, sampled fleet resources, one timeout event, aggregate downstream percentile, and retry increase as bounded facts whose source and interval still need checking. Rank a cohort-specific release or configuration difference first, a cohort-specific downstream path or dependency failure second, and retry amplification as either a contributor or independent third mechanism. Trace one failed and one successful export across the same boundaries, compare revision, configuration identity, route, timestamps, outcomes, and retry lineage, and look for the first differing transition. The safest move is initially read-only comparison. If evidence identifies cohort B's release as the first abnormal boundary, request approval to freeze the rollout and perform a bounded canary rollback with declared success, abort, and rollback-forward conditions; verify a real export, cohort error and retry rates, backlog, and downstream health before widening it.",
+  "foundation": "A running process is only one state at one boundary. It can be active while it reads the wrong configuration, sends work to a different dependency endpoint, lacks authorization, retries failed work, or publishes an unusable result. A fleet average combines healthy and unhealthy populations, so a problem limited to cohort B can disappear inside the aggregate. A log event reports what one component recorded; it does not by itself show whether the downstream system was slow, whether the timeout budget was too short, or whether the request reached the intended endpoint. FRAME keeps these proof limits visible: define the real operation, retrieve comparable evidence, analyze competing explanations, make one bounded safe move, and evaluate the user outcome plus what should be prevented.",
+  "reasoningSteps": [
+    "Frame impact, scope, and time: define a successful export, identify affected customer and release cohorts, align the first failure with the deployment timeline, name the recovery target, and record the prohibition on production mutation without approval.",
+    "Classify facts with sources: the measured 12-percent failure for the stated cohort and interval; process-manager active state; sampled fleet resource values; the exact timeout event; aggregate downstream p95; and cohort retry count. Mark as assumptions any claim that these signals cover the same requests, route, interval, success definition, or revision.",
+    "Draw the path for one export: acceptance, queue or handoff, worker start, downstream call, result creation, publication, and customer retrieval. Label request or job ID, release, configuration checksum, route, attempt number, and owner at each transition.",
+    "Choose a healthy comparison from cohort A with the same request shape and time window. Avoid comparing an affected peak with a healthy daily average or a different customer operation.",
+    "Rank hypothesis one as a release-cohort difference because failure is currently partitioned by cohort and followed a deployment. This remains correlation until revision, configuration, environment, identity, or code-path evidence shows the first divergence.",
+    "Rank hypothesis two as a cohort-specific downstream path, identity, connection pool, or timeout-policy problem. A normal fleet-wide p95 cannot reject a partial failure; compare the selected endpoint, route, latency, errors, and authorization for affected and healthy attempts.",
+    "Rank hypothesis three as retry amplification or retry-induced queue pressure. Determine whether retries are causes, consequences, or both by separating original requests from attempts and comparing first-attempt failure, attempt rate, queue age, and dependency load.",
+    "Retrieve the smallest read-only evidence that discriminates these hypotheses: one failed and one successful correlated timeline; effective revision and configuration identity; endpoint and dependency outcome; attempt lineage; and the first transition with healthy input but abnormal output.",
+    "Do not restart. A restart changes process state, may erase volatile evidence, does not remove a bad release or dependency condition, and can coordinate more retries. Do not roll back only because timing correlates with a deploy.",
+    "If read-only evidence shows the new release or its configuration first diverges, propose an authorized canary rollback limited to cohort B. Predict that canary exports recover without raising downstream errors; abort on worse user success, data-integrity concern, dependency saturation, or rollback failure; retain a path to restore the current revision if rollback itself is harmful.",
+    "Evaluate with the real export operation, not process state alone. Confirm canary and then cohort success, result correctness, queue or backlog drain, retry normalization, downstream latency and errors, and absence of a new healthy-cohort regression.",
+    "Encode the timeline and causal status honestly. A successful rollback can establish restoration and strengthen a release-related hypothesis, but further comparison may still be needed to identify the exact code, configuration, contract, or dependency interaction and to verify prevention."
+  ],
+  "seniorAnswer": "I would announce this as a cohort-scoped export failure with unknown mechanism and protect evidence before mutation. My fact table would include source, interval, cohort, operation definition, and proof boundary for each signal. `active` does not establish readiness or export success; normal fleet resource graphs do not describe cohort B; one timeout does not establish downstream ownership; and a fleet-wide percentile can hide a cohort-specific route. I would correlate one failed B export and one contemporaneous successful A export using job ID, attempt lineage, release, configuration digest, endpoint, correlated wall-clock timestamps with stated synchronization uncertainty, logical ordering identifiers, monotonic durations only inside each single clock domain, downstream result, publication, and customer retrieval. That produces a first-abnormal-boundary table rather than a component popularity contest. I would rank release/configuration skew, partial downstream path or authorization, and retry amplification, then seek evidence that can reject each. The immediate control is to freeze further rollout and prevent uncontrolled amplification through an approved mechanism, without deleting queued work or hiding evidence. If the first divergence is tied to the new cohort, I would request a bounded rollback canary with explicit data-integrity, user-success, dependency, and duration abort criteria. I would verify the full export, reconcile accepted work and retries, watch backlog age and downstream health, then widen only through the reviewed rollout path. Prevention would target the established mechanism: representative cohort canaries, configuration and endpoint identity in telemetry, attempt-versus-request accounting, retry budgets, automated rollback thresholds based on the user journey, and a tested evidence-preserving runbook.",
+  "weakAnswer": "The deployment obviously caused the incident. Restart cohort B and roll it back; CPU and the downstream service are healthy.",
+  "whyWeak": "Temporal correlation is not yet a causal chain. Active processes and normal fleet averages do not prove either cohort B or the selected downstream path is healthy. Restarting can erase evidence and amplify retries, while a rollback without scope, approval, abort criteria, or integrity checks can create a second incident. The answer also fails to define the user operation, compare cohorts, distinguish original requests from attempts, or verify recovery end to end.",
+  "evidence": [
+    {
+      "signal": "A failed cohort-B export and a successful cohort-A export with the same request shape show different effective configuration digests before their first divergent downstream route",
+      "proves": "For those compared attempts, a configuration difference existed before the first observed route divergence and is a strong candidate mechanism to test.",
+      "doesNotProve": "That every cohort-B failure has the same cause, which configuration field matters, or that rollback is safe for all customers."
+    },
+    {
+      "signal": "Fleet-wide downstream p95 remains near baseline while the endpoint selected only by cohort B shows rising timeouts and connection wait",
+      "proves": "The selected cohort-B dependency path is abnormal during the measured interval and was hidden by the aggregate view.",
+      "doesNotProve": "Whether the dependency, route selection, client timeout, identity, or retry load is the first cause."
+    },
+    {
+      "signal": "Original request rate is steady, first-attempt failure rises, and total attempt rate triples after immediate retries begin",
+      "proves": "Retry attempts amplify work after the initial failures for the measured cohort.",
+      "doesNotProve": "What caused the first-attempt failures or whether disabling retries preserves required work semantics."
+    },
+    {
+      "signal": "An approved cohort-B rollback canary completes a real export and publishes a correct result while downstream and healthy-cohort indicators remain within declared limits",
+      "proves": "The bounded rollback restored the canary operation without an observed regression in the monitored boundaries.",
+      "doesNotProve": "The exact defect, full-cohort safety, long-term recovery, or prevention effectiveness."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why compare one failed request with one successful request?",
+      "answer": "A matched healthy comparison reduces irrelevant differences and exposes the earliest boundary where paths diverge. One pair is a diagnostic starting point, not statistical proof; confirm the pattern across enough affected and healthy samples before widening a change."
+    },
+    {
+      "prompt": "Would you disable retries immediately?",
+      "answer": "Not blindly. First separate requests from attempts and understand durability, idempotency, deadlines, and dependency pressure. If retries are amplifying harm, use the approved bounded control—such as backoff, budget, admission limit, or pause—that preserves required work, has a rollback, and is verified with original-request success plus dependency health."
+    },
+    {
+      "prompt": "Does a successful rollback prove the deployment was the root cause?",
+      "answer": "It proves the selected operation recovered for the observed rollback scope and strengthens a release-related explanation. It does not isolate whether code, configuration, schema, identity, route, or an interaction caused the failure, and it does not explain why controls failed to contain it."
+    },
+    {
+      "prompt": "What would make you abort the canary rollback?",
+      "answer": "Predeclare conditions such as lower export success, incorrect or duplicate results, incompatible state, rising downstream errors or saturation, loss of required telemetry, rollback timeout, or impact outside the cohort. Abort through the reviewed path and preserve both pre- and post-change evidence."
+    },
+    {
+      "prompt": "How do you communicate uncertainty without sounding indecisive?",
+      "answer": "State facts, current impact, top hypotheses, confidence, the next discriminating evidence, the safe control envelope, and the next update time. Precision about uncertainty makes the decision auditable; pretending certainty makes unsafe action more likely."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Frame and evidence classes",
+      "points": 3,
+      "observableEvidence": "Defines the export operation, cohort, impact, recovery target, constraints, and separates sourced facts from assumptions and inferences."
+    },
+    {
+      "criterion": "Competing mechanism hypotheses",
+      "points": 3,
+      "observableEvidence": "Ranks at least three falsifiable mechanisms and does not call deploy timing, active state, timeout text, or aggregate health a diagnosis."
+    },
+    {
+      "criterion": "First abnormal boundary",
+      "points": 3,
+      "observableEvidence": "Uses matched affected and healthy paths with revision, configuration, route, attempt, timestamp, outcome, and state-owner evidence to find the earliest divergence."
+    },
+    {
+      "criterion": "Safe move and control envelope",
+      "points": 3,
+      "observableEvidence": "Begins read-only, preserves evidence, requires authorization, and defines prediction, bounded scope, success, abort, rollback, and integrity constraints before mutation."
+    },
+    {
+      "criterion": "Evaluation and prevention",
+      "points": 3,
+      "observableEvidence": "Verifies a real export plus backlog, retries, dependency and healthy cohorts, then distinguishes restoration evidence from final causality and proposes mechanism-linked prevention."
+    }
+  ],
+  "maximumScore": 15,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,6 +1,6 @@
 # LES-0007 lab: see a system as flow, queues, and limits
 
-Abhishek, this lab teaches one habit that separates reactive operators from strong
+This lab teaches one habit that separates reactive operators from strong
 SREs:
 
 > When a service becomes slow, do not stare only at CPU. Ask: how fast is work

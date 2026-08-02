@@ -44,7 +44,7 @@ book/
 Existing TypeScript lessons remain authoritative until a separately reviewed typed-to-structured-Markdown migration. Adding this contract must not change their URLs, IDs, text, or learner state.
 The five typed lessons are reserved in `legacy-content-map.json` as `LES-0001` through `LES-0005`. The validator checks every mapped source file and compares the complete identity set to an independently pinned SHA-256 baseline, permanently reserving their routes, slugs, aliases, and curriculum mappings. New content cannot reuse those identities. A migrated record is accepted only when it preserves the complete reserved identity. Source paths may move during a reviewed migration; published identities may not.
 
-`LES-0006` is the first schema-backed lesson. Use the next unused opaque ID for new work (`LES-0008` at this checkpoint); an ID is permanent once published and is never recycled.
+`LES-0006` is the first schema-backed lesson. The validated authored corpus contains `LES-0006` through `LES-0008`, nine assessments, and 24 references; content validation passes and the 39-case schema suite reports 38 passes plus one Windows `EPERM` symlink skip. Use the next unused opaque ID for new work (`LES-0009` at this checkpoint); an ID is permanent once published and is never recycled.
 
 
 ## Identity rules
@@ -63,6 +63,8 @@ Canonical record identity is deliberately independent of taxonomy and navigation
 Child diagrams, commands, labs, and incidents extend the lesson ID, for example `LES-0001-CMD-001`. A slug or volume may change with a redirect; the lesson ID never changes. This separation matters because the existing request-path lesson is routed under Linux but maps to several `NET-*` domains.
 
 Prerequisites may use migrated lesson IDs and canonical curriculum IDs in separate fields. They never use titles or URLs. Assessment, incident, lab, diagram, command, and reference links are explicit IDs so broken relationships fail validation.
+
+Reader prerequisite navigation is advisory. A declared lesson ID may resolve only through the trusted catalog; it must never be used to lock a lesson, auto-mark completion, or infer competency. Missing or invalid prerequisite identities fail closed instead of producing a guessed path.
 
 Assessment files live under the same domain as their owning lesson. For example, an assessment owned by a lesson whose domain is `linux` belongs in `book/assessments/linux/`.
 

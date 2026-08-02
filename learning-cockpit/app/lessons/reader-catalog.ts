@@ -3,16 +3,20 @@ import { foundationLessons } from "./foundation-lessons";
 import {
   adjacentReaderEntriesInCatalog,
   createReaderCatalog,
+  findReaderEntryByCanonicalIdInCatalog,
   findReaderEntryInCatalog,
   getReaderVolume,
   readerEntriesForVolumeInCatalog,
+  resolveReaderPrerequisitesInCatalog,
   type ReaderCatalogEntry,
+  type ReaderPrerequisiteContext,
   type ReaderVolumeId,
 } from "./reader-catalog-core";
 import { structuredLessonBundles } from "./structured-lessons.server";
 
 export type {
   ReaderCatalogEntry,
+  ReaderPrerequisiteContext,
   ReaderRenderKind,
   ReaderVolumeId,
 } from "./reader-catalog-core";
@@ -89,6 +93,23 @@ export const readerCatalog = createReaderCatalog(
 
 export function findReaderEntry(slug: string): ReaderCatalogEntry | undefined {
   return findReaderEntryInCatalog(readerCatalog, slug);
+}
+
+export function findReaderEntryByCanonicalId(
+  canonicalId: string,
+): ReaderCatalogEntry | undefined {
+  return findReaderEntryByCanonicalIdInCatalog(readerCatalog, canonicalId);
+}
+
+export function resolveReaderPrerequisites(
+  prerequisiteLessonIds: readonly string[],
+  prerequisiteCurriculumIds: readonly string[],
+): ReaderPrerequisiteContext {
+  return resolveReaderPrerequisitesInCatalog(
+    readerCatalog,
+    prerequisiteLessonIds,
+    prerequisiteCurriculumIds,
+  );
 }
 
 export function readerEntriesForVolume(

@@ -1,4 +1,4 @@
-# Systems Reliability Field Manual
+# Reliability Atlas
 
 This directory defines the durable knowledge architecture behind the local website. The book is intended to remain useful to a beginner, an experienced operator, a future contributor, or another AI without relying on chat history.
 
@@ -51,6 +51,8 @@ Readers may stop after the layer appropriate to their goal. The deeper layers re
 
 Systems thinking, Ubuntu setup, shell survival, Git workflow, command risk labels, evidence handling, cleanup, secrets, FRAME incidents, OPERATES reviews, and SCALE design decisions.
 
+The current routed Volume 00 path begins with `LES-0007` / `V00-L01` systems thinking, followed by `LES-0008` / `V00-L02` evidence-driven troubleshooting. The latter adds the reusable [`FRAME` incident worksheet](frameworks/FRAME.md), an answer-isolated independent transfer, and a bounded virtual Ubuntu incident lab. Both remain `substantive-draft`; LES-0008 project gates and the mentor-operated Ubuntu verifier pass, but formal acceptance, learner execution, transfer review, and mastery remain open.
+
 ### Volume 01 - Linux systems
 
 Filesystems, processes, descriptors, signals, systemd, CPU scheduling, memory, swap, OOM, identity, permissions, boot, logs, libraries, time, block I/O, namespaces, cgroups, performance, and hardening.
@@ -92,6 +94,7 @@ Security, reliability, observability, economics, and safe change are also evalua
 ```text
 Safe lab setup
   -> systems thinking
+  -> evidence-driven troubleshooting
   -> Linux ---------> containers ------> CI/CD
        |                  |                 |
        +-> networking ---+----------------> Kubernetes
@@ -108,7 +111,9 @@ Data + distributed systems + SRE ------> data/ML platforms
 All core branches ----------------------> architecture leadership
 ```
 
-Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. Every lesson will eventually declare stable prerequisite IDs.
+Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The next content-first batch reserves `LES-0009` through `LES-0013`, beginning with the next unused ID `LES-0009`. Every lesson will eventually declare stable prerequisite IDs.
+
+The local reader currently exposes eight lessons across Volumes 00 and 01: five established typed lessons plus three schema-backed structured lessons, with nine structured assessments and 24 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
 
 ## Planned repository shape
 

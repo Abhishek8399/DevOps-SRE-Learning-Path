@@ -1,4 +1,4 @@
-# Contributing to the Systems Reliability Field Manual
+# Contributing to Reliability Atlas
 
 This repository is a public-quality engineering field manual, a local lab system, and an evidence-backed learning program. A future human or AI contributor must be able to understand a chapter without reading the chat that created it.
 
@@ -84,7 +84,9 @@ book/
 `-- schema/
 ```
 
-Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0008` at this checkpoint), and run both contract commands before review. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0009` at this checkpoint), and run both contract commands before review. The next content-first editorial batch is `LES-0009` through `LES-0013`; each record still requires its own review and remains non-mastery evidence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+
+Declare prerequisite lesson IDs only when the referenced concept is genuinely required. The reader resolves them through the trusted catalog and displays them as advisory links; contributors must not use a prerequisite to hide content, mutate reading state, infer completion, or award mastery. Unknown identities must fail validation rather than be converted into guessed routes.
 
 The website should remain a renderer over structured content. Do not grow a single page or one giant TypeScript constant indefinitely. Do not migrate a typed lesson until route, text, diagram, answer, lab, search, and device-state compatibility are separately proven.
 

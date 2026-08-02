@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0017",
+  "title": "Effective Troubleshooting",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/effective-troubleshooting/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition",
+  "lessonIds": ["LES-0008"],
+  "topics": ["problem definition", "hypothesis testing", "systematic diagnosis", "negative results"],
+  "relevance": "Primary mechanism reference for separating symptoms from causes, understanding system behavior, testing hypotheses, and learning from tests that reject an explanation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

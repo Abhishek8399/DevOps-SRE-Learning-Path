@@ -437,7 +437,7 @@
 
 ## What you see and first thought
 
-Abhishek, when a system becomes slow, the loudest graph is often not the owner of the problem. A frontend can show long request latency while its central processing unit (CPU) is quiet. A worker can be running while work waits for minutes. A controller can say it accepted the desired state while users still cannot complete the operation.
+When a system becomes slow, the loudest graph is often not the owner of the problem. A frontend can show long request latency while its central processing unit (CPU) is quiet. A worker can be running while work waits for minutes. A controller can say it accepted the desired state while users still cannot complete the operation.
 
 Your first sentence should therefore not be "scale it," "restart it," or "CPU looks fine." Say:
 

@@ -398,7 +398,7 @@
 
 ## What you see and first thought
 
-Hey Abhishek, when someone says, "the server booted slowly" or "the service is active but unavailable," do not let those words collapse the whole machine into one box. Your first job is to name two endpoints:
+When someone says, "the server booted slowly" or "the service is active but unavailable," do not let those words collapse the whole machine into one box. Your first job is to name two endpoints:
 
 1. **Where did the timing start?** Power-on, virtual-machine (VM) start, kernel start, process identifier 1 (PID 1) start, unit activation, or deployment?
 2. **What counts as finished?** Login prompt, target reached, process running, port listening, readiness passing, load balancer admission, or a real user request succeeding?

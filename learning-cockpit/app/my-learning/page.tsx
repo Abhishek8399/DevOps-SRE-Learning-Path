@@ -6,7 +6,7 @@ import { isLearningLessonId } from "./learning-state";
 import styles from "./my-learning.module.css";
 
 export const metadata: Metadata = {
-  title: "My Learning | Systems Reliability Field Manual",
+  title: "My Learning | Reliability Atlas",
   description: "A device-local place to bookmark lessons and resume reading without changing mastery evidence.",
 };
 

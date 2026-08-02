@@ -43,6 +43,8 @@ This file records material project decisions so future contributors do not need 
 | `DEC-026` | 2026-08-02 | `ACCEPTED` | Use opaque IDs and strict JSON front matter for structured content |
 | `DEC-027` | 2026-08-02 | `ACCEPTED` | Scope lesson order and adjacency to a volume while keeping routes explicit |
 | `DEC-028` | 2026-08-02 | `PROVISIONAL` | Load canonical Markdown through an exact virtual-module registry |
+| `DEC-029` | 2026-08-02 | `ACCEPTED` | Render prerequisites as advisory navigation, never as access or mastery gates |
+| `DEC-030` | 2026-08-02 | `ACCEPTED` | Use Reliability Atlas as the official title and keep homepage journey states truthful |
 
 ## Decision records
 
@@ -116,7 +118,7 @@ Only `progress/ledger.md`, updated after reviewed learner evidence, changes comp
 
 **Context:** The learner wants enough material ready to study without waiting for one conversational turn per concept.
 
-**Decision:** Publish coherent groups of approximately five lessons in prerequisite order. Batch availability never auto-advances skills or phases.
+**Decision:** Publish coherent groups of approximately five lessons in prerequisite order. Batch availability never auto-advances skills or phases. After LES-0008, the next content-first editorial batch uses `LES-0009` through `LES-0013`, beginning with the next unused ID `LES-0009`.
 
 ### DEC-010 - Least powerful safe boundary
 
@@ -259,3 +261,19 @@ The repository audits its dependency-free JSON Schema subset, rejects unknown or
 **Decision:** Development and build resolve structured lesson source through an exact allowlisted virtual-module registry. Each registered opaque lesson ID maps to one fixed canonical `lesson.md` path. The loader validates the ID in both resolution and loading, reads UTF-8 source, and registers the exact file for change watching. Unknown IDs and traversal-shaped IDs fail closed. Development runs content validation before the server starts.
 
 **Consequences:** The local reader and production build consume the same canonical Markdown without copying lesson text into application code or exposing arbitrary filesystem reads. Every new structured lesson must be added deliberately to both the content registry and server bundle, with rejection/load tests. This fixed list is safe for the current small corpus; replace it with a validated generated manifest before manual registration becomes a scaling or drift risk.
+
+### DEC-029 - Prerequisites are advisory navigation, not gates
+
+**Context:** Stable prerequisite IDs should help a reader repair missing context, but hiding or locking a lesson would confuse recommended learning order with authorization or demonstrated competency. A read action, a followed link, or an available answer cannot prove that a prerequisite was practised or retained.
+
+**Decision:** Structured lesson pages resolve declared prerequisite lesson IDs only through the trusted reader catalog and present successful resolutions as labelled native links. The panel is advisory: it never blocks direct access, marks a prerequisite complete, changes browser reading state on its own, or raises a learner level. An unresolved or invalid identity fails closed rather than generating a guessed route.
+
+**Consequences:** Contributors must preserve stable prerequisite IDs and catalog relationships, and tests must cover resolution, order, accessible labelling, and unresolved-ID refusal. The reviewed learner ledger remains the only competency authority; prerequisite navigation is a reading aid, not learner evidence.
+
+### DEC-030 - Official title and truthful homepage journey
+
+**Context:** The public title and landing page must orient a new reader without exposing personal identity or presenting planned curriculum as available.
+
+**Decision:** `Reliability Atlas` is the official title. The homepage presents one dependency-ordered nine-stage journey ending at Capstones & Interviews; only published stages are links, planned stages explicitly have no route, and reading progress remains separate from reviewed evidence and mastery.
+
+**Consequences:** Title migrations require source and rendered-route checks for stale labels and personal-name text. Homepage links, planned boundaries, evidence language, and non-mastery behavior remain release assertions; Git remote/history are unchanged.

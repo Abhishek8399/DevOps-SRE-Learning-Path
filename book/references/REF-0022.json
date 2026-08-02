@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0022",
+  "title": "Logging Cheat Sheet",
+  "organization": "OWASP Foundation",
+  "url": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OWASP Cheat Sheet Series page reviewed 2026-08-02",
+  "lessonIds": ["LES-0008"],
+  "topics": ["security logging", "sensitive data", "event attributes", "log integrity"],
+  "relevance": "Supports safe evidence handling: useful event identity and context, protection against log injection and leakage, sanitization, access control, and retention boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2026-11-02"
+}

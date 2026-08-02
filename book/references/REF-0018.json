@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0018",
+  "title": "Monitoring",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/workbook/monitoring/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Workbook online edition reviewed 2026-08-02",
+  "lessonIds": ["LES-0008"],
+  "topics": ["monitoring strategy", "symptoms", "causes", "signal selection"],
+  "relevance": "Supports the lesson's proof-boundary discipline: start from user-visible symptoms, choose signals that answer a question, and avoid treating telemetry volume as understanding.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

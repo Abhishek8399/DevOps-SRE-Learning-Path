@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://devops-sre-learning.local/schema/lesson-v1.json",
-  "title": "Systems Reliability Field Manual lesson",
+  "title": "Reliability Atlas lesson",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -20,6 +20,13 @@ const lessonPaths = {
     "LES-0007-systems-thinking",
     "lesson.md",
   ],
+  "LES-0008": [
+    "book",
+    "volumes",
+    "00-start-safely",
+    "LES-0008-evidence-driven-troubleshooting",
+    "lesson.md",
+  ],
 } as const;
 
 type RegisteredLessonId = keyof typeof lessonPaths;

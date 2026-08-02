@@ -1,4 +1,4 @@
-# Systems Reliability Field Manual — Book Specification
+# Reliability Atlas — Book Specification
 
 Version: 1.0
 Status: Binding content and product contract
@@ -10,7 +10,7 @@ This repository will become a durable, local-first field manual for DevOps, Site
 
 The manual must help a committed reader move from first principles to production judgment. It must explain why systems behave as they do, provide safe ways to observe and change them, and require evidence before claiming skill. It is not complete because a table of contents exists, a page renders, or a learner has read a chapter.
 
-The current repository is an early implementation. Seven lessons are available across Volumes 00 and 01. The storage lesson has a dedicated isolated incident lab, and the systems-thinking lesson has a bounded non-root queue-model lab. Most curriculum domains remain planned or not started. `CONTENT_MATRIX.md` is the authoritative coverage audit; `progress/ledger.md` remains the authoritative learner-evidence record.
+The current repository is an early implementation. Eight lessons are available across Volumes 00 and 01: five established typed lessons and three schema-backed `substantive-draft` lessons. The storage lesson has a dedicated isolated incident lab, systems thinking has a bounded non-root queue-model lab, and evidence-driven troubleshooting adds a reusable FRAME worksheet plus a bounded virtual incident lab. LES-0008 project validation, application gates, route/link audits, and the mentor-operated Ubuntu verifier pass, while formal acceptance, browser QA, ShellCheck, concurrency coverage, learner transfer, and mastery remain open. Most curriculum domains remain planned or not started. `CONTENT_MATRIX.md` is the authoritative coverage audit; `progress/ledger.md` remains the authoritative learner-evidence record.
 
 ## Sources of truth
 
@@ -43,6 +43,8 @@ The same chapter may serve several audiences through progressive depth. It must 
 ### Reading prerequisites
 
 Volume 00 assumes only basic ability to use a computer, open a terminal, and edit a text file. Every later lesson declares stable prerequisite lesson IDs and links to the exact concepts it uses.
+
+The reader exposes resolved prerequisites as advisory navigation. A prerequisite link helps a reader repair context; it never hides or locks a lesson, marks the prerequisite complete, or changes learner competency. Missing or invalid prerequisite identities fail closed rather than creating a guessed route.
 
 No lesson may rely on an unexplained acronym, command, protocol, operating-system mechanism, mathematical concept, or cloud abstraction. A short prerequisite recap is acceptable; duplicating an entire earlier lesson is not.
 

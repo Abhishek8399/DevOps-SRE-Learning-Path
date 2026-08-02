@@ -10,10 +10,11 @@ This file reports delivery of the repository and website. It does not award comp
 |---|---|
 | Branch | `main` |
 | Latest substantive checkpoint | `817bb60` — `LES-0007` systems-thinking foundation lesson and Volume 00 reader path |
-| Remote | `origin` points to `Abhishek8399/DevOps-SRE-Learning-Path` |
+| Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | Commit `817bb609cd2957d5b183246612dc2b078cfb2cb3` was pushed to `origin/main`; parity was confirmed immediately after the feature push |
-| Worktree | Seven lessons across Volumes 00 and 01, including two schema-backed structured lessons; publication does not change learner competency |
-| Current milestone | `PLAN-CUR-000` / `FND-001` - systems-thinking foundation lesson and bounded Ubuntu model |
+| Worktree | Eight lessons across Volumes 00 and 01, including three schema-backed structured lessons; LES-0008 project gates pass, while `substantive-draft` publication does not change learner competency |
+| Official title | `Reliability Atlas`; production homepage journey/title/privacy assertions pass, while browser visual and keyboard QA remain blocked |
+| Current milestone | `PLAN-CUR-000` / `DBG-001` / `PLAN-LAB-107` - evidence-driven troubleshooting, reusable FRAME worksheet, and bounded virtual Ubuntu incident model |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
@@ -35,6 +36,8 @@ The committed baseline is useful and runnable, but it does not satisfy the compl
 
 Commit `817bb60` adds `LES-0007` / `V00-L01` / `FND-001` as a second `substantive-draft` structured lesson, three assessments, eight references, a bounded Ubuntu 24.04 systems-thinking lab, Volume 00 routes, and cross-volume reader support. This is project-delivery evidence only.
 
+The current worktree stages `LES-0008` / `V00-L02` / `DBG-001` as a third `substantive-draft` structured lesson. It adds the reusable `book/frameworks/FRAME.md` worksheet, `ASM-0007` through `ASM-0009` with `ASM-0009` answer-isolated, `REF-0017` through `REF-0024`, a bounded normal-user virtual incident lab, advisory prerequisite navigation, and eight-lesson catalog/search/state integration. Content/schema/reader/lint/type/build/route/link gates and mentor-operated `REL-LAB-014` pass. ShellCheck, concurrency, browser QA, formal acceptance, learner transfer, and mastery remain pending.
+
 ## Current committed checkpoint scope
 
 | Plan IDs | Capability present on `main` | Delivery state |
@@ -54,20 +57,26 @@ Commit `817bb60` adds `LES-0007` / `V00-L01` / `FND-001` as a second `substantiv
 
 The reader is committed through `817bb60`. `PARTIAL` means the complete acceptance criteria still require the named evidence.
 
+The uncommitted `LES-0008` increment extends the reader to eight lessons and three structured lessons. It resolves stable prerequisite IDs through the trusted catalog and renders them as accessible advisory links; it does not lock access, mark prerequisites complete, or infer mastery. Current worktree evidence is recorded separately from the last committed checkpoint.
+
 | Plan IDs | Capability implemented | Remaining acceptance work |
 |---|---|---|
-| `PLAN-ARC-008` | Server-built cross-volume search catalog for seven lessons, including schema-backed `LES-0006` and `LES-0007`, with deterministic client ranking across stable IDs, curriculum IDs, titles, symptoms, commands, terms, and guidance | Topic/role/difficulty filters, a lightweight generated metadata manifest before the corpus grows large, and disconnected-browser proof |
+| `PLAN-ARC-008` | Server-built cross-volume search catalog for eight lessons; canonical `LES-0001` through `LES-0008` queries and deterministic ranking pass | Topic/role/difficulty filters, a lightweight generated metadata manifest before the corpus grows large, and disconnected-browser proof |
 | `PLAN-WEB-005` | Stable lesson links, additive device-state migration, device-local bookmarks, recent history, resume, reading markers, clear/reset flow, and origin/privacy explanation | Browser restart, real cross-tab, storage-disabled, and offline interaction tests |
-| `PLAN-WEB-011` | Safe malformed/unsupported-state recovery, visible storage fallback, empty/no-result search states, and invalid-lesson 404 | Occupied-port, dependency-install, start-failure, and runtime error UX |
-| `PLAN-AUD-005` | Fixed allowlisted state schema and repeated UI boundaries keep reading actions separate from competency; 20 reader/search/adapter tests pass, including additive migration and independent-answer isolation | Full evidence lineage, mentor-output, and assessment-state audit |
+| `PLAN-WEB-011` | Safe malformed/unsupported-state recovery, visible storage fallback, empty/no-result search states, two invalid-route 404s, and strict port-3000 occupied-port refusal | Dependency-install, remaining start-failure, browser-injected, and runtime error UX |
+| `PLAN-AUD-005` | Fixed allowlisted state schema and repeated UI boundaries keep reading actions separate from competency; 21 reader/search/adapter tests pass, including additive migration and independent-answer isolation | Full evidence lineage, mentor-output, and assessment-state audit |
 
 ## Current structured-content checkpoint
 
 Schema v1 has strict lesson, assessment, and reference records; opaque IDs separate from aliases, routes, slugs, and curriculum IDs; permanent reservations for all five legacy lessons; and dependency-free repository validation. The committed corpus contains two lessons (`LES-0006` and `LES-0007`), six assessments, and 16 primary references. The 39-case schema suite covers malformed and duplicate JSON, pinned schema policy, required/non-empty body sections, H1/title parity, CommonMark fence and raw-HTML ambiguity, URL normalization, independent answer isolation, safe lab realpaths and command policy, canonical-content and policy-file symlinks, dangling links and exact path/file case, legacy migration and collisions, ownership, backlinks, and prerequisite cycles. On this restricted Windows token, 38 passed and the real policy-file symlink case skipped because file-symlink creation returned `EPERM`; that runtime case remains for Linux or symlink-capable Windows.
 
+The current worktree expands that corpus to three structured lessons, nine assessments, and 24 references. Content validation passes and the current 39-case schema run reports 38 passes plus one Windows `EPERM` symlink skip.
+
 `LES-0006` / `V01-L06` / `LNX-005` is the first production lesson published through the schema-backed renderer and catalog adapter at `/book/linux/boot-kernel-systemd-journal`. Its 18 required sections, three diagrams, 12 read-only command cards, bounded guided lab, two incidents, two complete answer guides, independent transfer prompt, and reference set are marked `substantive-draft`. The five existing typed lessons remain authoritative for their routes, and their URLs and device-local IDs are unchanged.
 
 `LES-0007` / `V00-L01` / `FND-001` is the second structured lesson at `/book/start/systems-thinking`. It adds the Volume 00 entry point, state/queue/dependency/failure-domain reasoning, three assessments, eight references, and a bounded local Ubuntu model. Commit `4c1b922` established the publishing contract, commit `24201bb` proved its first additive production path, and commit `817bb60` adds the second path. This is artifact-delivery evidence only: `substantive-draft`, publication, or a mentor-run verifier is not chapter acceptance, completed learner practice, retained knowledge, independent transfer, or learner mastery.
+
+`LES-0008` / `V00-L02` / `DBG-001` is the third structured lesson at `/book/start/evidence-driven-troubleshooting`. It teaches FRAME from foundation through expert transfer, preserves proof boundaries, uses competing hypotheses and safe experiments, and separates mitigation, restoration, verification, causal analysis, and prevention. Its project checks and mentor-operated Ubuntu verifier pass, while formal acceptance and learner-operated evidence remain absent.
 
 ## Recorded results versus current acceptance
 
@@ -78,6 +87,8 @@ For the historical `836c29e` reader checkpoint, full lint, explicit typecheck, c
 For `24201bb`, content validation reported `root-memory=6/6`, 30 Markdown files, 42 valid local links, zero explicit-anchor errors, 383 heading anchors, 107 unique curriculum IDs, all 46 requirements, three valid schemas, one structured lesson, three assessments, eight references, and five legacy reservations. The 36-case schema suite completed with 35 passes and the documented Windows `EPERM` symlink skip; all 17 reader/search/adapter tests, lint, explicit typecheck, production build, and patch checks passed. Twelve declared routes returned 200 with exactly one `h1` and no external executable assets; the structured route exposed the metadata-derived `substantive-draft` status and `REF-0008`; search returned all six lesson IDs; the invalid lesson returned 404; and the loopback-only server stopped cleanly. An escalated Ubuntu 24.04 matrix executed the lesson's 13 exact read-only runtime checks successfully with command output suppressed. Independent content and adapter re-audits passed after parser, safety, accuracy, and reference fixes.
 
 For `817bb60`, content validation reported `root-memory=6/6`, 32 Markdown files, 44 valid local links, zero explicit-anchor errors, 485 heading anchors, 107 unique curriculum IDs, all 46 requirements, three valid schemas, two lessons, six assessments, 16 references, and five legacy reservations. Lint, explicit typecheck, production build, all 20 reader tests, and 38 of 39 schema cases passed; the remaining case was the documented Windows `EPERM` policy-symlink skip. Fourteen declared routes returned HTTP 200 with exactly one `h1` and no external executable assets, and both invalid lesson routes returned 404. The bounded `LES-0007` lifecycle verifier passed in Ubuntu 24.04 and confirmed its state was absent after cleanup. That verifier run was mentor-operated project evidence, not learner lab completion or competency evidence.
+
+For the current LES-0008 worktree, content validation reports `root-memory=6/6 markdown=35 local-links=47 explicit-anchors=0 heading-anchors=639 curriculum-ids=107 requirements=46/46 structured={schemas=3/3 lessons=3 assessments=9 references=24 legacy-reservations=5}`. Schema reports 38 passes plus one Windows `EPERM` skip; all 21 reader tests, lint, typecheck, and build pass with only known build warning classes. Fifteen declared routes return 200 with one `h1`, two invalid routes return 404, 15 discovered internal links are non-error, LES-0008 payload/prerequisite/assessment/reference/non-mastery checks pass, and search resolves `LES-0001` through `LES-0008`. The production listener was exactly `127.0.0.1:4186`, then stopped and the port was clear. The Ubuntu 24.04 LES-0008 verifier passes all three cases, its recorded refusal matrix, scoped answer isolation, cleanup, and absent final state. This is mentor project evidence, not formal acceptance, learner completion, or mastery.
 
 These are repository and artifact checks, not learner evidence. Browser automation setup succeeded but no browser instance was available, so keyboard, persistence, cross-tab, clipboard, night/mobile/print, visual, and disconnected interaction claims remain incomplete. Docker lifecycle/tamper execution also remains blocked.
 
@@ -103,12 +114,12 @@ These are repository and artifact checks, not learner evidence. Browser automati
 
 | Area | Present now | Missing before complete |
 |---|---|---|
-| Curriculum | Seven lessons across Volumes 00 and 01, including schema-backed `LES-0006` and `LES-0007` at `substantive-draft`, plus the full knowledge map | Remaining Volume 00/Linux internals; Volumes 02-06; seven specialist tracks; acceptance review, primary references, and scheduled review for every lesson |
-| Website | Local launcher, landing page, two-volume routed book, reading controls, four learning modes, seven-lesson cross-volume search, schema-backed renderer, bookmarks, recent/resume, private reading markers, and command-copy feedback | Topic/role/difficulty filters, lightweight catalog manifest, evidence export, due-review scheduling, incremental legacy migration, browser restart/offline/cross-tab validation, full failure UX, and comprehensive accessibility/performance checks |
-| Labs | Bounded ENOSPC fixture source, four Ubuntu-first lab patterns, and the bounded `LES-0007` systems-thinking model; its mentor-operated Ubuntu 24.04 verifier passed and cleanup left state absent | Learner-operated evidence remains separate; Docker-in-Ubuntu restoration; common host/container/VM/Kubernetes harnesses; Bats/ShellCheck; current/legacy descriptor, fresh-shell, adversarial, and failure-path matrix |
-| Interviews | Role matrix, Linux prompts, detailed answer guides, one interactive interview mode, and six schema-backed assessments across `LES-0006` and `LES-0007`, including answer-isolated transfer | Broad stable question metadata, timed mocks, role-specific banks, scoring calibration, and portfolio defense |
+| Curriculum | Eight lessons across Volumes 00 and 01, including schema-backed `LES-0006`, `LES-0007`, and `LES-0008` at `substantive-draft`, plus the full knowledge map | Formal LES-0008 acceptance and learner evidence; remaining Volume 00/Linux internals; Volumes 02-06; seven specialist tracks; primary references and scheduled review for every lesson |
+| Website | Local launcher, landing page, two-volume routed book, reading controls, four learning modes, validated eight-lesson cross-volume search, three-lesson structured renderer, advisory prerequisites, and device-local reading tools | Topic/role/difficulty filters, lightweight catalog manifest, evidence export, due-review scheduling, incremental legacy migration, browser restart/offline/cross-tab validation, full failure UX, and comprehensive accessibility/performance checks |
+| Labs | Bounded ENOSPC fixture source, four Ubuntu-first lab patterns, and verified mentor-operated `LES-0007` and `LES-0008` virtual models | Learner-operated evidence; Docker-in-Ubuntu restoration; common host/container/VM/Kubernetes harnesses; Bats/ShellCheck; LES-0008 concurrency; remaining adversarial and failure-path matrices |
+| Interviews | Role matrix, Linux prompts, detailed answer guides, one interactive interview mode, and nine validated schema-backed assessments across `LES-0006` through `LES-0008`, including three answer-isolated transfers | Broad stable question metadata, timed mocks, role-specific banks, scoring calibration, and portfolio defense |
 | Reliability evidence | Project ledger and one active incident simulation | Complete incident program, SLOs, observability, capacity, DR, projects, and independent learner transfer |
-| Quality | Current lint/typecheck/build and content validation pass; 20 reader tests pass; 39 schema cases report 38 passes and one Windows `EPERM` skip; 14 routes return 200 with one `h1` and no external executable assets; two invalid routes return 404; bounded Ubuntu verification and cleanup pass | CI wiring, an available browser instance for axe/keyboard/visual/print/persistence/offline proof, ShellCheck and remaining lab runtime matrices, dependency-tree/license review, fresh-clone test, and public audit |
+| Quality | Current worktree passes lint/typecheck/build/content, 21 reader tests, 38 of 39 schema cases with one Windows `EPERM` skip, a 15-route/two-404/internal-link audit, and `REL-LAB-014` | CI wiring, an available browser instance for axe/keyboard/visual/print/persistence/network proof, ShellCheck, concurrency and remaining lab matrices, dependency-tree/license review, fresh-clone test, and public audit |
 
 ## Current learner state
 
@@ -119,12 +130,13 @@ These are repository and artifact checks, not learner evidence. Browser automati
 
 ## Next actions
 
-1. Publish the next dependency-ordered Volume 00/Linux structured batch with deep explanations, command decoders, complete answers, bounded Ubuntu labs, and primary references.
-2. Migrate legacy lessons incrementally only after route, text, search, answer, lab, and device-state parity checks; introduce a lightweight generated catalog manifest before corpus growth makes eager imports costly.
-3. Add cross-volume search filters, internal crawling, and browser-level persistence/keyboard/clipboard/night/mobile/print/visual tests.
-4. Restore Docker integration when available, then run the v2 lifecycle, full-boundary tamper/refusal, legacy migration, `check`, `reset`, and cleanup proof.
-5. Complete host-lab failure matrices, ShellCheck, accessibility/privacy/performance checks, dependency/license review, and fresh-clone reproducibility.
-6. Keep learner-operated `PLAN-LAB-102` at its current evidence gate; published content and reader actions must not auto-advance it.
+1. Author the next content-first batch as `LES-0009` through `LES-0013`, beginning with the next unused ID `LES-0009` and the dependency-ordered Volume 00 safety foundation covering Ubuntu/WSL shell behavior, command risk, secrets, Git change discipline, rollback, and cleanup.
+2. Keep LES-0008 at `substantive-draft`; complete ShellCheck, concurrency, browser QA, formal acceptance, independent learner transfer, and delayed recall without changing learner levels from project evidence.
+3. Migrate legacy lessons incrementally only after route, text, search, answer, lab, and device-state parity checks; introduce a lightweight generated catalog manifest before corpus growth makes eager imports costly.
+4. Add cross-volume search filters, internal crawling, and browser-level persistence/keyboard/clipboard/night/mobile/print/visual tests.
+5. Restore Docker integration when available, then run the v2 lifecycle, full-boundary tamper/refusal, legacy migration, `check`, `reset`, and cleanup proof.
+6. Complete host-lab failure matrices, ShellCheck, accessibility/privacy/performance checks, dependency/license review, and fresh-clone reproducibility.
+7. Keep learner-operated `PLAN-LAB-102` at its current evidence gate; published content, reader actions, and prerequisite navigation must not auto-advance it.
 
 ## Update protocol
 

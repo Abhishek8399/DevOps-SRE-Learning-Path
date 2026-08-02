@@ -4,6 +4,8 @@ import {
   adjacentReaderEntries,
   findReaderEntry,
   readerEntriesForVolume,
+  resolveReaderPrerequisites,
+  type ReaderPrerequisiteContext,
 } from "./lessons/reader-catalog";
 import {
   headingAnchor,
@@ -229,12 +231,71 @@ function SectionSupplement({ section, bundle }: { section: string; bundle: Struc
   return null;
 }
 
+function PrerequisitePanel({
+  context,
+  lessonId,
+}: {
+  context: ReaderPrerequisiteContext;
+  lessonId: string;
+}) {
+  if (context.lessons.length === 0 && context.curriculumIds.length === 0) return null;
+
+  const panelId = `${lessonId.toLowerCase()}-prerequisites`;
+  const descriptionId = `${panelId}-description`;
+  const lessonsHeadingId = `${panelId}-lessons-heading`;
+  const curriculumHeadingId = `${panelId}-curriculum-heading`;
+
+  return (
+    <aside
+      aria-describedby={descriptionId}
+      aria-labelledby={`${panelId}-heading`}
+      className={styles.prerequisitePanel}
+    >
+      <header>
+        <p>LEARNING PATH / ADVISORY</p>
+        <h2 id={`${panelId}-heading`}>Recommended preparation</h2>
+        <span id={descriptionId}>Review these dependencies first if the ideas feel unfamiliar. They guide your study order, but they never lock this lesson or claim mastery.</span>
+      </header>
+      <div className={styles.prerequisiteGrid}>
+        {context.lessons.length > 0 ? (
+          <nav aria-labelledby={lessonsHeadingId} className={styles.prerequisiteGroup}>
+            <h3 id={lessonsHeadingId}>Earlier lessons</h3>
+            <ul className={styles.prerequisiteLinks}>
+              {context.lessons.map((prerequisite) => (
+                <li key={prerequisite.canonicalId}>
+                  <Link href={prerequisite.route}>
+                    <strong>{prerequisite.title}</strong>
+                    <span>Volume {prerequisite.volumeNumber} / Lesson {prerequisite.number} / {prerequisite.canonicalId}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ) : null}
+        {context.curriculumIds.length > 0 ? (
+          <section aria-labelledby={curriculumHeadingId} className={styles.prerequisiteGroup}>
+            <h3 id={curriculumHeadingId}>Curriculum dependencies</h3>
+            <ul className={styles.curriculumIds}>
+              {context.curriculumIds.map((curriculumId) => <li key={curriculumId}><code>{curriculumId}</code></li>)}
+            </ul>
+            <p>These IDs map this lesson into the wider curriculum. They are references, not completion badges.</p>
+          </section>
+        ) : null}
+      </div>
+    </aside>
+  );
+}
+
 export default function StructuredLessonArticle({ bundle }: { bundle: StructuredLessonBundle }) {
   const { lesson } = bundle;
   const metadata = lesson.metadata;
   const adjacent = adjacentReaderEntries(metadata.slug);
   const entry = findReaderEntry(metadata.slug);
   if (!entry) throw new Error(`reader entry is missing for ${metadata.id}`);
+  const prerequisites = resolveReaderPrerequisites(
+    metadata.prerequisiteLessonIds,
+    metadata.prerequisiteCurriculumIds,
+  );
   const volumeLessons = readerEntriesForVolume(entry.volumeId);
   const labNetworks = [...new Set(metadata.labs.map((lab) => lab.network))].join(" / ");
   const volumeEndLink = entry.volumeId === "00-start-safely"
@@ -253,6 +314,7 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
         <article><span>TESTED BASELINE</span><strong>{metadata.testedEnvironments[0].platform} {metadata.testedEnvironments[0].version}</strong></article>
         <article><span>NETWORK</span><strong>{labNetworks}</strong></article>
       </div>
+      <PrerequisitePanel context={prerequisites} lessonId={metadata.id} />
       <nav className={styles.jumpNav} aria-label={`${metadata.title} sections`}>{lesson.sections.map((section) => <a href={`#${section.anchor}`} key={section.anchor}>{section.title}</a>)}</nav>
       {lesson.sections.map((section, index) => (
         <section className={styles.section} id={section.anchor} key={section.anchor}>

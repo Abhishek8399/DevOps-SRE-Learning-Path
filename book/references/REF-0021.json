@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0021",
+  "title": "OpenTelemetry signals",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/concepts/signals/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Concept documentation reviewed 2026-08-02; signal support remains implementation-specific",
+  "lessonIds": ["LES-0008"],
+  "topics": ["traces", "metrics", "logs", "baggage", "telemetry correlation"],
+  "relevance": "Defines major telemetry signal families used in the chapter's evidence architecture while preserving the distinction between a signal, its collection boundary, and a causal conclusion.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2026-11-02"
+}

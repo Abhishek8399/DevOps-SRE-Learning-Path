@@ -632,6 +632,20 @@ html[data-reader-theme="night"] .chapter-nav { background: rgba(19,34,56,.95); }
 }
 @media print {
   :root { --ink: #111; --muted: #333; --paper: #fff; --panel: #fff; --line: #bbb; }
+  html[data-reader-theme="night"] {
+    color-scheme: light;
+    --ink: #111;
+    --muted: #333;
+    --paper: #fff;
+    --panel: #fff;
+    --line: #bbb;
+    --navy: #10233f;
+    --teal: #087e70;
+    --teal-text: #06685e;
+    --orange: #e8642a;
+    --orange-text: #a8441c;
+    --shadow: none;
+  }
   body,.book-layout { display: block; background: white !important; }
   .book-sidebar,.mobile-book-nav,.reader-controls,.reading-progress,.reader-topline,.chapter-nav,.lesson-pagination { display: none !important; }
   .book-reader { width: 100%; padding: 0; }

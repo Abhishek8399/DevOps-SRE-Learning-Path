@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0020",
+  "title": "Managing Incidents",
+  "organization": "Google Site Reliability Engineering",
+  "url": "https://sre.google/sre-book/managing-incidents/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering online book, 2016 edition",
+  "lessonIds": ["LES-0008"],
+  "topics": ["incident management", "operational roles", "command structure", "incident lifecycle"],
+  "relevance": "Supports the production transfer from an individual diagnostic loop to coordinated incident work with explicit ownership, communication, control, and recovery verification.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
