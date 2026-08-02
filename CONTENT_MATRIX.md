@@ -22,7 +22,7 @@ Stable IDs are permanent. Do not rename or reuse an ID after publication. If a d
 | Verified chapter | The chapter contract and relevant tests are satisfied with recorded evidence |
 | Complete domain | Every planned chapter and assessment in the domain is verified and integrated |
 
-No row is `Complete domain` at this baseline. Website build success proves the renderer builds; it does not complete the curriculum. Twenty-six routed lesson identities (five legacy and twenty-one structured) are represented across the current canonical worktree, but availability, project validation, and mentor verification never make a chapter formally accepted or establish learner mastery. The LES-0026 promotion remains uncommitted until final integrated gates and remote parity are recorded.
+No row is `Complete domain` at this baseline. Website build success proves the renderer builds; it does not complete the curriculum. Twenty-six routed lesson identities (five legacy and twenty-one structured) are represented across the current canonical worktree, but availability, project validation, and mentor verification never make a chapter formally accepted or establish learner mastery. LES-0026 feature commit `f2e3e23` is pushed with exact remote parity; real-browser and formal-acceptance gates remain open.
 
 ### Artifact notation
 
@@ -237,7 +237,7 @@ Expanded job-driven and future-facing coverage is tracked by `PRV-001..004`, `DM
 
 ## Current honest summary
 
-- Twenty-six routed lesson identities are represented across Volumes 00 through 04 in the canonical worktree: five established typed lessons plus schema-backed `LES-0006` through `LES-0026`. All twenty-one structured lessons are substantive drafts, not accepted chapters or learner-mastery claims. LES-0026 automated integration passes; real-browser interaction, feature commit, push, and parity remain pending.
+- Twenty-six routed lesson identities are represented across Volumes 00 through 04 in canonical feature `f2e3e23`: five established typed lessons plus schema-backed `LES-0006` through `LES-0026`. All twenty-one structured lessons are substantive drafts, not accepted chapters or learner-mastery claims. LES-0026 automated integration, commit, push, and exact parity pass; real-browser interaction remains unavailable.
 - `LES-0007` provides the first routed Volume 00 systems-thinking chapter and a bounded queue-model lab whose Ubuntu verifier passes. That project verification does not prove the learner performed the lab or mastered FND-001.
 - `LES-0008` adds the second routed Volume 00 chapter, the reusable FRAME worksheet, two incident narratives, a normal-user virtual troubleshooting lab under `PLAN-LAB-107`, two complete-answer assessments, and answer-isolated `ASM-0009`. Content/reader/build/route/link gates and mentor-operated `REL-LAB-014` pass; formal acceptance and learner evidence remain.
 - Storage remains the only lesson with a real-kernel isolated ENOSPC exhaustion lab; full current Docker runtime validation is still pending, and the learner remediation gate remains open. The FRAME lesson uses deterministic virtual evidence rather than a real outage. Processes, CPU/memory, networking, and identity have inline Ubuntu exercises but do not yet meet the full independent-lab, references, review, and acceptance contract.
