@@ -23,4 +23,5 @@ export const generatedLearningLessonIds = [
   "LES-0021",
   "LES-0022",
   "LES-0023",
+  "LES-0024",
 ] as const;

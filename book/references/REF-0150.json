@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0150",
+  "title": "Pipeline",
+  "organization": "Jenkins project",
+  "url": "https://www.jenkins.io/doc/book/pipeline/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Jenkins User Handbook; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["continuous delivery pipeline", "pipeline as code", "Jenkinsfile", "stages", "steps", "agents", "workspaces", "source control"],
+  "relevance": "Official Jenkins handbook used to ground the provider-neutral pipeline model in a concrete implementation: reviewed pipeline-as-code, queued execution on agents, allocated workspaces, stages and steps, and movement from source through build, test and deployment.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

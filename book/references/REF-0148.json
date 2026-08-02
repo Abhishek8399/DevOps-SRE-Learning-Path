@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0148",
+  "title": "Workflow artifacts",
+  "organization": "GitHub",
+  "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitHub Actions documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["workflow artifacts", "dependency caches", "job outputs", "artifact persistence", "artifact sharing", "artifact attestations"],
+  "relevance": "Official GitHub Actions documentation used to distinguish artifacts produced and consumed by jobs from caches used for acceleration, and to connect persisted outputs with identity, retention, sharing and provenance evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

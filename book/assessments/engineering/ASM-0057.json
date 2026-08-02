@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0057",
+  "lessonId": "LES-0024",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0024-ci-cd-architecture` only from a normal-user Ubuntu 24.04 or Ubuntu WSL shell after the lab preflight accepts the environment. Capture the raw scenario and immutable input identities before derived observations. Diagnose the pipeline path across event, source, pipeline definition, scheduler, runner, workspace, cache, artifact, approval, environment, deployment and user outcome; test competing hypotheses; design the smallest safe recovery; prove cleanup; and transfer the controls to a production CI/CD platform. Do not install software, use root, contact a hosted CI service, access a remote repository, use real credentials, modify the fixture/controller/verifier, inspect another answer, manually alter controller state, or broaden cleanup. If preflight is blocked, submit the honest blocked evidence rather than changing the machine.",
+  "deliverables": [
+    "An independence declaration and environment card recording attempt time and timezone, clean attempt ID, prior help or guided material seen, Ubuntu/native-or-WSL boundary, effective UID/groups, physical repository path, available required commands, network policy, expected local resources, privilege, abort conditions, and exact cleanup command.",
+    "The unmodified preflight, setup and baseline records plus the raw independent scenario captured before any derived observation, with proof that the raw record contains no diagnosis, recovery, outcome, answer key, cache verdict, artifact verdict, or hidden expected result.",
+    "A CI/CD architecture diagram with a text alternative covering trigger/event validation, source and pipeline revisions, scheduler/queue, runner trust pool and workspace, dependency/cache path, build/test/package stages, immutable artifact store, policy and approval, environment/deployment control plane, runtime state, telemetry, and user operation.",
+    "An immutable identity table that keeps logical change, full source commit, pipeline-definition revision, pipeline run, attempt, job, runner/executor, workspace instance, cache key/object, artifact digest, approval/intent digest, environment revision, deployment operation, release, workload instance, and user operation distinct.",
+    "At least three competing hypotheses recorded before derived evidence, each with a predicted observation, a disconfirming observation, the exact owner/boundary to inspect, and the next safest discriminating step.",
+    "A chronological evidence table labeling observations, documented contracts, calculations, inferences, hypotheses and unknowns; each row must state its source identity, time/window, units where relevant, what it proves, what it does not prove, and the next evidence.",
+    "A pipeline-state and trust table covering source, pipeline code, event data, workspace, cache, artifact, secret or workload identity, policy, approval, environment, deployment API, durable application data, retry owner, logs/metrics, and user verification, including persistence and mutation authority.",
+    "A controlled-experiment record comparing isolated execution and declared cache behavior without altering the fixture, including prediction, constant inputs, single changed variable, result, proof limit, and whether any state is safe to reuse.",
+    "A recovery card naming the authorized actor, exact source/pipeline/artifact/approval/environment identities, prerequisites, scope and blast radius, concurrency and retry owner, timeout, abort thresholds, state to preserve, rollback versus roll-forward or compensation, and user-level success criteria.",
+    "A verification matrix for fresh workspace behavior, cache miss and restore behavior, artifact producer-to-consumer digest continuity, immutable promotion, approval binding, duplicate/concurrent attempt handling, timeout/unknown outcome reconciliation, permission and tamper refusals, failed-deployment recovery, real-operation verification, reset, cleanup, and final absence.",
+    "A production transfer design for one named platform that covers ephemeral or verified-clean runners, trust-pool separation, protected pipeline code, safe untrusted-event handling, cache direction/integrity, artifact immutability and provenance, short-lived workload identity, secret boundaries, policy and approvals, environments, progressive delivery, compatible migrations, retry ownership, observability, DORA metrics, capacity, cost, retention, incident response, and rollback limitations.",
+    "The complete verifier output and final check. If preflight is blocked, include the exact blocker and demonstrate that no installation, elevation, network access, external service change, or local lab mutation was used to bypass it."
+  ],
+  "evidenceRequirements": [
+    "Capture the raw scenario and all supplied immutable identities before any derived status, comparison, observation, recovery or verification view; record a timestamped prediction first.",
+    "Use only normal-user local resources created by the guarded lab. Do not use `sudo`, UID 0, package installation, remote Git, hosted CI, cloud accounts, registries, real secrets, production systems, external network, or broad process/file cleanup.",
+    "Keep source commit, pipeline definition, logical run, attempt, job, runner, workspace, cache, artifact digest, mutable name, approval, deployment operation and user operation distinct; never treat one as proof of another.",
+    "Treat a cache hit as reuse evidence, a job success as one execution result, an artifact digest as content identity, an approval as scoped authorization, a deployment response as a control-plane report, and a health check as its exact predicate; state the proof limit of each.",
+    "Use at least three hypotheses and one controlled experiment. Change one bounded variable at a time, preserve the baseline, predict both confirming and disconfirming results, and do not delete evidence merely to obtain a clean run.",
+    "For any proposed mutating production action, state authority, exact target identity and namespace, preconditions, blast radius, concurrency, timeout, success signal, abort threshold, rollback or compensation, retained evidence, and end-to-end user proof.",
+    "Do not recommend running untrusted and protected jobs in the same trust pool, exposing secrets to fork jobs, interpolating untrusted event text into shell source, using broad long-lived credentials, approving mutable names, rebuilding per environment, overwriting release versions, or retrying an unknown deployment outcome blindly.",
+    "Use exact units and denominators for durations, queue times, rates, percentages, cache sizes, artifact sizes, concurrency, retry counts, retention and DORA measures; separate logical changes/deployments from execution attempts.",
+    "Prove cleanup through the guarded verifier and final absent state. Never manually remove or edit a sentinel, descriptor, lock, fixture, controller-owned record, or foreign object to make verification pass.",
+    "State that a passing verifier demonstrates only the bounded local model and tested transitions. It does not certify a hosted CI/CD platform, runner image, artifact repository, identity provider, deployment target, production recovery, or learner mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Independent reasoning and identity",
+      "points": 10,
+      "observableEvidence": "Captures raw inputs first, predicts before observing, separates every pipeline/release/user identity, and tests competing hypotheses without answer leakage."
+    },
+    {
+      "criterion": "Mechanism and trust-boundary depth",
+      "points": 10,
+      "observableEvidence": "Accurately maps event, scheduler, runner/workspace, cache/artifact, identity, approval, environment, deployment, durable state and user boundaries."
+    },
+    {
+      "criterion": "Diagnostic evidence quality",
+      "points": 10,
+      "observableEvidence": "Uses a controlled experiment, labels observation versus inference, records units/windows and proof limits, and handles timeout, retry and concurrency honestly."
+    },
+    {
+      "criterion": "Recovery, verification and safety",
+      "points": 10,
+      "observableEvidence": "Designs an exact authorized bounded recovery, preserves state, defines abort/rollback or compensation, verifies the real operation, and proves cleanup/refusal behavior."
+    },
+    {
+      "criterion": "Production transfer and communication",
+      "points": 10,
+      "observableEvidence": "Provides a defensible platform design covering isolation, supply chain, identity, delivery, migrations, observability, DORA metrics, capacity, cost, incidents and limitations."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

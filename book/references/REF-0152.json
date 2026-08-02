@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0152",
+  "title": "DORA's software delivery performance metrics",
+  "organization": "DevOps Research and Assessment",
+  "url": "https://dora.dev/guides/dora-metrics/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Five-metric model, page updated 2026-01-05; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["change lead time", "deployment frequency", "failed deployment recovery time", "change fail rate", "deployment rework rate", "throughput", "instability", "measurement pitfalls"],
+  "relevance": "Primary DORA guidance for measuring application-scoped delivery throughput and instability with the current five-metric model, while avoiding gaming, unlike comparisons, single-metric targets and attempt-level counting that obscures real outcomes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

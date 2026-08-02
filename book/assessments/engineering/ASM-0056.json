@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0056",
+  "lessonId": "LES-0024",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "A payment platform accepts pull requests from forks. Pull-request jobs and protected-branch deployment jobs share persistent self-hosted runners, one writable cache namespace, and a long-lived production credential. A pull request changes pipeline code and interpolates its title directly into a shell step. Soon after, release version `2.4.0` is overwritten in the artifact repository. The build stage recorded digest X, but production resolved digest Y from mutable tag `candidate`. Approval names the tag, not a digest. Deployment times out after the control-plane API accepts the request, so the job retries and creates a second release. The old application expects a database column that the new release's destructive migration already removed. A shallow `/health` check stays green while payment errors rise. Rolling the application back does not restore the column. The dashboard counts every CI retry as another deployment even when no production deployment was accepted, collapses the two accepted production releases into one event, and marks recovery when the pipeline turns green. Lead incident containment and recovery, then design a CI/CD system that prevents this class of failure. Cover trust boundaries, pipeline-code review, runner isolation, caches, immutable artifacts, workload identity, approvals, deployment strategies, database compatibility, retry ownership, observability, DORA metrics, capacity, cost, and proof of user recovery.",
+  "directAnswer": "Treat this as a combined supply-chain, credential, release-integrity, data-compatibility, and customer-impact incident. Stop new pipeline execution on affected runners, promotion, tag/version mutation, deployment retries, and traffic expansion. Preserve runner images and workspaces according to incident policy; pipeline/source revisions; event payloads; shell logs without repeating secrets; cache and artifact access logs; X and Y; tag/version history; approval; credential use; deployment operation IDs; database migration and backup records; router state; and affected payment IDs. Revoke or rotate the long-lived credential through its owner and investigate runner/control-plane compromise. Reconcile the accepted deployment operations before issuing another request. Protect data first: determine whether the removed column can be restored from an authoritative backup or reconstructed, deploy a compatibility version that can operate with the observed schema, and route a bounded cohort only after data and user checks pass. A code rollback alone cannot undo destructive data change. Rebuild from reviewed immutable inputs on a clean trusted runner, publish a new non-overwritable version and digest, bind policy and approval to that digest and exact environment, and promote the same artifact. Redesign with untrusted and protected workloads in separate ephemeral trust pools, no production identity in pull-request jobs, safe event-to-shell handling, read-only or scoped caches, immutable repositories, short-lived federated identity, expansion/contraction migrations, idempotent deployment operations, progressive delivery with real readiness and user-journey gates, and truthful application-scoped DORA metrics. Recovery is complete only when payment outcomes, data integrity, duplicate releases, credential containment, artifact identity, and sustained service signals are verified.",
+  "foundation": "Pipeline configuration is executable production code because it decides what runs and which credentials or environments a job can reach. A runner executes that code. If untrusted pull requests and production deployments share one persistent runner, files, caches, processes, or credentials can cross the trust boundary. A cache is reusable acceleration data; an artifact is the release output. A tag and version label may move unless storage prevents replacement, while a digest identifies exact bytes. An approval of a mutable name can silently authorize different content later. A timeout means the caller did not receive a result; it does not prove the server did nothing. A database migration changes durable state, so rolling application files back cannot automatically reverse it. A health endpoint proves only its predicate, not successful payments.",
+  "reasoningSteps": [
+    "Declare incident command and separate but coordinate customer reliability, supply-chain/security, credential, artifact, deployment, and data-recovery workstreams. Record affected users, payment operations, regions, releases, runners, repositories, and the earliest credible exposure time.",
+    "Stop fork and protected jobs on the implicated runner pool, freeze artifact overwrite and tag movement, halt deployment retries and traffic expansion, and preserve evidence. Do not wipe runners, caches, logs, or artifacts before security and service owners decide retention.",
+    "Assume the long-lived production credential may be exposed because untrusted pipeline code shared its execution boundary. Revoke or rotate without printing it, review every use, reduce active sessions, and identify other credentials, signing keys, service connections, metadata endpoints, or repositories reachable from the runner.",
+    "Capture the exact pull-request event and pipeline revision. Treat pull-request titles, branch names, commit messages, and other event fields as untrusted data; interpolating them into shell source can turn text into commands. Pass data through typed inputs, environment files, or arguments with validation rather than source construction.",
+    "Preserve runner identity, base image, installed tools/plugins/actions, executor configuration, workspace contents, processes, network connections, cache mounts, file ownership, and bootstrap logs. A self-hosted runner is part of the production attack surface, not a neutral terminal.",
+    "Audit cache ownership and keys. A writable shared cache lets a lower-trust job influence a higher-trust job unless namespace, integrity, restore direction, and consumer validation prevent it. Quarantine suspect entries; do not infer artifact compromise solely from cache access.",
+    "Trace release `2.4.0`, digest X, digest Y, mutable tag `candidate`, upload and overwrite events, signer/builder identity, provenance subject, and every environment resolution. Determine exactly which bytes were tested, approved, and deployed.",
+    "Treat overwrite of a published version as an invariant breach. Make release objects immutable or append-only, grant publication only to a narrow identity, use content digests, retain audit, and require consumer verification. A familiar version string is not an identity.",
+    "Invalidate the tag-only approval. An authorization must cover immutable release intent: artifact digest, source and pipeline revisions, policy evidence, target environment, configuration and migration versions, expiry, approver authority, and rollout constraints.",
+    "Classify the deployment timeout as unknown outcome. Query the control plane with a stable logical operation or idempotency key, list accepted releases, compare resource versions, and reconcile duplicates before retry. Exactly one layer should own retry policy and budget.",
+    "Protect durable data. Establish current schema, migration execution history, backup/restore point, replica state, and affected rows. Do not run an automatic down migration when it may destroy newer writes or compound loss. Choose restore, forward repair, reconstruction, or compatibility deployment with database ownership and explicit data-integrity checks.",
+    "Use expansion/contraction for future schema change: add backward-compatible structures, deploy code that tolerates old and new forms, backfill and verify, switch reads/writes, then remove old structures only after old versions and rollback windows are gone. Rollback feasibility is a designed property, not a button.",
+    "Build the recovery artifact on a known-clean, isolated, reviewed worker from pinned inputs. Produce tests, SBOM/provenance/signature or equivalent policy evidence as required, publish a new immutable identity, and never overwrite `2.4.0` to hide the incident.",
+    "Select a progressive strategy according to compatibility and blast radius. A canary or blue/green deployment needs representative traffic, capacity for overlap, state compatibility, an exact routing decision, success and abort signals, and a way to reconcile operations already accepted by the bad version.",
+    "Replace shallow health with layered evidence: startup and readiness for dependency safety, liveness only for a local failure that restart can safely repair such as a deadlock or stuck loop, synthetic payment journey, authorization and data checks, error/latency/saturation metrics, queue age, duplicate rate, business reconciliation, and customer support signals. Do not make a deep destructive transaction the health probe.",
+    "Verify recovery by immutable digest and configuration on every serving cohort, correct database invariants, all sampled and at-risk payment outcomes, no unexplained duplicate release or payment, rotated credential rejection, clean runner replacement, stable guardrails through the declared window, and an independently reviewed incident timeline.",
+    "Redesign runner trust: ephemeral clean environments where possible; dedicated pools by repository and trust; no secrets for forked pull requests; least-privilege network and filesystem; trusted pinned actions/plugins/images; protected pipeline templates; short-lived audience/subject-bound federation; and separate builder, signer, promoter, and deployer authority.",
+    "Measure the delivery system honestly. DORA's current model is application-scoped throughput and instability evidence, not a leaderboard. Exclude CI attempts that never produce an accepted production deployment from deployment-event measures, but retain every deployment event the production control plane accepts, including duplicate or retry-created events. Correlate those events under their logical change and release intent without erasing them; classify an unplanned follow-on production deployment as deployment rework when it fits the stated definition. Measure change lead time, deployment frequency, failed deployment recovery time, change fail rate, and deployment rework rate from consistent user-impacting definitions, and pair them with queue, runner, gate, attempt, event, and cost signals."
+  ],
+  "seniorAnswer": "My first objective is to stop further unauthorized execution and irreversible customer harm while preserving evidence. I would disable scheduling into the affected runner pool, freeze publication and promotion, stop deployment replay, cap traffic to the bad release, and coordinate security, database, artifact, platform, and payment owners. The fork pipeline is untrusted code; sharing persistent workers, writable caches, and a production credential collapses trust boundaries. I would rotate the credential, investigate runner and control-plane access, and preserve the exact event, pipeline revisions, workspace/cache state, X/Y artifact graph, overwrite audit, approval, operation IDs, schema history, and payment impact. I would query deployment state using the original logical operation identity before any retry, remove duplicate desired releases safely, and reconcile their side effects. For data recovery I would determine the authoritative schema and backup/reconstruction path; application rollback is insufficient after a destructive migration. I would deploy a clean, immutable, compatibility-capable artifact through a small cohort, with approval bound to its digest, environment, migration intent, and policy evidence. Traffic expansion requires payment-journey and data-integrity gates, not `/health`. The target platform isolates untrusted PR jobs from protected release jobs, uses ephemeral workers and one-way cache trust, validates event data at shell boundaries, publishes non-overwritable content-addressed artifacts, separates builder/promoter/deployer identities, uses short-lived federation, implements idempotent operations and one retry owner, and designs expansion/contraction migrations. I would report DORA metrics per application: exclude CI attempts that never deploy, retain every accepted production deployment event, correlate events to logical changes and release intents, and classify qualifying unplanned follow-on deployments as rework instead of blindly deduplicating real deployments. I would also track runner queues, cache behavior, artifact integrity, gate latency, attempt/event relationships, release outcomes, and spend. Closure requires proved payment and data recovery, credential containment, exact fleet identity, and sustained user-level health.",
+  "weakAnswer": "Roll back the application, rerun the deployment, clear the shared cache, rotate the token later, and add a manual approval plus a better health check.",
+  "whyWeak": "The old application may be incompatible with the already changed database; another retry can create a third release; clearing the cache destroys evidence; delaying credential rotation leaves authority exposed; a manual approval of a mutable target can authorize substituted content; and a generic health check does not prove payment correctness. It ignores untrusted pipeline execution, runner compromise, immutable artifact continuity, unknown outcomes, data recovery, and user verification.",
+  "evidence": [
+    {
+      "signal": "Audit records show an untrusted pull-request job and a protected deploy job executed sequentially on the same persistent runner, and the deploy credential was accessible to the runner account.",
+      "proves": "The trust domains shared an execution boundary capable of exposing production authority.",
+      "doesNotProve": "That the pull request actually obtained or used the credential; credential and host investigation remains necessary."
+    },
+    {
+      "signal": "The artifact repository records `2.4.0` first as digest X and later as digest Y, while the approval references only `candidate`.",
+      "proves": "The release name was mutable and the approval did not uniquely identify the deployed bytes.",
+      "doesNotProve": "Who authorized the overwrite, whether Y is malicious, or which environments consumed each digest."
+    },
+    {
+      "signal": "The deployment API lists two accepted operations with different server operation IDs but the same logical release intent after the client timeout and retry.",
+      "proves": "The retry was not durably deduplicated and created duplicate desired work.",
+      "doesNotProve": "That both releases served traffic or caused the same side effects."
+    },
+    {
+      "signal": "Migration history and schema inspection confirm the column was removed before all old instances stopped, and payment errors correlate with old-code reads of that column.",
+      "proves": "The rollout violated backward-compatibility ordering and explains the observed old-version failures.",
+      "doesNotProve": "That restoring the column alone repairs all data or that no supply-chain change also affected behavior."
+    },
+    {
+      "signal": "A clean immutable recovery digest serves a bounded cohort, passes schema invariants and synthetic plus sampled real payment reconciliation, produces no duplicate operations, and remains within error, latency, saturation, and data guardrails for the approved window.",
+      "proves": "The recovery cohort met the declared artifact, data, and user criteria for that scope and duration.",
+      "doesNotProve": "Unaffected long-term operation, total absence of compromise, or safe full-fleet expansion without continued controls."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why are fork pull-request workflows especially sensitive?",
+      "answer": "Their repository content and event fields can be controlled by an external contributor. If that code runs where secrets, writable shared state, privileged sockets, metadata endpoints, or production networks are available, the contributor may cross into a stronger trust domain. Use no production secrets, minimal read permissions, isolated ephemeral workers, protected approval workflows, and careful event handling."
+    },
+    {
+      "prompt": "Can manual approval make an unsafe pipeline safe?",
+      "answer": "No. Approval is one authorization control. It is meaningful only when the approver sees adequate evidence and the decision is bound to immutable intent. It cannot clean a compromised runner, validate substituted bytes, make a migration reversible, prevent duplicate requests, or prove the user journey."
+    },
+    {
+      "prompt": "What is one-way cache trust?",
+      "answer": "Lower-trust work may consume a reviewed read-only base cache when policy allows, but it cannot publish entries later trusted by protected release jobs. Higher-trust producers may publish to protected namespaces with integrity metadata. Exact direction and validation depend on the threat model; the goal is to prevent untrusted writes from becoming privileged inputs."
+    },
+    {
+      "prompt": "When is blue/green safer than rolling deployment?",
+      "answer": "It can reduce mixed application versions and make traffic switching explicit when both environments have representative capacity and share compatible state. It is not automatically safer for destructive database changes, asynchronous work, warm-up, cache state, or external side effects. The decision needs compatibility, capacity, routing, verification, abort, and accepted-work reconciliation."
+    },
+    {
+      "prompt": "How should retries be represented in delivery metrics?",
+      "answer": "Keep every CI attempt for pipeline reliability, queueing, and cost analysis. Exclude an attempt from deployment-event measures when it never causes the production control plane to accept a deployment. If a retry is accepted as another production deployment, retain that event and correlate it with the same logical change or release intent rather than deleting it through deduplication. When a failed deployment requires an unplanned follow-on production deployment, classify that event as deployment rework when the agreed definition applies. Define the application and production boundary consistently and never count a non-deploying attempt as a successful deployment."
+    },
+    {
+      "prompt": "Why prefer workload identity federation to a stored deployment secret?",
+      "answer": "Federation can exchange a short-lived signed workload assertion for narrowly scoped access based on issuer, audience, subject, repository, workflow, environment, or similar claims. It reduces long-lived secret storage, but trust policy must validate exact claims and the runner/workflow still needs protection. It is not authorization by itself."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Incident containment and evidence",
+      "points": 10,
+      "observableEvidence": "Stops unsafe execution/promotion/retry, scopes customer and security impact, preserves runner/cache/artifact/deployment/data evidence, and rotates exposed authority."
+    },
+    {
+      "criterion": "Trust and supply-chain design",
+      "points": 10,
+      "observableEvidence": "Separates untrusted/protected runners, pipeline code, caches, immutable artifacts, identities, approvals, and builder/promoter/deployer authority."
+    },
+    {
+      "criterion": "Deployment and data recovery",
+      "points": 10,
+      "observableEvidence": "Reconciles timeout duplicates, handles irreversible migration safely, selects a compatible immutable recovery, and uses progressive rollout guardrails."
+    },
+    {
+      "criterion": "Verification and observability",
+      "points": 10,
+      "observableEvidence": "Verifies exact fleet identity, credentials, schema/data, payment outcomes, duplicates, and sustained reliability rather than pipeline or shallow-health status."
+    },
+    {
+      "criterion": "Metrics, capacity, cost, and prevention",
+      "points": 10,
+      "observableEvidence": "Uses truthful application-scoped DORA definitions, runner/gate/cost capacity signals, compatibility workflow, retry ownership, drills, and clear proof limits."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

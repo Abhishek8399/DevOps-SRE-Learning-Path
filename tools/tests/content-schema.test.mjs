@@ -1077,12 +1077,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes eighteen lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes nineteen lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 18);
-  assert.equal(result.metrics.assessments, 54);
-  assert.equal(result.metrics.references, 144);
+  assert.equal(result.metrics.lessons, 19);
+  assert.equal(result.metrics.assessments, 57);
+  assert.equal(result.metrics.references, 152);
 
   const expectations = [
     {
@@ -1390,6 +1390,23 @@ test("the live structured corpus publishes eighteen lessons with exact ownership
         "REF-0141", "REF-0142", "REF-0143", "REF-0144",
       ],
       independentId: "ASM-0054",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0024-ci-cd-architecture", "lesson.md"),
+      id: "LES-0024",
+      domain: "engineering",
+      route: "/book/engineering/ci-cd-architecture",
+      volume: "03-engineering-delivery",
+      order: 9,
+      prerequisiteLessonIds: ["LES-0009", "LES-0021", "LES-0022", "LES-0023"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-005", "BLD-001", "CTR-001", "CTR-002"],
+      assessmentIds: ["ASM-0055", "ASM-0056", "ASM-0057"],
+      referenceIds: [
+        "REF-0145", "REF-0146", "REF-0147", "REF-0148",
+        "REF-0149", "REF-0150", "REF-0151", "REF-0152",
+      ],
+      independentId: "ASM-0057",
     },
   ];
 

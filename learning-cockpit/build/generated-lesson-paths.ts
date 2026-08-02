@@ -18,4 +18,5 @@ export const generatedLessonPaths = {
   "LES-0021": ["book", "volumes", "03-engineering-delivery", "LES-0021-api-contracts-serialization", "lesson.md"],
   "LES-0022": ["book", "volumes", "03-engineering-delivery", "LES-0022-reproducible-builds-dependencies", "lesson.md"],
   "LES-0023": ["book", "volumes", "03-engineering-delivery", "LES-0023-oci-containers-docker", "lesson.md"],
+  "LES-0024": ["book", "volumes", "03-engineering-delivery", "LES-0024-ci-cd-architecture", "lesson.md"],
 } as const;

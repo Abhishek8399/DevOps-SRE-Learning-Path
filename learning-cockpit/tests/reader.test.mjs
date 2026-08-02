@@ -417,6 +417,27 @@ const liveLessonDescriptors = [
       volume: "03-engineering-delivery",
     },
   },
+  {
+    id: "LES-0024",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "03-engineering-delivery",
+      "LES-0024-ci-cd-architecture",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V03-L09", "ci-cd-architecture"],
+      curriculumIds: ["CI-001"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-005", "BLD-001", "CTR-001", "CTR-002"],
+      prerequisiteLessonIds: ["LES-0009", "LES-0021", "LES-0022", "LES-0023"],
+      order: 9,
+      route: "/book/engineering/ci-cd-architecture",
+      slug: "ci-cd-architecture",
+      volume: "03-engineering-delivery",
+    },
+  },
 ];
 const independentAnswerFields = [
   "directAnswer",
@@ -670,11 +691,11 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("eighteen live structured lessons preserve exact identities and canonical sections", () => {
+test("nineteen live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023"],
+    ["LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024"],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -852,7 +873,7 @@ test("published legacy route and state identities remain immutable", () => {
   );
 });
 
-test("the volume-aware reader catalog publishes twenty-three stable identities", () => {
+test("the volume-aware reader catalog publishes twenty-four stable identities", () => {
   const linuxVolume = getReaderVolume("01-linux-systems");
   const legacyMap = readJson(join(
     repositoryRoot,
@@ -878,7 +899,7 @@ test("the volume-aware reader catalog publishes twenty-three stable identities",
   const structuredMetadata = loadLiveStructuredBundles().map(({ lesson }) => lesson.metadata);
   const catalog = createReaderCatalog(legacyEntries, structuredMetadata);
 
-  assert.equal(catalog.length, 23);
+  assert.equal(catalog.length, 24);
   assert.deepEqual(
     catalog.map((entry) => [
       entry.canonicalId,
@@ -908,11 +929,12 @@ test("the volume-aware reader catalog publishes twenty-three stable identities",
       ["LES-0021", "LES-0021", "/book/engineering/api-contracts-serialization", "03-engineering-delivery", 6],
       ["LES-0022", "LES-0022", "/book/engineering/reproducible-builds-dependencies", "03-engineering-delivery", 7],
       ["LES-0023", "LES-0023", "/book/engineering/oci-containers-docker", "03-engineering-delivery", 8],
+      ["LES-0024", "LES-0024", "/book/engineering/ci-cd-architecture", "03-engineering-delivery", 9],
     ],
   );
   for (const field of ["canonicalId", "stateId", "slug", "route"]) {
     const values = catalog.map((entry) => String(entry[field]));
-    assert.equal(new Set(values).size, 23, `${field} must be unique`);
+    assert.equal(new Set(values).size, 24, `${field} must be unique`);
   }
   const positions = catalog.map((entry) => `${entry.volumeId}:${entry.order}`);
   assert.equal(
@@ -969,8 +991,8 @@ test("the volume-aware reader catalog publishes twenty-three stable identities",
     () => resolveReaderPrerequisitesInCatalog(catalog, ["LES-9000"], []),
     /reader prerequisite LES-9000 is missing from the catalog/,
   );
-  assert.equal(new Set(positions).size, 23, "volume-local positions must be unique");
-  assert.equal(new Set(catalog.map((entry) => entry.order)).size, 8,
+  assert.equal(new Set(positions).size, 24, "volume-local positions must be unique");
+  assert.equal(new Set(catalog.map((entry) => entry.order)).size, 9,
     "the same local order is valid in different volumes");
   assert.equal(catalog.find((entry) => entry.canonicalId === "LES-0007").availability,
     "substantive-draft");
@@ -1053,10 +1075,13 @@ test("the volume-aware reader catalog publishes twenty-three stable identities",
   assert.equal(engineeringBuilds.next?.canonicalId, "LES-0023");
   const engineeringEnd = adjacentReaderEntriesInCatalog(catalog, "oci-containers-docker");
   assert.equal(engineeringEnd.previous?.canonicalId, "LES-0022");
-  assert.equal(engineeringEnd.next, undefined);
+  assert.equal(engineeringEnd.next?.canonicalId, "LES-0024");
+  const engineeringCiCd = adjacentReaderEntriesInCatalog(catalog, "ci-cd-architecture");
+  assert.equal(engineeringCiCd.previous?.canonicalId, "LES-0023");
+  assert.equal(engineeringCiCd.next, undefined);
 });
 
-test("an eight-entry v1 reading state gains fifteen lessons without prior state loss", () => {
+test("an eight-entry v1 reading state gains sixteen lessons without prior state loss", () => {
   const legacyStateIds = expectedLegacyIdentities.map(([, stateId]) => stateId);
   const priorStateIds = [...legacyStateIds, "LES-0006", "LES-0007", "LES-0008"];
   const priorLessons = Object.fromEntries(priorStateIds.map((lessonId, index) => [
@@ -1076,7 +1101,7 @@ test("an eight-entry v1 reading state gains fifteen lessons without prior state 
   assert.equal(loaded.recoveredInvalidData, false);
   assert.deepEqual(
     [...LEARNING_LIBRARY_LESSON_IDS],
-    [...priorStateIds, "LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023"],
+    [...priorStateIds, "LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024"],
   );
   assert.deepEqual(
     loaded.state.recentLessonIds,
@@ -1085,7 +1110,7 @@ test("an eight-entry v1 reading state gains fifteen lessons without prior state 
   for (const lessonId of priorStateIds) {
     assert.deepEqual(loaded.state.lessons[lessonId], priorLessons[lessonId]);
   }
-  for (const lessonId of ["LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023"]) {
+  for (const lessonId of ["LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024"]) {
     assert.deepEqual(loaded.state.lessons[lessonId], {
       bookmarked: false,
       marker: "not-started",
@@ -1114,6 +1139,7 @@ test("structured bookmarks and finished-reading markers never create mastery dat
     ["LES-0021", "2026-08-02T21:00:00.000Z"],
     ["LES-0022", "2026-08-02T22:00:00.000Z"],
     ["LES-0023", "2026-08-02T23:00:00.000Z"],
+    ["LES-0024", "2026-08-03T00:00:00.000Z"],
   ]) {
     const initial = createEmptyLearningState();
     const bookmarked = toggleLessonBookmark(initial, lessonId);
@@ -1132,7 +1158,7 @@ test("structured bookmarks and finished-reading markers never create mastery dat
   }
 });
 
-test("the live production search set has twenty-three unique lessons and stable golden rankings", () => {
+test("the live production search set has twenty-four unique lessons and stable golden rankings", () => {
   const documents = liveProductionSearchDocuments();
   assert.deepEqual(
     documents.map((document) => document.id),
@@ -1160,10 +1186,11 @@ test("the live production search set has twenty-three unique lessons and stable 
       "LES-0021",
       "LES-0022",
       "LES-0023",
+      "LES-0024",
     ],
   );
-  assert.equal(new Set(documents.map((document) => document.id)).size, 23);
-  assert.equal(new Set(documents.map((document) => document.href)).size, 23);
+  assert.equal(new Set(documents.map((document) => document.id)).size, 24);
+  assert.equal(new Set(documents.map((document) => document.href)).size, 24);
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeNumber, "00");
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeTitle, "Start safely");
   assert.equal(documents.find((document) => document.id === "LES-0008")?.volumeNumber, "00");
@@ -1243,6 +1270,10 @@ test("the live production search set has twenty-three unique lessons and stable 
     ["V03-L08", "LES-0023"],
     ["CTR-001", "LES-0023"],
     ["CTR-002", "LES-0023"],
+    ["LES-0024", "LES-0024"],
+    ["V03-L09", "LES-0024"],
+    ["CI-001", "LES-0024"],
+    ["ci-cd-architecture", "LES-0024"],
   ]);
   for (const [query, expectedId] of goldenQueries) {
     const results = searchLessons(documents, query);
@@ -1250,7 +1281,7 @@ test("the live production search set has twenty-three unique lessons and stable 
   }
 });
 
-test("all eighteen independent transfers stay answer-isolated from their answered records", () => {
+test("all nineteen independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
     ["LES-0006", "ASM-0003"],
     ["LES-0007", "ASM-0006"],
@@ -1270,6 +1301,7 @@ test("all eighteen independent transfers stay answer-isolated from their answere
     ["LES-0021", "ASM-0048"],
     ["LES-0022", "ASM-0051"],
     ["LES-0023", "ASM-0054"],
+    ["LES-0024", "ASM-0057"],
   ]);
   for (const { lesson, assessments } of loadLiveStructuredBundles()) {
     const independent = assessments.filter((assessment) =>

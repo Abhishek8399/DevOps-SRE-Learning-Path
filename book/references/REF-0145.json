@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0145",
+  "title": "Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines",
+  "organization": "National Institute of Standards and Technology",
+  "url": "https://csrc.nist.gov/pubs/sp/800/204/d/final",
+  "sourceType": "standard",
+  "versionOrDate": "NIST SP 800-204D final, February 2024; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["CI/CD pipeline security", "software supply chain", "artifacts", "attestations", "provenance", "repositories", "SBOM", "DevSecOps"],
+  "relevance": "Primary NIST publication for treating a CI/CD pipeline as a software-supply-chain path and integrating controls around actors, repositories, packages, artifacts, attestations, provenance and bills of materials rather than adding one scanner at the end.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

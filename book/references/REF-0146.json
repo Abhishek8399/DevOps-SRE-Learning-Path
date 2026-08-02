@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0146",
+  "title": "Secure Software Development Framework (SSDF) Version 1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities",
+  "organization": "National Institute of Standards and Technology",
+  "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
+  "sourceType": "standard",
+  "versionOrDate": "NIST SP 800-218 Version 1.1 final, February 2022; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["secure software development", "development environments", "software release integrity", "provenance", "vulnerability prevention", "software security requirements"],
+  "relevance": "Primary NIST framework used to place pipeline controls inside a broader secure-development system: protect development environments, preserve release integrity, produce and retain evidence, respond to vulnerabilities and address root causes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0149",
+  "title": "OpenID Connect reference",
+  "organization": "GitHub",
+  "url": "https://docs.github.com/en/actions/reference/security/oidc",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitHub Actions OIDC reference; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["OpenID Connect", "workload identity", "ID tokens", "issuer", "audience", "subject", "workflow claims", "short-lived credentials"],
+  "relevance": "Official implementation reference used to explain how a workflow requests an identity token, how issuer, audience, subject and workflow claims constrain federation, and why token issuance must be paired with narrow external trust and authorization policy.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

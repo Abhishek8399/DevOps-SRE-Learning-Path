@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0147",
+  "title": "Security for self-managed runners",
+  "organization": "GitLab",
+  "url": "https://docs.gitlab.com/runner/security/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitLab Runner security documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["self-managed runners", "executor isolation", "persistent workspaces", "cache trust", "privileged jobs", "credential exposure", "network segmentation", "runner cleanup"],
+  "relevance": "Official runner-security documentation used to explain that CI jobs are remote code execution, why persistent or shared executors can leak code and credentials across projects, and why executor, pull-policy, privilege, network and cleanup choices define a trust boundary.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

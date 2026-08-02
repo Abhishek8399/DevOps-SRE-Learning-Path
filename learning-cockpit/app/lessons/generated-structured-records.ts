@@ -17,6 +17,7 @@ import lesson0020Raw from "virtual:book-lesson/LES-0020";
 import lesson0021Raw from "virtual:book-lesson/LES-0021";
 import lesson0022Raw from "virtual:book-lesson/LES-0022";
 import lesson0023Raw from "virtual:book-lesson/LES-0023";
+import lesson0024Raw from "virtual:book-lesson/LES-0024";
 import assessment0001Value from "../../../book/assessments/linux/ASM-0001.json";
 import assessment0002Value from "../../../book/assessments/linux/ASM-0002.json";
 import assessment0003Value from "../../../book/assessments/linux/ASM-0003.json";
@@ -71,6 +72,9 @@ import assessment0051Value from "../../../book/assessments/engineering/ASM-0051.
 import assessment0052Value from "../../../book/assessments/engineering/ASM-0052.json";
 import assessment0053Value from "../../../book/assessments/engineering/ASM-0053.json";
 import assessment0054Value from "../../../book/assessments/engineering/ASM-0054.json";
+import assessment0055Value from "../../../book/assessments/engineering/ASM-0055.json";
+import assessment0056Value from "../../../book/assessments/engineering/ASM-0056.json";
+import assessment0057Value from "../../../book/assessments/engineering/ASM-0057.json";
 import reference0001Value from "../../../book/references/REF-0001.json";
 import reference0002Value from "../../../book/references/REF-0002.json";
 import reference0003Value from "../../../book/references/REF-0003.json";
@@ -215,6 +219,14 @@ import reference0141Value from "../../../book/references/REF-0141.json";
 import reference0142Value from "../../../book/references/REF-0142.json";
 import reference0143Value from "../../../book/references/REF-0143.json";
 import reference0144Value from "../../../book/references/REF-0144.json";
+import reference0145Value from "../../../book/references/REF-0145.json";
+import reference0146Value from "../../../book/references/REF-0146.json";
+import reference0147Value from "../../../book/references/REF-0147.json";
+import reference0148Value from "../../../book/references/REF-0148.json";
+import reference0149Value from "../../../book/references/REF-0149.json";
+import reference0150Value from "../../../book/references/REF-0150.json";
+import reference0151Value from "../../../book/references/REF-0151.json";
+import reference0152Value from "../../../book/references/REF-0152.json";
 
 export const generatedLessonSources: readonly string[] = [
   lesson0007Raw,
@@ -235,6 +247,7 @@ export const generatedLessonSources: readonly string[] = [
   lesson0021Raw,
   lesson0022Raw,
   lesson0023Raw,
+  lesson0024Raw,
 ];
 
 export const generatedAssessmentValues: readonly unknown[] = [
@@ -292,6 +305,9 @@ export const generatedAssessmentValues: readonly unknown[] = [
   assessment0052Value,
   assessment0053Value,
   assessment0054Value,
+  assessment0055Value,
+  assessment0056Value,
+  assessment0057Value,
 ];
 
 export const generatedReferenceValues: readonly unknown[] = [
@@ -439,4 +455,12 @@ export const generatedReferenceValues: readonly unknown[] = [
   reference0142Value,
   reference0143Value,
   reference0144Value,
+  reference0145Value,
+  reference0146Value,
+  reference0147Value,
+  reference0148Value,
+  reference0149Value,
+  reference0150Value,
+  reference0151Value,
+  reference0152Value,
 ];

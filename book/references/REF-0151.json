@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0151",
+  "title": "Secure your Azure Pipelines",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/devops/pipelines/security/overview",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Azure Pipelines security documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0024"],
+  "topics": ["YAML pipelines", "agent isolation", "resource authorization", "approvals and checks", "workload identity federation", "least privilege", "variables and parameters", "service connections"],
+  "relevance": "Official Microsoft guidance used to connect reviewed pipeline code with clean or separated agents, least-privilege identities, protected resources, branch controls, approvals, typed inputs and secretless workload federation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

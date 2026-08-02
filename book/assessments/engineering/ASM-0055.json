@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0055",
+  "lessonId": "LES-0024",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A service pipeline is green for commit `8f31c2a`. Its build job runs on a persistent shared runner, restores cache key `linux-main`, builds and tests an OCI image, and publishes that image by manifest digest A. The deploy job does not consume manifest A: it checks out the branch again, independently rebuilds a second OCI image, and pushes mutable tag `service:stable`, which now resolves to manifest digest B. An approval record says only `main approved`. Instance inspection shows half running image manifest A and half running image manifest B. A rerun becomes green after using the warm cache, but one test that fails in a clean local checkout passes in CI. The shared workspace contains generated files from an older commit, and the deploy token is long lived. An operator proposes clearing every cache, rerunning until green, and redeploying `stable`. Diagnose the evidence from first principles and give the smallest safe containment, recovery, verification, and prevention plan.",
+  "directAnswer": "Do not trust the green label or redeploy the mutable tag. The pipeline has broken identity and isolation contracts: the cache key omits important inputs, the persistent workspace contains undeclared state, deployment rebuilds instead of promoting tested OCI image manifest A, the tag can move, and approval is bound to a branch name rather than an immutable release intent. Stop promotion and automatic reruns, preserve both runs, workspace/cache metadata, full commit and pipeline-definition revisions, runner identity, image manifest digests, tag history, approval record, and deployed image manifest digests. Reproduce the declared image build in fresh isolated workspaces with cache disabled and then with a complete cache key. Determine whether the failing test depends on stale generated state. Choose one reviewed OCI image manifest built once from exact inputs, verify its digest and provenance, bind approval to that digest plus target environment, and deploy a bounded cohort. Reconcile instances to the intended manifest digest and verify real user operations. Prevent recurrence with ephemeral or scrubbed runners, complete cache namespaces and integrity checks, immutable artifacts, build-once promotion, short-lived scoped workload identity, protected pipeline code, concurrency controls, and telemetry that joins commit, pipeline definition, run, attempt, runner, artifact, approval, release, environment, and user outcome.",
+  "foundation": "A continuous integration and continuous delivery pipeline is a program that turns a source revision into evidence and, sometimes, a release. A runner is the machine or process that executes jobs. A workspace is its job directory. A cache is reusable data intended to make later work faster; it is not the release artifact and must never be required for correctness. An artifact is the named output that a later consumer should verify and promote. A branch and a tag are movable names. A full commit ID and an artifact digest identify specific content. A green job means its declared steps returned accepted results in one execution context. It does not prove the workspace was clean, the cache was correct, the intended artifact was deployed, or users succeeded.",
+  "reasoningSteps": [
+    "Start with impact and uncertainty: identify affected environments, instances, users, operations, first bad time, and whether any request or background job is failed, duplicated, or unknown. A mixed digest fleet is an active release-integrity problem even when probes are green.",
+    "Freeze promotion, tag movement, blind reruns, and broad cache deletion. Preserve the current evidence before a cleanup or rerun changes the workspace, cache, logs, tag, or deployment state.",
+    "Record immutable inputs for each attempt: full source commit, submodule or generated-source state, pipeline definition and included templates, lockfiles, builder/toolchain image or version, variables that are safe to record, runner/executor identity, and target platform.",
+    "Separate a logical pipeline run from an attempt. A rerun is a new attempt that may see a different cache, runner, dependency service, branch head, credential, or environment even when the user interface groups it under the same workflow.",
+    "Inspect the persistent workspace without trusting it. Compare the clean source tree and declared generated outputs with files actually consumed by build and test. An old generated file can make a test pass while the current commit would fail in a fresh checkout.",
+    "Model the cache key as a claim about equivalence. `linux-main` omits at least the exact lock or dependency digest, toolchain, architecture, build flags, and relevant source or generator inputs. A hit proves reuse under that key, not compatibility or correctness.",
+    "Run controlled builds in separate fresh workspaces: first with no restored cache, then with a complete reviewed cache key, and compare test evidence and OCI image manifest digests. Keep source, toolchain, environment, and command constant so the experiment discriminates workspace/cache state.",
+    "Trace OCI image manifest A from producer to registry with its manifest digest, referenced configuration and layers, size, retention, access policy, and upload receipt. Trace independently rebuilt image manifest B the same way. Because deploy rebuilt from a new checkout, manifest A passing gates says nothing about manifest B beyond shared assumptions.",
+    "Resolve `service:stable` to immutable content at each relevant time and instance. A mutable tag is a pointer; it cannot prove that every node selected the same image or that approval covered the selected bytes.",
+    "Reject `main approved` as an adequate production authorization. Bind approval to canonical release intent: exact OCI image manifest digest, source and pipeline revisions, policy evidence, target environment, change or migration plan, expiry, approver authority, and any canary constraints.",
+    "Treat the long-lived deploy token and shared runner as a high-risk boundary. Scope where the token appeared, rotate it through its owner if exposure is possible, and replace it with short-lived audience- and subject-constrained workload identity where supported. A runner that executes repository code must not automatically hold broad production authority.",
+    "Recover by selecting one reviewed OCI image manifest digest, proving its inputs and tests, checking compatibility, and promoting that exact image manifest. Use a small cohort with explicit abort thresholds; do not rebuild per environment or retag a different image manifest under the approved name.",
+    "Verify deployment identity on every cohort member, application readiness and progress, representative user journeys, error/latency/saturation signals, and any durable work outcomes. Running instances and a green deployment job are intermediate evidence, not the user result.",
+    "Prevent recurrence with ephemeral workers or verified cleanup, separate trust pools, least-privilege job permissions, complete cache keys and restore policy, immutable content-addressed artifacts, protected reviewed pipeline definitions, one retry owner, concurrency locks, approval binding, retention, audit, and incident-tested rollback plus reconciliation."
+  ],
+  "seniorAnswer": "I would declare release identity unknown, halt promotion and tag mutation, and inventory the mixed fleet by immutable OCI image manifest digest. I would preserve the source and pipeline revisions, job graph, attempt IDs, runner/executor image, workspace manifest, cache key and restore source, image manifest A upload receipt, tag mutation audit, image manifest B identity, approval object, deployment revision, and user impact. The first violated contracts are clean execution and artifact continuity: `linux-main` cannot represent all build inputs, persistent generated state can contaminate tests, and the deploy stage independently builds image manifest B instead of consuming tested manifest A. I would reproduce in two fresh isolated workspaces with cache disabled, then restore only a cache whose key covers lockfiles, toolchain, platform, flags, and generator inputs. I would compare tests and image manifest digests, quarantine untrusted cache namespaces, and assess the shared runner and long-lived token for credential exposure. Recovery promotes one verified image manifest digest with provenance and compatibility evidence, binds authorization to that digest and environment, and canaries it with abort criteria. I would reconcile every instance and any accepted asynchronous work, then verify user journeys and stability. The durable design uses ephemeral least-privilege runners separated by trust, immutable artifacts and environments, build-once promotion, short-lived federated identity, reviewed pipeline code, bounded concurrency and retry ownership, and end-to-end release telemetry. Clearing everything and retrying may remove the symptom while destroying the evidence and preserving the design defect.",
+  "weakAnswer": "Clear the cache, delete the runner workspace, rerun until all jobs are green, and deploy `service:stable` again because the pipeline is the source of truth.",
+  "whyWeak": "It destroys discriminating evidence, treats a green result as proof of clean inputs, ignores that deploy rebuilt a different OCI image manifest, trusts a mutable tag and branch-bound approval, leaves the shared-runner and token threat, and provides no exact recovery target or user verification. A retry changes execution state and can hide nondeterminism; it does not repair the broken contracts.",
+  "evidence": [
+    {
+      "signal": "A fresh cache-disabled build of `8f31c2a` fails the test, while the persistent runner passes only when an older generated file is present.",
+      "proves": "The observed green test depends on undeclared workspace state in the reproduced conditions.",
+      "doesNotProve": "That every green run was contaminated, who introduced the file, or that no additional defect exists."
+    },
+    {
+      "signal": "Restoring `linux-main` yields objects produced from a different lockfile and toolchain than the current build.",
+      "proves": "The cache key grouped non-equivalent inputs and allowed stale reuse.",
+      "doesNotProve": "That every cached file affected the output or that deleting all caches is the correct permanent control."
+    },
+    {
+      "signal": "The tested OCI image has manifest digest A, while deploy logs and instance inspection show independently rebuilt OCI image manifest digest B.",
+      "proves": "The deployed OCI image manifest is not the exact image manifest that produced the earlier test evidence.",
+      "doesNotProve": "That OCI image manifest B is malicious or functionally different; its equivalence remains unproved."
+    },
+    {
+      "signal": "The approval record names `main` but contains no OCI image manifest digest, pipeline-definition revision, environment, expiry, or policy evidence.",
+      "proves": "The stored approval is not cryptographically or semantically bound to one immutable release intent.",
+      "doesNotProve": "That the approver lacked authority or intended to approve OCI image manifest B."
+    },
+    {
+      "signal": "A canary and then the reconciled fleet run one reviewed OCI image manifest digest, pass representative user journeys, show no duplicate work, and remain within error, latency, and saturation guardrails for the declared window.",
+      "proves": "The selected release met the stated identity and operational criteria for that scope and time.",
+      "doesNotProve": "Long-term safety, every workload shape, absence of supply-chain compromise, or learner mastery."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is a cache not an artifact?",
+      "answer": "A cache is an optimization that may be reused when its key and trust policy say the contents are compatible; a correct job should tolerate a miss and regenerate it. An artifact is a declared output consumed, retained, verified, or promoted by later stages. Both need integrity and access controls, but they have different correctness and lifecycle contracts."
+    },
+    {
+      "prompt": "Can a cache key include the branch name?",
+      "answer": "It can include a branch as one namespace component, but branch alone is usually incomplete. The key must cover every input whose change can make cached data incompatible, such as lockfile digest, toolchain, operating system, architecture, flags, and generator version. Restore prefixes broaden reuse and therefore require an explicit validation strategy."
+    },
+    {
+      "prompt": "Why not rebuild the same source in every environment?",
+      "answer": "Each rebuild creates a new transformation with potentially different dependencies, tools, time, network, and host state. Earlier test and approval evidence belongs to the earlier bytes. Build once, identify the artifact immutably, and promote that same object; perform environment-specific configuration as a separate reviewed input."
+    },
+    {
+      "prompt": "What should an approval be bound to?",
+      "answer": "At minimum, the immutable OCI image manifest digest or canonical release-intent digest, relevant source and pipeline revisions, target environment, policy/test evidence, compatibility or migration plan, approver identity and authority, time/expiry, and canary or change-window constraints. A mutable branch or tag does not preserve what was reviewed."
+    },
+    {
+      "prompt": "Do ephemeral runners solve all CI security problems?",
+      "answer": "No. They reduce persistence and cross-job contamination, but the base image, bootstrap, network, metadata endpoints, credentials, actions/plugins, artifacts, logs, and control plane can still be compromised. Isolation must be combined with provenance, least privilege, network policy, trusted images, short-lived identity, and verification."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Pipeline and identity diagnosis",
+      "points": 10,
+      "observableEvidence": "Separates source, pipeline definition, run/attempt, runner/workspace, cache, OCI image manifests A/B, tag, approval, deployment, and user outcome."
+    },
+    {
+      "criterion": "Evidence and controlled experiment",
+      "points": 10,
+      "observableEvidence": "Preserves evidence and proposes fresh cache-disabled and complete-key comparisons that discriminate workspace/cache contamination."
+    },
+    {
+      "criterion": "Containment and security",
+      "points": 10,
+      "observableEvidence": "Stops promotion/reruns, scopes the shared runner and token, protects immutable evidence, and uses least-privilege short-lived identity."
+    },
+    {
+      "criterion": "Recovery and verification",
+      "points": 10,
+      "observableEvidence": "Promotes one reviewed OCI image manifest digest through a bounded canary, reconciles the fleet/work, and verifies real user outcomes with abort criteria."
+    },
+    {
+      "criterion": "Prevention and communication",
+      "points": 10,
+      "observableEvidence": "Designs isolation, cache/artifact contracts, approval binding, retries/concurrency, audit, telemetry, and explains proof limits clearly."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
