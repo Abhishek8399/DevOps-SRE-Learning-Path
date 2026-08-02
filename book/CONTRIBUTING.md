@@ -84,7 +84,9 @@ book/
 `-- schema/
 ```
 
-Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0019` at this checkpoint), and run both contract commands before review. The next content-first editorial batch is `LES-0019` through `LES-0023`; each record still requires its own review and remains non-mastery evidence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0024` at this checkpoint), and run both contract commands before review. `LES-0019` through `LES-0023` are the current `substantive-draft` checkpoint; each still requires formal review and independently reviewed learner evidence, and none establishes mastery. Choose future editorial work from [`MASTER_PLAN.md`](../MASTER_PLAN.md) rather than inventing the next batch from the numeric sequence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+
+After creating or moving structured lessons, assessments, or references, run `npm run generate:content-registry` from `learning-cockpit/` before validation. Commit the deterministic generated files with the content. Never hand-edit them; `npm run validate:content` rejects a stale registry.
 
 Declare prerequisite lesson IDs only when the referenced concept is genuinely required. The reader resolves them through the trusted catalog and displays them as advisory links; contributors must not use a prerequisite to hide content, mutate reading state, infer completion, or award mastery. Unknown identities must fail validation rather than be converted into guessed routes.
 

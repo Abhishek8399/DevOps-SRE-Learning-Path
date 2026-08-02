@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0141",
+  "title": "Docker Engine resource constraints",
+  "organization": "Docker",
+  "url": "https://docs.docker.com/engine/containers/resource_constraints/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Docker documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["memory limits", "CPU limits", "swap", "out-of-memory behavior", "cgroups", "runtime constraints"],
+  "relevance": "Official Docker guidance used to interpret memory, CPU, swap, and out-of-memory behavior as cgroup-controlled runtime policy rather than properties of the image or evidence of host capacity.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

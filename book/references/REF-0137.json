@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0137",
+  "title": "Open Container Initiative Image Format Specification",
+  "organization": "Open Container Initiative",
+  "url": "https://github.com/opencontainers/image-spec/blob/v1.1.0/spec.md",
+  "sourceType": "standard",
+  "versionOrDate": "OCI Image Specification v1.1.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["image manifest", "image index", "configuration", "layers", "descriptors", "content digests"],
+  "relevance": "Primary OCI image standard used to distinguish content-addressed blobs, manifests, indexes, configuration, layer changesets, platform selection, and runtime configuration carried by an image.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

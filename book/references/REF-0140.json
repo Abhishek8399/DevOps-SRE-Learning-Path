@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0140",
+  "title": "Docker Engine storage driver: OverlayFS",
+  "organization": "Docker",
+  "url": "https://docs.docker.com/engine/storage/drivers/overlayfs-driver/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Docker documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["overlay2", "lower layers", "upper directory", "merged view", "copy-up", "whiteouts"],
+  "relevance": "Official Docker storage documentation used to explain layered image filesystems, container writable layers, copy-up behavior, whiteouts, performance implications, and why persistent data needs an explicit mount or external owner.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

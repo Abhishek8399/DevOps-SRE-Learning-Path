@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0138",
+  "title": "Open Container Initiative Runtime Specification",
+  "organization": "Open Container Initiative",
+  "url": "https://github.com/opencontainers/runtime-spec/blob/v1.2.0/spec.md",
+  "sourceType": "standard",
+  "versionOrDate": "OCI Runtime Specification v1.2.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["runtime bundle", "container lifecycle", "namespaces", "cgroups", "mounts", "process configuration", "Linux capabilities"],
+  "relevance": "Primary OCI runtime standard used to explain the bundle/config boundary, lifecycle operations, process and mount configuration, namespaces, cgroups, and the responsibilities of a low-level container runtime.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0120",
+  "title": "Diagnostics",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/doc/diagnostics",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Go diagnostics documentation reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "profiling",
+    "pprof",
+    "tracing",
+    "runtime statistics",
+    "execution diagnostics"
+  ],
+  "relevance": "Primary diagnostics guide used to frame profiles, traces, runtime statistics, sample attribution, sensitive diagnostic data, and evidence-led performance work.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

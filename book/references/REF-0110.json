@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0110",
+  "title": "Everything you wanted to know about ShouldProcess",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn article updated 2026-04-08 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["SupportsShouldProcess", "ShouldProcess", "WhatIf", "Confirm", "ConfirmImpact", "preference scope", "nested modules", "safe mutation interfaces"],
+  "relevance": "Microsoft-maintained deep dive used to explain how advanced functions implement WhatIf and confirmation, why guards belong near effects, and why nested scope behavior requires explicit testing.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

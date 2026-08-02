@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0118",
+  "title": "Data Race Detector",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/doc/articles/race_detector",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Go race detector documentation reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "race detector",
+    "go test race",
+    "reports",
+    "runtime overhead",
+    "build tags"
+  ],
+  "relevance": "Primary tool documentation used to explain how to run the race detector, interpret conflicting-access reports, and avoid treating a no-report run as proof that no race exists.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

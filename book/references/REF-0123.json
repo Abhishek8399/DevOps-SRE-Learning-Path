@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0123",
+  "title": "OpenAPI Specification 3.1.1",
+  "organization": "OpenAPI Initiative",
+  "url": "https://spec.openapis.org/oas/v3.1.1.html",
+  "sourceType": "standard",
+  "versionOrDate": "Version 3.1.1; reviewed 2026-08-02",
+  "lessonIds": ["LES-0021"],
+  "topics": ["API description", "operations", "parameters", "request bodies", "responses", "security schemes"],
+  "relevance": "Primary OpenAPI specification used to explain an interface description that connects paths, operations, parameters, representations, responses, and security declarations without confusing documentation with runtime enforcement.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

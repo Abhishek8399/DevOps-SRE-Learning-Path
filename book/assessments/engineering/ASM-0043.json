@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0043",
+  "lessonId": "LES-0020",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "Explain these Go infrastructure-tooling distinctions as if you were diagnosing a production incident: package versus module versus executable; compile success versus operation correctness; nil interface versus interface holding a typed nil pointer; error wrapping versus string comparison; cancellation versus goroutine termination; data race versus logical or distributed race; HTTP timeout versus remote no-effect; JSON syntax versus semantic completeness; atomic rename visibility versus crash durability; cross-compilation versus target-runtime validation. For each distinction, give one failure signal, one safe evidence source, what that evidence cannot prove, and one prevention test.",
+  "directAnswer": "The common principle is that every mechanism has a boundary. Packages are compile/import units, modules version groups of packages, and executables are target-specific linked artifacts. Compilation proves selected source type-checks and links, not that the user operation succeeds. An interface with a dynamic type and nil dynamic value is non-nil. Wrapping with %w preserves identity for errors.Is or errors.As, whereas string comparison breaks under context changes. Context cancellation requests cooperative stop but neither joins goroutines nor rolls back effects. A data race is unsynchronized conflicting memory access; a logical race can occur in correctly synchronized code, and a distributed race spans processes. An HTTP timeout proves the client stopped receiving in time, not that a mutation had no effect. Valid JSON can still be incomplete, duplicated, unauthorized, or semantically invalid. Same-filesystem rename can provide atomic namespace visibility under platform rules, while Sync and directory persistence address different crash-durability layers. Cross-compilation proves a target artifact can be linked; only executing it in the target environment tests certificates, paths, signals, permissions, architecture, and runtime behavior.",
+  "foundation": "Go's types, compiler, contexts, channels, error values, and toolchain make many contracts explicit, but none is a universal proof. Reliability comes from composing evidence: identify source and artifact; validate external input; bound work and bytes; propagate cancellation; classify effects; reconcile unknown outcomes at the authority; publish complete state; verify the promised operation; and retire owned resources. A green tool result is useful only when its question and proof limits are stated.",
+  "reasoningSteps": [
+    "Start at identity. A source directory may contain a package; go.mod defines the main module; the selected toolchain and target link a main package into an executable. Record each rather than referring to all of them as the program.",
+    "Separate static evidence from dynamic outcome. The compiler rejects type and build errors for selected files and tags. It cannot execute every branch, contact the dependency, or verify a resource.",
+    "Model an interface as a pair of dynamic type and dynamic value. A typed nil pointer assigned to an interface leaves the dynamic type present, so interface comparison with nil is false.",
+    "Preserve error chains with fmt.Errorf and %w. Classify at the policy-owning layer with errors.Is and errors.As; never make retry or exit decisions from unstable error text.",
+    "Trace one root context downward. Every blocking send, receive, timer, HTTP request, or process call must observe it. Then separately prove every goroutine retired through a join path.",
+    "Distinguish synchronization scope. A mutex or channel creates in-process ordering. It cannot make a remote create operation atomic across replicas; the authoritative service needs conditional writes, idempotency, or fencing.",
+    "Treat a sent mutation followed by a timeout as unknown. Preserve the stable logical operation ID and reconcile before replay.",
+    "Validate JSON at byte-size, syntax, field, type, range, relationship, authorization, expected-set, and consumer-readback layers.",
+    "Name the publication guarantee. Candidate write plus rename may protect readers from partial content; file and directory synchronization plus platform testing address crash durability.",
+    "Treat GOOS and GOARCH build success as a build gate. Execute the exact artifact or image under the target identity, filesystem, certificates, DNS, signals, architecture, and controller."
+  ],
+  "seniorAnswer": "I would answer each distinction with its owner and failure boundary. The module system owns declared dependency identity, the compiler owns acceptance for one build graph, the operating system owns process launch, the tool owns validation and lifecycle, and the remote API owns mutation truth. A senior design carries a stable operation ID and one deadline through small interfaces; caps bytes, workers, queues, attempts, and telemetry; wraps errors without losing identity; marks response-loss states unknown; reconciles at the authority; and publishes verified receipts. Concurrency has an explicit table for sender, receiver, closer, capacity, cancellation, and join. HTTP uses a reused configured transport, request context, explicit status contract, bounded body, Close, strict decode, and idempotency-aware recovery. Filesystem publication states its platform and durability claim. Tests layer unit, contract, integration, race, fuzz, failure injection, cross-target runtime, and cleanup refusal evidence. None of those automatically proves mastery or production safety.",
+  "weakAnswer": "Go is compiled and fast, channels prevent races, context kills work, HTTP errors can be retried, JSON validation means the data is correct, rename is atomic, and a Linux cross-build is ready for Kubernetes.",
+  "whyWeak": "Every clause overclaims. Compilation does not prove operation semantics. Channels can be misowned and do not prevent every memory or distributed race. Context is cooperative and does not join or roll back. HTTP errors may follow committed effects. JSON syntax is only one validation layer. Rename guarantees depend on filesystem and do not equal durability. Cross-build success does not execute the target runtime. The answer gives no evidence path, ownership, boundaries, or prevention tests.",
+  "evidence": [
+    {
+      "signal": "go version, go env, go list -m -json, module graph, artifact digest, and go version -m",
+      "proves": "Displayed toolchain, selected module/target values, resolved graph, and embedded metadata for the inspected build.",
+      "doesNotProve": "Builder identity, clean source, signature validity, reproducible bytes, runtime behavior, or safe operations."
+    },
+    {
+      "signal": "A race detector report with both access stacks",
+      "proves": "An executed instrumented schedule contained conflicting memory access without required synchronization.",
+      "doesNotProve": "That the proposed mutex fixes the business invariant, that no other races exist, or that a distributed operation is atomic."
+    },
+    {
+      "signal": "context deadline exceeded after request write began",
+      "proves": "The client deadline expired and the request may have crossed the effect boundary.",
+      "doesNotProve": "Remote no-effect, rollback, retry eligibility, or absence of an internal transport retry."
+    },
+    {
+      "signal": "Strict decode, expected-set equality, unique IDs, receipt digest, and consumer readback",
+      "proves": "The checked document met the demonstrated syntax and semantic invariants and was readable through the selected consumer.",
+      "doesNotProve": "Future durability, authorization of the original effect, or correctness of omitted invariants."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is no race report weaker than a race report?",
+      "answer": "A report is positive evidence of one executed conflict and names accesses. No report means only that the detector saw no conflict on executed instrumented schedules. Unexecuted paths, different timing, unsupported code, logical races, deadlocks, and distributed races remain."
+    },
+    {
+      "prompt": "When can a retry follow a timeout?",
+      "answer": "Only after the operation is classified eligible under its protocol: either authoritative reconciliation adopted a committed result, or a strong enough guarantee proved no effect. The stable identity, overall deadline, attempt cap, backoff, jitter, concurrency, retry budget, and cancellation must all remain valid."
+    },
+    {
+      "prompt": "Why should main usually be the only function that calls os.Exit?",
+      "answer": "os.Exit skips deferred calls. Returning an error or status through run allows file closes, worker joins, profile flushes, and other defers to complete before main exits. Hard kill still requires durable recovery design."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Mechanism distinctions",
+      "points": 10,
+      "observableEvidence": "Accurately separates all ten pairs without implying stronger guarantees."
+    },
+    {
+      "criterion": "Evidence and proof limits",
+      "points": 10,
+      "observableEvidence": "Names a relevant signal, owner, proof, and non-proof for every distinction."
+    },
+    {
+      "criterion": "Incident reasoning",
+      "points": 10,
+      "observableEvidence": "Uses stable identity, bounded evidence, unknown-outcome reconciliation, and user-operation verification."
+    },
+    {
+      "criterion": "Prevention and testing",
+      "points": 10,
+      "observableEvidence": "Proposes targeted unit, lifecycle, failure, race, fuzz, publication, and target-runtime tests."
+    }
+  ],
+  "maximumScore": 40,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

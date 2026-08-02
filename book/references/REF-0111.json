@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0111",
+  "title": "Making the second hop in PowerShell Remoting",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/ps-remoting-second-hop",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn article updated 2025-12-09 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["PowerShell remoting", "second hop", "credential delegation", "Kerberos constrained delegation", "CredSSP", "Just Enough Administration", "remote identity"],
+  "relevance": "Primary Microsoft guidance for the distinct authorization boundary created when a remote PowerShell session must access a third resource and for the security tradeoffs of delegation mechanisms.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

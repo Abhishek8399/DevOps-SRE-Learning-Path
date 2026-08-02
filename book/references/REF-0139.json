@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0139",
+  "title": "Open Container Initiative Distribution Specification",
+  "organization": "Open Container Initiative",
+  "url": "https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md",
+  "sourceType": "standard",
+  "versionOrDate": "OCI Distribution Specification v1.1.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["registry API", "content blobs", "manifests", "tags", "digests", "referrers"],
+  "relevance": "Primary registry distribution standard used to explain how content is pushed, pulled, resolved, and related, while distinguishing mutable names/tags from content digests and trust policy.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

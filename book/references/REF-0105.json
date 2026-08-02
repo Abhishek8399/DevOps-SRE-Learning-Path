@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0105",
+  "title": "about_Objects",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_objects",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn PowerShell 7.5 view reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["PowerShell objects", "types", "properties", "methods", "pipeline objects", "Extended Type System"],
+  "relevance": "Primary PowerShell documentation for the object model that underpins typed pipeline reasoning and the distinction between data objects and their displayed representation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

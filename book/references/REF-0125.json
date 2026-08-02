@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0125",
+  "title": "RFC 9457: Problem Details for HTTP APIs",
+  "organization": "Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9457",
+  "sourceType": "rfc",
+  "versionOrDate": "RFC 9457, July 2023; reviewed 2026-08-02",
+  "lessonIds": ["LES-0021"],
+  "topics": ["problem details", "application/problem+json", "error types", "status", "safe extensions"],
+  "relevance": "Authoritative problem-details format used to design stable, machine-classifiable API errors while treating detail text and extension members as potentially sensitive and keeping HTTP status semantics intact.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0124",
+  "title": "JSON Schema Core: A Media Type for Describing JSON Documents",
+  "organization": "JSON Schema",
+  "url": "https://json-schema.org/draft/2020-12/json-schema-core",
+  "sourceType": "standard",
+  "versionOrDate": "Draft 2020-12 core specification; reviewed 2026-08-02",
+  "lessonIds": ["LES-0021"],
+  "topics": ["JSON Schema", "vocabularies", "identifiers", "references", "validation architecture"],
+  "relevance": "Primary JSON Schema core specification used to explain schema dialects, identifiers, references, annotations, assertions, and why a schema contract is related to but distinct from an OpenAPI operation description.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

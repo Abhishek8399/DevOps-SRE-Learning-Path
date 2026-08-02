@@ -6,14 +6,18 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "postinstall": "npm run prepare:local-runtime",
+    "prepare:local-runtime": "node ../tools/patch-vinext-windows-static-cache.mjs",
     "predev": "npm run validate:content",
     "dev": "vinext dev",
     "prebuild": "npm run validate:content",
     "build": "vinext build",
-    "start": "vinext start",
+    "start": "npm run prepare:local-runtime && vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit --pretty false",
-    "validate:content": "node ../tools/validate-content.mjs",
+    "generate:content-registry": "node ../tools/generate-content-registry.mjs",
+    "check:content-registry": "node ../tools/generate-content-registry.mjs --check",
+    "validate:content": "node ../tools/validate-content.mjs && npm run check:content-registry",
     "test:content-schema": "node --test --test-isolation=none ../tools/tests/content-schema.test.mjs",
     "test:reader": "node --experimental-strip-types --test --test-isolation=none tests/reader.test.mjs"
   },

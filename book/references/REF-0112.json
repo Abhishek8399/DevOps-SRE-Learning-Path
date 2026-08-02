@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0112",
+  "title": "Understanding the SecretManagement module",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/utility-modules/secretmanagement/get-started/understanding-secretmanagement",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn article updated 2026-06-22 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["SecretManagement", "extension vaults", "runtime secret retrieval", "vault registration", "SecretStore", "managed accounts", "module support lifecycle"],
+  "relevance": "Primary module documentation for using a vault abstraction instead of hardcoded secrets, including current platform storage behavior, managed-account limitations, and the feature-complete support status that future reviews must track.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

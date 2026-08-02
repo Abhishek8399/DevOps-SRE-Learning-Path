@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0051",
+  "lessonId": "LES-0022",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0022-reproducible-builds-dependencies`. Capture the raw scenario before requesting any derived observation, write predictions, and investigate source, lock, dependency integrity, context, cache identity, artifact bytes, SBOM, provenance, promotion permission, recovery, and operation verification. Transfer the design to one real build ecosystem without making a production change. Do not inspect the model fixture, guided outcome, another learner's response, or an answer key; do not use root, sudo, network, package installation, Docker, credentials, a registry, cloud, manual state deletion, broad cache deletion, or weakened integrity checks.",
+  "deliverables": [
+    "An independence declaration with attempt time, prior hints or material seen, confirmation that raw scenario preceded observations, and confirmation that the response stayed outside the guarded lab directory.",
+    "An environment and safety card covering Ubuntu/native-or-WSL boundary, Bash and Python versions, effective UID, repository and lab paths, network none, expected `/tmp` changes, abort conditions, cleanup command, and excluded sensitive data.",
+    "The exact baseline and raw independent scenario transcript, followed by a timestamped prediction made before every derived observation view.",
+    "An architecture diagram with text alternative covering source, manifest/resolver/lock, dependency artifact and integrity, builder/toolchain, context, cache key/namespace/entry, build, artifact, SBOM, provenance, signature/policy boundary, promotion owner, consumer, and evidence path.",
+    "At least four competing hypotheses or possible outcomes with predicted evidence, one disconfirming test each, current status, responsible state owner, and current permission to build, reuse, retry, or promote.",
+    "A chronological evidence ledger classifying every item as observation, documented fact, calculation, inference, hypothesis, or unknown and stating what it proves, does not prove, and the next safe discriminating check.",
+    "A complete input-closure table for source bytes, lock and resolver, dependency bytes, context paths and metadata, toolchain, architecture, flags, time, timezone, locale, path, order, randomness, concurrency, network, secrets, and platform-specific variants.",
+    "A cache design card specifying canonical framed inputs, key schema version, namespace, writer and reader trust domains, restore behavior, validation, integrity, retention, eviction, quarantine, concurrency, timeout, attempt budget, and evidence retained on hit or miss.",
+    "An artifact and supply-chain verification table covering exact artifact boundary, two clean builds, hash and structural comparison, consumer tests, SBOM subject/components, provenance subject/materials/builder, signature identity and policy, immutable promotion precondition, rollback object, and consumer readback.",
+    "A bounded recovery plan identifying actor, authorization, exact local/model target, preconditions, suspect-entry scope, dependency restore source and digest, clean rebuild count, abort thresholds, prior-state preservation, rollback or compensation, and verification of the original logical operation.",
+    "A production transfer to npm, pip, Go, container/BuildKit, JVM, or another reviewed ecosystem that maps lock semantics, immutable dependencies, builder/toolchain, context, cache, artifact identity, SBOM/provenance/signing, CI identity, release storage, observability, capacity, rollout, rollback, and facts that do not transfer from the model.",
+    "The complete normal-user `bash verify.sh` output, final `bash lab.sh check` state-absence proof, any separate reviewer-supplied UID-0 refusal evidence, and a concise incident update separating impact, mitigation, valid/invalid/unknown states, recovery, verification, cause hypotheses, contributing conditions, prevention owners, and remaining unknowns."
+  ],
+  "evidenceRequirements": [
+    "Record `bash lab.sh scenario` before any `observe` command and demonstrate that raw output contains no derived diagnosis, root cause, promotion decision, authoritative outcome, recovery, retry eligibility, duplicate count, or answer text.",
+    "Use only the checked offline lab and read-only environment/source commands. Do not inspect or change the fixture, manually edit registered state, follow a refused link, install a tool, access a credential, or contact a package source, registry, daemon, or cloud service.",
+    "Separate source revision, exported bytes, manifest, resolver, lock graph, expected dependency integrity, actual dependency bytes, installed tree, and runtime-loaded code. Never use one as proof of all later boundaries.",
+    "For every hash state the exact byte subject and algorithm. Separate raw artifact identity from extracted or semantic equality and state what matching SHA-256 does not prove.",
+    "Treat build context as a bounded input interface. Record path policy, ignore/allowlist semantics, order, symlink handling, modes, line endings, secret exclusions, aggregate encoding, race limitations, and the builder's actual received identity where applicable.",
+    "Show every build-affecting cache-key field, key version, trust namespace, writer identity, candidate-entry integrity, and independent artifact verification. Reject broad cache clearing and a hit-as-correctness claim.",
+    "Keep current-input validity separate from candidate-artifact identity. Do not promote solely because a cached artifact hash matches history when the current dependency or context evidence is invalid or unknown.",
+    "Bind SBOM and provenance to the artifact subject, then separately evaluate schema, completeness/materials, signature, signer identity, issuer/trust root, repository/workflow authorization, and policy. Do not equate any one with safety or a SLSA level.",
+    "For any proposed build, cache quarantine, dependency restore, promotion, or rollback state the actor, authorization, exact target, precondition, blast radius, concurrency, deadline, attempt cap, abort threshold, prior-state preservation, and original-operation postcondition.",
+    "Use explicit units for hashes/counts, bytes, durations, concurrency, queue depth, cache size, transfer rate, retry count, elapsed budget, and observation window. Separate logical operations from attempts and builds from promotions.",
+    "State that verifier success proves the encoded offline lifecycle and refusal controls only; it does not validate learner reasoning, real package-manager behavior, network isolation certification, signed provenance, SBOM completeness, artifact safety, or mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent framing and evidence discipline", "points": 10, "observableEvidence": "Captures raw input first, declares safety and help boundaries, writes predictions, maintains four competing hypotheses, labels evidence classes, and preserves unknowns."},
+    {"criterion": "Build and dependency mechanism accuracy", "points": 10, "observableEvidence": "Models complete source/dependency/toolchain/context/environment closure, lock and integrity stages, nondeterminism, exact artifact boundary, and platform variance without shortcuts."},
+    {"criterion": "Cache, operation, and recovery safety", "points": 10, "observableEvidence": "Uses complete versioned keys, trust isolation, narrow quarantine, stable operation identity, bounded retry/concurrency, reviewed restore, clean rebuilds, aborts, and exact cleanup."},
+    {"criterion": "Artifact and supply-chain verification", "points": 10, "observableEvidence": "Separates byte identity from correctness, verifies two builds and consumer behavior, binds SBOM/provenance subjects, evaluates signer identity/policy, and uses immutable atomic promotion."},
+    {"criterion": "Production transfer and communication", "points": 10, "observableEvidence": "Maps one real ecosystem with security, observability, capacity, rollout and rollback controls, states model limitations, and communicates impact, mitigation, evidence, causes, owners, and unknowns."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0129",
+  "title": "Definitions: when is a build reproducible?",
+  "organization": "Reproducible Builds project",
+  "url": "https://reproducible-builds.org/docs/definition/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Project definition page reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["reproducible build definition", "source code", "build environment", "build instructions", "bit-for-bit artifacts", "cryptographic comparison"],
+  "relevance": "Primary project definition used to distinguish a bit-for-bit reproducibility claim from a successful rerun, semantic similarity, isolation, or provenance.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

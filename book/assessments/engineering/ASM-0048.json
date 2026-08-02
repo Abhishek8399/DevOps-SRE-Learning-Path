@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0048",
+  "lessonId": "LES-0021",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0021-api-contracts`. Capture the raw scenario and write a timestamped prediction before requesting any observation. Diagnose the first failed or ambiguous contract boundary, map client and state-owner knowledge, decide whether any retry is eligible, design a bounded recovery, verify the original logical operation and duplicate count, and transfer the design to one real platform API integration. Do not inspect the fixture source, another learner's answer, or any external answer key; do not use root, install software, make a network call, alter the model, manually remove guarded state, or store notes inside the lab-owned random directory.",
+  "deliverables": [
+    "An independence declaration and environment card naming Ubuntu/WSL boundary, interpreter and Bash versions, effective UID, physical lab path, network policy, expected local changes, abort conditions, and sanitization rules.",
+    "The unmodified baseline and raw `scenario` transcript, followed by a prediction recorded before all `observe` output.",
+    "A bytes-to-outcome diagram with a text alternative covering characters, UTF-8 bytes, HTTP metadata, JSON parser, runtime schema, authorization, idempotency owner, authoritative resource, response, local receipt, and user verification.",
+    "At least three competing hypotheses or outcomes, predicted evidence for each, and one disconfirming observation per hypothesis.",
+    "A chronological evidence table labeling each claim as observation, documented contract, calculation, inference, hypothesis, or unknown, with proves and does-not-prove limits.",
+    "A contract table for request and response media types, API/schema version, required/optional/unknown fields, exact types and ranges, status/problem types, deadline, pagination, rate limiting, and authentication/authorization boundaries.",
+    "An idempotency and retry state machine that preserves one logical operation identity, distinguishes known rejection, committed, proven absent, conflict, rate limit, transient no-effect, and unknown, and names which owner can resolve each state.",
+    "A recovery card naming actor, exact target, authorization, preconditions, blast radius, concurrency, attempt and elapsed-time budgets, abort thresholds, prior-state preservation, rollback or compensation, and verification evidence.",
+    "A verification matrix covering malformed JSON, valid-wrong-type JSON, unsupported request media type, unacceptable response media type, compatible and breaking versions, timeout after commit, repeated key with same and different intent, concurrent attempts, page insertion, 429, stale and repeated webhook, sanitized problem details, and cleanup refusal.",
+    "A production transfer for one CI, Kubernetes, private-cloud, or internal developer-platform integration identifying changed identity, network, TLS, authentication, authorization, secret, gateway, durable-store, controller-retry, capacity, observability, rollout, rollback, and audit boundaries without claiming the offline model tested them.",
+    "The complete normal-user verifier output, a reviewer-supplied root-refusal result when available, final state-absence proof, and an incident update that separates mitigation, recovery, root cause, contributing conditions, corrective actions, and remaining unknowns."
+  ],
+  "evidenceRequirements": [
+    "Record `scenario` before any derived view and show that it contains request inputs but no authoritative outcome, receipt, diagnosis, recovery, duplicate count, retry eligibility, or answer key.",
+    "Use only the guarded deterministic model and read-only local environment checks; do not inspect fixture implementation during the independent attempt.",
+    "Distinguish valid UTF-8, valid JSON syntax, valid schema, authorized intent, accepted attempt, committed operation, published receipt, and verified user outcome.",
+    "Preserve the same logical idempotency key across reconciliation and explain why generating a new key would describe a new operation to the deduplication owner.",
+    "Do not recommend blind mutation replay, undocumented coercion, unbounded retry or concurrency, secret-bearing logs, offset rescan of a changing collection, signature-only webhook acceptance, sudo, permission bypass, wildcard deletion, or recursive cleanup.",
+    "For every production action, state who is authorized, which state owner is targeted, exact scope, deadline, budget, abort condition, rollback or compensation, and end-to-end verification.",
+    "Use explicit units for rates, counts, durations, byte sizes, concurrency, retention windows, and observation periods; label theoretical ceilings separately from measured values.",
+    "State that verifier success proves deterministic model transitions, refusal guards, answer isolation, and exact cleanup only; it does not award mastery or prove real API, network, identity, security, or distributed-system behavior."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent prediction and evidence discipline", "points": 10, "observableEvidence": "Captures raw inputs first, predicts competing outcomes, gathers minimum disconfirming evidence, and labels fact/inference/unknown accurately."},
+    {"criterion": "Contract and serialization depth", "points": 10, "observableEvidence": "Separates bytes, Unicode, JSON grammar/types, schema, media negotiation, versioning, problem details, authn/authz, and user outcome."},
+    {"criterion": "Idempotency and failure semantics", "points": 10, "observableEvidence": "Keeps stable identity, handles unknown outcomes and conflicts at the right owner, and permits retry only from proven and budgeted states."},
+    {"criterion": "Recovery, verification, and safety", "points": 10, "observableEvidence": "Provides bounded authorized recovery, abort/rollback or compensation, matrix evidence, refusal handling, duplicate/missing checks, and exact cleanup proof."},
+    {"criterion": "Production transfer and communication", "points": 10, "observableEvidence": "Transfers to a real integration with security, capacity, observability, controller, compatibility, rollout, and remaining-risk boundaries clearly stated."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

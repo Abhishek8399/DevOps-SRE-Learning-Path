@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0144",
+  "title": "SLSA Provenance",
+  "organization": "Supply-chain Levels for Software Artifacts",
+  "url": "https://slsa.dev/spec/v1.0/provenance",
+  "sourceType": "standard",
+  "versionOrDate": "SLSA Provenance v1.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["build provenance", "subjects", "builder identity", "build definition", "materials", "verification"],
+  "relevance": "Primary provenance specification used to distinguish artifact digest, origin/build claims, trusted builder policy, and verification from image scanning or tag naming.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

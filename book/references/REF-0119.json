@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0119",
+  "title": "Go Fuzzing",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/doc/security/fuzz/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Go native fuzzing documentation reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "fuzzing",
+    "coverage guidance",
+    "seed corpus",
+    "minimized failures",
+    "security testing"
+  ],
+  "relevance": "Primary Go fuzzing documentation used to explain seed inputs, coverage-guided mutation, retained reproducers, resource bounds, and the proof limits of a finite fuzz run.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

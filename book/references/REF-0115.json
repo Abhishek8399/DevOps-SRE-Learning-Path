@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0115",
+  "title": "The Go Memory Model",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/ref/mem",
+  "sourceType": "standard",
+  "versionOrDate": "Version of June 6, 2022; reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "memory model",
+    "data races",
+    "happens-before",
+    "channels",
+    "mutexes",
+    "atomic operations"
+  ],
+  "relevance": "Primary memory-model document used to distinguish synchronization guarantees, executed data races, happens-before relationships, and the limits of unsynchronized access.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

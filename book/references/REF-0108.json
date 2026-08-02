@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0108",
+  "title": "about_Parsing",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn PowerShell 7.5 view reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["expression mode", "argument mode", "quoting", "tokenization", "native commands", "stop-parsing token", "argument passing"],
+  "relevance": "Primary parsing reference for explaining PowerShell syntax versus argument data, quoting boundaries, and why native command construction must be tested by engine and platform.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

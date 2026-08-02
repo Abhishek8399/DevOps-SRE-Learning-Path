@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0135",
+  "title": "SLSA provenance",
+  "organization": "SLSA",
+  "url": "https://slsa.dev/spec/v1.2/provenance",
+  "sourceType": "standard",
+  "versionOrDate": "SLSA specification v1.2 approved version reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["SLSA", "provenance", "artifact subject", "build materials", "builder", "attestation", "software supply chain"],
+  "relevance": "Primary SLSA specification entry for provenance as verifiable information connecting artifacts to the moving parts and origins of a build process.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

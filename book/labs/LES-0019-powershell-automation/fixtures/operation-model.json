@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0019",
+  "baseline": {
+    "operationId": "ops-ps-1900",
+    "service": "catalog-api",
+    "desiredReplicas": 2,
+    "observedReplicas": 2,
+    "recordCount": 3,
+    "recordType": "System.Management.Automation.PSCustomObject",
+    "consumerState": "valid",
+    "exitCode": 0
+  },
+  "guided": {
+    "scenario": {
+      "case": "guided",
+      "operationId": "ops-ps-1901",
+      "service": "checkout-api",
+      "desiredReplicasRaw": "3",
+      "pipelineExpression": "Get-WorkItem | Out-String | Where-Object Status -eq Pending",
+      "nativeHelper": "synthetic-helper --service checkout-api",
+      "wrapperExitCode": 0
+    },
+    "observations": {
+      "operation": {
+        "operationId": "ops-ps-1901",
+        "promisedPostcondition": "three validated records and observed replicas equal 3",
+        "logicalAttempts": 1,
+        "wrapperExitCode": 0
+      },
+      "input": {
+        "name": "DesiredReplicas",
+        "rawType": "System.String",
+        "rawValue": "3",
+        "requiredType": "System.Int32",
+        "runtimeValidationPresent": false
+      },
+      "pipeline": {
+        "beforeOutStringType": "System.Management.Automation.PSCustomObject",
+        "afterOutStringType": "System.String",
+        "propertyAvailableAfterFormatting": false,
+        "selectedRecordCount": 0
+      },
+      "errors": {
+        "errorActionPreference": "Continue",
+        "producerErrorKind": "nonterminating",
+        "catchRan": false,
+        "errorRecordCount": 1
+      },
+      "native": {
+        "processStarted": true,
+        "nativeExitCode": 7,
+        "lastExitCodeReadBeforeNextNativeCommand": false,
+        "powershellExceptionThrown": false
+      },
+      "state": {
+        "publishedRecordCount": 0,
+        "expectedRecordCount": 3,
+        "observedReplicas": 2,
+        "desiredReplicas": 3
+      },
+      "outcome": {
+        "classification": "failed-postcondition-hidden-by-success-status",
+        "firstFailedBoundary": "object pipeline converted to formatting text before property filtering",
+        "additionalFailures": [
+          "nonterminating error did not enter catch",
+          "native exit code 7 was not translated",
+          "wrapper returned exit code 0 without verifying the postcondition"
+        ],
+        "retryEligible": false
+      }
+    },
+    "recovery": {
+      "action": "validate integer input, preserve objects, promote the expected provider error, translate native exit 7, and rebuild a candidate",
+      "publishedRecordCount": 3,
+      "observedReplicas": 3,
+      "duplicateEffects": 0,
+      "exitCode": 0
+    },
+    "verification": {
+      "operationId": "ops-ps-1901",
+      "postcondition": "satisfied",
+      "recordCount": 3,
+      "observedReplicas": 3,
+      "duplicateEffects": 0,
+      "consumerState": "valid"
+    }
+  },
+  "independent": {
+    "scenario": {
+      "case": "independent",
+      "operationId": "ops-ps-1902",
+      "service": "payments-api",
+      "desiredReplicasRaw": "4",
+      "clientDeadlineSeconds": 5,
+      "clientMessage": "maintenance wrapper completed",
+      "wrapperExitCode": 0,
+      "lastKnownReplicaCountBeforeRun": 2,
+      "expectedInventoryRows": 4
+    },
+    "observations": {
+      "operation": {
+        "operationId": "ops-ps-1902",
+        "promisedPostcondition": "four typed inventory records and observed replicas equal 4",
+        "logicalAttempts": 1,
+        "wrapperExitCode": 0
+      },
+      "input": {
+        "rawDesiredReplicaType": "System.String",
+        "validatedDesiredReplicaType": "not-created",
+        "parameterValidationPresent": false,
+        "acceptedRangeDeclared": false
+      },
+      "pipeline": {
+        "sourceElementType": "System.Management.Automation.PSCustomObject",
+        "formattingCommandAppliedBeforeExport": true,
+        "exportedElementType": "System.String",
+        "publishedRows": 2,
+        "expectedRows": 4
+      },
+      "errors": {
+        "errorActionPreference": "Continue",
+        "providerErrorKind": "nonterminating",
+        "catchRan": false,
+        "successStreamContinued": true
+      },
+      "native": {
+        "helperExitCode": 5,
+        "lastExitCodeCapturedImmediately": false,
+        "laterNativeCommandExitCode": 0,
+        "reportedLastExitCode": 0
+      },
+      "state": {
+        "stateOwner": "modeled service",
+        "authoritativeReplicaCount": 2,
+        "durableReceiptForChange": false,
+        "publishedInventoryRows": 2
+      },
+      "outcome": {
+        "classification": "known-no-postcondition-with-misreported-success",
+        "firstFailedBoundary": "unvalidated string input crossed into effect planning",
+        "retryEligible": false,
+        "requiredNextDecision": "correct the contract, then execute one bounded reconciled operation"
+      }
+    },
+    "recovery": {
+      "action": "create a typed bounded plan, retain object identity, stop on the expected provider error, capture the native status immediately, and publish only after readback",
+      "publishedRecordCount": 4,
+      "observedReplicas": 4,
+      "duplicateEffects": 0,
+      "exitCode": 0
+    },
+    "verification": {
+      "operationId": "ops-ps-1902",
+      "postcondition": "satisfied",
+      "recordCount": 4,
+      "observedReplicas": 4,
+      "duplicateEffects": 0,
+      "consumerState": "valid"
+    }
+  }
+}

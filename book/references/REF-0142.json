@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0142",
+  "title": "Docker Engine security",
+  "organization": "Docker",
+  "url": "https://docs.docker.com/engine/security/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Docker documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["daemon trust boundary", "namespaces", "control groups", "capabilities", "seccomp", "rootless mode", "attack surface"],
+  "relevance": "Official Docker security guidance used to frame daemon access as privileged, explain defense in depth, and discuss non-root users, capability reduction, seccomp, no-new-privileges, rootless operation, and host-boundary risk.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

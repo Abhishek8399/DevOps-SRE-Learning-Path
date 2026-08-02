@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0113",
+  "title": "The Go Programming Language Specification",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/ref/spec",
+  "sourceType": "standard",
+  "versionOrDate": "Language version go1.26, dated January 12, 2026; reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "language specification",
+    "types",
+    "interfaces",
+    "methods",
+    "concurrency",
+    "panics and recovery"
+  ],
+  "relevance": "Primary language specification used to ground types, method sets, interface representation, goroutines, channels, initialization, panics, and version-dependent language behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

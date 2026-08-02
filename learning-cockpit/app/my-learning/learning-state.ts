@@ -1,24 +1,7 @@
+import { generatedLearningLessonIds } from "./generated-learning-lesson-ids.ts";
+
 export const LEARNING_LIBRARY_STORAGE_KEY = "field-manual-learning-library-v1";
-export const LEARNING_LIBRARY_LESSON_IDS = [
-  "storage",
-  "processes-signals-systemd",
-  "cpu-memory-pressure",
-  "network-request-path",
-  "identity-permissions",
-  "LES-0006",
-  "LES-0007",
-  "LES-0008",
-  "LES-0009",
-  "LES-0010",
-  "LES-0011",
-  "LES-0012",
-  "LES-0013",
-  "LES-0014",
-  "LES-0015",
-  "LES-0016",
-  "LES-0017",
-  "LES-0018",
-] as const;
+export const LEARNING_LIBRARY_LESSON_IDS = generatedLearningLessonIds;
 
 export type LearningLessonId = (typeof LEARNING_LIBRARY_LESSON_IDS)[number];
 export type ReadingMarker = "not-started" | "reading" | "finished-reading";

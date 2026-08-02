@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0106",
+  "title": "about_Pipelines",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn PowerShell 7.5 view reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["object pipeline", "pipeline processing", "parameter binding", "enumeration", "success output", "command composition"],
+  "relevance": "Primary documentation for how PowerShell sends objects through pipelines and binds them to receiving commands, used to explain type, cardinality, and binding contracts.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0143",
+  "title": "SPDX Specification 3.0",
+  "organization": "Linux Foundation SPDX Project",
+  "url": "https://spdx.github.io/spdx-spec/v3.0/",
+  "sourceType": "standard",
+  "versionOrDate": "SPDX 3.0 specification; reviewed 2026-08-02",
+  "lessonIds": ["LES-0023"],
+  "topics": ["software bill of materials", "packages", "files", "relationships", "licensing", "security profiles"],
+  "relevance": "Primary SPDX specification used to explain an SBOM as structured inventory and relationships, not a vulnerability-free certificate, and to connect image contents with review, policy, and incident response.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

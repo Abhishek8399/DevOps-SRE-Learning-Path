@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0136",
+  "title": "CycloneDX specification overview",
+  "organization": "OWASP CycloneDX",
+  "url": "https://cyclonedx.org/specification/overview/",
+  "sourceType": "standard",
+  "versionOrDate": "CycloneDX specification overview reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["CycloneDX", "SBOM", "BOM metadata", "components", "dependencies", "hashes", "machine-readable supply-chain data"],
+  "relevance": "Primary CycloneDX overview for the BOM object model, subject metadata, component inventory, registered media types, and the distinction between structured supply-chain data and verification policy.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

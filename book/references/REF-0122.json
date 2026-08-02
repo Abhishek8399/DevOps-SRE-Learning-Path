@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0122",
+  "title": "RFC 9110: HTTP Semantics",
+  "organization": "Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9110",
+  "sourceType": "rfc",
+  "versionOrDate": "RFC 9110, June 2022; reviewed 2026-08-02",
+  "lessonIds": ["LES-0021"],
+  "topics": ["HTTP methods", "status codes", "content negotiation", "conditional requests", "idempotent methods"],
+  "relevance": "Authoritative HTTP semantics for method properties, representation metadata, Accept negotiation, validators such as ETag, conditional requests, response status meaning, and the boundary between protocol success and application outcome.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

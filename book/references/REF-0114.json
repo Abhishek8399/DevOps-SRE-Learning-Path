@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0114",
+  "title": "Go Modules Reference",
+  "organization": "The Go Authors",
+  "url": "https://go.dev/ref/mod",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Living Go modules reference reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "modules",
+    "go.mod",
+    "go.sum",
+    "module graph",
+    "version selection",
+    "proxies and checksum database"
+  ],
+  "relevance": "Primary module-system reference used to explain main-module selection, dependency versions, replacements, module graph behavior, checksum policy, and offline build boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

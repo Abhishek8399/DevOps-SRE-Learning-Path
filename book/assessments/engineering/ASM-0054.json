@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0054",
+  "lessonId": "LES-0023",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0023-oci-containers-docker` only if Docker Desktop, Ubuntu WSL integration, and the exact pinned BusyBox digest are already available. Capture raw `scenario` and write a timestamped prediction before derived `observe` views. Diagnose container lifecycle and PID 1 boundaries, map image/runtime/host ownership, design bounded recovery, verify signal, health, filesystem, network and resource contracts, prove cleanup, and transfer to one production container/Kubernetes workload. Never pull, build, install, use root, contact external network, mount a host path or Docker socket into the lab, inspect another answer, alter the controller, or manually delete lab state. If the runtime gate is unavailable, submit static evidence and the honest blocked result rather than changing the machine.",
+  "deliverables": [
+    "An independence declaration and environment card with Ubuntu/WSL, Docker client/daemon context, effective UID, physical path, exact cached image reference, network/pull policy, daemon trust boundary, expected Docker and /tmp changes, abort conditions, and cleanup command.",
+    "The unmodified preflight, setup, baseline observations, and raw independent scenario captured before any derived observation, plus proof that the scenario contains no derived state, exit, signal, health, diagnosis, recovery, outcome, or answer key.",
+    "A container stack diagram with text alternative covering registry descriptors, local content store, Docker daemon/containerd/runtime, OCI bundle, namespaces, cgroups, layered filesystem, mounts/network, PID 1/children, host kernel, logs/health, and user operation.",
+    "At least three competing hypotheses about the stopped workload, predicted evidence for each, and one disconfirming observation per hypothesis recorded before derived evidence.",
+    "A chronological evidence table labeling observations, documented contracts, calculations, inferences, hypotheses, and unknowns, with proves and does-not-prove limits and exact container/image identity.",
+    "A state-ownership and isolation table for process/PID, namespace, cgroup, image content, writable layer, tmpfs/volume, network, daemon, host kernel, health, log, durable business state, and controller retry.",
+    "A recovery card with actor, exact container ID/name and digest, preconditions, Docker daemon blast radius, stop/start scope, timeout/grace, abort thresholds, prior-state preservation, rollback/compensation, and verification.",
+    "A verification matrix for cached-digest gate, non-root user, PID 1 start and TERM path, health versus running, read-only rootfs, bounded writable tmpfs, no bind/mount/ports/network, dropped capabilities/no-new-privileges, memory/CPU/PID limits, logs, restart, artifact tamper/symlink/foreign-container refusal, and final absence.",
+    "A production transfer design covering immutable multi-arch identity, image build/reproducibility, registry trust, SBOM/provenance/signature policy, admission, non-root/capabilities/seccomp/rootfs/mounts/network, resources, health, logging, PID 1, durable state/idempotency, rollout and rollback reconciliation.",
+    "The full verifier output. If runtime_verification=blocked, include only static proof and the exact reason; do not fix Docker or obtain the image during the attempt. If runtime passes, include final lab check and an authorized reviewer-supplied root-refusal result when available."
+  ],
+  "evidenceRequirements": [
+    "Use only the exact pinned BusyBox digest already present in the local daemon and show `--pull=never`; a missing image is a deliberate blocked gate, not permission to pull.",
+    "Record scenario before derived views and demonstrate absence of exit, stopped/signal, outcome, diagnosis, recovery, process/health state, and answer key fields.",
+    "Distinguish image tag/name, index/manifest/config/layer digest, local image ID, container ID/name, process ID, and logical user operation; never use them interchangeably.",
+    "Distinguish a container from a virtual machine and state exactly which host kernel, daemon, namespace, cgroup, filesystem layer, mount, and state owner each evidence item belongs to.",
+    "Do not recommend privileged mode, host PID/network, Docker socket, host-root bind, capability ALL, disabled seccomp/TLS, permission bypass, manual Docker metadata edits, wildcard cleanup, or blind restart/replay.",
+    "For production commands or actions, state authorization, namespace/host/daemon target, identity/digest precondition, blast radius, timeout, abort, rollback or compensation, and end-to-end proof.",
+    "Use exact units for bytes, CPU quota/period or cores, PID count, timeouts, grace, rates, layer/mount capacity, and observation windows; separate config limits from measured usage.",
+    "State that verifier success proves only the guarded local Docker envelope and tested transitions; it does not certify Docker Desktop, the BusyBox image, kernel isolation, supply-chain trust, production behavior, or mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent prediction and identity", "points": 10, "observableEvidence": "Captures raw inputs first, maps exact image/container/process/logical IDs, and tests competing hypotheses without answer leakage."},
+    {"criterion": "Container mechanism depth", "points": 10, "observableEvidence": "Explains OCI descriptors, namespaces/cgroups, layer/mount ownership, PID1/signals, health/logging/network and VM distinction accurately."},
+    {"criterion": "Recovery and safety", "points": 10, "observableEvidence": "Uses exact owned container, bounded stop/start/recovery, respects daemon blast radius, handles blocked gate, and never pulls/elevates/broadens cleanup."},
+    {"criterion": "Verification quality", "points": 10, "observableEvidence": "Checks signal/health/rootfs/tmpfs/network/resources/security/refusals/cleanup with proof limits and verifies user-operation implications."},
+    {"criterion": "Production and supply-chain transfer", "points": 10, "observableEvidence": "Covers immutable multi-arch artifacts, trusted build/SBOM/provenance/admission, runtime least privilege, state/retry, capacity, rollout and reconciliation."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

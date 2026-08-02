@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0042",
+  "lessonId": "LES-0019",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Complete the answer-isolated independent case in `book/labs/LES-0019-powershell-automation`. Capture the raw scenario and write predictions before requesting any derived `observe` view. Diagnose object and serialization boundaries, parameter binding, ErrorRecord control flow, native status, final exit, and authoritative state. Decide whether another effect is permitted, design bounded recovery and verification, and transfer the design to one real CI, Windows operations, or Kubernetes PowerShell workflow without executing a production change. Do not inspect the fixture, guided outcome, another learner's response, or any answer key; do not elevate, install software or modules, configure remoting, access credentials, make a network call, change execution policy, alter ACLs, or manually delete state.",
+  "deliverables": [
+    "An independence declaration and runtime boundary card covering Windows PowerShell engine and edition, host, Windows identity and elevation, WSL bridge if used, repository path, temporary-state boundary, network boundary, expected changes, abort conditions, and sensitive-data exclusions.",
+    "The baseline and exact raw independent scenario transcript, followed by a prediction timestamped before every derived observation command.",
+    "An architecture diagram with text alternative covering caller, host and engine, parser and binder, typed pipeline, formatting or serialization, error streams, native helper, durable operation identity, modeled state owner, verifier, result streams, and process exit.",
+    "At least four competing hypotheses or possible outcomes, predicted evidence for each, one disconfirming check per hypothesis, the responsible state owner, and current retry permission.",
+    "A chronological evidence table classifying each entry as observation, documented fact, calculation, inference, hypothesis, or unknown and stating what it proves, does not prove, and the next discriminating check.",
+    "A corrected PowerShell interface design with advanced parameters, validation, stable public output type, formatting edge, terminating-policy decisions, narrow error translation, native executable and argument contract, immediate status capture, bounded streams, ShouldProcess, and final exit mapping.",
+    "A durable operation design with canonical intent, stable operation ID, authoritative read, conditional update, committed or absent or rejected or unknown classification, retry eligibility, concurrency owner, deadline and attempt budgets, recovery, rollback or compensation, and original-operation verification.",
+    "A security card covering command and module provenance, least privilege, remoting and second-hop boundary if relevant, credential or secret source, prohibited exposure channels, transcript/log handling, redaction tests, and response to secret exposure.",
+    "A verification matrix covering empty, one, and many objects; formatted text; missing property; nonterminating and terminating errors; native codes; overwritten LASTEXITCODE; invalid JSON; duplicate delivery; concurrent worker; timeout after effect; WhatIf; unexpected artifact; tamper; interruption; cleanup; and consumer readback.",
+    "A production transfer to one CI, Windows scheduled-task, remoting, or Kubernetes workflow identifying runtime and module artifact, identity, controller retry, durable state, filesystem, serialization, concurrency, observability, capacity, rollout, rollback or compensation, and local-model facts that do not transfer.",
+    "The complete normal-user verifier output, final `state=absent` proof, any separate reviewer-supplied elevation-refusal evidence, and a concise incident update separating user impact, mitigation, known and unknown outcomes, recovery, verification, root cause, contributing conditions, and prevention owners."
+  ],
+  "evidenceRequirements": [
+    "Record `scenario` before any derived observation and prove the raw output lacks classification, first-failed-boundary, retry decision, authoritative replica count, recovery, and answer-key content.",
+    "Use only the checked offline lab and read-only runtime checks. Store all learner notes outside the ACL-protected lab directory and do not inspect or modify the fixture or registered state.",
+    "Distinguish Windows PowerShell evidence from WSL Ubuntu evidence. Do not label a Windows SID or ACL as a Linux UID or mode, and do not claim the bridge is native Linux PowerShell.",
+    "Show types and cardinality at object, formatting, JSON, and remoting-style boundaries and explain which properties, methods, timestamps, or meanings can be lost.",
+    "Separate success stream, ErrorRecord, nonterminating or terminating control flow, native integer status, wrapper process exit, and authoritative postcondition. Do not use console color or Completed text as proof.",
+    "Preserve one logical operation ID and query the state owner before retrying any ambiguous effect. Reject blind replay, a new ID per attempt, unbounded retry, and local-exception-as-remote-truth reasoning.",
+    "For every proposed mutation state actor and authorization, exact target, preconditions, WhatIf or approval behavior, blast radius, deadline, abort threshold, prior-state preservation, rollback or compensation, and operation-level verification.",
+    "Never recommend Administrator, sudo, execution-policy weakening, permission bypass, module installation, broad delegation, Invoke-Expression, raw command-string construction, wildcard or recursive cleanup, secret logging, or global error suppression.",
+    "Use exact units for time, counts, bytes, concurrency, queue depth, retry count, elapsed budget, rate, and observation window. Separate logical operations from attempts.",
+    "State that verifier success demonstrates checked deterministic lifecycle and refusal controls only; it does not validate the learner's diagnosis, production remoting, native helper behavior, security certification, or mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independent scope, prediction, and boundaries", "points": 10, "observableEvidence": "Captures raw inputs first, distinguishes WSL and Windows, declares safety scope, maps owners, and records competing hypotheses plus disconfirming tests."},
+    {"criterion": "PowerShell mechanism accuracy", "points": 10, "observableEvidence": "Explains objects, formatting, serialization, binding, streams, ErrorRecords, termination, native status, ShouldProcess, and process exit without myths."},
+    {"criterion": "Operation safety and recovery", "points": 10, "observableEvidence": "Uses stable identity, authoritative readback, conditional effects, unknown-outcome reconciliation, bounded retry/concurrency, rollback or compensation, and aborts."},
+    {"criterion": "Evidence, testing, and verification", "points": 10, "observableEvidence": "Builds chronological proof-limited evidence and covers the required type, error, native, duplicate, interruption, tamper, cleanup, and consumer cases."},
+    {"criterion": "Production transfer and communication", "points": 10, "observableEvidence": "Transfers accurately to one real workflow, covers runtime, modules, identity, secrets, controllers, observability, capacity, rollout, and communicates the incident clearly."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

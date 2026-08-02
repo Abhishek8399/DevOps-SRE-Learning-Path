@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0044",
+  "lessonId": "LES-0020",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "A Go Kubernetes maintenance controller receives 60,000 objects. It starts one goroutine per object, uses http.DefaultClient, decodes error bodies with io.ReadAll, appends results to a shared slice under a mutex, and returns on the first worker error. The job-level context has a 30-second deadline, but helper functions call http.NewRequest without that context. The CI wrapper retries the whole command twice. During an incident, goroutines rise from 90 to 28,000, memory reaches 7 GiB, the API rate-limits requests, the process exits with context deadline exceeded, and several objects receive the requested mutation twice. Design an evidence-first mitigation, root-cause analysis, safe recovery, corrected Go architecture, verification matrix, rollout, and prevention plan.",
+  "directAnswer": "Stop new job retries and scale-out first. Preserve artifact, configuration, controller/job IDs, stable or missing operation IDs, request phase evidence, API audit/resource versions, queue and goroutine evidence, memory/profile snapshots, rate-limit signals, and accepted-versus-terminal work counts. The mechanisms are unbounded admission, unbounded body reads, missing context propagation, early collector return that can strand workers, controller-level retry multiplication, and absent or ineffective idempotency/reconciliation. Context expiry did not terminate helpers or prove remote no-effect. Reconcile every accepted object at the API authority before replay, adopt matching committed state, prove no-effect before bounded retry, and compensate conflicting duplicates only through an authorized reviewed operation. Replace the design with streamed validated input, bounded queue and worker group, one lifecycle owner, cancellation-aware sends, a reused configured Client/Transport, bounded and closed bodies, strict status/schema validation, stable per-object operation identity, authoritative reconciliation, one terminal result per accepted job, durable checkpoints, verified publication, and explicit exit classes.",
+  "foundation": "One goroutine per object turns the dependency into the queue. Returning on the first result error can leave workers blocked while sending. A top-level context does nothing for an HTTP request built without it. http.DefaultClient has no overall timeout policy owned by this tool. io.ReadAll can retain attacker-controlled or unexpectedly large bodies. A mutex may prevent a shared-slice data race but cannot guarantee one result per accepted object or prevent duplicate remote mutations. The CI wrapper composes retries with whatever the tool or transport does. A timeout after request transmission is an unknown outcome.",
+  "reasoningSteps": [
+    "Mitigate without changing truth: pause new scheduler admissions and automatic CI reruns, preserve the current process if safe for bounded evidence, and avoid killing it until the effect and checkpoint implications are understood.",
+    "Identify the exact binary, module/build information, source revision, configuration, job/controller attempt, Kubernetes service account and namespace, API endpoint/proxy, start time, and overall deadline.",
+    "Create an object ledger: accepted ID, attempt ID, request-write evidence, HTTP result, local terminal result, authoritative resource version/state, duplicate state, and current classification. Do not infer from the aggregate error.",
+    "Capture two authorized bounded goroutine profiles and heap evidence. Group persistent stacks by blocked result sends, HTTP body reads, connection waits, locks, and context paths. Compare goroutine count after admission stops.",
+    "Inspect the collector. If it returned at the first error, determine whether workers still send to an unreceived channel or mutate the shared slice. Confirm who closes channels and who joins workers.",
+    "Trace context from job entry through queue admission, worker, request construction, Client.Do, body read, and result send. A helper using http.NewRequest breaks cancellation propagation.",
+    "Inspect the transport. Determine connect, TLS, header, overall deadline, pool sizes, response-body limits, Close behavior, Retry-After handling, redirects, proxies, and any implicit retry behavior.",
+    "Calculate retry amplification: CI attempts multiplied by tool attempts, transport behavior, and per-object concurrency. Compare request rate with API quota and retry budget.",
+    "Reconcile duplicates by stable object and operation identity. Adopt already committed identical intent. Prove no effect before a retry. Treat unavailable authority or ambiguous versions as unknown. Plan compensation rather than pretending every mutation rolls back.",
+    "Correct admission with a bounded queue and fixed worker group sized from memory, connections, API quota, and latency. The producer closes jobs, a coordinator closes results after workers finish, and the collector drains until closure.",
+    "Return one typed terminal Result per accepted object. Keep state ownership in one collector or a deliberately synchronized store. Persist resumable checkpoints and intent IDs before effects.",
+    "Use one configured shared Client and Transport. Create requests with context, bound bodies before reading, close every response path, validate status and schema, redact sensitive diagnostics, and preserve typed unknown-outcome errors.",
+    "Define exit codes for invalid input, verified success, definite failure, unknown outcome, and internal defect. CI retries only eligible categories and reuses operation IDs.",
+    "Verify with stress, cancellation at each phase, response loss after commit, rate limits, huge bodies, partial results, concurrent controller attempts, restart, duplicate delivery, and goroutine/connection return to baseline.",
+    "Roll out with shadow or dry-run comparison when possible, small object canary, hard concurrency/retry kill switches, SLO and unknown-outcome alerts, stop thresholds, and an explicit rollback or compensation owner."
+  ],
+  "seniorAnswer": "My first goal is to stop amplification while preserving state. I pause CI retries and new controller admissions, establish one incident owner, and build an object-level ledger from API authority rather than treating context deadline exceeded as failure. I capture bounded profiles and accepted-versus-terminal counts. The expected immediate mechanisms are unbounded goroutines, a collector that abandons senders, missing request context, unbounded bodies, and a retry product across CI and the tool. The deeper design defect is missing lifecycle and operation identity contracts. Recovery reconciles each object by stable ID, adopts identical committed generations, retries only proven no-effect within budget, and compensates duplicates through reviewed Kubernetes operations. The replacement streams input into a bounded queue, joins a fixed worker set, uses a reused configured HTTP transport, produces one terminal typed result per accepted object, persists resumable state, and verifies consumer-visible resource versions. I gate rollout on failure-injection results and baseline resource recovery, not only throughput.",
+  "weakAnswer": "Increase the context timeout, use 5,000 goroutines instead of 60,000, add a larger mutex around the slice, retry 429 and timeout errors, and restart the pod to clear leaked goroutines.",
+  "whyWeak": "It changes load before establishing state, still admits excessive work, treats a mutex as operation correctness, assumes timeouts are retryable, compounds controller retries, and discards evidence. Restarting can repeat unknown effects and hides the lifecycle defect. It gives no stable identity, authoritative reconciliation, response bound, channel ownership, join, checkpoint, exit contract, recovery verification, or rollout abort condition.",
+  "evidence": [
+    {
+      "signal": "Two bounded goroutine profiles thirty seconds apart, grouped by stack",
+      "proves": "Which stacks persisted during the observed window and where goroutines were blocked.",
+      "doesNotProve": "The business root cause, remote mutation state, or that every goroutine of a repeated stack is leaked."
+    },
+    {
+      "signal": "Accepted object IDs compared with terminal results and authoritative resource versions",
+      "proves": "Which accepted work lacks a local result and what state the API currently reports.",
+      "doesNotProve": "Historical causality without audit/timing evidence or future consistency."
+    },
+    {
+      "signal": "HTTP phase trace plus request context linkage",
+      "proves": "Observed DNS/connect/TLS/header/body timing and whether the request carried the job context.",
+      "doesNotProve": "No remote commit after response loss or absence of proxy/server internal retries."
+    },
+    {
+      "signal": "Goroutine, heap, queue, connection, request-rate, retry, 429, and unknown-outcome metrics during a canary",
+      "proves": "Resource and outcome behavior for the canary window.",
+      "doesNotProve": "Safety at full scale, every failure mode, or permanent absence of leaks."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is the shared-slice mutex insufficient?",
+      "answer": "It may serialize slice memory access, but it does not bound admitted work, keep the collector alive, ensure one result per accepted object, propagate cancellation, close bodies, or make remote mutations idempotent. It can remove one data race while all operational defects remain."
+    },
+    {
+      "prompt": "How do CI and tool retries compose?",
+      "answer": "Total attempts can approach the product of controller/job attempts and per-call attempts, plus transport or server behavior. One logical operation needs a stable identity across those layers, one deadline/retry budget, and explicit ownership of retry decisions."
+    },
+    {
+      "prompt": "What is the rollout stop condition?",
+      "answer": "Stop if unknown outcomes, duplicate mutations, goroutines after the retirement window, body-limit violations, API throttling, queue age, error ratio, or resource use exceeds the predeclared threshold. Preserve canary evidence and reconcile before rollback or compensation."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Immediate mitigation and evidence preservation",
+      "points": 10,
+      "observableEvidence": "Stops retry/admission amplification and captures bounded identity, lifecycle, transport, resource, and authority evidence."
+    },
+    {
+      "criterion": "Mechanism and root-cause accuracy",
+      "points": 10,
+      "observableEvidence": "Connects unbounded admission, early return, missing context, response reads, and retry composition without equating timeout with no-effect."
+    },
+    {
+      "criterion": "Recovery safety",
+      "points": 10,
+      "observableEvidence": "Uses stable identities, per-object authoritative reconciliation, adopt/no-effect/unknown classification, and reviewed compensation."
+    },
+    {
+      "criterion": "Corrected architecture",
+      "points": 10,
+      "observableEvidence": "Defines bounded workers, channel ownership, join, configured HTTP, typed results/errors, checkpoints, verification, and exit behavior."
+    },
+    {
+      "criterion": "Verification and rollout",
+      "points": 10,
+      "observableEvidence": "Covers failure injection, resource retirement, duplicates, restarts, canary scope, abort thresholds, and operational communication."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

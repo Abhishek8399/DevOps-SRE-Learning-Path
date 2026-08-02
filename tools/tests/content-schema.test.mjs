@@ -1077,12 +1077,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes thirteen lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes eighteen lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 13);
-  assert.equal(result.metrics.assessments, 39);
-  assert.equal(result.metrics.references, 104);
+  assert.equal(result.metrics.lessons, 18);
+  assert.equal(result.metrics.assessments, 54);
+  assert.equal(result.metrics.references, 144);
 
   const expectations = [
     {
@@ -1305,6 +1305,91 @@ test("the live structured corpus publishes thirteen lessons with exact ownership
         "REF-0101", "REF-0102", "REF-0103", "REF-0104",
       ],
       independentId: "ASM-0039",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0019-powershell-safe-automation", "lesson.md"),
+      id: "LES-0019",
+      domain: "engineering",
+      route: "/book/engineering/powershell-safe-automation",
+      volume: "03-engineering-delivery",
+      order: 4,
+      prerequisiteLessonIds: ["LES-0009", "LES-0017"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-001"],
+      assessmentIds: ["ASM-0040", "ASM-0041", "ASM-0042"],
+      referenceIds: [
+        "REF-0105", "REF-0106", "REF-0107", "REF-0108",
+        "REF-0109", "REF-0110", "REF-0111", "REF-0112",
+      ],
+      independentId: "ASM-0042",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0020-go-infrastructure-tooling", "lesson.md"),
+      id: "LES-0020",
+      domain: "engineering",
+      route: "/book/engineering/go-infrastructure-tooling",
+      volume: "03-engineering-delivery",
+      order: 5,
+      prerequisiteLessonIds: ["LES-0009", "LES-0018"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-002"],
+      assessmentIds: ["ASM-0043", "ASM-0044", "ASM-0045"],
+      referenceIds: [
+        "REF-0113", "REF-0114", "REF-0115", "REF-0116",
+        "REF-0117", "REF-0118", "REF-0119", "REF-0120",
+      ],
+      independentId: "ASM-0045",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0021-api-contracts-serialization", "lesson.md"),
+      id: "LES-0021",
+      domain: "engineering",
+      route: "/book/engineering/api-contracts-serialization",
+      volume: "03-engineering-delivery",
+      order: 6,
+      prerequisiteLessonIds: ["LES-0015", "LES-0018"],
+      prerequisiteCurriculumIds: ["NET-005", "AUT-002"],
+      assessmentIds: ["ASM-0046", "ASM-0047", "ASM-0048"],
+      referenceIds: [
+        "REF-0121", "REF-0122", "REF-0123", "REF-0124",
+        "REF-0125", "REF-0126", "REF-0127", "REF-0128",
+      ],
+      independentId: "ASM-0048",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0022-reproducible-builds-dependencies", "lesson.md"),
+      id: "LES-0022",
+      domain: "engineering",
+      route: "/book/engineering/reproducible-builds-dependencies",
+      volume: "03-engineering-delivery",
+      order: 7,
+      prerequisiteLessonIds: ["LES-0009", "LES-0021"],
+      prerequisiteCurriculumIds: ["SCM-001", "AUT-005"],
+      assessmentIds: ["ASM-0049", "ASM-0050", "ASM-0051"],
+      referenceIds: [
+        "REF-0129", "REF-0130", "REF-0131", "REF-0132",
+        "REF-0133", "REF-0134", "REF-0135", "REF-0136",
+      ],
+      independentId: "ASM-0051",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "03-engineering-delivery",
+        "LES-0023-oci-containers-docker", "lesson.md"),
+      id: "LES-0023",
+      domain: "engineering",
+      route: "/book/engineering/oci-containers-docker",
+      volume: "03-engineering-delivery",
+      order: 8,
+      prerequisiteLessonIds: ["LES-0011", "LES-0004", "LES-0022"],
+      prerequisiteCurriculumIds: ["LNX-007", "NET-003", "BLD-001"],
+      assessmentIds: ["ASM-0052", "ASM-0053", "ASM-0054"],
+      referenceIds: [
+        "REF-0137", "REF-0138", "REF-0139", "REF-0140",
+        "REF-0141", "REF-0142", "REF-0143", "REF-0144",
+      ],
+      independentId: "ASM-0054",
     },
   ];
 

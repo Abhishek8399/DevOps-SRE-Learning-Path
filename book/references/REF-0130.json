@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0130",
+  "title": "SOURCE_DATE_EPOCH specification",
+  "organization": "Reproducible Builds project",
+  "url": "https://reproducible-builds.org/specs/source-date-epoch/",
+  "sourceType": "standard",
+  "versionOrDate": "Revision 1.1 dated 2017-11-27, reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["SOURCE_DATE_EPOCH", "deterministic timestamps", "timestamp clamping", "build metadata", "UTC epoch seconds"],
+  "relevance": "Distribution-neutral specification for exchanging a reproducible source-related timestamp with build tools and for handling execution-specific timestamps deterministically.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

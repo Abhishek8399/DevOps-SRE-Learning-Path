@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0107",
+  "title": "about_Error_Handling",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_error_handling",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn PowerShell 7.6 view updated 2026-07-02 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["nonterminating errors", "statement-terminating errors", "script-terminating errors", "ErrorRecord", "ErrorAction", "try catch finally", "native program errors"],
+  "relevance": "Primary current error-handling reference for separating ErrorRecord emission, control-flow termination, preferences, catch behavior, and native exit codes while retaining explicit Windows PowerShell 5.1 caveats.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

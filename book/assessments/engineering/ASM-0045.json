@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0045",
+  "lessonId": "LES-0020",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Without viewing the Go model source, guided diagnosis, prior completed response, or any answer material, use the LES-0020 independent local scenario to diagnose a policy-generation operation whose client deadline expires after request writing begins. Capture raw scenario output before derived observations. Produce an evidence-backed Go design and production incident response that decides whether replay is allowed only after authoritative reconciliation. Complete the local lifecycle, preserve answer isolation, prove cleanup, and transfer the design to a CI runner or Kubernetes controller without claiming the offline model tested a real API.",
+  "deliverables": [
+    "A signed independence declaration naming all help, hints, tools, source, guided material, or prior answers seen and confirming the response lives outside lab-owned state.",
+    "Exact Windows runtime evidence: operating system, normal-user identity, PowerShell version, Go executable/version/target, physical module path, dependency-network policy, registered lab root, expected changes, and abort conditions.",
+    "The unmodified raw independent scenario output captured before any observe command, plus a timestamped prediction that separates client facts, local durable facts, and facts unknown to the modeled authority.",
+    "At least three competing outcome hypotheses with predicted observations, disconfirming checks, and state owner for each.",
+    "A text diagram from CLI or controller through strict decode, typed intent, root context, bounded admission, worker lifecycle, HTTP adapter, modeled authority, receipt publication, operation verification, telemetry, and exit code.",
+    "A chronological evidence table labeling observation, fact, calculation, inference, hypothesis, and unknown; each row must say what it proves, what it does not prove, and the next discriminating check.",
+    "A Go design outline covering module/artifact identity, named types and invariants, strict JSON, small interfaces, wrapped typed errors, context deadlines/causes, goroutine/channel ownership, synchronization, configured HTTP, bounded bodies, idempotency, reconciliation, atomic publication, signals, and exit codes.",
+    "A recovery decision card naming actor and authorization, exact target, stable operation ID, preconditions, blast radius, abort threshold, retained prior state, retry eligibility, rollback versus compensation, verification, and remaining-risk owner.",
+    "A verification matrix for invalid input, unknown field, oversized input, cancellation before and after request write, response loss after commit, proven no-effect, duplicate delivery, concurrent runner, receipt conflict, race detector, fuzzing, goroutine retirement, reparse/tamper refusal, exact cleanup, and user-operation readback.",
+    "A CI or Kubernetes transfer identifying artifact provenance, identity/RBAC, namespace, controller retry composition, queue and worker caps, transport/TLS/proxy, state authority, lease/fencing boundary, secrets, observability cardinality, capacity, cost, rollout, kill switch, rollback, and compensation.",
+    "The complete verify.ps1 transcript, the real race-detector result or an explicit unsupported/failure record, final state=absent evidence, and a statement of everything the local pass does not prove.",
+    "A concise incident update separating impact, mitigation, known committed/no-effect/unknown operations, recovery, verification, root cause, contributing conditions, owners, and prevention deadlines."
+  ],
+  "evidenceRequirements": [
+    "Capture lab.ps1 scenario output before any observe view and prove the raw JSON contains no authoritative outcome, diagnosis, recovery, retry permission, duplicate-effect result, or answer key.",
+    "Use one fresh RELIABILITY_ATLAS_STATE_HOME token and normal-user PowerShell. Do not elevate, install a package, enable dependency networking, contact a cloud or cluster, or inspect a production secret.",
+    "Do not inspect cmd/opsmodel/main.go, internal/model/model.go, internal/model/model_test.go, ASM-0043, ASM-0044, or another completed ASM-0045 response until the independent submission is complete.",
+    "Keep one stable logical operation ID across attempts and explain why changing it defeats server-side deduplication.",
+    "Do not call a client timeout remote failure. Reconcile at the modeled authority before deciding committed, definite no-effect, or unknown.",
+    "For every suggested production mutation, state authorization, exact namespace/target, preconditions, bounded scope, deadline, abort condition, rollback or compensation, and operation-level verification.",
+    "Explain channel sender, receiver, closer, capacity, cancellation behavior, and join path. Explain why a process-local mutex cannot solve a multi-replica operation race.",
+    "Bound concurrency, queue length, request/response bytes, overall deadline, per-phase limits, attempts, backoff, jitter, retry traffic, telemetry cardinality, profile duration, and cleanup scope with units.",
+    "Record gofmt, go test, go vet, build, build metadata, lifecycle verifier, idempotency, tamper refusal, and cleanup evidence separately. Do not merge them into one correctness claim.",
+    "State that WSL Ubuntu has no Go in the reviewed environment and that Windows evidence does not prove Ubuntu, container, Kubernetes, network, TLS, proxy, API, or distributed behavior.",
+    "Acknowledge that harness success never grades the independent diagnosis and never awards mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Independent evidence discipline",
+      "points": 10,
+      "observableEvidence": "Declares exposure honestly, captures raw scenario first, predicts competing outcomes, and maintains an evidence chronology."
+    },
+    {
+      "criterion": "Go mechanism and architecture",
+      "points": 10,
+      "observableEvidence": "Uses accurate types, interfaces, errors, contexts, concurrency ownership, HTTP/JSON/filesystem boundaries, signals, exit codes, and build evidence."
+    },
+    {
+      "criterion": "Unknown-outcome recovery safety",
+      "points": 10,
+      "observableEvidence": "Keeps stable identity, reconciles at authority, refuses blind replay, distinguishes rollback/compensation, and verifies the original operation."
+    },
+    {
+      "criterion": "Testing, safety, and proof limits",
+      "points": 10,
+      "observableEvidence": "Covers failure paths, tamper/refusal/idempotency/cleanup, gives real command results, and states what each gate cannot prove."
+    },
+    {
+      "criterion": "Production transfer and communication",
+      "points": 10,
+      "observableEvidence": "Maps controller, identity, state, retry, network, observability, capacity, cost, rollout, risk ownership, and incident communication."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0121",
+  "title": "RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format",
+  "organization": "Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc8259",
+  "sourceType": "rfc",
+  "versionOrDate": "RFC 8259, December 2017; reviewed 2026-08-02",
+  "lessonIds": ["LES-0021"],
+  "topics": ["JSON grammar", "JSON value types", "Unicode", "interoperability", "parser limits"],
+  "relevance": "Primary JSON standard used to distinguish encoded text, syntactic validity, JSON value categories, numeric interoperability, duplicate-name concerns, and application-level validation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0109",
+  "title": "about_Automatic_Variables",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Microsoft Learn PowerShell 7.5 view reviewed 2026-08-02",
+  "lessonIds": ["LES-0019"],
+  "topics": ["LASTEXITCODE", "PowerShell success variable", "Error collection", "PSBoundParameters", "PSCmdlet", "invocation state", "edition differences"],
+  "relevance": "Primary reference for automatic process and invocation state, especially the volatile native exit status and edition-sensitive success semantics used in operational interfaces.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0131",
+  "title": "package-lock.json",
+  "organization": "npm",
+  "url": "https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "npm CLI v11 documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["package-lock.json", "dependency tree", "resolved package", "integrity field", "lockfile version", "npm reproducibility"],
+  "relevance": "Official npm description of the lockfile's exact dependency-tree representation, resolved locations, integrity fields, format versions, and role in repeatable installation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

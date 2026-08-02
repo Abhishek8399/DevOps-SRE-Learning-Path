@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0133",
+  "title": "Build context",
+  "organization": "Docker",
+  "url": "https://docs.docker.com/build/concepts/context/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Docker Build documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["Docker build context", "filesystem context", "Git context", ".dockerignore", "named context", "context transfer"],
+  "relevance": "Official definition of the files a Docker build can access, the positional context boundary, recursive filesystem behavior, ignore rules, and immutable Git-reference considerations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

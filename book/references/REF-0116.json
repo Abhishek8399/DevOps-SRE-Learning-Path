@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0116",
+  "title": "Package context",
+  "organization": "The Go Authors",
+  "url": "https://pkg.go.dev/context",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Standard-library package documentation showing Go 1.26.5; reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "context",
+    "deadlines",
+    "cancellation",
+    "request-scoped values",
+    "cancellation causes"
+  ],
+  "relevance": "Primary package documentation used for context propagation, cancel ownership, deadlines, cooperative cancellation, request-scoped values, and API design conventions.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

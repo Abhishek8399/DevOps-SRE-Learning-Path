@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0132",
+  "title": "Repeatable Installs",
+  "organization": "Python Packaging Authority pip project",
+  "url": "https://pip.pypa.io/en/stable/topics/repeatable-installs/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "pip 26.2 stable documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["pip", "version pinning", "hash checking", "requirements files", "wheelhouse", "offline installation"],
+  "relevance": "Official pip guidance separating exact pins, hash-checking mode, transitive coverage, and wheelhouse bundles, including the platform-specific nature of compiled artifacts.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

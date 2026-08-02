@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0047",
+  "lessonId": "LES-0021",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "A platform API creates deployment releases. At 10:00 UTC a new client rollout increases traffic from 80 to 240 logical operations per second. The gateway starts returning 429 with `Retry-After: 2`; each of 60 client replicas allows 100 in-flight calls and retries up to four times independently. Some POST attempts hit a 750 ms client deadline, but the service later shows releases were committed. The client generates a new idempotency key on every attempt. Its list-based reconciler uses offset pagination while new releases are inserted, and a webhook consumer verifies a signature but neither checks timestamp freshness nor deduplicates event IDs. Users see duplicate releases and missing audit rows. Lead diagnosis, containment, recovery, verification, and prevention. Include capacity math, compatibility and security boundaries, and a safe rollout plan.",
+  "directAnswer": "The client rollout created load and correctness amplification across several independent contracts. Sixty replicas permit 6,000 concurrent calls before retries; four retries can turn one logical operation into as many as five attempts, so an arrival rate of 240 logical operations per second can demand up to 1,200 attempts per second before webhook or reconciliation traffic. A new idempotency key per attempt defeats server deduplication, and a deadline after send creates an unknown result that must be reconciled by the original stable operation identity. Offset pagination over a changing collection can skip or repeat rows. Signature-only webhook validation does not reject old valid messages and does not make event processing idempotent. Contain by stopping blind mutation retries and the bad rollout, cap admission and concurrency, preserve operation and event identities, honor 429 within an overall deadline and fleet retry budget, and reconcile known/unknown effects at authoritative owners. Recover bounded cohorts, backfill audit rows from a snapshot or stable cursor, deduplicate only with proven business identity and compensation policy, and verify original user operations, duplicates, omissions, and downstream state. Prevent with a stable key bound to canonical intent, conditional/idempotent server semantics, snapshot cursor pagination, freshness plus replay cache for webhooks, typed problem handling, coordinated retry budgets, contract tests, load/failure tests, and canary rollout.",
+  "foundation": "A logical operation is the user's intent; an attempt is one transmission. If each failed-looking attempt creates a new idempotency key, the server is asked to perform several distinct logical operations. A deadline means the client stopped waiting, not that the server rolled back. HTTP 429 communicates rate limiting; `Retry-After` is server guidance, but a client must also honor its own total deadline and the system's retry budget. Offset pagination means 'skip N current rows'; inserts before the next page shift positions, causing duplicates or omissions. A cursor can bind continuation to stable ordering and, when the service supports it, a snapshot. A webhook signature proves integrity and signer possession under the verified scheme, not freshness or once-only delivery. Timestamp windows and durable event-ID deduplication address separate replay risks.",
+  "reasoningSteps": [
+    "Declare impact in user terms: count logical release requests, duplicate releases, missing audit rows, affected tenants, first/last timestamps, and whether any unauthorized or cross-tenant action occurred. Do not use raw attempt count as the user-operation count.",
+    "Freeze or roll back the new client release and disable automatic POST replay. Preserve client/gateway/service versions, request IDs, idempotency keys, canonical intent hashes, deadlines, statuses, safe problem codes, operation receipts, page cursors, webhook event IDs, and timestamps.",
+    "Quantify amplification. Base arrival is 240 logical operations/s. Maximum five attempts per operation yields a theoretical 1,200 attempts/s. Sixty replicas times 100 in-flight allows 6,000 concurrent calls. If mean attempt residence is 0.75 s, even one attempt per operation needs about 180 average in-flight requests; amplification and two-second retry waits can build a much larger queued population. State assumptions and measure the actual distribution.",
+    "Separate 429 from timeout. A 429 known rejection normally means no application mutation for that attempt under the API contract and may be retryable after guidance. A POST deadline after request transmission is unknown because the state owner may have committed. It requires lookup by the same logical identity before any retry.",
+    "Trace idempotency. Verify whether the service stores key, caller scope, canonical intent hash, outcome, and retention window atomically with the effect. A new key per attempt guarantees that server-side dedupe cannot correlate retries. Key reuse with different intent must be rejected.",
+    "Trace pagination. Compare a stable inventory or event log against IDs observed by every offset page. Identify duplicates and omissions around insertion times. Move recovery reads to a documented stable sort plus opaque cursor and snapshot or high-water mark where supported.",
+    "Trace webhooks. Verify the signature over the exact raw bytes and required components before parsing, use constant-time library verification, enforce a bounded timestamp window, and atomically claim a durable event ID before effect. A valid repeated event should return an accepted response without repeating the effect.",
+    "Contain load with admission control, bounded per-replica concurrency, one retry owner, exponential backoff with jitter, `Retry-After` as a lower bound when within the remaining deadline, and a fleet retry budget. Protect reads and reconciliation from starvation by mutation retries.",
+    "Build a reconciliation ledger keyed by original logical operation. Classify each known committed, known absent/rejected, duplicate, or unknown using authoritative receipts and resource state. Never merge records merely because human-visible names resemble each other.",
+    "Recover a canary cohort. For committed operations, publish missing local/audit receipts without a second POST. For proven absent and still desired operations, send one bounded attempt using the original key or an approved stable replacement mapping. For duplicates, choose compensation only when ownership, dependency, and user-impact policy make it safe.",
+    "Backfill missing audit rows from a stable snapshot or append-only authoritative event source. Store the snapshot/cursor and record counts. Restart from the last committed cursor, not an offset against a moving collection.",
+    "Verify every original logical operation has one intended final state, no unsupported duplicate effects remain, audit coverage matches authoritative records, webhook re-delivery produces zero second effects, pagination has no gap/duplicate under concurrent inserts, and latency/error/rate-limit guardrails stay healthy for a full observation window.",
+    "Prevent with runtime schemas, explicit API/version/media-type contracts, stable problem codes, operation identity, conditional writes, retry and concurrency budgets, compatible evolution tests, webhook freshness/replay protection, consumer-driven and provider contract tests, chaos cases for timeout after commit, and canary/kill-switch rollout."
+  ],
+  "seniorAnswer": "I would treat this as a correctness incident driven by multiplicative client behavior, not simply a capacity shortage. I would halt the client rollout and blind POST retries, cap global and per-client admission, and preserve original logical IDs. The configured ceiling is 6,000 in-flight attempts, and four retries allow five total attempts, making 240 logical operations/s as many as 1,200 attempts/s. I would measure actual service time, retry distribution, queue age, and quota response rather than claiming that theoretical maximum occurred. Each timed-out POST is unknown; I would query by the original stable idempotency identity. The current client destroys that identity by generating a new key, so I would reconcile resources and receipts into committed, absent, duplicate, and unknown sets before acting. Offset pagination against concurrent inserts explains audit gaps and repeats; recovery uses stable ordering plus snapshot-bound opaque cursors or an authoritative append-only high-water mark. The webhook path must verify the exact raw signed message, required algorithm/key, timestamp window, and durable event ID claim; signature verification alone permits replay of an old authentic message. Recovery proceeds tenant-by-tenant with abort thresholds for new duplicates, rising 429s, tail latency, audit mismatch, or unknown backlog. I would backfill receipts for already committed work, retry only owner-proven absent work with stable identity, and compensate duplicates only under explicit business authorization. Prevention includes server-side atomic key-to-intent/outcome storage, rejection of key reuse with different payload hash, one coordinated retry owner, deadline/backoff/jitter/fleet budget, bounded concurrency and backpressure, typed problem details, compatible schema evolution, snapshot pagination, replay-safe webhooks, contract and failure tests, and a canary rollout whose rollback also reconciles accepted work.",
+  "weakAnswer": "Increase server replicas, raise the client timeout, double the rate limit, and retry failed requests with exponential backoff. Delete duplicate database rows and rerun the audit job from page one.",
+  "whyWeak": "Scaling may reduce latency but does not repair lost operation identity, ambiguous timeouts, pagination drift, or replay. Raising limits can intensify overload. Deleting rows without proving ownership and downstream effects is destructive. Page-one offset replay can repeat the same inconsistency. The answer lacks containment, classification, capacity units, safe reconciliation, compatibility, authorization, verification, and rollback of accepted work.",
+  "evidence": [
+    {
+      "signal": "Client logs map one canonical intent to five distinct idempotency keys, while the service has several committed releases with matching intent fields.",
+      "proves": "The client represented attempts for one apparent intent as distinct deduplication identities and the service committed more than one matching release.",
+      "doesNotProve": "That every duplicate-looking release is unauthorized or safe to delete; ownership and downstream use must be established."
+    },
+    {
+      "signal": "A timed-out request's original operation lookup returns one committed release and one service attempt.",
+      "proves": "That specific client timeout was a lost/late response rather than a failed service effect.",
+      "doesNotProve": "The outcome of other timeouts or that all clients preserve identity."
+    },
+    {
+      "signal": "An offset scan during inserts repeats two IDs and omits three IDs, while a snapshot cursor scan returns each snapshot member exactly once.",
+      "proves": "The tested offset traversal is inconsistent under that mutation pattern and the tested snapshot cursor preserves its declared set.",
+      "doesNotProve": "Universal correctness of every cursor implementation, data after the snapshot, or absence of authorization filters."
+    },
+    {
+      "signal": "Replaying an old correctly signed webhook creates a second effect before the fix; after freshness and atomic event-ID claiming, it is acknowledged with zero additional effect.",
+      "proves": "Signature-only handling allowed replay in the reproduction and the tested combined controls suppress a repeated event effect.",
+      "doesNotProve": "Key custody, algorithm strength, clock correctness, or behavior outside the tested retention window."
+    },
+    {
+      "signal": "During canary recovery, logical operation rate is 20/s, attempt rate remains below 23/s, 429 stays below 1%, oldest unknown declines, and duplicate count does not rise for 30 minutes.",
+      "proves": "The bounded canary stayed within those measured guardrails for that window.",
+      "doesNotProve": "Safety at full fleet scale, long-term stability, or correctness for unobserved tenants and failure modes."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Should the client always sleep exactly `Retry-After: 2` seconds?",
+      "answer": "No. Parse the documented form, reject invalid values safely, combine the server's earliest retry guidance with the remaining monotonic operation deadline, add policy-compatible jitter to avoid synchronization, and respect attempt and fleet budgets. If two seconds exceeds the remaining user deadline, stop or enqueue according to the contract rather than sleeping and sending a doomed attempt."
+    },
+    {
+      "prompt": "How long should idempotency records be retained?",
+      "answer": "Longer than the maximum legitimate retry/reconciliation horizon, including queues, offline clients, controller restarts, and incident recovery, with capacity and privacy limits measured. After expiry, the API must document that it can no longer deduplicate. A client must not assume permanent memory."
+    },
+    {
+      "prompt": "Can the server derive the idempotency key from the payload hash?",
+      "answer": "A canonical intent hash can help bind key to content, but identical payloads may represent distinct desired operations, serialization is not automatically canonical, secrets may be exposed through naive hashing, and authorization scope matters. Usually the client supplies a stable logical ID and the server stores an authenticated caller scope plus canonical non-secret intent fingerprint."
+    },
+    {
+      "prompt": "Why not use a database unique constraint and call the system exactly once?",
+      "answer": "A unique constraint can atomically prevent one class of duplicate within that database owner. It does not make queue delivery, HTTP responses, audit publication, notifications, or another service transactional. State the narrow invariant it enforces and reconcile the remaining boundaries."
+    },
+    {
+      "prompt": "What compatibility check blocks a dangerous client rollout?",
+      "answer": "Run old and new producer representations against the provider schema and behavior, run provider changes against supported consumer expectations, test unknown fields/enums/problem types, preserve old response semantics during the support window, and canary real traffic with explicit error, retry, duplicate, and unknown-outcome guardrails."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Incident framing and containment", "points": 10, "observableEvidence": "Separates logical operations from attempts, freezes unsafe replay, preserves identities, limits load, and names user impact."},
+    {"criterion": "Capacity and retry reasoning", "points": 10, "observableEvidence": "Calculates 6,000 configured in-flight and up to 1,200 attempts/s, labels assumptions, and designs coordinated deadlines, backoff, jitter, and budgets."},
+    {"criterion": "Correctness mechanisms", "points": 10, "observableEvidence": "Handles timeout ambiguity, stable idempotency, key-to-intent binding, snapshot pagination, webhook freshness, and event dedupe accurately."},
+    {"criterion": "Recovery and verification", "points": 10, "observableEvidence": "Classifies outcomes, backfills safely, bounds compensation, uses abort thresholds, and verifies original operations, audit coverage, duplicates, and downstream effects."},
+    {"criterion": "Prevention and rollout", "points": 10, "observableEvidence": "Covers API/schema evolution, problem contracts, contract/failure/load tests, observability, canary, kill switch, and post-rollback reconciliation."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

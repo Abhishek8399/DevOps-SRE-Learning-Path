@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0046",
+  "lessonId": "LES-0021",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A deployment client sends `POST /v1/releases` with `Content-Type: application/json`, `Accept: application/json`, and body `{\"service\":\"café-api\",\"replicas\":\"3\"}`. The server returns status 422 with `Content-Type: application/problem+json`; the problem object identifies `/replicas` and code `integer-required`. An operator says, 'The JSON is valid, 422 is a server failure, and the number looks correct, so retry three times.' Explain every relevant contract boundary, decide whether retry is safe or useful, state the minimum evidence needed before any mutation, and give a corrected request and verification plan.",
+  "directAnswer": "The bytes can be valid UTF-8 and the document can be syntactically valid JSON while still violating the endpoint schema. JSON string `\"3\"` and JSON number `3` are different typed values. `Content-Type` describes the request representation, `Accept` describes response representations the client can consume, and 422 means the server understood the media type and syntax but rejected the request content under its contract. This deterministic validation error is not healed by delay, so retrying unchanged is neither useful nor safe operational practice. Preserve the problem response and request correlation metadata without secrets, correct the producer to emit `replicas` as integer 3 under the supported API version, submit it as a separately reviewed logical operation with an idempotency key if the mutation contract supports one, and verify the authoritative release state rather than trusting only a 2xx response.",
+  "foundation": "An API does not receive a Python dictionary or a Java object. It receives bytes plus protocol metadata. The sender encodes characters such as `é` into bytes, labels those bytes with a media type, and sends them over HTTP. A JSON parser first checks grammar: braces, commas, quotation marks, escapes, numbers, literals, and nesting. It then creates typed values: object, array, string, number, Boolean, or null. A schema or application validator applies a second contract: required fields, allowed fields, exact types, ranges, formats, and relationships. Therefore syntactic validity is only one gate. HTTP status 422 is a client-visible representation of semantic rejection; it does not mean the server process crashed. Retrying is a control-flow decision based on failure class and mutation semantics, not a reflex attached to every non-2xx response.",
+  "reasoningSteps": [
+    "Start with the promised user operation: create one release for service café-api with exactly three replicas. Separate that promise from the client's attempt and the server's response.",
+    "Identify the byte boundary. The visible character `é` is a Unicode character whose UTF-8 encoding occupies more than one byte. The sender and receiver must agree on representation; byte length and character count are different measurements.",
+    "Identify the media-type boundary. Request `Content-Type: application/json` tells the receiver how to interpret request bytes. `Accept: application/json` tells the server which response representation the client says it can process. Neither header validates fields or authorizes the operation.",
+    "Identify the syntax boundary. The body parses as a JSON object. That proves grammar and decoding for this input, not schema conformance or business validity.",
+    "Identify the type boundary. The quotation marks around `3` make it a JSON string. The endpoint requires a JSON number whose decoded application value is an integer in the allowed range. A server should reject rather than silently coerce unless coercion is explicitly part of the public contract.",
+    "Interpret the response. Status 422 plus a bounded problem-details body states that the representation was understood but one field failed validation. Preserve status, safe problem type/code, field pointer, correlation ID, API version, and client artifact identity.",
+    "Classify retry. This is deterministic invalid input, not a transient availability or rate-limit event. Backoff does not change the body. Repeating it consumes capacity and creates noise. The request must be corrected and reviewed.",
+    "Check whether mutation occurred. The endpoint should validate before effects, but the client should rely on the documented contract or an authoritative operation query, not assumption. The local lab's state-owner view reports zero attempts; a production system needs equivalent evidence.",
+    "Construct a corrected representation: `{\"service\":\"café-api\",\"replicas\":3}` plus every required field such as target version. Keep `Content-Type` and `Accept` aligned with supported representations and choose the documented API version.",
+    "Treat the corrected call as a new reviewed request, not an automatic retry of the invalid payload. If the API supports idempotency, bind one stable key to the canonical logical intent and reject reuse of that key with different intent.",
+    "Verify at the state owner: query the release or operation by stable identity, compare service, target, replica count, version, and revision, then perform the user-visible health/readiness check. A 201 response alone is necessary protocol evidence, not complete operational proof.",
+    "Prevent recurrence with producer-side schema validation, consumer contract tests containing string-versus-number and Unicode cases, generated-client review, problem-code classification, retry allowlists, and telemetry that separates validation rejects from service failures."
+  ],
+  "seniorAnswer": "I would stop the automatic retry because this is a contract rejection, not an availability symptom. The request passed UTF-8/JSON parsing but failed the next boundary: `/replicas` is a JSON string while the endpoint requires an integer. I would retain sanitized evidence—the exact API version, media types, request schema revision, safe payload shape, status, problem type/code/pointer, correlation ID, and client build—then confirm from the service contract or operation lookup that validation precedes mutation. I would fix the producer's runtime model so `replicas` cannot be represented as a string, add a negative contract test for it, and issue the corrected intent under an explicit idempotency policy. Success would mean the authoritative release record has the intended target and integer replica count and the user journey passes, not merely that the next call returns 2xx. I would alert on growth in validation rejects by bounded problem code, not retry them or label them generic server errors.",
+  "weakAnswer": "JSON accepts strings and numbers, so convert the value on the server, retry with exponential backoff, and treat any 2xx as fixed.",
+  "whyWeak": "It confuses JSON grammar with the endpoint schema, makes undocumented coercion part of the contract, wastes capacity retrying deterministic input, ignores idempotency and authorization, and stops verification at transport status rather than authoritative and user-visible state.",
+  "evidence": [
+    {
+      "signal": "A strict parser decodes the document and reports the top-level value as an object and `/replicas` as a string.",
+      "proves": "The tested bytes are syntactically valid JSON and the field has string type after decoding.",
+      "doesNotProve": "Schema validity, authorization, mutation absence, or that every parser uses identical duplicate-key and numeric policies."
+    },
+    {
+      "signal": "The response is 422 `application/problem+json` with allowlisted problem code `integer-required` and field pointer `/replicas`.",
+      "proves": "The responding endpoint classified this attempt as a content validation rejection under the observed contract.",
+      "doesNotProve": "That no side effect occurred unless validation-before-mutation is part of the contract or verified at the state owner."
+    },
+    {
+      "signal": "The authoritative operation audit shows zero mutation attempts for the rejected request identity.",
+      "proves": "No modeled mutation attempt was recorded for that exact request identity.",
+      "doesNotProve": "The absence of effects under a different identity or in a production service not represented by the model."
+    },
+    {
+      "signal": "The corrected request decodes `/replicas` as an integer, is accepted once, and the release query returns the intended replica count and target.",
+      "proves": "The corrected representation satisfied the observed contract and the queried state reached the intended value for that operation.",
+      "doesNotProve": "Long-term availability, workload health, authorization correctness for other callers, or universal backward compatibility."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why not accept both string `3` and number `3`?",
+      "answer": "You may design a union type, but then both representations are permanent public behavior that every validator, SDK, cache, signature, and downstream consumer must handle. Silent coercion also creates edge cases such as whitespace, signs, decimal strings, booleans, overflow, and locale. Prefer one unambiguous representation unless compatibility evidence justifies the wider contract."
+    },
+    {
+      "prompt": "What is the difference between 400, 415, 422, and 406 here?",
+      "answer": "400 covers a malformed or otherwise bad request when a more specific status is not used; 415 says the request representation's media type is unsupported; 422 says the media type and syntax were understood but the content could not be processed under the contract; 406 says the server cannot produce a representation acceptable under the client's `Accept` constraints. Exact use must follow the API's documented error contract."
+    },
+    {
+      "prompt": "Does JSON define an integer type?",
+      "answer": "JSON's grammar has one `number` category. Schemas and application models can impose an integer constraint. Parsers map numbers into language-specific numeric types with different precision and range, so producers must avoid assuming every large integer or decimal round-trips identically."
+    },
+    {
+      "prompt": "Why preserve the problem code instead of parsing the English title?",
+      "answer": "A stable machine code can drive bounded automation and metrics. Human titles and detail text may change, be localized, or contain unsafe input. The API should document which problem types or extension codes are stable, while clients treat unknown problem types safely."
+    },
+    {
+      "prompt": "Is client-side validation enough?",
+      "answer": "No. It improves feedback and blocks many mistakes, but clients can be old, buggy, bypassed, or hostile. The state-owning service must validate and authorize every request at its trust boundary."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Boundary accuracy", "points": 10, "observableEvidence": "Separates Unicode characters, encoded bytes, media type, JSON syntax, schema type, business validation, authorization, mutation, and user outcome."},
+    {"criterion": "HTTP interpretation", "points": 10, "observableEvidence": "Explains Content-Type, Accept, 422 and problem details without treating a client-visible validation rejection as a generic server failure."},
+    {"criterion": "Retry and idempotency decision", "points": 10, "observableEvidence": "Refuses unchanged retry, distinguishes corrected intent, and states stable-key and key-to-intent requirements."},
+    {"criterion": "Evidence and verification", "points": 10, "observableEvidence": "Preserves safe evidence, checks mutation at the owner, and verifies the release plus user-visible result."},
+    {"criterion": "Prevention", "points": 10, "observableEvidence": "Covers runtime models, schema/contract tests, Unicode/type edge cases, error classification, retry allowlists, and useful telemetry."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

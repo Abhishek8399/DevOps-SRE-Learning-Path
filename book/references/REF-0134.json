@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0134",
+  "title": "Build cache invalidation",
+  "organization": "Docker",
+  "url": "https://docs.docker.com/build/cache/invalidation/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Docker Build cache documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0022"],
+  "topics": ["Docker build cache", "cache checksum", "RUN instruction", "cache invalidation", "build secrets", "SOURCE_DATE_EPOCH"],
+  "relevance": "Official Docker rules and limitations for cache invalidation, including persistent RUN cache, secret-content behavior, selective invalidation, and effects of changing source-date inputs.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

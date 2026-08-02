@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0117",
+  "title": "Package net/http",
+  "organization": "The Go Authors",
+  "url": "https://pkg.go.dev/net/http",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Standard-library package documentation showing Go 1.26.5; reviewed 2026-08-02",
+  "lessonIds": [
+    "LES-0020"
+  ],
+  "topics": [
+    "HTTP clients",
+    "transports",
+    "request context",
+    "timeouts",
+    "response bodies",
+    "connection reuse",
+    "redirects"
+  ],
+  "relevance": "Primary package documentation used to ground Client and Transport ownership, request contexts, response status/body handling, connection reuse, redirect behavior, and timeout boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
