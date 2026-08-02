@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0058",
+  "lessonId": "LES-0025",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "One protected release intent is mirrored into four separate provider-specific jobs for a controlled comparison. The jobs require Linux, x64, `release-tools`, and the `protected-release` trust class and have each been ready for twelve minutes, but each belongs to its own control plane and can use only workers registered and authorized in that provider. A reporting page combines them as eleven workers online and 22 percent aggregate utilization; that cross-provider total is not schedulable capacity. Four GitHub self-hosted runners have the right labels but their runner group no longer grants this repository access. Three GitLab runners are free with ordinary tool tags, but the organization release contract requires a dedicated runner carrying the `protected-release` tag and configured for protected work; the only runner satisfying that contract is busy. Two Jenkins nodes match the label expression but all executors are occupied by long tests. One Azure Pipelines agent has the tool installed but advertises capabilities captured before installation, while a second otherwise matching Azure agent is draining after a failed image canary. An operator proposes removing the trust selector in each definition and sending the jobs to general persistent pools. Explain the system from foundation level through senior diagnosis: keep the four provider queues separate; distinguish job readiness, worker eligibility, worker availability, labels or tags or capabilities, organizational trust policy, capacity, and queue age; state what the observations prove and do not prove; choose the smallest safe correction for each case; and define recovery evidence. Also explain why neither a cache hit nor a green rerun would prove the release path safe.",
+  "directAnswer": "Do not remove the trust selectors. Diagnose four independent queues; the cross-provider online count and utilization average are reporting context, not a shared eligible set. GitHub has an administrative-scope mismatch. GitLab has no free runner satisfying the organization dedicated `protected-release` tag and protected-work contract; the general runners are excluded by that explicit contract, not automatically by the protected ref alone. Jenkins has eligible but unavailable executor capacity. Azure has one stale capability advertisement and one intentionally draining candidate. For each provider preserve the job requirements, resolved configuration, ready timestamp, authorized worker inventory, selectors, health, busy or draining state, versions, quotas, and recent changes. Correct one proven predicate or restore one known-good qualified worker inside that provider and trust scope; canary a non-destructive representative job without broadening authority. Recovery requires assignment to the intended provider-specific worker class, correct image and permission class, successful evidence and artifact handling, a falling protected backlog, queue age within objective, and no unexpired trust exception. A cache hit proves only that data was found under a cache rule, and a green rerun proves only that one later attempt satisfied its declared checks in its own context; neither proves clean inputs, effective least privilege, immutable artifact continuity, safe cancellation, target state, or user success.",
+  "foundation": "A continuous integration control plane turns an event and pipeline definition into jobs. A job is ready when its dependencies, conditions, and gates permit worker assignment. A worker is eligible when administrative scope, trust policy, pool or group, operating system, architecture, and every required selector match. An eligible worker is available only when it is online, healthy, enabled, not draining, and has free concurrency under applicable quotas or locks. A label, tag, or capability is selection metadata; it is not proof that the machine is trustworthy or that a tool works. Queue age should be measured from the time a job became ready until a qualified worker accepted it, not from the first pipeline event or through an approval wait. A cache is optional acceleration state. An artifact is a declared output that needs controlled identity and handoff.",
+  "reasoningSteps": [
+    "Establish the exact provider scope, logical run, run attempt, job, source revision, resolved pipeline configuration, event trust, and time window for each of the four provider-specific cases. The shared release intent is useful correlation, but no provider can dispatch its job to another provider worker.",
+    "Confirm that each provider-specific job is ready for dispatch. Inspect dependency results, conditions, manual gates, approvals, concurrency keys, resource locks, and environment checks before investigating that provider worker set.",
+    "Write the complete execution contract: administrative scope, event and ref trust, requested pool or group, operating system, architecture, labels or tags or demands, runtime or executor, image or tool version, permissions, timeout, and concurrency requirements.",
+    "Enumerate workers allowed by administrative scope. GitHub runner-group access, GitLab project or group assignment, Jenkins folder or job authorization, and Azure pool permission can reject a worker before capability matching.",
+    "Apply trust and protection predicates without inventing provider semantics. In the GitLab case, the organization dedicated `protected-release` tag, scope, and protected-work policy exclude the general runners; a protected ref alone does not inherently make every unprotected runner ineligible.",
+    "Apply provider-specific selectors. GitHub uses runner groups plus `runs-on` labels; GitLab combines scope and protection with job tags and executor configuration; Jenkins evaluates node label expressions and needs a free executor; Azure selects a pool and matches demands to advertised capabilities.",
+    "Separate static eligibility from dynamic availability inside each provider. The matching Jenkins nodes are eligible but busy, while the second Azure candidate is withheld deliberately during drain. Both differ from a worker whose scope, policy, or selector makes it ineligible.",
+    "Check freshness and truth of worker metadata. An Azure self-hosted agent can advertise capabilities captured before a tool was installed; a restart may refresh them, but only after evidence and a controlled change. A string still does not attest tool integrity.",
+    "Inspect quotas, provider parallelism, executor counts, provisioning state, locks, and service-time distributions within each provider. Cross-provider aggregate utilization is not actionable because capacity cannot be borrowed across those control planes and each protected class currently has zero free eligible slots.",
+    "Contain without collapsing trust. Keep each affected provider release job paused, stop a bad worker-image rollout where relevant, and preserve queue and worker evidence per provider. Do not route protected work to a pool that has a different code, credential, network, cache, or persistence boundary.",
+    "Correct the smallest demonstrated defect inside the relevant provider: restore GitHub group access if its removal was erroneous and authorized, restore a free GitLab runner that satisfies the dedicated tag and protected-work contract, wait or add measured Jenkins executor capacity on isolated nodes, or refresh and verify Azure capabilities or restore the prior canary image. Change one bounded predicate at a time.",
+    "Canary with a representative non-destructive job. Record worker and image identity, effective permissions, workspace boundary, artifact receipt, queue and service times, and the result. Expand capacity only after the canary meets explicit abort and recovery criteria.",
+    "Prove recovery with fresh telemetry: protected jobs are accepted by the intended class within objective, successful throughput exceeds arrivals until backlog returns to normal, outputs remain attributable, and no trust selector or permission was weakened. If delivery was affected, verify the target and a real user operation separately.",
+    "Keep cache, job, artifact, deployment, and user claims separate. A cache hit does not prove compatible content; a green job does not prove the artifact consumed later; an online runner does not prove a safe workspace; a deployment response does not prove the user outcome."
+  ],
+  "seniorAnswer": "I would declare four correlated protected-class scheduling incidents under one release intent, not one fleet-capacity incident. First I would establish that every provider-specific job is ready and preserve each resolved requirement set and ready timestamp. Then I would compute four eligible intersections independently by administrative scope, organization trust policy, pool or group, selectors, architecture, executor, online state, free concurrency, and quota. GitHub group authorization empties the GitHub set. GitLab has one runner satisfying the organization dedicated `protected-release` tag and protected-work contract, but it is busy; the general runners are not excluded merely because the ref is protected. Jenkins has eligible nodes but no available executors. Azure has stale advertised capability and a second candidate correctly draining after a failed canary. The combined utilization is therefore operationally irrelevant. I would not remove `protected-release`, because that would convert availability incidents into security design failures. Within each provider I would stop the bad rollout where applicable, restore one reviewed known-good protected worker, or correct one mistaken access or capability predicate under its owner, then send a non-destructive canary. I would compare assignment identity, image digest, agent version, effective permission and external identity paths, workspace and cache boundaries, artifact upload and readback, queue latency, service time, and cleanup. I would expand in bounded provider-specific waves while each protected backlog falls and retain previous qualified capacity. Longer term, I would publish a typed worker contract, monitor eligible free slots and queue age by provider and trust class, validate capabilities before registration, canary images, bound autoscaling, and alert on an empty provider-specific eligible intersection rather than total runner count. I would report cache hits and reruns as attempt evidence only, never as artifact, deployment, or user proof.",
+  "weakAnswer": "Treat the eleven workers as one fleet, remove the protected selector everywhere, restart all workers, clear every cache, and rerun until all four dashboards are green.",
+  "whyWeak": "It combines capacity that four independent control planes cannot share, confuses total workers with provider-specific eligible capacity, ignores administrative scope and organization trust policy, destroys volatile evidence, may interrupt or duplicate in-flight work, broadens protected code into weaker pools, and treats cache deletion and green attempts as proof of release safety. It neither identifies the failed predicate in each provider nor defines bounded corrections, rollback boundaries, artifact evidence, backlog recovery, or user verification.",
+  "evidence": [
+    {
+      "signal": "Each of the four provider-specific jobs is marked ready, and each graph shows all required predecessors successful with no approval, condition, concurrency, or environment lock outstanding.",
+      "proves": "Each observed wait belongs to worker dispatch rather than dependency or gate wait for that provider-specific job at this time.",
+      "doesNotProve": "That an eligible worker exists in any provider, that any scheduler is healthy, or that an eventual attempt will succeed."
+    },
+    {
+      "signal": "The GitHub runners advertise every requested label but the runner group access list excludes the repository.",
+      "proves": "Those runners are outside the job's administrative eligibility boundary despite matching labels.",
+      "doesNotProve": "That changing group access is authorized, that the hosts are trustworthy, or that another predicate will not reject them."
+    },
+    {
+      "signal": "The GitLab job requires the organization-owned `protected-release` tag and protected-work contract; the only runner satisfying both is busy, while the three free runners lack that dedicated tag or policy qualification.",
+      "proves": "No free GitLab runner satisfies the complete organization-defined selector and trust contract for this job at this time.",
+      "doesNotProve": "That GitLab inherently rejects every unprotected runner for a protected-ref job, that the busy runner is healthy, or that weakening the contract is safe."
+    },
+    {
+      "signal": "The Jenkins nodes match the label expression, remain online, and have zero free executors while long tests occupy every configured slot.",
+      "proves": "Those nodes are statically eligible but dynamically unavailable under the observed executor configuration.",
+      "doesNotProve": "That increasing executors on the same hosts is safe, that long tests are the root cause, or that more capacity is the best correction."
+    },
+    {
+      "signal": "After an authorized agent restart in a canary pool, Azure advertises the required capability and a representative job is assigned to that exact agent.",
+      "proves": "Capability refresh corrected the modeled demand mismatch for the canary assignment.",
+      "doesNotProve": "Tool integrity, whole-fleet compatibility, safe production authority, or future availability."
+    },
+    {
+      "signal": "Protected-class ready-to-assigned latency returns within objective, the oldest backlog decreases to normal, every sampled job uses the intended trust pool and image, and artifact readback succeeds.",
+      "proves": "The stated scheduling and artifact criteria recovered for the sampled class and window.",
+      "doesNotProve": "Long-term reliability, every repository, deployment correctness, user success, or professional mastery."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "What is the difference between a worker being eligible and available?",
+      "answer": "Eligibility means the worker is permitted and technically matched for the job under scope, trust, pool, selectors, architecture, and runtime. Availability means an eligible worker can accept work now: it is online, healthy, enabled, not draining, has a free executor, and is within quota or lock limits."
+    },
+    {
+      "prompt": "Why is a label or capability not an attestation?",
+      "answer": "It is selection metadata, often configured or discovered by an administrator or agent. It does not cryptographically prove the image, tool bytes, patch level, isolation, workspace state, or operator authorization. Bind registration to trusted provisioning and verify the baseline separately."
+    },
+    {
+      "prompt": "When should queue time begin?",
+      "answer": "For worker-capacity analysis, begin when dependencies, conditions, and required gates make the job ready for dispatch, and end when an eligible worker accepts it. Track event-to-ready, approval wait, provisioning, bootstrap, and execution as separate intervals."
+    },
+    {
+      "prompt": "Would adding ten general Linux workers help?",
+      "answer": "Not if protected release jobs cannot use them or they miss architecture, tools, or other selectors. Capacity must be counted inside the exact eligible workload class. Scaling an ineligible template raises cost without serving the queue."
+    },
+    {
+      "prompt": "Can a restart be the correct action?",
+      "answer": "Yes, when evidence shows a component requires a restart to refresh a known state and the action has scope, authority, in-flight-work handling, rollback, and verification. It should follow diagnosis and be canaried, not replace diagnosis."
+    },
+    {
+      "prompt": "Why does a cache hit not prove a correct build?",
+      "answer": "It proves that the cache service returned an entry under a key or fallback rule. It does not prove the key covered every compatibility input, the writer was trusted, content was intact, the build consumed it safely, or the output is the approved artifact."
+    },
+    {
+      "prompt": "What does a green rerun prove?",
+      "answer": "It proves that the declared checks for that later attempt reached qualifying results in its observed context. The rerun may use a different worker, cache, dependency state, configuration snapshot, permission, or external service and does not erase earlier effects."
+    },
+    {
+      "prompt": "Which first metric would you add?",
+      "answer": "Ready-to-assigned latency and eligible free slots partitioned by controlled workload class, including trust, architecture, and pool. Include sample count and telemetry freshness, then join to service time, arrival rate, and backlog slope."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Readiness, eligibility, and availability",
+      "points": 10,
+      "observableEvidence": "Separates graph or gate readiness from static eligibility and dynamic availability, including concurrency and quota."
+    },
+    {
+      "criterion": "Four-provider mapping",
+      "points": 10,
+      "observableEvidence": "Accurately maps GitHub groups and labels, GitLab scope protection tags and executor, Jenkins labels and executors, and Azure pools capabilities and demands."
+    },
+    {
+      "criterion": "Safety and correction",
+      "points": 10,
+      "observableEvidence": "Rejects trust broadening, preserves evidence, corrects one owned predicate or restores qualified capacity, and canaries the change."
+    },
+    {
+      "criterion": "Recovery and proof limits",
+      "points": 10,
+      "observableEvidence": "Uses intended worker identity, backlog slope, class-specific queue objective, artifact evidence, and distinguishes component, release, and user proof."
+    },
+    {
+      "criterion": "Foundation-to-senior communication",
+      "points": 10,
+      "observableEvidence": "Explains selectors, cache, artifact, attempts, metrics, uncertainty, and trade-offs clearly without relying on product slogans."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

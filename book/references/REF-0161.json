@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0161",
+  "title": "pr definition",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/pr",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Azure Pipelines YAML schema; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Azure Pipelines", "pull requests", "YAML triggers", "GitHub", "Bitbucket Cloud", "Azure Repos Git", "branch policy"],
+  "relevance": "Official Microsoft source for the repository boundary of the YAML pr trigger. It supports the claim that YAML pull-request triggers apply to GitHub and Bitbucket Cloud, while Azure Repos Git pull-request validation uses branch-policy build validation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

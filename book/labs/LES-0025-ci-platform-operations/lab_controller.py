@@ -1689,7 +1689,10 @@ def parser() -> argparse.ArgumentParser:
     subparsers.add_parser("recover")
     subparsers.add_parser("verify-operation")
     subparsers.add_parser("cleanup")
-    subparsers.add_parser("verify-removal-races", help=argparse.SUPPRESS)
+    subparsers.add_parser(
+        "verify-removal-races",
+        help="verifier-internal cooperative replacement regression; not a learner workflow command",
+    )
     return result
 
 

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0163",
+  "title": "DownloadPipelineArtifact@2 - Download Pipeline Artifacts v2 task",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/download-pipeline-artifact-v2",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Azure Pipelines task reference; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["Azure Pipelines", "pipeline artifacts", "DownloadPipelineArtifact", "Azure DevOps Services", "Azure DevOps Server"],
+  "relevance": "Official Microsoft source for DownloadPipelineArtifact version 2 inputs and product support. It supports the example syntax and the warning that this pipeline-artifact task is Azure DevOps Services-only rather than an Azure DevOps Server contract.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

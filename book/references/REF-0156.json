@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0156",
+  "title": "Configure runners",
+  "organization": "GitLab",
+  "url": "https://docs.gitlab.com/ci/runners/configure_runners/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current GitLab runner configuration documentation; reviewed 2026-08-02",
+  "lessonIds": ["LES-0025"],
+  "topics": ["GitLab Runner", "runner tags", "protected runners", "protected branches", "protected tags", "job matching", "runner security", "runner configuration"],
+  "relevance": "Official GitLab source for runner tag matching and protected-runner configuration. It supports the narrow claim that a protected runner is restricted to jobs on protected branches or protected tags, while organization-specific dedicated-runner requirements still need explicit tags, scope and policy. It does not make an advertised tag an integrity attestation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

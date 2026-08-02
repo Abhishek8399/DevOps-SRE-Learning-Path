@@ -16,7 +16,7 @@ The dashboard never raises mastery by itself. The repository ledger remains the 
 
 ## Ready lessons
 
-The reader publishes twenty-four lessons across four volumes.
+The reader publishes twenty-five lessons across four volumes.
 
 Volume 00 publishes two safe-start lessons:
 
@@ -42,7 +42,7 @@ Volume 02 publishes five connectivity lessons:
 4. HTTP semantics, proxies, caching, health checks, load balancing, pools, retries, and request identity.
 5. TLS handshakes, X.509 identity, PKI trust, mTLS, termination, failure diagnosis, and safe rotation.
 
-Volume 03 publishes nine engineering-and-delivery lessons:
+Volume 03 publishes ten engineering-and-delivery lessons:
 
 1. Safe local engineering: Ubuntu/WSL shell behavior, Git states, secrets, rollback, and cleanup.
 2. Safe Bash automation: parsing, quoting, statuses, traps, inputs, concurrency, retries, tests, and recovery.
@@ -53,8 +53,9 @@ Volume 03 publishes nine engineering-and-delivery lessons:
 7. Reproducible builds and dependencies: input closure, lock integrity, nondeterminism, context, caches, artifacts, SBOMs, provenance, and promotion.
 8. OCI containers and Docker: image/layer identity, namespaces/cgroups, filesystems, networking, PID 1, resources, runtime security, registry trust, and lifecycle.
 9. CI/CD architecture: event and pipeline graphs, runner trust, caches, immutable artifacts, promotion, approvals, deployment control, telemetry, and user verification.
+10. CI platform operations: provider-neutral control and execution planes, GitHub Actions, GitLab CI/CD, Jenkins, Azure Pipelines, runner trust, queues, reusable configuration, upgrades, migrations, incidents, and proof limits.
 
-`LES-0006` through `LES-0024` are schema-backed `substantive-draft` lessons: available to study, but still subject to review. Each has two complete-answer assessments, one answer-isolated independent transfer, eight primary references, and a bounded practice contract. Linux lessons 1-5 retain their established reader implementations, routes, and device-local state IDs. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
+`LES-0006` through `LES-0025` are schema-backed `substantive-draft` lessons: available to study, but still subject to review. Each has two complete-answer assessments, one answer-isolated independent transfer, and a bounded practice contract. `LES-0006` through `LES-0024` have eight primary references each; `LES-0025` has eleven official provider and Git references. Its two local CI engines are purpose-built teaching implementations and do not execute or certify GitHub Actions, GitLab CI/CD, Jenkins, or Azure Pipelines. Linux lessons 1-5 retain their established reader implementations, routes, and device-local state IDs. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
 
 Each explanatory lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and teaching checkpoints and product-company questions include answers from first-year foundations through senior production reasoning. Independent transfer assessments intentionally store no model answer. The page always separates:
 
@@ -136,9 +137,9 @@ npm audit  # optional network-backed advisory check
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
-The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, canonical curriculum homes, and live cross-record relationships without adding another package dependency. The current corpus has nineteen lessons, 57 assessments, and 152 references. Exact current counters are recorded in `VERIFICATION.md`; the Windows schema suite retains one documented `EPERM` symlink-policy skip that must run on Linux or symlink-capable Windows before a public release. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, canonical volume ownership, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus.
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, canonical curriculum homes, and live cross-record relationships without adding another package dependency. The current corpus has twenty lessons, 60 assessments—forty complete-answer records and twenty answer-isolated independent transfers—and 163 references. Exact current counters are recorded in `VERIFICATION.md`; the Windows schema suite retains one documented `EPERM` symlink-policy skip that must run on Linux or symlink-capable Windows before a public release. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, canonical volume ownership, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus.
 
-The reader suite covers all twenty-four lessons, including canonical `LES-0001` through `LES-0024` search, additive catalog/state migration, four-volume adjacency, trusted prerequisite resolution, advisory prerequisite rendering, and all nineteen independent-transfer answer-isolation contracts. It also exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, schema-backed lesson parsing, CommonMark heading/fence parity, safe links, multi-volume search ranking, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
+The reader suite covers all twenty-five lessons, including canonical `LES-0001` through `LES-0025` search, additive seventeen-lesson catalog/state migration, four-volume adjacency, trusted prerequisite resolution, advisory prerequisite rendering, and all twenty independent-transfer answer-isolation contracts. It also exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, schema-backed lesson parsing, CommonMark heading/fence parity, safe links, multi-volume search ranking, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
 
 `npm run dev` validates canonical content and the committed generated registries before startup. After adding, removing, or moving a structured record, run `npm run generate:content-registry`; it first validates the repository, then deterministically regenerates the exact virtual lesson paths, eager assessment/reference imports, and browser-safe lesson-ID allowlist. `npm run validate:content` fails when any generated file is stale. Build and development read only those canonical allowlisted paths, watch the selected lesson file, and reject unknown or path-like virtual IDs. The generator does not weaken schema, ownership, path, or answer-isolation validation.
 

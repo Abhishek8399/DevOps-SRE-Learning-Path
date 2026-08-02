@@ -84,7 +84,7 @@ book/
 `-- schema/
 ```
 
-Follow [`schema/README.md`](schema/README.md), choose the next unused opaque lesson ID (`LES-0024` at this checkpoint), and run both contract commands before review. `LES-0019` through `LES-0023` are the current `substantive-draft` checkpoint; each still requires formal review and independently reviewed learner evidence, and none establishes mastery. Choose future editorial work from [`MASTER_PLAN.md`](../MASTER_PLAN.md) rather than inventing the next batch from the numeric sequence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
+Follow [`schema/README.md`](schema/README.md), choose the next unused opaque IDs (`LES-0026`, `ASM-0061`, and `REF-0164` at this checkpoint), and run both contract commands before review. `LES-0006` through `LES-0025` are the current twenty structured `substantive-draft` lessons; each still requires formal review and independently reviewed learner evidence, and none establishes mastery. `LES-0025` also preserves a provider-proof boundary: purpose-built local teaching engines do not establish GitHub, GitLab, Jenkins, or Azure behavior or acceptance. Choose future editorial work from [`MASTER_PLAN.md`](../MASTER_PLAN.md) rather than inventing the next batch from the numeric sequence. The permanent legacy map prevents new records from stealing the five existing IDs, routes, slugs, aliases, or curriculum mappings.
 
 After creating or moving structured lessons, assessments, or references, run `npm run generate:content-registry` from `learning-cockpit/` before validation. Commit the deterministic generated files with the content. Never hand-edit them; `npm run validate:content` rejects a stale registry.
 

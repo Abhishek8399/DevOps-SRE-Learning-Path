@@ -17,7 +17,7 @@
   "prerequisiteLessonIds": ["LES-0024"],
   "prerequisiteCurriculumIds": ["CI-001"],
   "testedEnvironments": [
-    {"platform": "Ubuntu", "version": "24.04 LTS", "support": "required", "notes": "The manual exercises use Bash, Git, coreutils, procfs, findutils, and Python 3 standard library as a normal user. The bounded practical lab additionally creates exact guarded state below /tmp and runs two purpose-built local CI teaching engines. It installs nothing, opens no port, contacts no provider, inherits no credential into child jobs, and makes no cloud or hosted-CI change."},
+    {"platform": "Ubuntu", "version": "24.04 LTS", "support": "required", "notes": "The manual exercises use Bash, Git, coreutils, procfs, findutils, and Python 3 standard library as a normal user. The bounded practical lab additionally creates exact guarded state below /tmp and runs two purpose-built local CI teaching engines. It installs nothing, opens no port, contacts no provider, passes only an allowlisted environment to child processes, declares no secret input, and makes no cloud or hosted-CI change. This does not prove that same-UID host or filesystem credentials are absent."},
     {"platform": "Windows Subsystem for Linux (WSL 2) Ubuntu", "version": "24.04 LTS", "support": "supported", "notes": "Run commands inside Ubuntu. Filesystem, process, user, and networking behavior are Linux-side observations; do not infer native Windows agent behavior from them."},
     {"platform": "GitHub Actions", "version": "provider concepts reviewed 2026-08-02", "support": "concept-only", "notes": "Workflow, reusable-workflow, permission, environment, hosted-runner, self-hosted-runner, group, and label concepts are compared. No GitHub workflow or runner was created or executed for this lesson."},
     {"platform": "GitLab CI/CD", "version": "provider concepts reviewed 2026-08-02", "support": "concept-only", "notes": "Pipeline configuration, include, runner, tag, protected-runner, executor, artifact, cache, and resource-group concepts are compared. No GitLab pipeline or runner was created or executed for this lesson."},
@@ -177,7 +177,7 @@
       "id": "LES-0025-CMD-007",
       "question": "What tracked and visible untracked state exists outside HEAD?",
       "risk": "read-only",
-      "command": "git status --short --untracked-files=all",
+      "command": "git --no-optional-locks status --short --untracked-files=all",
       "runFrom": "The exact local or runner worktree after repository identity is established",
       "expectedBranches": [
         {"when": "No rows print", "meaning": "Git reports no tracked change or visible untracked path under this configuration.", "nextEvidence": "Inspect ignored files, external mounts, generated inputs, running processes, and cleanup policy before claiming a clean worker."},
@@ -254,14 +254,15 @@
       "id": "LES-0025-LAB-001",
       "title": "Run two offline CI teaching engines and detect green output with declared-field drift",
       "mode": "guided",
-      "environment": "Ubuntu 24.04 or WSL 2 Ubuntu 24.04 with Bash, Python 3 standard library, coreutils, and the checked-in support/lab controller, engines, job program, and JSON fixtures",
+      "environment": "Ubuntu 24.04 or WSL 2 Ubuntu 24.04 with Bash, Python 3 standard library, coreutils, and the checked-in book/labs/LES-0025-ci-platform-operations controller, engines, job program, and JSON fixtures",
       "timeMinutes": 150,
       "privilege": "Normal user only; no sudo, root, Docker socket, provider token, service connection, credential, or administrative API",
       "network": "No network access is required or permitted by the exercise",
       "changes": ["Setup creates one exact per-UID state directory and one random private lab root below /tmp", "Two typed local schedulers create allowlisted build, artifact-store, and test workspaces plus digest-bound JSON evidence", "No service, package, port, provider, Docker socket, credential, cloud resource, production endpoint, or hosted-CI configuration is created or changed"],
-      "abortConditions": ["The controller reports root execution, lock contention, a changed reviewed-source digest, invalid type, owner or mode, an unexpected path, or a record mismatch", "Any proposed command asks for sudo, a token, login, package installation, network access, secret, Docker socket, provider mutation, or writable system path", "The current directory is not the reviewed support/lab directory"],
+      "abortConditions": ["The controller reports root execution, lock contention, a changed reviewed-source digest, invalid type, owner or mode, an unexpected path, or a record mismatch", "Any proposed command asks for sudo, a token, login, package installation, network access, secret, Docker socket, provider mutation, or writable system path", "The current directory is not the reviewed book/labs/LES-0025-ci-platform-operations directory"],
       "recovery": "Stop new engine runs, preserve non-sensitive refusal output, and use only bash lab.sh status followed by bash lab.sh cleanup from the reviewed source. If cleanup refuses an unexpected path or altered source, preserve state and restore the exact invariant before retrying; never delete by name pattern.",
-      "cleanupProof": "bash verify.sh exercises the green mismatch, corrected contract, pre-existing-state preservation, unexpected-child refusal, exact nonrecursive allowlist cleanup, idempotent cleanup, and final state=absent with orphan_count=0. This proves the encoded local lifecycle, not provider cleanup or learner mastery."
+      "cleanupProof": "bash verify.sh exercises the green mismatch, corrected contract, pre-existing-state preservation, unexpected-child refusal, exact nonrecursive allowlist cleanup, idempotent cleanup, and final state=absent with orphan_count=0. This proves the encoded local lifecycle, not provider cleanup or learner mastery.",
+      "path": "book/labs/LES-0025-ci-platform-operations"
     },
     {
       "id": "LES-0025-LAB-002",
@@ -274,7 +275,8 @@
       "changes": ["Only learner-authored answers in a separately chosen response location", "Optional copies of the synthetic Python models operate only in memory unless the learner deliberately records output", "No actual pipeline, runner, controller, plugin, environment, cloud resource, or deployment is changed"],
       "abortConditions": ["A proposed test would run untrusted code on a persistent worker", "A proposed validation needs a real secret, production endpoint, hosted-provider mutation, plugin installation, or fleet upgrade", "The learner cannot state source, scope, expected evidence, abort threshold, and cleanup for a proposed command"],
       "recovery": "Stop before any out-of-scope action. Mark the answer as an untested proposal and replace it with read-only evidence or a disposable, explicitly authorized future test plan.",
-      "cleanupProof": "A reviewer compares the chosen response location before and after and verifies no provider or service mutation was authorized. There is no automated answer-grading verifier, isolated vendor platform, or hidden proof channel for this independent exercise; the guided engineering verifier does not score this submission."
+      "cleanupProof": "A reviewer compares the chosen response location before and after and verifies no provider or service mutation was authorized. There is no automated answer-grading verifier, isolated vendor platform, or hidden proof channel for this independent exercise; the guided engineering verifier does not score this submission.",
+      "path": "book/labs/LES-0025-ci-platform-operations"
     }
   ],
   "incidents": [
@@ -308,7 +310,7 @@
     }
   ],
   "assessmentIds": ["ASM-0058", "ASM-0059", "ASM-0060"],
-  "referenceIds": ["REF-0153", "REF-0154", "REF-0155", "REF-0156", "REF-0157", "REF-0158", "REF-0159", "REF-0160"],
+  "referenceIds": ["REF-0153", "REF-0154", "REF-0155", "REF-0156", "REF-0157", "REF-0158", "REF-0159", "REF-0160", "REF-0161", "REF-0162", "REF-0163"],
   "contentStatus": "substantive-draft",
   "masteryBoundary": "publication-does-not-award-mastery",
   "lastReviewed": "2026-08-02",
@@ -321,7 +323,7 @@
     "YAML and Pipeline examples are illustrative and deliberately omit organization-specific identities, credentials, endpoints, runners, service connections, deployment commands, and secrets.",
     "Self-hosted isolation claims require platform, operating-system, hypervisor or container runtime, network, credential, and threat-model evidence. Ephemeral naming or workspace cleanup alone is not proof of isolation.",
     "The guided dual-engine lifecycle has an automated engineering verifier, but the independent exercise has no answer-grading verifier, hidden tests, or controlled provider environment. A qualified reviewer must score the reasoning and must not infer mastery from publication or reading progress.",
-    "The staged assessment and reference records live beside this draft and still require canonical registry integration and full validation before publication."
+    "The canonical assessment and reference records are registry-backed, but publication does not prove provider execution, formal review, independently scored transfer, delayed recall, or mastery."
   ]
 }
 ---
@@ -514,7 +516,7 @@ Start with the invariant system, then map provider names onto it.
                                           v
                  EXECUTION PLANE
 
-              worker registration ---> isolated job attempt
+              worker registration ---> job attempt
                      |                        |
               image/version/labels           +--> workspace + processes
               pool/trust/network             +--> job credential / workload identity
@@ -661,7 +663,7 @@ The security boundary must be designed before the code arrives.
 
 The job may restore a cache, download upstream artifacts, fetch packages, start service containers, compile, test, scan, or package. Record the immutable identities of meaningful inputs. A green outcome is interpretable only when you can reconstruct what ran.
 
-On persistent workers, begin from a fresh, owned workspace or prove cleanup. `git status` is one evidence source, not a host-integrity check. It does not see ignored files, hostile processes, modified tools outside the repository, mounted sockets, or credentials already copied elsewhere.
+On persistent workers, begin from a fresh, owned workspace or prove cleanup. `git --no-optional-locks status` avoids Git's optional background index refresh and is one evidence source, not a host-integrity check. It does not see ignored files, hostile processes, modified tools outside the repository, mounted sockets, or credentials already copied elsewhere.
 
 ### 7. Outputs leave the worker
 
@@ -947,9 +949,11 @@ Tags filter matching. Scope and protection restrict use. Build a diagnostic row 
 |---|---|---|---|
 | Project, group, or instance scope | project A | runner enabled for group B only | reject |
 | Tags | `linux`, `x64`, `trusted` | `linux`, `x64` | reject |
-| Protected ref | yes | unprotected runner | reject |
+| Organization release trust contract | `protected-release` tag and approved dedicated scope | general runner lacks the required tag or approved scope | reject by the explicit selector or organization policy |
 | Executor or runtime | container build need | shell executor | may be semantically wrong even if matched |
 | Availability | ready | paused or concurrency full | wait |
+
+GitLab's **Protected** runner setting limits that protected runner to jobs on protected branches or protected tags. It does not, by itself, mean every unprotected runner is automatically ineligible for a protected-ref job. If your organization requires protected work to use a dedicated runner class, encode and audit that requirement with runner scope, a dedicated job tag such as `protected-release`, protected-runner configuration, and project policy. Diagnose the complete contract rather than inventing a reverse matching rule.
 
 `resource_group` can serialize jobs that act on the same resource. It is not a substitute for target-side idempotency or durable locking, because external work can outlive the CI attempt.
 
@@ -1265,10 +1269,10 @@ Representative output:
 
 This prevents investigating the wrong clone or describing a short branch name as an immutable source. It still does not prove that the workspace is clean, the commit is reviewed, the remote agrees, or the pipeline used this revision.
 
-### Decoder 7: visible worktree state
+### Decoder 7: visible worktree state without optional index refresh
 
 ```bash
-git status --short --untracked-files=all
+git --no-optional-locks status --short --untracked-files=all
 ```
 
 Representative output:
@@ -1613,7 +1617,10 @@ What to review: Jenkins core and plugin versions that provide each step; control
 
 #### Azure Pipelines shape
 
+This illustrative definition is scoped to **Azure DevOps Services with a GitHub repository**. YAML `pr` triggers apply to GitHub and Bitbucket Cloud repositories; Azure Repos Git pull-request validation is configured through branch-policy build validation instead. `PublishPipelineArtifact@1` and `DownloadPipelineArtifact@2` are Azure DevOps Services tasks and are not supported on Azure DevOps Server. A Server installation needs its supported artifact mechanism and a separately reviewed definition; do not copy this example across products unchanged.
+
 ```yaml
+# Scope: Azure DevOps Services with a GitHub repository
 trigger:
   branches:
     include: [main]
@@ -1656,7 +1663,7 @@ jobs:
         displayName: Verify artifact content
 ```
 
-What to review: hosted image drift; task version governance; repository checkout permission; template identity; agent pool access; capabilities and demands for self-hosted use; artifact retention; parallel-job quota; environment checks; service connections; and cancellation or retry behavior.
+What to review: Services versus Server product scope; GitHub pull-request trigger ownership; hosted image drift; task version governance; repository checkout permission; template identity; agent pool access; capabilities and demands for self-hosted use; artifact retention; parallel-job quota; environment checks; service connections; and cancellation or retry behavior.
 
 ### What these examples establish—and what they do not
 
@@ -1679,7 +1686,7 @@ The bounded lab later in this section supplies two purpose-built local engines, 
 
 ### Purpose and safety boundary
 
-This manual evidence pass teaches how to collect local worker evidence and reason about matching, graph timing, and permissions. It does not install or run a CI engine. Its prescribed computations are read-only or in memory. After it, the bounded dual-engine lab documented at `support/lab/README.md` executes two purpose-built teaching schedulers inside guarded `/tmp` state.
+This manual evidence pass teaches how to collect local worker evidence and reason about matching, graph timing, and permissions. It does not install or run a CI engine. Its prescribed computations are read-only or in memory. After it, the bounded dual-engine lab documented at `book/labs/LES-0025-ci-platform-operations/README.md` executes two purpose-built teaching schedulers inside guarded `/tmp` state.
 
 Use Ubuntu 24.04 or WSL 2 Ubuntu 24.04 as a normal user. Do not use `sudo`. Do not paste a provider token. Do not register a runner. Do not connect to a Docker socket. Do not run the exercise in a production runner workspace.
 
@@ -1712,7 +1719,7 @@ If you are in an intended Git worktree, run:
 ```bash
 git rev-parse --show-toplevel
 git rev-parse --verify HEAD
-git status --short --untracked-files=all
+git --no-optional-locks status --short --untracked-files=all
 ```
 
 Copy the output to your learning journal if you use one. Do not expect an empty status: existing changes may be legitimate work owned by someone else. Your cleanup comparison is before versus after, not empty versus non-empty.
@@ -1838,7 +1845,7 @@ Do not write “restart all runners.” It is neither a diagnosis nor a bounded 
 If Part 1 ran in Git, repeat:
 
 ```bash
-git status --short --untracked-files=all
+git --no-optional-locks status --short --untracked-files=all
 ```
 
 Compare it with the before output. Equality is evidence that the prescribed lab did not change Git-visible worktree state. It does not cover shell history, access times, ignored files, processes, or a separately chosen journal.
@@ -1857,7 +1864,7 @@ Reading the answer key is not completion. You need to produce your own evidence 
 
 ### Automated dual-engine lab: a green port can still be unsafe
 
-Open the LES-0025 bounded lab at `support/lab/README.md` and follow its command path. The first local engine expands explicit `needs` edges. The second expands ordered stages. Both call the same typed portable job program, publish the same bytes, download them into the dependent job, and finish green.
+Open the LES-0025 bounded lab at `book/labs/LES-0025-ci-platform-operations/README.md` and follow its command path. The first local engine expands explicit `needs` edges. The second expands ordered stages. Both call the same typed portable job program, publish the same bytes, download them into the dependent job, and finish green.
 
 The first stage-shaped port deliberately declares `packages:write`, parallel same-ref execution, and a zero pipeline-timeout field. `bash lab.sh compare` must report equal observed artifact and graph fields while `encoded_comparison_equal=false`. The model does not grant that permission, launch concurrent attempts, or remove the controller's safety timeout. `bash lab.sh recover` runs the corrected fixture; `bash lab.sh verify-operation` then proves equality only for the observed local output and encoded declarations.
 
@@ -2703,14 +2710,16 @@ List at least ten statements your evidence cannot establish. Include provider ex
 
 | Area | Points | Full-credit evidence | Critical miss |
 |---|---:|---|---|
-| Architecture and state ownership | 15 | correct control/execution boundaries, request path, stores, external effects, text alternative | treats dashboard or worker as whole system |
-| Identity and reproducibility | 15 | source, config dependencies, run/attempt, worker/image, permission, cache, artifact, environment operation separated | uses branch, tag, or run number as immutable artifact proof |
-| Provider mapping | 15 | accurate mechanism map and meaningful provider differences; unexecuted claims labeled | mechanical keyword translation claimed equivalent |
-| Queue incident reasoning | 15 | readiness, eligibility, availability, quota, service time and falsifiable hypotheses | weakens trust or restarts/scales without evidence |
-| Security | 15 | event trust, worker isolation, effective authority, reusable dependencies, output channels | exposes a secret or routes untrusted code to privileged persistent state |
-| Upgrade operations | 10 | inventory, pin, canary, drain, thresholds, rollback/forward, recovery | fleet-wide unbounded change or unsupported downgrade assumed safe |
-| Reliability, observability, capacity, cost | 10 | defined SLI population/window, fresh evidence, eligible-class capacity, total-cost trade-off | global averages used to hide broken class or invented price/evidence |
-| Communication and proof limits | 5 | concise diagram, explicit assumptions, unknowns, limits, and next evidence | claims production proof from local model or screenshot |
+| Independent reasoning, scope, and evidence integrity | 10 | prior exposure and hypotheses recorded first; authorization, raw non-sensitive evidence, and unknowns preserved | copies answer material, invents provider execution, or bypasses scope |
+| Architecture and control or execution boundaries | 10 | event, resolved configuration, graph, scheduler, worker, workspace, identity, stores, target, telemetry, user result, and text alternative | treats a dashboard or worker as the whole system |
+| State ownership and immutable identity | 10 | source, reusable config, run/attempt, worker/image, permission, cache, artifact, environment and target operation separated | uses a branch, tag, run number, or green icon as immutable release proof |
+| Provider mapping and portability contract | 10 | typed contract plus accurate four-provider mechanisms and material differences; unexecuted claims labeled | claims mechanical keyword translation is equivalent |
+| Queue incident diagnosis | 10 | falsifiable readiness, eligibility, availability, provisioning and service-time hypotheses with class-specific evidence | weakens trust or restarts/scales without evidence |
+| Security and trust boundaries | 10 | event trust, worker persistence, effective authority, network, reusable dependencies, caches, artifacts and outputs evaluated | exposes a secret or routes untrusted code to privileged persistent state |
+| Upgrade and change operations | 10 | inventory, immutable candidate, canary, representative tests, drain, thresholds, bounded waves, rollback/forward evidence | fleet-wide unbounded change or unsupported downgrade assumed safe |
+| Reliability, observability, capacity, and cost | 10 | defined fresh SLI/SLO, eligible-class capacity, scaling bounds, controlled dimensions and total-cost trade-off | hides a broken class with global averages or invents price/evidence |
+| Migration, recovery, and external effects | 10 | dual-run without duplicate authority, one immutable artifact, stable operation reconciliation, cohort cutover, revocation, target/user proof | blindly retries unknown effects or leaves two production writers |
+| Communication and proof limits | 10 | concise diagrams and senior explanation, assumptions, unknowns, chronological evidence and at least twelve narrow limits | claims production proof or mastery from local model, screenshot or page completion |
 
 Reviewer outcome:
 
@@ -2719,13 +2728,13 @@ Reviewer outcome:
 
 This rubric is a learning gate, not a claim of professional mastery. Publication, page completion, or a self-reported score does not award mastery.
 
-### Staged assessments
+### Assessments
 
 - `ASM-0058`: terminology, architecture, selectors, identities, caches versus artifacts, and proof limits.
 - `ASM-0059`: queue, compromised-worker, shared-dependency, upgrade, cancellation, and migration scenarios.
 - `ASM-0060`: the independent operations dossier and oral defense using the rubric above.
 
-The separate staged records exist at `support/assessments/ASM-0058.json`, `ASM-0059.json`, and `ASM-0060.json`, with the independent response template beside them. They have passed draft-level schema checks but remain outside the canonical registry until the lesson is published. `ASM-0060` still requires a qualified reviewer; the guided engineering verifier does not grade the learner's reasoning.
+The canonical records exist at `book/assessments/engineering/ASM-0058.json`, `ASM-0059.json`, and `ASM-0060.json`, with the independent response template beside them. They pass schema and cross-record validation and are loaded through the generated canonical registry. `ASM-0060` still requires a qualified reviewer; the guided engineering verifier does not grade the learner's reasoning.
 
 ### Reviewer calibration questions
 
@@ -2743,20 +2752,23 @@ A strong learner updates the model without discarding the invariant architecture
 
 This chapter uses primary provider documentation for behavior that can change. The lesson remains provider-neutral where a stronger universal claim would be unsafe. Before production use, check the exact current product edition, plan, instance version, runner/agent version, plugin/task/action version, administrator configuration, and official security guidance.
 
-### Staged reference registry
+### Reference registry
 
 | ID | Primary source | Canonical URL | Used for | Review caution |
 |---|---|---|---|---|
 | `REF-0153` | GitHub Docs, workflow syntax for GitHub Actions | `https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax` | events, jobs, dependencies, permissions, `runs-on`, environments, concurrency, timeout syntax concepts | syntax and defaults evolve; repository and organization policy can narrow behavior |
 | `REF-0154` | GitHub Docs, managing access to self-hosted runners and self-hosted runner security guidance | `https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access` | runner groups, labels, administrative access, public-fork risk, self-hosted responsibility | plan availability and user-interface paths can change; labels are not attestations |
 | `REF-0155` | GitLab Docs, CI/CD YAML syntax reference | `https://docs.gitlab.com/ci/yaml/` | includes, jobs, `needs`, artifacts, cache, resource groups, rules and configuration behavior | GitLab version and tier matter; expanded config must be inspected for the actual instance |
-| `REF-0156` | GitLab Docs, runners | `https://docs.gitlab.com/ci/runners/` | runner scope, tags, protection, executors, hosted and self-managed lifecycle | executor isolation differs; instance administrators can change runner policy |
+| `REF-0156` | GitLab Docs, configure runners | `https://docs.gitlab.com/ci/runners/configure_runners/` | tag matching, protected-runner direction, protected branches and tags, runner security configuration | organization-specific dedicated-runner requirements still need explicit tags, scope and policy |
 | `REF-0157` | Jenkins Documentation, Pipeline Shared Libraries | `https://www.jenkins.io/doc/book/pipeline/shared-libraries/` | trusted versus untrusted libraries, source control, versions, privilege implications | behavior depends on Jenkins core, plugins, sandbox, and administrator configuration |
 | `REF-0158` | Jenkins Documentation, managing plugins | `https://www.jenkins.io/doc/book/managing/plugins/` | plugin installation, dependencies, updates, controller operations and restart considerations | exact compatibility and recovery require release-specific upgrade guides and backups |
 | `REF-0159` | Microsoft Learn, Azure Pipelines agents | `https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents` | Microsoft-hosted and self-hosted agents, pools, capabilities, demands, lifecycle | service behavior, hosted images, agent versions, and organization policy change |
 | `REF-0160` | Microsoft Learn, approvals and checks | `https://learn.microsoft.com/en-us/azure/devops/pipelines/process/approvals` | resource-owned checks, approvals, exclusive lock and protected transitions | check availability and semantics depend on resource type and service version |
+| `REF-0161` | Microsoft Learn, `pr` definition | `https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/pr` | repository support boundary for YAML pull-request triggers | Azure Repos Git uses branch-policy build validation rather than this YAML trigger |
+| `REF-0162` | Microsoft Learn, Publish Pipeline Artifacts v1 task | `https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/publish-pipeline-artifact-v1` | publish-task syntax and Azure DevOps Services-only boundary | Azure DevOps Server requires a supported alternative |
+| `REF-0163` | Microsoft Learn, Download Pipeline Artifacts v2 task | `https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/download-pipeline-artifact-v2` | download-task syntax and Azure DevOps Services-only boundary | artifact authorization, retention, and integrity still require organization evidence |
 
-The separate staged schema records `support/references/REF-0153.json` through `REF-0160.json` exist and mirror this table. They have passed draft-level validation but remain outside the canonical reference registry until publication, so canonical cross-reference resolution is intentionally incomplete.
+The canonical schema records `book/references/REF-0153.json` through `REF-0163.json` mirror this table, pass schema and cross-record validation, and are loaded through the generated canonical reference registry.
 
 ### Review method
 
@@ -2781,12 +2793,12 @@ As of the lesson review date:
 - the four pipeline definitions were not executed;
 - no hosted provider, Jenkins controller, runner, agent, plugin, token, service connection, environment, or deployment was created;
 - two-vendor-platform execution acceptance is unmet; the local teaching engines are not substitutes for GitHub, GitLab, Jenkins, or Azure execution;
-- assessment and reference records are staged beside the lesson but remain outside the canonical registry until publication;
+- assessment and reference records are canonical, schema-validated, and registry-backed;
 - the guided lab has an engineering verifier, while independent reasoning still requires a qualified reviewer and later transfer evidence.
 
-### Definition of done for a future substantive release
+### Definition of done for future formal acceptance
 
-The chapter can move beyond draft only when all of these are true:
+The chapter can move beyond substantive-draft status only when all of these are true:
 
 - metadata validates and all IDs resolve;
 - exact eighteen section headings remain in canonical order;
@@ -2801,7 +2813,7 @@ The chapter can move beyond draft only when all of these are true:
 - website rendering, dark mode, diagrams, code wrapping, navigation, and search are verified;
 - no personal name, secret, private endpoint, credential, or unsupported mastery claim appears.
 
-Until then, use the chapter as a deep operations draft and practice guide. Do not use it as evidence that any provider setup, production control, or learner mastery has been verified.
+Until then, use the published chapter as a deep operations draft and practice guide. Do not use it as evidence that any provider setup, production control, or learner mastery has been verified.
 
 
 “Runner online” is a component signal. “One trivial job green” is a probe. Neither alone is service recovery.

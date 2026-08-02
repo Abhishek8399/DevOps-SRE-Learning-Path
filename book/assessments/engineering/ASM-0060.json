@@ -5,7 +5,7 @@
   "lessonId": "LES-0025",
   "type": "independent-transfer",
   "difficulty": "expert",
-  "prompt": "Complete an answer-isolated CI platform operations dossier using `ASM-0060-response-template.md`. Choose one non-sensitive pipeline that you are authorized to review without changing it. If none is available, use the four illustrative definitions in LES-0025 and label every provider behavior as unexecuted. Before consulting answered assessments or receiving diagnosis help, record your independence declaration, prior exposure, environment boundary, exact source material, and predictions. Map the control plane, execution plane, state owners, identities, trust boundaries, worker eligibility, artifacts, caches, permissions, environments, and user evidence. Fill the portability contract for at least build and test; map it to GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines; diagnose a queued-jobs-with-online-workers signal through at least three competing hypotheses; design a runner or controller upgrade; define reliability, observability, capacity, security, cost, migration, and incident controls; and state proof limits. Use only normal-user, read-only or in-memory local evidence. Do not install software, use root, authenticate to a provider, register a runner, change a pipeline, create a token, contact a production target, inspect secrets, run untrusted code, modify canonical lesson or support records, or copy a model answer. A blocked result with preserved evidence is valid; bypassing the boundary is not.",
+  "prompt": "Complete an answer-isolated CI platform operations dossier using `ASM-0060-response-template.md`. Choose one non-sensitive pipeline that you are authorized to review without changing it. If none is available, use the four illustrative definitions in LES-0025 and label every provider behavior as unexecuted. Before consulting answered assessments or receiving diagnosis help, record your independence declaration, prior exposure, environment boundary, exact source material, and predictions. Map the control plane, execution plane, state owners, identities, trust boundaries, worker eligibility, artifacts, caches, permissions, environments, and user evidence. Fill the portability contract for at least build and test; map it to GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines; diagnose a queued-jobs-with-online-workers signal through at least three competing hypotheses; design a runner or controller upgrade; define reliability, observability, capacity, security, cost, migration, and incident controls; and state proof limits. Use only normal-user, read-only or in-memory local evidence. Do not install software, use root, authenticate to a provider, register a runner, change a pipeline, create a token, contact a production target, inspect secrets, run untrusted code, modify canonical lesson, assessment, reference, or lab records, or copy a model answer. A blocked result with preserved evidence is valid; bypassing the boundary is not.",
   "deliverables": [
     "An independence and authorization declaration recording attempt time and timezone, prior LES-0025 or assessment material seen, help received, chosen source material, authorization scope, local environment, network boundary, privilege, abort conditions, and whether provider execution is real, reviewed-only, or absent.",
     "A scope card naming the provider or illustrative definition, organization or instance only when non-sensitive, repository or project or folder boundary, event and trust class, full source revision when available, pipeline entry identity, and all unknowns that must not be inferred.",
@@ -46,27 +46,52 @@
       "observableEvidence": "Records prior exposure and hypotheses first, stays within authorization, preserves raw non-sensitive evidence, labels unknowns, and does not copy answer material or invent provider execution."
     },
     {
-      "criterion": "Architecture, identity, and provider semantics",
+      "criterion": "Architecture and control or execution boundaries",
       "points": 10,
-      "observableEvidence": "Maps control and execution planes, state owners and identities, completes the portability contract, and accurately distinguishes all four provider mechanisms."
+      "observableEvidence": "Maps event ingress, resolved configuration, graph, scheduler, worker, workspace, identity, stores, environment authorization, external effects, telemetry, and user result with a useful text alternative."
     },
     {
-      "criterion": "Diagnosis, security, and proof limits",
+      "criterion": "State ownership and immutable identity",
       "points": 10,
-      "observableEvidence": "Uses falsifiable queue hypotheses, separates eligibility and availability, protects trust boundaries and effective authority, and states narrow limits for every evidence class."
+      "observableEvidence": "Keeps source, reusable configuration, run and attempt, job and attempt, worker and image, permission, cache, artifact digest, environment decision, target operation, runtime revision, and user operation distinct."
     },
     {
-      "criterion": "Change, recovery, and migration operations",
+      "criterion": "Provider mapping and portability contract",
       "points": 10,
-      "observableEvidence": "Designs a pinned canary upgrade, bounded drain and rollout, target reconciliation, immutable artifact handoff, dual-run cutover, rollback or roll-forward limits, and user-level recovery proof."
+      "observableEvidence": "Completes the typed job contract, accurately distinguishes all four provider mechanisms, names material semantic differences, and labels every unexecuted claim."
     },
     {
-      "criterion": "Reliability, capacity, cost, and communication",
+      "criterion": "Queue incident diagnosis",
       "points": 10,
-      "observableEvidence": "Defines class-specific fresh service evidence, qualified capacity and bounded scaling, total-cost trade-offs, clear diagrams and concise senior communication without unsupported mastery claims."
+      "observableEvidence": "Records falsifiable hypotheses, separates readiness, eligibility, availability, provisioning and service time, uses class-specific evidence, and selects bounded next checks without weakening trust."
+    },
+    {
+      "criterion": "Security and trust boundaries",
+      "points": 10,
+      "observableEvidence": "Separates untrusted and protected work, evaluates effective authority, worker persistence, network reach, reusable dependencies, caches, artifacts and output channels, and avoids secret exposure."
+    },
+    {
+      "criterion": "Upgrade and change operations",
+      "points": 10,
+      "observableEvidence": "Designs inventory, immutable candidate, compatibility review, canary, representative tests, drain, explicit thresholds, bounded waves, and evidence-based rollback or roll-forward."
+    },
+    {
+      "criterion": "Reliability, observability, capacity, and cost",
+      "points": 10,
+      "observableEvidence": "Defines fresh class-specific indicators and objectives, qualified capacity and scaling bounds, controlled dimensions, total-cost categories, and cost per useful result without inventing evidence or prices."
+    },
+    {
+      "criterion": "Migration, recovery, and external effects",
+      "points": 10,
+      "observableEvidence": "Dual-runs without duplicate production authority, promotes one immutable artifact, reconciles stable target operations, cuts over in cohorts, revokes old authority, and proves target and user outcomes."
+    },
+    {
+      "criterion": "Communication and proof limits",
+      "points": 10,
+      "observableEvidence": "Presents concise diagrams and senior reasoning, states assumptions and unknowns, preserves a chronological evidence appendix, and makes at least twelve narrow proof-limit statements without mastery inflation."
     }
   ],
-  "maximumScore": 50,
+  "maximumScore": 100,
   "masteryBoundary": "requires-reviewed-learner-evidence",
   "lastReviewed": "2026-08-02",
   "reviewAfter": "2027-02-02"

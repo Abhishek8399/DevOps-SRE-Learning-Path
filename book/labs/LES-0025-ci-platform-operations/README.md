@@ -48,10 +48,10 @@ Whenever a migrated pipeline is green, do not stop at the green icon. Compare th
 |---|---|
 | Platform | Ubuntu 24.04 LTS, including Ubuntu 24.04 under WSL 2 |
 | User | Normal non-root user; UID 0 is refused with exit status 77 |
-| Required tools | Bash 5+, Python 3 standard library, coreutils, and util-linux `flock` support through Python's `fcntl` interface |
+| Required tools | Bash 5+, Python 3 with Linux `fcntl` support, coreutils, and `grep` |
 | Installation | None; a missing dependency is a stop condition |
 | Network | No endpoint is configured and no lab source imports a network client; do not enable network access for the exercise |
-| Credentials | None; child processes receive a minimal environment and no inherited token, credential, `HOME`, or cloud configuration path |
+| Credentials | No declared secret input; child processes receive an allowlisted environment without inherited token or credential variables, `HOME`, or cloud-configuration path variables. Same-UID host files and credentials outside that process environment remain outside the proof boundary. |
 | Ports and services | None opened; no daemon, container, virtual machine, provider, or cloud service |
 | Files changed | One exact state directory and one random private lab root below `/tmp`, both owned by the current UID |
 | Cleanup | Exact allowlisted files and directories only; no glob and no recursive deletion |
@@ -93,7 +93,7 @@ Abort when:
   `-- verification.record.json
 ```
 
-The controller opens the predictable state directory and lock without following symlinks, holds a non-blocking exclusive lock during each transition, validates current UID ownership and exact modes, binds the random root by device and inode, verifies every reviewed input digest, and refuses unexpected children. Cleanup moves each validated target to an unpredictable same-directory quarantine name with Linux `renameat2(RENAME_NOREPLACE)`, compares the quarantined inode with the open descriptor, restores a cooperatively replaced target when the identities differ, and removes only the matching quarantine name. Root, state, nested directories, rollback paths, and regular files all use descriptor-relative parents. It never runs `rm -rf`, follows a record symlink, or deletes a path merely because its name looks familiar.
+The controller opens the predictable state directory and lock without following symlinks, holds a non-blocking exclusive lock during each transition, validates current UID ownership and exact modes, binds the random root by device and inode, verifies every reviewed runtime-input digest, and refuses unexpected children. Cleanup moves each validated target to an unpredictable same-directory quarantine name with Linux `renameat2(RENAME_NOREPLACE)`, compares the quarantined inode with the open descriptor, restores a cooperatively replaced target when the identities differ, and removes only the matching quarantine name. Root, state, nested directories, rollback paths, and regular files all use descriptor-relative parents. It never runs `rm -rf`, follows a record symlink, or deletes a path merely because its name looks familiar.
 
 This is bounded local lifecycle hygiene, not atomic deletion and not a security sandbox against malicious code running as the same UID. Deterministic tests prove preservation when one cooperative replacement occurs at the validation-to-quarantine boundary. Code that can race repeatedly after the final identity check has the same UID and can mutate every lab file; that adversary is explicitly outside this lab's guarantee. Both engines and all workspaces use your current UID. Real untrusted CI needs a stronger boundary such as a disposable VM, hardened container boundary, separate identity, restricted network, and short-lived credentials.
 

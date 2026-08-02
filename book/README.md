@@ -74,7 +74,7 @@ The five routed connectivity chapters build one continuous request path. `LES-00
 
 Git internals, Bash, Python, Go foundations, APIs, serialization, tests, packaging, dependencies, artifacts, release engineering, OCI containers, CI/CD, deployment strategies, GitOps, and software supply-chain security.
 
-The routed volume begins with `LES-0009` / `V03-L01`, a safe local Ubuntu/WSL workbench for shell evaluation, Git state, secret handling, rollback, and exact cleanup. `LES-0017` then turns Bash into a deliberate automation interface: quoting, records, statuses, traps, validation, idempotency, deadlines, locks, tests, and failure-safe cleanup. `LES-0018` builds the same operational discipline in Python through typed boundaries, subprocess safety, exception taxonomy, durable publication, reconciliation, bounded concurrency, packaging, tests, and observability. Its `SCM` and `AUT` identities remain in the canonical engineering-and-delivery home while Volume 00 and Linux remain prerequisite foundations.
+The routed volume begins with `LES-0009` / `V03-L01`, a safe local Ubuntu/WSL workbench for shell evaluation, Git state, secret handling, rollback, and exact cleanup. `LES-0017` then turns Bash into a deliberate automation interface: quoting, records, statuses, traps, validation, idempotency, deadlines, locks, tests, and failure-safe cleanup. `LES-0018` builds the same operational discipline in Python through typed boundaries, subprocess safety, exception taxonomy, durable publication, reconciliation, bounded concurrency, packaging, tests, and observability. `LES-0019` through `LES-0023` continue through PowerShell, Go, API contracts, reproducible builds, and OCI/Docker foundations. `LES-0024` explains CI/CD architecture; `LES-0025` / `V03-L10` / `CI-002` continues at `/book/engineering/ci-platform-operations` with GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines operations. Its two local CI engines demonstrate bounded scheduling and contract ideas only; they do not execute or certify any provider. These `SCM`, `AUT`, and `CI` identities remain in the canonical engineering-and-delivery home while Volume 00 and Linux remain prerequisite foundations.
 
 ### Volume 04 - Reliability and operations
 
@@ -122,9 +122,9 @@ Data + distributed systems + SRE ------> data/ML platforms
 All core branches ----------------------> architecture leadership
 ```
 
-Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The `LES-0009` through `LES-0013` and `LES-0014` through `LES-0018` batches extend the safe-start, Linux, connectivity, and engineering paths in dependency order. Future content begins with `LES-0019` and must preserve all published lesson, route, state, assessment, reference, and curriculum ownership.
+Five-lesson releases are an editorial cadence, not a prerequisite or mastery gate. The `LES-0009` through `LES-0013` and `LES-0014` through `LES-0018` batches extend the safe-start, Linux, connectivity, and engineering paths in dependency order. The current canonical sequence continues through `LES-0025`; future content begins with `LES-0026` and must preserve all published lesson, route, state, assessment, reference, and curriculum ownership.
 
-The local reader exposes eighteen lessons across Volumes 00 through 03: five established typed lessons plus thirteen schema-backed structured lessons, with 39 structured assessments and 104 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
+The local reader exposes twenty-five lessons across Volumes 00 through 03: five established typed lessons plus twenty schema-backed `substantive-draft` lessons. The structured corpus contains 60 assessments—forty complete-answer records and twenty answer-isolated independent transfers—and 163 references. Resolved prerequisite IDs appear as advisory navigation only. They help a reader revisit context but never lock a route, mark work complete, or award mastery.
 
 ## Planned repository shape
 

@@ -6,9 +6,9 @@ Nothing below `drafts/` is canonical book content, a live website route, an acce
 
 ## Current staged work
 
-- `LES-0025-ci-platform-operations/` — CI platform operations across GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines.
-- The chapter, assessments, references, provider-neutral examples, and bounded dual-engine lab are kept together so a later human or AI can review the whole publication candidate without relying on chat history.
-- The local engines are teaching implementations. They demonstrate graph-versus-stage semantics, artifact transfer, minimal job environments, contract comparison, and a green-but-unsafe port. They do not prove vendor-platform behavior.
+- No substantive lesson publication candidate is currently staged here.
+- `LES-0025` was promoted to canonical `book/` locations as the `substantive-draft` lesson `V03-L10` / `CI-002` at `/book/engineering/ci-platform-operations`, with its assessments, references, and bounded lab colocated under their canonical roots.
+- Its local engines remain teaching implementations. They demonstrate graph-versus-stage semantics, artifact transfer, minimal job environments, contract comparison, and a green-but-unsafe port; they do not prove vendor-platform behavior, provider acceptance, learner completion, or mastery.
 
 ## Promotion gate
 
