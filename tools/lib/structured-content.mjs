@@ -686,6 +686,55 @@ function unsupportedRawHtmlLine(body) {
   return null;
 }
 
+function markdownDestinationIssues(body) {
+  const issues = [];
+  const lines = body.split(/\r?\n/);
+  let fence = null;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (fence) {
+      const closing = line.match(/^\s{0,3}(`{3,}|~{3,})\s*$/);
+      if (closing && closing[1][0] === fence.character
+        && closing[1].length >= fence.length) fence = null;
+      continue;
+    }
+    const marker = parseFenceOpening(line);
+    if (marker) {
+      fence = marker;
+      continue;
+    }
+
+    const inlineDestination = /(!?)\[[^\]\n]*\]\(\s*(<[^>\n]+>|[^\s)]+)(?:\s+(?:"[^"]*"|'[^']*'))?\s*\)/g;
+    for (const match of line.matchAll(inlineDestination)) {
+      const destination = match[2].startsWith("<") && match[2].endsWith(">")
+        ? match[2].slice(1, -1) : match[2];
+      if (match[1] === "!") {
+        issues.push(issue("LESSON_MARKDOWN_IMAGE_UNSUPPORTED", "body",
+          "schema-v1 lessons cannot embed Markdown images or trigger remote image requests",
+          index + 1));
+        continue;
+      }
+      if (/^#[a-z0-9]+(?:-[a-z0-9]+)*$/.test(destination)
+        || /^\/book\/[a-z0-9]+(?:\/[a-z0-9-]+)+(?:#[a-z0-9]+(?:-[a-z0-9]+)*)?$/.test(destination)) {
+        continue;
+      }
+      if (destination.startsWith("https://")) {
+        try {
+          const parsed = new URL(destination);
+          if (parsed.href === destination && !parsed.username && !parsed.password) continue;
+        } catch {
+          // The closed-policy issue below is the stable learner-facing diagnostic.
+        }
+      }
+      issues.push(issue("LESSON_MARKDOWN_DESTINATION_UNSAFE", "body",
+        `Markdown links must use canonical HTTPS, a /book route, or a local heading anchor; received "${destination}"`,
+        index + 1));
+    }
+  }
+  return issues;
+}
+
 function obviousMutationInReadOnlyCommand(command) {
   if (typeof command !== "string") return false;
   const mutator = /\b(?:rm|mv|cp|touch|mkdir|rmdir|chmod|chown|chgrp|ln|truncate|mkfs|fdisk|parted|dd|mount|umount|kill|pkill|killall|reboot|shutdown)\b|\b(?:systemctl|service)\s+(?:start|stop|restart|reload|enable|disable|mask|unmask)\b|\b(?:apt|apt-get|dnf|yum|apk)\s+(?:install|remove|purge|upgrade|dist-upgrade)\b|\b(?:docker|podman)\s+(?:run|rm|rmi|stop|kill|exec|build|pull)\b|\bkubectl\s+(?:apply|create|delete|edit|patch|replace|scale|rollout)\b|\bterraform\s+(?:apply|destroy|import)\b|\b(?:sed|perl)\s+-i\b|\bfind\b[^\n]*\s-delete\b/i;
@@ -798,6 +847,9 @@ export function validateLessonDocument(text, schema) {
       "schema-v1 lesson structure cannot use raw HTML blocks or HTML comments",
       parsed.bodyStartLine + rawHtmlLine - 1));
   }
+  issues.push(...markdownDestinationIssues(parsed.body).map((entry) => ({
+    ...entry, line: parsed.bodyStartLine + entry.line - 1,
+  })));
   const headings = extractLevelTwoHeadings(parsed.body);
   const positions = new Map();
   const bodyLines = parsed.body.split(/\r?\n/);
@@ -1485,6 +1537,7 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
   const slugs = new Map();
   const routes = new Map();
   const aliases = new Map();
+  const lessonOrders = new Map();
   for (const entry of legacy.entries) {
     const id = entry.record.id;
     const owner = { id, file: `${entry.file} (${id})`, legacy: true };
@@ -1549,6 +1602,30 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
           });
         } else if (!firstRoute) {
           routes.set(result.metadata.route, { id: result.metadata.id, file, legacy: false });
+        }
+      }
+      if (Number.isInteger(result.metadata.order)) {
+        const firstOrder = lessonOrders.get(result.metadata.order);
+        if (firstOrder && firstOrder.id !== result.metadata.id) {
+          issues.push({
+            ...issue("DUPLICATE_LESSON_ORDER", "$.order",
+              `order is already used by ${firstOrder.file}`),
+            file,
+          });
+        } else if (!firstOrder) {
+          lessonOrders.set(result.metadata.order, { id: result.metadata.id, file });
+        }
+      }
+      if (typeof result.metadata.domain === "string"
+        && typeof result.metadata.slug === "string"
+        && typeof result.metadata.route === "string") {
+        const expectedRoute = `/book/${result.metadata.domain}/${result.metadata.slug}`;
+        if (result.metadata.route !== expectedRoute) {
+          issues.push({
+            ...issue("LESSON_ROUTE_IDENTITY_MISMATCH", "$.route",
+              `route must equal "${expectedRoute}" for this domain and slug`),
+            file,
+          });
         }
       }
       for (const alias of Array.isArray(result.metadata.aliases)

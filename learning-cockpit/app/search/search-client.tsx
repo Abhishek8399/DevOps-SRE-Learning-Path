@@ -15,6 +15,7 @@ const exampleQueries = [
   "exit 137",
   "curl -v",
   "UID 10001",
+  "journalctl",
 ] as const;
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -81,8 +82,8 @@ export default function SearchClient({
         <p>OFFLINE FIELD-MANUAL SEARCH</p>
         <h1>Find the signal before choosing the command.</h1>
         <span>
-          Search the five locally available lessons by incident symptom, Linux
-          command, technical term, route ID, or curriculum ID. Nothing is uploaded.
+          Search all {documents.length} locally available lessons by incident symptom,
+          Linux command, technical term, route ID, or curriculum ID. Nothing is uploaded.
         </span>
       </header>
 
@@ -104,7 +105,7 @@ export default function SearchClient({
               id="manual-search"
               maxLength={160}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Try: no space left, df -i, SIGTERM, LNX-003..."
+              placeholder="Try: no space left, journalctl, LES-0006, LNX-005..."
               ref={inputRef}
               spellCheck={false}
               type="search"
@@ -165,8 +166,8 @@ export default function SearchClient({
           <h2 id="no-results-heading">Keep the evidence; broaden the wording.</h2>
           <p>
             Try one boundary at a time: the exact error, a command name, or one
-            mechanism such as inode, route, OOM, PID, ACL, or TLS. Only the five
-            published Linux foundation lessons are searchable today.
+            mechanism such as inode, route, OOM, PID, ACL, TLS, or journal. Only the
+            {documents.length} published Linux lessons are searchable today.
           </p>
           <Link href="/book/linux">Browse the Linux volume</Link>
         </section>

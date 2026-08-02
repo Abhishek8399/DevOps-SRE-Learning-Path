@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0003",
+  "lessonId": "LES-0006",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "On a disposable Ubuntu 24.04 VM, investigate one boot-to-service-readiness path for a service other than systemd-journald.service. Choose an approved localhost readiness operation that is read-only, requires no credential, and causes no business side effect; never contact an employer or production endpoint. Produce a boot-ID-scoped explanation that distinguishes kernel time, userspace ordering, unit state, journal evidence, and the readiness result. Do not change the boot loader, kernel command line, system units, or journal retention.",
+  "deliverables": [
+    "A sanitized environment card naming Ubuntu version, virtualization context, PID 1, kernel release, boot ID, privilege used, and why the VM is disposable.",
+    "A diagram showing firmware or VM start, kernel and initramfs, root filesystem, systemd target or dependencies, chosen service, and the readiness boundary.",
+    "A timestamped evidence table with each command, relevant output, what it proves, what it does not prove, and the next hypothesis.",
+    "A short incident narrative naming the first observed divergence, at least two rejected hypotheses, the safest recovery decision, and one prevention improvement.",
+    "A cleanup-boundary statement listing the documented read-only commands, confirming that the task defined no lesson-owned persistent resource or long-running process, and acknowledging that ordinary command processes and access or audit records may exist."
+  ],
+  "evidenceRequirements": [
+    "Use the same boot ID across the correlated kernel, systemd, journal, and readiness evidence.",
+    "Include systemd-analyze time plus either critical-chain or an explicitly justified equivalent when PID 1 is systemd.",
+    "Include structured unit properties rather than relying only on the human-oriented systemctl status summary.",
+    "Use a bounded journal query with a stated boot, unit or kernel scope, time window or line limit, and no pager.",
+    "Use a service other than systemd-journald.service and demonstrate the difference between active state and a credential-free, side-effect-free localhost readiness operation.",
+    "Redact hostnames, usernames, addresses, tokens, employer data, and any production identifiers before review."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Boundary and safety control",
+      "points": 4,
+      "observableEvidence": "Uses a disposable VM, states privilege and abort conditions, remains read-only, and submits a bounded cleanup statement without relying on shell history or claiming that observation leaves no records."
+    },
+    {
+      "criterion": "Boot and state model",
+      "points": 4,
+      "observableEvidence": "Explains ownership and handoffs from kernel through PID 1, dependencies, service state, and readiness without collapsing the layers."
+    },
+    {
+      "criterion": "Evidence interpretation",
+      "points": 4,
+      "observableEvidence": "Every important command is tied to a question, proof boundary, observed branch, and safe next evidence."
+    },
+    {
+      "criterion": "Independent diagnosis",
+      "points": 4,
+      "observableEvidence": "Identifies a first divergence, rejects plausible alternatives with evidence, and reaches a bounded recovery decision without a supplied answer path."
+    },
+    {
+      "criterion": "Production transfer",
+      "points": 4,
+      "observableEvidence": "Connects the VM investigation to a measurable readiness SLI, prevention control, and rollback-aware operating practice."
+    }
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

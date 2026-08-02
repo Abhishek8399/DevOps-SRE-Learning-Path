@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0002",
+  "lessonId": "LES-0006",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "Senior SRE troubleshooting interview — boot-to-readiness: after a kernel update, a payment API misses its five-minute recovery objective on some virtual machines. systemctl status says the API is active, the previous-boot journal contains a device timeout, and the load balancer saw health failures for seven minutes. Clarify assumptions, then walk through diagnosis, safe recovery, and prevention.",
+  "directAnswer": "Treat this as a boot-to-user-journey timeline, not a single service-status problem. Compare affected and healthy boots, locate the first divergence, separate kernel device readiness from systemd ordering and application readiness, restore with the lowest-risk reversible option, and retain evidence before changing the boot path.",
+  "foundation": "The API depends on more than its main process. The VM must boot the intended kernel, discover required devices, mount filesystems, start dependencies, bind the service, and pass the same health request used by the load balancer. systemctl active reports one manager state; the recovery objective measures the complete customer-facing path.",
+  "reasoningSteps": [
+    "Clarify the exact recovery milestone, affected percentage and cohorts, whether the device is required, data-safety constraints, available rollback path, and the health check's network boundary; use load-balancer health success or a synthetic payment request, not merely ActiveState=active.",
+    "Identify affected boot IDs, kernel versions, VM images, device types, zones, and rollout timing; compare them with healthy controls.",
+    "Read journalctl -k -b -1 and the affected current boot for device discovery, filesystem, driver, and timeout evidence without assuming temporal correlation is causation.",
+    "Inspect the systemd critical chain and dependency graph to see whether the API, mount, network-online target, or another prerequisite waited on the delayed device, while checking failed jobs and device evidence that critical-chain may omit.",
+    "Inspect API unit properties and logs, then test listener, readiness endpoint, and downstream dependencies from the same network boundary as the health checker.",
+    "Choose recovery according to evidence: stop the rollout, replace affected instances, or boot a previously validated kernel through the platform's reviewed rollback procedure; preserve at least one affected instance or journal export for analysis.",
+    "Prevent recurrence with canary boot tests, boot-to-ready SLI instrumentation, explicit dependency contracts, bounded timeouts, rollback criteria, and image/kernel compatibility validation."
+  ],
+  "seniorAnswer": "I would declare one timeline with boot ID as the join key: firmware or hypervisor start, kernel start, device availability, root and application mounts, systemd target completion, API process activation, readiness success, and load-balancer admission. I would compare the first failing event across affected and healthy VMs. If a kernel or driver change delays the required device, I would pause the rollout and use the platform's tested instance replacement or kernel rollback, not edit bootloader state interactively across the fleet. If the device is optional but blocks the API through an incorrect dependency, I would correct the unit relationship after testing it in a disposable VM. I would preserve previous-boot and current-boot journals, rollout metadata, and the health-check timeline. Prevention would include kernel canaries, a boot-to-ready SLO, previous-boot log collection, automated rollback thresholds, and a test proving the API starts when optional infrastructure is degraded.",
+  "weakAnswer": "The service is active, so the load balancer must be wrong; restart the API and increase the health-check grace period.",
+  "whyWeak": "It ignores the seven-minute user-visible failure, the device-timeout evidence, and the difference between active, ready, and admitted. A larger grace period can hide a regression and violate the recovery objective without fixing the boot or dependency path.",
+  "evidence": [
+    {
+      "signal": "The previous-boot kernel journal reports a device timeout after the update",
+      "proves": "The kernel emitted timeout evidence for that device during that identified boot.",
+      "doesNotProve": "That the timeout caused the API health failure; dependency and timeline correlation are still required."
+    },
+    {
+      "signal": "The API unit is active while health checks fail",
+      "proves": "Process-manager activation and the health-check result disagree, identifying a boundary between liveness state and readiness or reachability.",
+      "doesNotProve": "Whether the defect is in the application, listener, proxy, route, dependency, or health-check definition."
+    },
+    {
+      "signal": "Only VMs on the new kernel show the same first divergence",
+      "proves": "The failure is strongly associated with the rollout cohort and a repeated event boundary.",
+      "doesNotProve": "The exact kernel defect or that every VM on the version must fail."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Would you reboot an affected production VM to test the theory?",
+      "answer": "Not as an uncontrolled experiment. Preserve evidence first, use an already-approved replacement or rollback path for restoration, and reproduce boot changes in a disposable VM or canary cohort with explicit success and rollback criteria."
+    },
+    {
+      "prompt": "What SLI closes the gap between active and useful?",
+      "answer": "Measure boot-to-ready or boot-to-successful-synthetic-request from the consumer boundary, with boot ID, kernel version, instance image, and deployment cohort attached as dimensions."
+    },
+    {
+      "prompt": "Changed constraint: the delayed device is optional and the API has no documented reason to require it. What changes?",
+      "answer": "Treat the dependency as a design suspect, but prove both the relationship and degraded application behavior first. Decide separately whether the device should be pulled in at all and whether ordering is required: remove an unjustified Requires= only after testing, use Wants= only for intentional best-effort activation, and add After= only when startup order is genuinely required. Test the model in a disposable VM, verify degraded-start readiness, then canary the reviewed change with rollback criteria."
+    },
+    {
+      "prompt": "Changed constraint: no previous-boot journal is retained. What do you say?",
+      "answer": "State the evidence gap explicitly. Use platform console or serial logs, rollout telemetry, surviving current-boot state, and healthy-cohort comparison; do not claim the timeout never happened or fabricate a root cause. Add previous-boot retention or collection as a prevention action."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Cross-layer causal timeline",
+      "points": 4,
+      "observableEvidence": "Builds a boot-ID-scoped sequence from kernel and device readiness through systemd, API readiness, and load-balancer admission."
+    },
+    {
+      "criterion": "Safe restoration",
+      "points": 3,
+      "observableEvidence": "Preserves evidence and chooses controlled rollout pause, replacement, or tested rollback rather than fleet-wide interactive mutation."
+    },
+    {
+      "criterion": "Prevention and reliability design",
+      "points": 3,
+      "observableEvidence": "Defines canaries, boot-to-ready measurement, dependency tests, rollback thresholds, and previous-boot evidence retention."
+    }
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

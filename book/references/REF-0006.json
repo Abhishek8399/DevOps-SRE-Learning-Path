@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0006",
+  "title": "systemctl — Control the systemd system and service manager",
+  "organization": "systemd project",
+  "url": "https://www.freedesktop.org/software/systemd/man/255/systemctl.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "systemd 255 manual, Ubuntu 24.04 baseline",
+  "lessonIds": ["LES-0006"],
+  "topics": ["unit state", "show properties", "failed units", "unit source fragments"],
+  "relevance": "Defines the machine-readable show command, failed-unit listing, and cat behavior used to separate loaded configuration from manager state and readiness.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

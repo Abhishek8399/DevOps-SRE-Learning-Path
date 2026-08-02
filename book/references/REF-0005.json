@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0005",
+  "title": "systemd.unit — Unit configuration",
+  "organization": "Canonical Ubuntu Manpages and the systemd project",
+  "url": "https://manpages.ubuntu.com/manpages/noble/man5/systemd.unit.5.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Ubuntu 24.04 Noble, systemd 255 series",
+  "lessonIds": ["LES-0006"],
+  "topics": ["unit load paths", "drop-ins", "Wants and Requires", "After and Before"],
+  "relevance": "Defines unit identity, load precedence, drop-ins, requirement dependencies, and ordering dependencies used by the systemd state and incident explanations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

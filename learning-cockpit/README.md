@@ -16,17 +16,18 @@ The dashboard never raises mastery by itself. The repository ledger remains the 
 
 ## Ready lessons
 
-Volume 1 currently contains five substantial Linux foundation lessons:
+Volume 1 currently publishes six Linux foundation lessons:
 
 1. Filesystems, blocks, inodes, and ENOSPC.
 2. Processes, signals, exit codes, and systemd.
 3. CPU, load, memory pressure, swap, and OOM.
 4. DNS, routing, TCP, TLS, HTTP, and sockets.
 5. Identity, permissions, traversal, and least privilege.
+6. Boot, kernel, initramfs, systemd, and the journal.
 
-`Ready to study` describes content availability, not demonstrated mastery. The progress ledger remains authoritative.
+Lessons 1-5 retain their established reader implementations. Lesson 6 is the first schema-backed lesson and is published as a `substantive-draft`: available to study, but still subject to review. Every availability label describes content state, not demonstrated mastery. The progress ledger remains authoritative.
 
-Each lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and every checkpoint and product-company question includes a teaching answer from first-year foundations through senior production reasoning. The page always separates:
+Each explanatory lesson is designed to stand on its own: prerequisite vocabulary appears before the mechanism, Ubuntu command output is decoded field by field, and teaching checkpoints and product-company questions include answers from first-year foundations through senior production reasoning. Independent transfer assessments intentionally store no model answer. The page always separates:
 
 ```text
 question -> evidence -> field meanings -> combined interpretation -> safest next proof
@@ -90,9 +91,9 @@ npm audit  # optional network-backed advisory check
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
-The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The 34-case schema suite builds disposable repositories to exercise malformed or weakened schemas, answer leakage, identity collisions, unsafe paths, case drift, symlinks, broken ownership, dangling links, and prerequisite cycles. File-symlink creation can skip with `EPERM` on restricted Windows; run that case on Linux or symlink-capable Windows before a public release.
+The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, and live cross-record relationships without adding another package dependency. The 36-case schema suite builds disposable repositories to exercise malformed or weakened schemas, answer leakage, identity collisions, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live structured corpus. File-symlink creation can skip with `EPERM` on restricted Windows; run that case on Linux or symlink-capable Windows before a public release.
 
-The reader tests exercise malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, and local search normalization/ranking using Node's built-in test runner.
+The 17-case reader suite exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, catalog collisions, schema-backed lesson parsing, CommonMark fence parity, answer isolation, safe links, and local search normalization/ranking using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
 
 ---
 

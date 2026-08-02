@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { readerCatalog } from "../lessons/reader-catalog";
 
 const volumes = [
   { number: "00", title: "Start safely", detail: "Ubuntu setup, evidence, cleanup, command risk, and learning workflow.", state: "NEXT" },
-  { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: "5 LESSONS READY", href: "/book/linux" },
+  { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: `${readerCatalog.length} LESSONS AVAILABLE`, href: "/book/linux" },
   { number: "02", title: "Connectivity", detail: "Ethernet through TLS: routing, TCP, DNS, HTTP, proxies, load balancers, and PKI.", state: "PLANNED" },
   { number: "03", title: "Engineering and delivery", detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, and supply chain.", state: "PLANNED" },
   { number: "04", title: "Reliability and operations", detail: "Observability, SLOs, capacity, overload, incidents, toil, backup, and recovery.", state: "PLANNED" },

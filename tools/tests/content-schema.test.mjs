@@ -323,13 +323,18 @@ test("lesson identity, prerequisite, level, path, and section invariants reject 
 });
 
 test("fenced literals cannot corrupt heading state and raw HTML cannot fake headings", () => {
-  const fencedComment = `\`\`\`text\n<!--\n\`\`\`\n${parsedValidLesson.body}`;
-  assert.deepEqual(
-    validateLessonDocument(
-      lessonText(parsedValidLesson.metadata, fencedComment), lessonSchema,
-    ).issues,
-    [],
-  );
+  for (const fencedLiteral of [
+    `\`\`\`text\n<!--\n\`\`\`\n${parsedValidLesson.body}`,
+    `~~~~text\n## not a section\n~~~~\n${parsedValidLesson.body}`,
+    `\`\`\`\`text\n## not a section\n\`\`\`\`\`\n${parsedValidLesson.body}`,
+  ]) {
+    assert.deepEqual(
+      validateLessonDocument(
+        lessonText(parsedValidLesson.metadata, fencedLiteral), lessonSchema,
+      ).issues,
+      [],
+    );
+  }
 
   for (const rawHtmlWrapped of [
     `<pre>\n${parsedValidLesson.body}\n</pre>`,
@@ -361,6 +366,30 @@ Duplicate heading
   assert.ok(codes(validateLessonDocument(
     lessonText(parsedValidLesson.metadata, quotedAngle), lessonSchema,
   ).issues).includes("LESSON_RAW_HTML_UNSUPPORTED"));
+});
+
+test("structured lesson Markdown allows only inert destinations and no images", () => {
+  const safeBody = parsedValidLesson.body.replace(
+    "Start by naming the exact symptom and boundary.",
+    "Read [storage](/book/linux/storage), [this section](#terms-before-commands), and [kernel docs](https://docs.kernel.org/).",
+  );
+  assert.equal(validateLessonDocument(
+    lessonText(parsedValidLesson.metadata, safeBody), lessonSchema,
+  ).issues.length, 0);
+
+  for (const [markdown, expectedCode] of [
+    ["[unsafe](javascript:alert%281%29)", "LESSON_MARKDOWN_DESTINATION_UNSAFE"],
+    ["[protocol relative](//example.invalid/path)", "LESSON_MARKDOWN_DESTINATION_UNSAFE"],
+    ["[relative file](../../../README.md)", "LESSON_MARKDOWN_DESTINATION_UNSAFE"],
+    ["![remote image](https://example.invalid/image.png)", "LESSON_MARKDOWN_IMAGE_UNSUPPORTED"],
+  ]) {
+    const body = parsedValidLesson.body.replace(
+      "Start by naming the exact symptom and boundary.", markdown,
+    );
+    assert.ok(codes(validateLessonDocument(
+      lessonText(parsedValidLesson.metadata, body), lessonSchema,
+    ).issues).includes(expectedCode));
+  }
 });
 
 test("required headings without teaching content are rejected", () => {
@@ -918,4 +947,32 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("the live structured corpus publishes the first production lesson with answer isolation", () => {
+  const result = validateRepositoryStructuredContent(repositoryRoot);
+  assert.deepEqual(result.issues, []);
+  assert.equal(result.metrics.lessons, 1);
+  assert.equal(result.metrics.assessments, 3);
+  assert.equal(result.metrics.references, 8);
+
+  const lessonPath = join(repositoryRoot, "book", "volumes", "01-linux-systems",
+    "LES-0006-boot-kernel-systemd-journal", "lesson.md");
+  const lesson = parseJsonFrontMatter(readFileSync(lessonPath, "utf8"));
+  assert.equal(lesson.metadata.id, "LES-0006");
+  assert.equal(lesson.metadata.route, "/book/linux/boot-kernel-systemd-journal");
+  assert.deepEqual(lesson.metadata.prerequisiteLessonIds, ["LES-0002"]);
+  assert.deepEqual(lesson.metadata.prerequisiteCurriculumIds, ["LNX-002"]);
+  assert.deepEqual(lesson.metadata.assessmentIds, ["ASM-0001", "ASM-0002", "ASM-0003"]);
+
+  const assessments = lesson.metadata.assessmentIds.map((id) => JSON.parse(readFileSync(
+    join(repositoryRoot, "book", "assessments", "linux", `${id}.json`), "utf8",
+  )));
+  assert.ok(assessments.some((assessment) => assessment.type !== "independent-transfer"));
+  const independent = assessments.find((assessment) => assessment.type === "independent-transfer");
+  assert.ok(independent);
+  for (const field of [
+    "directAnswer", "foundation", "reasoningSteps", "seniorAnswer", "weakAnswer",
+    "whyWeak", "evidence", "followUps",
+  ]) assert.equal(Object.hasOwn(independent, field), false);
 });

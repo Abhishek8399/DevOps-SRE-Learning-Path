@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0002",
+  "title": "System bootup process",
+  "organization": "systemd project",
+  "url": "https://www.freedesktop.org/software/systemd/man/255/bootup.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "systemd 255 manual, Ubuntu 24.04 baseline",
+  "lessonIds": ["LES-0006"],
+  "topics": ["boot targets", "systemd dependencies", "userspace startup"],
+  "relevance": "Provides the primary systemd model for early userspace, target relationships, and the path toward a usable system.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

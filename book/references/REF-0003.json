@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0003",
+  "title": "systemd-analyze",
+  "organization": "systemd project",
+  "url": "https://www.freedesktop.org/software/systemd/man/255/systemd-analyze.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "systemd 255 manual, Ubuntu 24.04 baseline",
+  "lessonIds": ["LES-0006"],
+  "topics": ["boot performance", "critical chain", "unit verification"],
+  "relevance": "Defines the phase timing, critical-chain, dependency, security, and unit-verification tools used as bounded boot evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CopyCommand from "./copy-command";
 import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
+import { readerCatalog } from "./lessons/reader-catalog";
 
 const comparisons = [
   {
@@ -375,7 +376,7 @@ bash lab.sh cleanup`}</code></pre>
       <LessonAnswerGuide lessonId="storage" />
 
       <nav className="lesson-pagination" aria-label="Lesson 01 navigation">
-        <Link href="/book/linux">&lt;- Five-lesson index</Link>
+        <Link href="/book/linux">&lt;- {readerCatalog.length}-lesson index</Link>
         <Link href="/book/linux/processes-signals-systemd">Next lesson: processes -&gt;</Link>
       </nav>
 

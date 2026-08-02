@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0007",
+  "title": "systemd.journal-fields — Special journal fields",
+  "organization": "Canonical Ubuntu Manpages and the systemd project",
+  "url": "https://manpages.ubuntu.com/manpages/noble/man7/systemd.journal-fields.7.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Ubuntu 24.04 Noble, systemd 255 series",
+  "lessonIds": ["LES-0006"],
+  "topics": ["trusted fields", "boot ID", "process identity", "realtime and monotonic timestamps"],
+  "relevance": "Defines the trusted identity, boot, transport, and timestamp fields used to correlate journal evidence without treating message text as the whole event.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

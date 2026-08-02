@@ -1,24 +1,12 @@
 import Link from "next/link";
 import CopyCommand from "./copy-command";
 import { foundationLessons, type FoundationLesson } from "./lessons/foundation-lessons";
+import { adjacentReaderEntries, readerCatalog } from "./lessons/reader-catalog";
 import { CommandDecoderGuide, LessonAnswerGuide, LessonGlossary } from "./lesson-depth";
 
-const indexLessons = [
-  {
-    number: "01",
-    title: "Filesystems, blocks, inodes, and ENOSPC",
-    detail: "Map the path, distinguish limits, remediate safely.",
-    href: "/book/linux/storage",
-    state: "PRACTICAL GATE",
-  },
-  ...foundationLessons.map((lesson) => ({
-    number: lesson.number,
-    title: lesson.title,
-    detail: lesson.subtitle,
-    href: `/book/linux/${lesson.id}`,
-    state: "READY TO STUDY",
-  })),
-];
+function availabilityLabel(value: (typeof readerCatalog)[number]["availability"]): string {
+  return value.replaceAll("-", " ").toUpperCase();
+}
 
 export function BookIndex() {
   return (
@@ -26,20 +14,20 @@ export function BookIndex() {
         <div className="section-heading light">
           <div>
             <p className="eyebrow">VOLUME 01 / LINUX SYSTEMS</p>
-            <h2>Five lessons that everything else will stand on.</h2>
+            <h2>{readerCatalog.length} Linux lessons that everything else will stand on.</h2>
             <p className="section-intro">
               Read in order. A lesson being available means it is ready to learn;
               it does not mean the competency gate has been passed.
             </p>
           </div>
-          <span className="volume-count">5 LESSONS</span>
+          <span className="volume-count">{readerCatalog.length} LESSONS</span>
         </div>
         <div className="lesson-shelf">
-          {indexLessons.map((lesson) => (
-            <Link href={lesson.href} className="shelf-card" key={lesson.number}>
-              <div><span>{lesson.number}</span><small>{lesson.state}</small></div>
+          {readerCatalog.map((lesson) => (
+            <Link href={lesson.route} className="shelf-card" key={lesson.canonicalId}>
+              <div><span>{lesson.number}</span><small>{availabilityLabel(lesson.availability)}</small></div>
               <strong>{lesson.title}</strong>
-              <p>{lesson.detail}</p>
+              <p>{lesson.summary}</p>
               <b>Open lesson -&gt;</b>
             </Link>
           ))}
@@ -57,7 +45,7 @@ export function BookIndex() {
 }
 
 export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }) {
-  const lessonIndex = foundationLessons.findIndex((item) => item.id === lesson.id);
+  const adjacent = adjacentReaderEntries(lesson.id);
   return (
     <article className="foundation-lesson routed-lesson" id={lesson.id}>
           <header className="lesson-heading">
@@ -171,12 +159,12 @@ export function FoundationLessonArticle({ lesson }: { lesson: FoundationLesson }
           <LessonAnswerGuide lessonId={lesson.id} />
 
           <nav className="lesson-pagination" aria-label={`Lesson ${lesson.number} navigation`}>
-            <Link href={lessonIndex === 0 ? "/book/linux/storage" : `/book/linux/${foundationLessons[lessonIndex - 1].id}`}>
-              &lt;- Previous lesson
-            </Link>
-            <Link href="/book/linux">Five-lesson index</Link>
-            {lessonIndex < foundationLessons.length - 1
-              ? <Link href={`/book/linux/${foundationLessons[lessonIndex + 1].id}`}>Next lesson -&gt;</Link>
+            {adjacent.previous
+              ? <Link href={adjacent.previous.route}>&lt;- Previous: {adjacent.previous.number}</Link>
+              : <Link href="/book/linux">&lt;- Volume index</Link>}
+            <Link href="/book/linux">{readerCatalog.length}-lesson index</Link>
+            {adjacent.next
+              ? <Link href={adjacent.next.route}>Next: {adjacent.next.number} -&gt;</Link>
               : <Link href="/practice/storage">Practise this volume -&gt;</Link>}
           </nav>
     </article>

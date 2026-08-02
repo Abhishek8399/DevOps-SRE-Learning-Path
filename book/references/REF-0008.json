@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0008",
+  "title": "org.freedesktop.systemd1 - the D-Bus interface of systemd",
+  "organization": "Ubuntu Manpages and systemd project",
+  "url": "https://manpages.ubuntu.com/manpages/noble/man5/org.freedesktop.systemd1.5.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "systemd 255 manual for Ubuntu 24.04 LTS",
+  "lessonIds": ["LES-0006"],
+  "topics": ["service runtime properties", "Result", "ExecMainStatus", "NRestarts"],
+  "relevance": "Defines the service-manager runtime properties used by systemctl show, including the last service result, main-process status, and automatic restart count.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

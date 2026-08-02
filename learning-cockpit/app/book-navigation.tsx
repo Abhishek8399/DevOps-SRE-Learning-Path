@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { foundationLessons } from "./lessons/foundation-lessons";
+import { readerCatalog } from "./lessons/reader-catalog";
 import NavigationLink from "./navigation-link";
 
 const plannedVolumes = [
@@ -18,9 +18,8 @@ function NavigationLinks() {
       <NavigationLink className="library-link" href="/book">Knowledge library</NavigationLink>
       <div className="nav-volume current-volume">
         <div><span>VOLUME 01</span><strong>Linux systems</strong></div>
-        <NavigationLink href="/book/linux/storage"><b>01</b> Storage and ENOSPC</NavigationLink>
-        {foundationLessons.map((lesson) => (
-          <NavigationLink href={`/book/linux/${lesson.id}`} key={lesson.id}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
+        {readerCatalog.map((lesson) => (
+          <NavigationLink href={lesson.route} key={lesson.canonicalId}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
         ))}
       </div>
       <div className="planned-volumes">

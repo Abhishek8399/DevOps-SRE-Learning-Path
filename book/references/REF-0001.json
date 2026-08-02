@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0001",
+  "title": "The kernel's command-line parameters",
+  "organization": "Linux Kernel documentation",
+  "url": "https://docs.kernel.org/admin-guide/kernel-parameters.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0006"],
+  "topics": ["kernel command line", "boot parameters", "init"],
+  "relevance": "Defines how the running kernel interprets its command line and hands remaining arguments to init, supporting the lesson's kernel-to-userspace boundary.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

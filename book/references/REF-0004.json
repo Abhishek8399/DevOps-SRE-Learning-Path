@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0004",
+  "title": "journalctl",
+  "organization": "systemd project",
+  "url": "https://www.freedesktop.org/software/systemd/man/255/journalctl.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "systemd 255 manual, Ubuntu 24.04 baseline",
+  "lessonIds": ["LES-0006"],
+  "topics": ["system journal", "boot IDs", "unit logs", "monotonic time"],
+  "relevance": "Defines boot, kernel, unit, priority, output, and time filters used to turn the journal into scoped incident evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

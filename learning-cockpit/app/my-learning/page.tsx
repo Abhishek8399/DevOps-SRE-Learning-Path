@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { foundationLessons } from "../lessons/foundation-lessons";
+import { readerCatalog } from "../lessons/reader-catalog";
 import LearningLibrary, { type LearningLibraryLesson } from "./learning-library";
+import { isLearningLessonId } from "./learning-state";
 import styles from "./my-learning.module.css";
 
 export const metadata: Metadata = {
@@ -9,22 +10,18 @@ export const metadata: Metadata = {
   description: "A device-local place to bookmark lessons and resume reading without changing mastery evidence.",
 };
 
-const lessons: LearningLibraryLesson[] = [
-  {
-    id: "storage",
-    number: "01",
-    title: "Filesystems, blocks, inodes, and ENOSPC",
-    summary: "Diagnose whether capacity, inode exhaustion, deleted-open files, or the wrong mount caused the failure.",
-    href: "/book/linux/storage",
-  },
-  ...foundationLessons.map((lesson) => ({
-    id: lesson.id,
+const lessons: LearningLibraryLesson[] = readerCatalog.map((lesson) => {
+  if (!isLearningLessonId(lesson.stateId)) {
+    throw new Error(`reader state identity is not trusted: ${lesson.stateId}`);
+  }
+  return {
+    id: lesson.stateId,
     number: lesson.number,
     title: lesson.title,
-    summary: lesson.subtitle,
-    href: `/book/linux/${lesson.id}`,
-  })),
-];
+    summary: lesson.summary,
+    href: lesson.route,
+  };
+});
 
 export default function MyLearningPage() {
   return (

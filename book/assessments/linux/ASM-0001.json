@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0001",
+  "lessonId": "LES-0006",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "A server needs 82 seconds to reach its application target. systemd-analyze time reports 4.2 seconds in the kernel and 77.1 seconds in userspace. What can you conclude, what can you not conclude, and what evidence should you collect next?",
+  "directAnswer": "The measured delay is mainly after the kernel handed control to userspace, so investigate the systemd job graph and the application path before blaming kernel startup. The numbers do not identify one guilty unit and do not prove when the user-visible service became healthy.",
+  "foundation": "Boot is a chain of owners. Firmware and the boot loader prepare the machine, the kernel initializes hardware and mounts enough state to start PID 1, and systemd then schedules userspace units. systemd-analyze time separates broad phases. It is a map of elapsed time, not a root-cause report and not an end-to-end availability measurement.",
+  "reasoningSteps": [
+    "Confirm that PID 1 is systemd and that the measurement comes from the same boot and machine as the incident.",
+    "Treat 4.2 seconds and 77.1 seconds as phase-level evidence: the dominant measured interval is userspace.",
+    "Run systemd-analyze critical-chain to inspect time-critical ordering, while remembering that it can omit parallel work, timed-out jobs, and device units that never entered activating.",
+    "Use systemctl --failed and systemctl show on suspicious units to separate load state, active state, substate, result, exit status, and restart count.",
+    "Read the current boot journal with monotonic timestamps so dependency waits, retries, timeouts, and service messages can be compared on one time axis.",
+    "Test the real application readiness boundary because target completion, process activation, socket listening, and successful user requests are different milestones."
+  ],
+  "seniorAnswer": "I would first preserve the boot ID, kernel release, PID 1 identity, and systemd-analyze time output. The 77.1-second userspace phase makes a kernel-startup hypothesis less likely, but it is not attribution. I would inspect critical-chain, failed units, and the explicit After=/Wants=/Requires= relationships around the application. For each suspect I would compare ActiveState, SubState, Result, ExecMainStatus, and NRestarts with journalctl -b output in short-monotonic format. I would then overlay the application readiness timestamp and a real request result. If the critical path is waiting on network-online.target, a mount, device, secret, DNS, or a retrying service, I would fix that owner or dependency contract rather than merely increasing a timeout.",
+  "weakAnswer": "Userspace is slow, so restart systemd or disable the slowest service.",
+  "whyWeak": "systemd is PID 1 and cannot be treated like an ordinary application restart. The slowest listed unit may run in parallel and may not gate the application. Disabling it without understanding dependency and safety requirements can create a boot failure or a hidden reliability defect.",
+  "evidence": [
+    {
+      "signal": "systemd-analyze time shows 4.2 seconds kernel and 77.1 seconds userspace",
+      "proves": "For that boot, systemd measured much more elapsed time in the userspace phase than in the kernel phase.",
+      "doesNotProve": "Which unit caused the delay, whether units ran in parallel, or when the user journey became healthy."
+    },
+    {
+      "signal": "systemd-analyze critical-chain shows a unit with +45 seconds",
+      "proves": "That unit's activation duration appears on the displayed time-critical dependency chain.",
+      "doesNotProve": "That its own code consumed 45 seconds, that removing it is safe, or that an absent timed-out job or never-activating device is irrelevant; the unit may be waiting on another resource or policy."
+    },
+    {
+      "signal": "systemctl show reports ActiveState=active and Result=success",
+      "proves": "systemd currently considers the unit active and its last recorded operation successful.",
+      "doesNotProve": "That the application is ready, serving the correct port, or completing a real request."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is systemd-analyze blame not enough?",
+      "answer": "It sorts unit activation durations, but units can run in parallel and a long duration may not gate the target or application. Even critical-chain can omit timed-out jobs and devices that never entered activating. Use failed-unit state, dependencies, boot logs, device evidence, and readiness together."
+    },
+    {
+      "prompt": "Why use monotonic journal timestamps during boot diagnosis?",
+      "answer": "Monotonic time advances from boot and is not moved by wall-clock correction. It lets you compare ordering and elapsed gaps even when the real-time clock was initially wrong or synchronized later."
+    },
+    {
+      "prompt": "When would you return to kernel evidence?",
+      "answer": "When the kernel phase is abnormal, the journal shows device, filesystem, driver, or initramfs errors, required hardware appears late, or userspace waits on a kernel-owned resource. Then inspect current-boot kernel messages and the exact hardware or mount path."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Evidence boundary",
+      "points": 4,
+      "observableEvidence": "States that the phase split narrows the investigation to userspace but does not identify a root cause or user-visible readiness."
+    },
+    {
+      "criterion": "Layered investigation",
+      "points": 4,
+      "observableEvidence": "Connects critical-chain, unit state, dependency relationships, monotonic journal evidence, and application readiness."
+    },
+    {
+      "criterion": "Safe production judgment",
+      "points": 2,
+      "observableEvidence": "Avoids disabling units, restarting PID 1, or increasing timeouts before identifying the owning wait or failure."
+    }
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

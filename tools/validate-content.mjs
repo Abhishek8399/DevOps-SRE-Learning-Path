@@ -132,8 +132,21 @@ function prepareMarkdownLines(text) {
   const linkLines = [];
   const commentState = { open: false };
   let fence = null;
+  let jsonFrontMatterEnd = -1;
 
-  for (const originalLine of originalLines) {
+  if (originalLines[0]?.trim() === "---"
+    && originalLines[1]?.trimStart().startsWith("{")) {
+    jsonFrontMatterEnd = originalLines.findIndex((line, index) =>
+      index > 1 && line.trim() === "---");
+  }
+
+  for (let lineIndex = 0; lineIndex < originalLines.length; lineIndex += 1) {
+    const originalLine = originalLines[lineIndex];
+    if (jsonFrontMatterEnd >= 0 && lineIndex <= jsonFrontMatterEnd) {
+      headingLines.push(" ".repeat(originalLine.length));
+      linkLines.push(" ".repeat(originalLine.length));
+      continue;
+    }
     const fenceMatch = parseFenceOpening(originalLine);
     if (fence) {
       headingLines.push(" ".repeat(originalLine.length));
