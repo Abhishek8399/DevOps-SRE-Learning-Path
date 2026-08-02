@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0176",
+  "title": "OpenTelemetry Python exporters",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/languages/python/exporters/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current OpenTelemetry Python exporter documentation reviewed 2026-08-02; exporter and Collector versions remain deployment-specific",
+  "lessonIds": ["LES-0027"],
+  "topics": ["OTLP exporter", "BatchSpanProcessor", "batching", "OTLP gRPC", "OTLP HTTP", "Collector", "temporality", "console exporter"],
+  "relevance": "Official Python examples for OTLP and console exporters, signal pipelines and batched versus simple processing. It supports local source-to-Collector verification and the recommendation to batch normal exports. Example endpoints, container commands and defaults are not a production security or reliability design; bind address, TLS, authentication, timeouts, queueing and compatible pinned versions must be reviewed separately.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

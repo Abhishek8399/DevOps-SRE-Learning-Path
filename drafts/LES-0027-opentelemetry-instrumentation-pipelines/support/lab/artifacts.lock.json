@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "lesson": "LES-0027",
+  "platform": "linux/amd64",
+  "policy": "Replace every RECORD_REAL_* marker with a digest observed and reviewed for the exact artifact before prepare is permitted.",
+  "images": {
+    "python": {
+      "repository": "docker.io/library/python",
+      "tag": "3.12.4-slim-bookworm",
+      "digest": "sha256:RECORD_REAL_PYTHON_IMAGE_DIGEST_64_HEX"
+    },
+    "collector": {
+      "repository": "docker.io/otel/opentelemetry-collector-contrib",
+      "tag": "0.104.0",
+      "digest": "sha256:RECORD_REAL_COLLECTOR_IMAGE_DIGEST_64_HEX"
+    }
+  },
+  "requirementsFile": "requirements.lock",
+  "notes": [
+    "Tags document human-readable versions; runtime identity is repository@sha256 digest.",
+    "The repository intentionally ships incomplete locks rather than pretending unverified digests are trustworthy.",
+    "A maintainer must review upstream release provenance and record real image and wheel hashes in one auditable change."
+  ]
+}

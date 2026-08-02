@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0182",
+  "title": "Sampling",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/concepts/sampling/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OpenTelemetry sampling concept guidance last modified 2025-10-16 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["head sampling", "tail sampling", "probability sampling", "sampling bias", "tail-sampler state", "routing", "capacity", "cost"],
+  "relevance": "Official comparison of early head decisions with tail decisions that inspect most or all available spans, including tail sampling's state, capacity and operational costs. It supports explicit decision timing and consistent trace routing. The page is conceptual rather than a guarantee of any language, Collector or vendor implementation, and no sampling policy makes retained traces automatically representative or complete.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

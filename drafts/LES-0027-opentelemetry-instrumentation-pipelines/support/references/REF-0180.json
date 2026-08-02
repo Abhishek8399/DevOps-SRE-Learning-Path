@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0180",
+  "title": "OpenTelemetry Collector configuration",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/collector/configuration/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Collector configuration documentation reviewed 2026-08-02; component syntax, defaults and stability remain distribution- and version-specific",
+  "lessonIds": ["LES-0027"],
+  "topics": ["Collector configuration", "receivers", "processors", "exporters", "connectors", "extensions", "service pipelines", "configuration validation"],
+  "relevance": "Official configuration contract showing that defining a receiver, processor, exporter, connector or extension does not enable it; components must be referenced by the appropriate `service` pipeline or extension list. It supports the lesson's configured-versus-active diagnosis and `otelcol validate` preflight. Example wildcard bind addresses are convenience examples rather than safe production defaults, and every selected component's own README and deployed distribution must be checked.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

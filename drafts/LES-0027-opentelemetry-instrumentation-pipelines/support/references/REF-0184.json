@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0184",
+  "title": "OpenTelemetry Collector troubleshooting",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/collector/troubleshooting/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Collector troubleshooting documentation last modified 2026-03-01 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["Collector troubleshooting", "internal telemetry", "debug exporter", "zPages", "pipeline hops", "dropped data", "configuration", "network evidence"],
+  "relevance": "Official hop-by-hop diagnostic guidance for receiving, processing, exporting and querying telemetry, including internal telemetry and bounded local debug tools. It supports distinguishing a healthy process from a working data path and a configured component from an enabled one. Debug exporters, zPages and pprof can disclose data or create listening endpoints, so they require local binding, least privilege, bounded duration and removal after use; component availability and stability remain version-specific.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

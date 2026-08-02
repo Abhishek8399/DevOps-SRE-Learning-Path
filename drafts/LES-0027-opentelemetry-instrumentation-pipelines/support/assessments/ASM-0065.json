@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0065",
+  "lessonId": "LES-0027",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "Design and operate OpenTelemetry for a payment journey that crosses mobile client, regional edge, Python payment API, authorization service, database, asynchronous settlement queue, settlement worker and an external bank. The platform processes 2,000 payment attempts per second at peak. Existing manual instrumentation creates payment, authorization and publish spans. A proposed rollout adds Python auto-instrumentation, OTLP batch export and a per-node Collector agent feeding a regional gateway tier. In a 5 percent canary, p99 payment latency rises from 280 to 410 milliseconds and API CPU rises from 43 to 67 percent. Trace inspection shows duplicate HTTP client spans and twelve low-value serialization spans per request. Raw customer email, account identifier and a bearer token were placed in baggage so downstream teams can search them. The API head-samples 10 percent of root traces. Regional gateways then tail-sample errors and slow traces, but gateway load balancing uses source service rather than trace identity, so spans for some traces land on different tail-sampler instances; only 37 percent of a controlled set of known error journeys reaches the backend as complete traces. Gateway exporter queues reach 92 percent during a ten-minute backend slowdown, and no persistent storage or explicit drop budget exists. Metric resource attributes disagree on service name and environment, teams mix two semantic-convention generations, and an operator wants to roll out globally because business success is still green. Produce a foundation-to-expert design and incident response. Cover manual versus automatic instrumentation, API and SDK ownership, resources and instrumentation scope, pinned semantic conventions, synchronous and asynchronous propagation, parent versus link, agent and gateway placement, OTLP, head and tail sampling, trace-aware routing, queues, retries, persistence, backpressure, security, privacy, capacity, cost, staged rollout, rollback, pipeline self-observability and exact recovery evidence. Answer the product-company question: How do you make this payment path observable without letting telemetry become unsafe, unaffordable or a new outage source?",
+  "directAnswer": "Stop the rollout at the canary and preserve the baseline, configuration, topology and overhead evidence. Business success staying green does not authorize a telemetry change that consumes latency and CPU budgets or propagates credentials. Remove the bearer token and unnecessary identity from baggage immediately through the security and privacy response path, restrict existing telemetry access and retention, and do not copy exposed values. Define an instrumentation ownership map: auto-instrument supported framework, HTTP and database edges once; keep manual spans for payment-specific decisions and async handoffs; suppress or remove duplicates and low-value serialization spans. Pin compatible SDK, instrumentation, Collector, OTLP and Semantic Conventions versions; make resource identity consistent and test span names, kinds, attributes, units and topology. At every carrier, inject approved context at send and extract validated context at receive. Use a parent for one continuing message and links for batch or multiple causal inputs. Treat baggage as untrusted context, not authorization. Revisit sampling as one policy. Ten-percent head sampling means tail sampling never sees the other ninety percent and cannot recover their errors. Tail decisions also require all relevant spans for a trace to reach the same decision point; route by a stable trace-identity mechanism supported and tested by the deployment, or choose a design that does not depend on complete tail state. Size agents and gateways from measured spans and bytes, tail decision wait, concurrency, batches, queue duration and backend outage objective. Use bounded retries and queues, persistent storage only where its durability benefit and disk failure mode are operated, explicit shedding priorities and loss/freshness objectives. Secure receiver and exporter identities with least privilege, encryption and restricted diagnostics. Roll out one change at a time through a small cohort with abort thresholds for user latency, CPU, allocation, export errors, queue saturation, trace completeness, sensitive-field tests and cost. Recovery requires normal user outcomes plus canary overhead back within budget, known error traces retained according to policy, consistent resource and semantic identity, reconciled source-to-query counts, queue drainage, bounded loss and proof that prohibited fields are absent. This establishes only the measured path, versions, workload and window.",
+  "foundation": "Manual instrumentation is application or library code that deliberately calls the OpenTelemetry API for domain operations. Automatic instrumentation wraps supported frameworks and libraries to create standard telemetry with less source change. They can coexist, but ownership must prevent duplicate spans and conflicting attributes. The API is what instrumentation calls; the application configures an SDK that samples, processes and exports. A resource identifies the entity producing telemetry, while instrumentation scope identifies the emitting library or module. Semantic Conventions give versioned names and meanings for resources, spans, metrics and operations; each exact convention has its own stability status. Context propagation moves trace identity and selected context through a carrier. OTLP transports telemetry between SDKs, Collectors and backends. An agent is placed near workloads for local receipt or enrichment; a gateway centralizes processing and export across workloads. Head sampling decides before the whole trace is known. Tail sampling waits for available spans and needs state, capacity and coherent routing. Queues and retries absorb only bounded disruption; they do not create infinite durability. Every design must therefore state identity, semantics, trust, capacity, failure behavior and what evidence proves delivery.",
+  "reasoningSteps": [
+    "Treat the canary as a failed telemetry rollout even though payment success is green. The observed p99 and CPU increases consume service headroom, and unsafe baggage creates a security and privacy exposure. Freeze expansion and preserve exact cohort, version, configuration and workload evidence.",
+    "Assign parallel owners for application overhead, trace quality, Collector capacity and sensitive-data containment. Do not let the observability team silently delete evidence or the application team broaden collection while the incident timeline is being built.",
+    "Map the user operation and every boundary: client to edge to payment API to authorization and database, then queue to worker to bank. Separately map source instrumentation, SDK processors, local agents, regional gateways, backend ingestion and query. Name the owner, protocol, trust boundary and possible loss at each arrow.",
+    "Create an instrumentation inventory before adding more code. For every framework or dependency, record whether automatic, library-native or manual instrumentation owns the server, client, database, messaging and error spans. One operation should not be wrapped repeatedly unless a distinct nested semantic operation is intentional.",
+    "Use automatic instrumentation for supported generic edges after checking its exact package status and configuration. Keep manual spans for payment decisions, idempotency, risk outcomes and queue handoffs that libraries cannot understand. Delete or suppress duplicate HTTP spans and omit serialization spans that do not answer an operational question.",
+    "Keep libraries coupled only to the API when possible, with the application owning the SDK, resources, processors, exporters and shutdown. Multiple provider initialization or uncoordinated SDK setup can create no-op instruments, duplicate export or configuration precedence surprises.",
+    "Define resource identity once per producing entity. Require stable service identity, version, instance or deployment identifiers and only bounded environment attributes that support ownership and comparison. Do not put request, customer, account or payment identifiers into resources or metric dimensions.",
+    "Pin the OpenTelemetry Specification, language packages, instrumentation packages, Collector distribution and component versions, OTLP version and Semantic Conventions version as separate compatibility facts. OpenTelemetry version numbers do not move as one lockstep product.",
+    "Adopt one reviewed semantic schema per rollout. For each HTTP, database and messaging convention, record its exact stability and migration guidance. Test names, kinds, units, attribute types and required or recommended fields; dual emission during migration must be bounded and intentionally queried.",
+    "Propagate context at each synchronous boundary using supported instrumentation and at each custom asynchronous boundary with explicit inject and extract adapters. Test valid, absent, malformed, oversized and conflicting carriers. Incoming trace context and baggage are untrusted data, not identity or authorization.",
+    "Model asynchronous relationships honestly. One message continuing one operation can create a consumer span from extracted remote parent context. Batch, fan-in or work with an independent lifecycle can use links. Preserve business message identity separately without fabricating trace IDs.",
+    "Contain the baggage exposure. Stop emitting the bearer token and unnecessary personal identifiers, identify every destination and reader, restrict access and retention, coordinate revocation or notification with security owners, and use allowlists and synthetic sensitive-field canaries in CI and rollout.",
+    "Select head sampling from population and cost goals. A ten-percent root head decision means unsampled traces are unavailable to downstream tail logic. Parent-based behavior can preserve that decision across properly propagated descendants, but propagation gaps and independent roots can produce inconsistent trace fragments.",
+    "Select tail sampling only when its added decision value justifies state and complexity. Define error, latency and cohort policies, decision wait, expected late spans, memory and spill behavior. A tail sampler can retain errors only among the trace data it receives.",
+    "Route all relevant spans for a trace to the same tail decision state using a tested trace-identity strategy supported by the Collector deployment. Source-service routing is unsuitable when one trace crosses services. During scale changes, measure rebalancing, late spans and partial traces rather than assuming stickiness.",
+    "Make the combination policy explicit. If head sampling protects applications or the first pipeline tier, calculate which population reaches tail sampling and do not advertise tail policies as retaining all errors. Consider low but nonzero baseline probability plus targeted paths only after validating bias, cost and operational purpose.",
+    "Choose agent and gateway responsibilities deliberately. Agents can receive locally and add environment-owned resource data; gateways can centralize policy, tail sampling and resilient export. Avoid unnecessary processors at both tiers, and ensure each tier has independent capacity, configuration identity and health evidence.",
+    "Size normal flow from measured peak requests per second multiplied by spans per operation, recording ratio and encoded bytes. Add metric and log flows separately. Size tail state from trace arrivals, spans and bytes retained for the decision interval; size exporter buffers from admitted bytes per second times the recoverable downstream outage, with overhead and disk headroom.",
+    "Treat the 92-percent queue as imminent evidence loss, not as resilience success. Freeze additional volume, reduce low-value telemetry through approved policy, restore backend throughput or add bounded capacity, and watch accepted, refused, queued, retried, dropped and exported counts plus oldest-item age and query freshness.",
+    "Use retries only for retryable failures and include exponential backoff, jitter and maximum elapsed time. A queue can overflow; an in-memory queue loses data on process loss; persistent storage can fill or fail and needs permissions, encryption, cleanup and disk alerts. A message queue adds its own service ownership and retention failure modes.",
+    "Define backpressure and shedding per signal and purpose. Ordinary debug telemetry must not indefinitely block payment work. Required security or audit evidence needs a separately approved fail-open or fail-closed contract rather than inheriting an observability default.",
+    "Secure all hops: local-only binding where sufficient; authenticated and encrypted transport across trust boundaries; separate workload and Collector identities; least-privilege backend writes; restricted debug, health, zPages and profiling endpoints; secret references instead of literal credentials; and audited read access.",
+    "Build pipeline self-observability with independent canary telemetry. Measure source creation where possible, SDK sampling and export failures, agent and gateway accepted, refused, processed, dropped, queued, retried and exported items, OTLP partial success, backend ingest acknowledgement, end-to-end freshness and query success.",
+    "Create a staged rollout matrix. Start with schema and carrier contract tests, then a disposable local environment, a single canary instance, a small region and bounded waves. Change instrumentation, sampling and Collector policy separately. Each stage has owner, observation window, abort threshold and exact rollback.",
+    "Use user and resource budgets as release gates. Compare payment success, p50, p95 and p99 with counts, API and worker CPU, allocations, memory, network, payload bytes and connection use under comparable load. Do not accept averages that conceal canary or regional regressions.",
+    "Verify trace quality with known synthetic success, error, slow, queue and retry journeys. Check expected span topology, resource and scope identity, context continuity, sampling decision, late-span behavior, backend freshness and queryability. A complete trace still does not prove the payment succeeded unless the outcome evidence says so.",
+    "Budget cost without inventing vendor prices: spans per second times bytes and retention, active metric series from bounded attribute combinations, log events and index expansion, network, replication, object storage and query load. State measured values, estimates, uncertainty, owner and threshold.",
+    "Call recovery only when the canary overhead returns within the declared budget, prohibited baggage is absent in source and destination tests, controlled error traces meet the declared retention and completeness target, queues drain without hidden loss, resources and schemas agree, and user outcomes remain healthy for a stated sample and window.",
+    "Prevent recurrence with generated or reviewed instrumentation contracts, duplicate-span and golden-topology tests, semantic-schema linting, carrier fuzz tests, sensitive-data allowlists, trace-aware routing tests during scaling, capacity load tests, backend-outage exercises, configuration canaries, rollback drills and periodic review of sampling value."
+  ],
+  "seniorAnswer": "I would stop this rollout because observability has a service budget and a data-safety contract. The canary adds 130 milliseconds to p99, consumes substantial CPU headroom, creates duplicate and low-value spans, propagates credentials, loses most controlled error traces and is close to gateway queue exhaustion. I would remove prohibited baggage through the incident and security process, restrict exposed stores and coordinate token revocation without copying values. Then I would define one instrumentation owner per boundary: auto-instrument supported framework and client edges, retain manual domain spans, and test the combined topology. The application owns SDK configuration; resources and instrumentation scopes identify source; semantic conventions are pinned per exact convention and migrated deliberately. Context is injected and extracted at every carrier, with parentage or links chosen according to message semantics and all inbound context treated as untrusted. Sampling becomes one disclosed design: upstream head drops cannot be recovered by downstream tail logic, and stateful tail sampling requires trace-coherent routing, enough decision capacity and a late-span policy. Agents handle local collection; redundant gateways handle centralized processing and resilient export only where justified. I size spans, bytes, tail state and outage buffers from measured peak flow, then set loss, freshness, queue and overhead objectives. Queues, retries, WAL and message brokers each have explicit failure and cleanup contracts. Every network hop uses least-privilege identity and encryption; debug endpoints are restricted. Rollout moves through schema tests, local proof, one instance, one region and bounded waves with latency, CPU, trace-quality, queue, privacy and cost abort gates. Recovery is a sustained user, application, topology, pipeline and security result, not a green Collector or one complete trace.",
+  "weakAnswer": "Enable all automatic and manual instrumentation, sample everything at the applications and again keep all errors at the gateway, round-robin spans across gateways, add customer identity and tokens to baggage, increase the queue until alerts stop, and deploy globally because payments are still succeeding.",
+  "whyWeak": "It duplicates telemetry, ignores measured latency and CPU regression, misunderstands that tail sampling cannot restore head-dropped traces, fragments stateful tail decisions, exposes credentials and personal data through untrusted carriers, substitutes an unbounded queue for capacity and failure design, hides data loss, skips version and semantic contracts, provides no secure agent or gateway architecture and removes every controlled rollout and rollback boundary.",
+  "evidence": [
+    {
+      "signal": "Prompt-observed: in the 5 percent canary, payment p99 rises from 280 to 410 milliseconds and API CPU rises from 43 to 67 percent.",
+      "proves": "The canary cohort has a material latency and CPU regression correlated with the telemetry rollout under the observed workload.",
+      "doesNotProve": "Which instrumentation component causes the regression, how global rollout would behave, or that business correctness is currently broken."
+    },
+    {
+      "signal": "Prompt-observed: trace inspection finds duplicate HTTP client spans and twelve low-value serialization spans per request.",
+      "proves": "The sampled traces include redundant or low-decision-value instrumentation that increases span volume.",
+      "doesNotProve": "The total population frequency without counts, the exact overhead contribution of each span, or that every manual span should be removed."
+    },
+    {
+      "signal": "Prompt-observed: raw email, account identity and a bearer token were added to baggage.",
+      "proves": "Sensitive and authority-bearing data entered a propagated context channel in the observed rollout.",
+      "doesNotProve": "Every downstream destination, reader, historical copy or legal impact; those require scoped security and privacy investigation."
+    },
+    {
+      "signal": "Prompt-observed: roots are head-sampled at 10 percent before the regional tail policy.",
+      "proves": "Only traces admitted by the upstream head decision can be evaluated from their spans by the downstream tail sampler.",
+      "doesNotProve": "That the admitted ten percent is representative, that parent decisions propagate correctly, or that tail sampling receives complete traces."
+    },
+    {
+      "signal": "Prompt-observed: gateway routing uses source service rather than trace identity, and only 37 percent of controlled known error journeys appear as complete backend traces.",
+      "proves": "The exercised design fails its controlled error-trace completeness target, and the routing key is not invariant across a multi-service trace.",
+      "doesNotProve": "That routing is the only loss mechanism, what happened to every missing span, or that the backend query itself is complete."
+    },
+    {
+      "signal": "Prompt-observed: gateway exporter queues reach 92 percent during a ten-minute backend slowdown with no persistent storage or explicit loss budget.",
+      "proves": "The observed in-memory buffer approaches capacity during a bounded downstream impairment and lacks a declared acceptable-loss contract.",
+      "doesNotProve": "Exactly when drops begin, whether persistence is the correct solution, or whether the disk and retry design could support the same load."
+    },
+    {
+      "signal": "Proposed capacity evidence: measure peak admitted spans and bytes per second, tail decision occupancy, batch size, retry age and queue headroom during a controlled backend-delay exercise.",
+      "proves": "If observed under a representative declared workload, the selected configuration's bounded flow and outage-buffer behavior can be compared with its objective.",
+      "doesNotProve": "Behavior beyond the tested workload, correlated regional failures, future schema expansion or vendor storage cost."
+    },
+    {
+      "signal": "Required recovery evidence: known success, error, slow and async journeys have expected topology and policy outcomes; canary user and resource metrics meet abort budgets; pipeline counts reconcile; queues drain; and prohibited fields are absent.",
+      "proves": "If observed, the reviewed canary satisfies its declared correctness, overhead, delivery and data-safety contracts for the measured versions and interval.",
+      "doesNotProve": "Fleet-wide safety, zero loss, all hostile carrier behavior, long-term cost or professional mastery."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "How do you decide between automatic and manual instrumentation?",
+      "answer": "Assign one owner to generic boundaries and use tested automatic or library instrumentation there. Add manual spans only for domain decisions or unsupported carriers. Review the combined topology and attributes so the two approaches complement rather than duplicate each other."
+    },
+    {
+      "prompt": "Why can tail sampling not guarantee all errors after ten-percent head sampling?",
+      "answer": "The tail sampler can reason only about spans it receives. If a root head decision prevents recording or export, a later error in that dropped trace is unavailable to tail policy. State the admitted population and residual blind spot."
+    },
+    {
+      "prompt": "Why must tail-sampling routing use trace identity?",
+      "answer": "A decision requires the relevant spans for one trace to meet the same stateful decision point. A key such as source service changes across the trace and fragments state. The exact routing mechanism is deployment-specific and must be tested during scaling and failures."
+    },
+    {
+      "prompt": "What belongs in a resource rather than a span attribute?",
+      "answer": "A resource describes the producing entity, such as stable service and version identity. A span attribute describes one operation. Request and customer identifiers are not resource identity and can create cardinality and privacy problems."
+    },
+    {
+      "prompt": "Does persistent Collector storage guarantee no loss?",
+      "answer": "No. It can preserve queued telemetry across a Collector restart, but disk capacity, permissions, corruption, retry expiry, downstream rejection and cleanup still fail. It needs explicit sizing, monitoring and recovery tests."
+    },
+    {
+      "prompt": "How would you calculate first-order trace volume?",
+      "answer": "Start with operations per second times spans per operation times the admitted recording ratio, then multiply by measured encoded bytes and retention. Add tail-state occupancy, batching, replication, index expansion, retries and uncertainty separately; do not insert an invented vendor price."
+    },
+    {
+      "prompt": "What makes a semantic-convention migration safe?",
+      "answer": "Pin old and new versions, inspect the exact convention's stability and migration notes, test names, types and units, update queries and alerts, bound any dual emission, canary it, and keep an exact rollback. The umbrella version does not make every field stable."
+    },
+    {
+      "prompt": "What would you say in a five-minute product-company interview?",
+      "answer": "Start with the payment journey and decisions, define instrumentation ownership and context contracts, explain agent and gateway failure domains, disclose sampling bias, size and secure the pipeline, make it observable, and close with staged rollout plus user, overhead, delivery and privacy recovery evidence and explicit proof limits."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Instrumentation architecture, semantics and ownership",
+      "points": 10,
+      "observableEvidence": "Defines API and SDK ownership, combines automatic and manual instrumentation without duplicates, uses resources and instrumentation scopes correctly, and pins and tests exact semantic conventions."
+    },
+    {
+      "criterion": "Context propagation and trust",
+      "points": 10,
+      "observableEvidence": "Maps synchronous and asynchronous carriers, validates inject and extract behavior, chooses parent versus links deliberately, separates baggage from attributes and authority, and contains sensitive data."
+    },
+    {
+      "criterion": "Collector agent, gateway and delivery design",
+      "points": 10,
+      "observableEvidence": "Assigns tier responsibilities, uses OTLP and active pipeline evidence correctly, designs least-privilege transport and independent self-observability, and names every source-to-query failure boundary."
+    },
+    {
+      "criterion": "Sampling, resilience, capacity and cost",
+      "points": 10,
+      "observableEvidence": "Explains head and tail interaction, requires trace-coherent routing, sizes tail state and buffers, bounds queue, retry and persistence failure, calculates volume with uncertainty and defines loss, freshness and overhead budgets."
+    },
+    {
+      "criterion": "Incident leadership, rollout and recovery proof",
+      "points": 10,
+      "observableEvidence": "Stops the unsafe canary, coordinates data exposure, stages one-variable changes with abort and rollback, verifies user, resource, topology, pipeline and privacy outcomes, communicates trade-offs and states precise proof limits."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

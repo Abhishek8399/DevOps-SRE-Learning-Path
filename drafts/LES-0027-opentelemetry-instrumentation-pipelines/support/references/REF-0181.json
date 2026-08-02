@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0181",
+  "title": "OpenTelemetry Collector resiliency",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/collector/resiliency/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Collector resiliency guidance last modified 2026-01-14 and reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["Collector resiliency", "sending queue", "retry", "write-ahead log", "persistent storage", "message queue", "data loss", "backpressure"],
+  "relevance": "Official operational guidance for in-memory sending queues, retry, persistent file-backed queues, message queues and documented loss circumstances. It supports capacity and failure-mode design rather than a false no-loss promise: queues can fill, retry windows expire, processes and disks fail, and extra durability adds resources and operational complexity. Exact defaults and supported settings must be verified against the pinned exporter, component and Collector distribution.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

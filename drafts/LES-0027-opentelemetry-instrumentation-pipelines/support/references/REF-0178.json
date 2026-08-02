@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0178",
+  "title": "Baggage",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/concepts/signals/baggage/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OpenTelemetry baggage concept and security guidance reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["baggage", "context", "propagation", "trust boundary", "sensitive data", "integrity", "attributes", "privacy"],
+  "relevance": "Official guidance that baggage is propagated context, is not automatically a span, metric or log attribute, can cross into unintended downstream resources, and has no built-in integrity assurance. It anchors the lesson's rule to treat inbound baggage as untrusted, allowlist only decision-required values and never propagate secrets or regulated identifiers merely for convenient correlation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

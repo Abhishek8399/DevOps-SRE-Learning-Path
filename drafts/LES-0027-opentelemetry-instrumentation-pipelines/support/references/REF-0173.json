@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0173",
+  "title": "OpenTelemetry Specification 1.59.0",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/specs/otel/",
+  "sourceType": "standard",
+  "versionOrDate": "OpenTelemetry Specification 1.59.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["OpenTelemetry specification", "API", "SDK", "data model", "normative requirements", "versioning", "stability"],
+  "relevance": "Normative umbrella specification for the OpenTelemetry API, SDK and data contracts. It distinguishes requirements expressed with BCP 14 keywords from explanatory guidance and anchors the API-versus-SDK boundary used in the lesson. Version 1.59.0 is a snapshot: individual signals, sections and language implementations can have different maturity and release versions, so this record does not turn every OpenTelemetry feature into a stable or implemented capability.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

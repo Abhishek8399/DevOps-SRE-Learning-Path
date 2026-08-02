@@ -1,0 +1,188 @@
+name: ${LAB_PROJECT_NAME:?run through lab.sh}
+
+x-lab-labels: &lab-labels
+  com.reliability-atlas.managed: "true"
+  com.reliability-atlas.lesson: "LES-0027"
+  com.reliability-atlas.owner-token: ${LAB_OWNER_TOKEN:?run through lab.sh}
+
+x-service-safety: &service-safety
+  init: true
+  read_only: true
+  user: "${LAB_UID:?run through lab.sh}:${LAB_GID:?run through lab.sh}"
+  cap_drop: ["ALL"]
+  security_opt: ["no-new-privileges:true"]
+  pids_limit: 96
+  mem_limit: 192m
+  cpus: 0.50
+  restart: "no"
+  stop_grace_period: 5s
+  networks: [telemetry]
+  labels:
+    <<: *lab-labels
+
+x-collector-safety: &collector-safety
+  read_only: true
+  user: "10001:10001"
+  cap_drop: ["ALL"]
+  security_opt: ["no-new-privileges:true"]
+  pids_limit: 96
+  mem_limit: 192m
+  cpus: 0.50
+  restart: "no"
+  stop_grace_period: 5s
+  pull_policy: never
+  networks: [telemetry]
+  labels:
+    <<: *lab-labels
+
+services:
+  service-a:
+    <<: *service-safety
+    image: ${LAB_PYTHON_IMAGE:?run prepare after recording real digests}
+    pull_policy: never
+    command:
+      - /bin/sh
+      - -ec
+      - >-
+        python -m pip install --disable-pip-version-check --no-index --no-deps
+        --require-hashes --find-links=/wheelhouse --target=/tmp/site
+        -r /requirements.lock &&
+        exec python -B /workspace/service_a.py
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPATH: /tmp/site
+      OTEL_SERVICE_NAME: service-a
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://agent-a:4318/v1/traces
+      OTEL_TRACES_SAMPLER_ARG: ${LAB_SAMPLE_RATIO:-1.0}
+      OTEL_BSP_MAX_QUEUE_SIZE: "128"
+      OTEL_BSP_MAX_EXPORT_BATCH_SIZE: "32"
+      OTEL_BSP_SCHEDULE_DELAY: "200"
+      LAB_DOWNSTREAM_URL: http://service-b:8081/work
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=96m,uid=${LAB_UID},gid=${LAB_GID},mode=0700
+    volumes:
+      - type: bind
+        source: ./services
+        target: /workspace
+        read_only: true
+      - type: bind
+        source: ./requirements.lock
+        target: /requirements.lock
+        read_only: true
+      - type: bind
+        source: ./.artifacts/wheels
+        target: /wheelhouse
+        read_only: true
+    ports:
+      - "127.0.0.1:${LAB_HTTP_PORT:-18027}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=1).read()"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+      start_period: 20s
+    depends_on:
+      service-b:
+        condition: service_healthy
+      agent-a:
+        condition: service_started
+
+  service-b:
+    <<: *service-safety
+    image: ${LAB_PYTHON_IMAGE:?run prepare after recording real digests}
+    pull_policy: never
+    command:
+      - /bin/sh
+      - -ec
+      - >-
+        python -m pip install --disable-pip-version-check --no-index --no-deps
+        --require-hashes --find-links=/wheelhouse --target=/tmp/site
+        -r /requirements.lock &&
+        exec python -B /workspace/service_b.py
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPATH: /tmp/site
+      OTEL_SERVICE_NAME: service-b
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://agent-b:4318/v1/traces
+      OTEL_TRACES_SAMPLER_ARG: ${LAB_SAMPLE_RATIO:-1.0}
+      OTEL_BSP_MAX_QUEUE_SIZE: "128"
+      OTEL_BSP_MAX_EXPORT_BATCH_SIZE: "32"
+      OTEL_BSP_SCHEDULE_DELAY: "200"
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=96m,uid=${LAB_UID},gid=${LAB_GID},mode=0700
+    volumes:
+      - type: bind
+        source: ./services
+        target: /workspace
+        read_only: true
+      - type: bind
+        source: ./requirements.lock
+        target: /requirements.lock
+        read_only: true
+      - type: bind
+        source: ./.artifacts/wheels
+        target: /wheelhouse
+        read_only: true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/healthz', timeout=1).read()"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+      start_period: 20s
+    depends_on:
+      agent-b:
+        condition: service_started
+
+  agent-a:
+    <<: *collector-safety
+    image: ${LAB_COLLECTOR_IMAGE:?run prepare after recording real digests}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m,uid=10001,gid=10001,mode=0700
+    volumes:
+      - type: bind
+        source: ./config/agent-a.yaml
+        target: /etc/otelcol/config.yaml
+        read_only: true
+    ports:
+      - "127.0.0.1:${LAB_AGENT_A_METRICS_PORT:-18889}:8888"
+    depends_on:
+      gateway:
+        condition: service_started
+
+  agent-b:
+    <<: *collector-safety
+    image: ${LAB_COLLECTOR_IMAGE:?run prepare after recording real digests}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m,uid=10001,gid=10001,mode=0700
+    volumes:
+      - type: bind
+        source: ./config/agent-b.yaml
+        target: /etc/otelcol/config.yaml
+        read_only: true
+    ports:
+      - "127.0.0.1:${LAB_AGENT_B_METRICS_PORT:-18890}:8888"
+    depends_on:
+      gateway:
+        condition: service_started
+
+  gateway:
+    <<: *collector-safety
+    image: ${LAB_COLLECTOR_IMAGE:?run prepare after recording real digests}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m,uid=10001,gid=10001,mode=0700
+    volumes:
+      - type: bind
+        source: ./config/gateway.yaml
+        target: /etc/otelcol/config.yaml
+        read_only: true
+    ports:
+      - "127.0.0.1:${LAB_GATEWAY_METRICS_PORT:-18888}:8888"
+
+networks:
+  telemetry:
+    internal: true
+    labels:
+      <<: *lab-labels

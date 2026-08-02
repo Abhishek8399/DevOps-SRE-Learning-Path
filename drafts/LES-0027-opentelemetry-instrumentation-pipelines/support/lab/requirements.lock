@@ -1,0 +1,21 @@
+# Python 3.12, linux/amd64 teaching runtime. Every hash is deliberately a
+# fail-closed placeholder. A maintainer must resolve the complete transitive
+# wheel set, review it, and replace each marker with a real sha256 digest.
+# Runtime installation always uses --no-index, --require-hashes and --no-deps.
+
+certifi==2024.7.4 --hash=sha256:RECORD_REAL_CERTIFI_WHEEL_SHA256
+charset-normalizer==3.3.2 --hash=sha256:RECORD_REAL_CHARSET_NORMALIZER_WHEEL_SHA256
+Deprecated==1.2.14 --hash=sha256:RECORD_REAL_DEPRECATED_WHEEL_SHA256
+googleapis-common-protos==1.63.2 --hash=sha256:RECORD_REAL_GOOGLEAPIS_COMMON_PROTOS_WHEEL_SHA256
+idna==3.7 --hash=sha256:RECORD_REAL_IDNA_WHEEL_SHA256
+opentelemetry-api==1.25.0 --hash=sha256:RECORD_REAL_OTEL_API_WHEEL_SHA256
+opentelemetry-exporter-otlp-proto-common==1.25.0 --hash=sha256:RECORD_REAL_OTEL_EXPORTER_COMMON_WHEEL_SHA256
+opentelemetry-exporter-otlp-proto-http==1.25.0 --hash=sha256:RECORD_REAL_OTEL_EXPORTER_HTTP_WHEEL_SHA256
+opentelemetry-proto==1.25.0 --hash=sha256:RECORD_REAL_OTEL_PROTO_WHEEL_SHA256
+opentelemetry-sdk==1.25.0 --hash=sha256:RECORD_REAL_OTEL_SDK_WHEEL_SHA256
+opentelemetry-semantic-conventions==0.46b0 --hash=sha256:RECORD_REAL_OTEL_SEMCONV_WHEEL_SHA256
+protobuf==5.27.2 --hash=sha256:RECORD_REAL_PROTOBUF_WHEEL_SHA256
+requests==2.32.3 --hash=sha256:RECORD_REAL_REQUESTS_WHEEL_SHA256
+typing-extensions==4.12.2 --hash=sha256:RECORD_REAL_TYPING_EXTENSIONS_WHEEL_SHA256
+urllib3==2.2.2 --hash=sha256:RECORD_REAL_URLLIB3_WHEEL_SHA256
+wrapt==1.16.0 --hash=sha256:RECORD_REAL_WRAPT_WHEEL_SHA256

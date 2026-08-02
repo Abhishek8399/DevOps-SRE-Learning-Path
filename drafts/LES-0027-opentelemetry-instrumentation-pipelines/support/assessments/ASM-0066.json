@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0066",
+  "lessonId": "LES-0027",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Independently investigate an unfamiliar, unseen and disposable local OpenTelemetry case supplied by an instructor or created and owned by the learner under explicit non-production authorization. The case must contain a multi-process request with at least one asynchronous carrier, independently versioned application instrumentation and Collector configuration, a measurable source-to-query telemetry path, and at least one unrelated but plausible change. The instructor retains the fault manifest; the learner must not know which boundary explains the observations before recording predictions. Published LES-0027 guided cases, answered assessments and known fixtures are excluded. Before opening solution material or changing the target, record authorization, environment identity, architecture, expected healthy topology, source and pipeline invariants, competing hypotheses, safety limits and cleanup proof. Establish a comparable baseline, introduce or activate exactly one instructor-approved bounded case state, diagnose trace continuity and missing or misleading telemetry hop by hop, recover through the smallest authorized change and prove final cleanup. Then propose a production design covering manual and automatic instrumentation, resources, instrumentation scope, pinned semantic conventions, synchronous and asynchronous propagation, context trust, baggage, Collector service pipelines, OTLP, head and tail sampling, routing, queues, retries, persistence, backpressure, security, privacy, capacity, cost, rollout and rollback. Verify exact private identity and paths locally, but submit sanitized evidence that preserves numeric UID and GID, privilege, process, network and filesystem boundaries while redacting personal or employer names and path segments. Label every claim as observation, documented contract, calculation, inference, hypothesis or unknown. Only an independent reviewer may score the evidence.",
+  "deliverables": [
+    "A timestamped independence and authorization gate completed before investigation, including prior exposure, help received, unseen-case provenance, non-production owner, permitted operations, forbidden boundaries, numeric UID and GID, privilege, network behavior, expected mutations, abort conditions, rollback and cleanup plan. Private names and personal or employer path segments are verified locally and redacted from the submitted copy.",
+    "A text-accessible architecture map of the user operation and the telemetry path from API or library call through SDK, processor, exporter, carrier, Collector receiver, processor, exporter, backend and query, with state owner, version, trust boundary, protocol and possible loss at every arrow.",
+    "A healthy instrumentation contract that distinguishes manual, automatic and library-native ownership; names resource and instrumentation-scope identity; pins the relevant specification, language packages, instrumentation packages, Collector distribution and components, OTLP and Semantic Conventions versions; and records maturity caveats.",
+    "An expected trace-topology specification for synchronous, asynchronous, retry, batch and external-boundary operations, including span names and kinds, parent or link decisions, valid and invalid carrier behavior, approved baggage and proof limits.",
+    "A source-to-query invariant table with expected counts or bounded relationships for created, recording, sampled, exported, accepted, refused, processed, dropped, queued, retried, exported, ingested and query-visible telemetry, explicitly marking unavailable evidence.",
+    "A raw sanitized baseline packet captured before case activation with exact commands or queries, configuration hashes, versions, timestamps, timezone, workload, samples, denominators, units, trace topology, pipeline counters, freshness, resource usage and natural-variation notes.",
+    "At least four falsifiable hypotheses written before derived diagnosis, including at least one application instrumentation or propagation hypothesis, one SDK or sampling hypothesis, one Collector configuration or policy hypothesis and one transport, backend or query hypothesis. Each includes predicted, disconfirming and next-safe evidence.",
+    "One authorized case-activation record naming the control, owner, exact changed state, start time, expected scope, abort checks, rollback and proof that no production, cloud, unrelated repository, host-wide control or external service changed.",
+    "A chronological evidence ledger that links each observation to the exact hypothesis update and separates temporal proximity from causality, application success from trace continuity, Collector health from pipeline delivery and protocol acceptance from query visibility.",
+    "A carrier and context investigation for every process boundary, including inject and extract ownership, wire or envelope representation, W3C field parsing, missing, malformed, oversized and untrusted inputs, baggage allowlists, parent or link semantics and application-correlation identity.",
+    "An effective Collector configuration analysis that distinguishes defined from enabled components, records the service pipelines and extension list, validates the pinned binary, inventories listeners and identities, and traces one sanitized canary through receive, process, export and downstream acknowledgement.",
+    "A sampling and routing analysis that records every decision point and input population, distinguishes head from tail decisions, tests parent decision propagation, checks whether relevant spans meet the same tail decision state, measures late or partial traces and states sampling bias.",
+    "A pipeline reliability and capacity worksheet covering admitted items and bytes per second, batch behavior, tail decision occupancy if applicable, queue capacity and age, retry policy, recoverable outage interval, persistence and disk failure, backpressure, shedding, freshness, loss budget and unknowns.",
+    "A security and privacy review covering context and baggage trust, sensitive-field tests, endpoint binding, authentication, encryption, credential references, Collector and backend privileges, diagnostics, storage, access, retention, evidence sanitization and incident escalation for any exposure.",
+    "A controlled recovery packet with exact change and rollback, before, case, recovered and final states, independent user-operation verification, expected trace topology, resource and instrumentation identity, source-to-query reconciliation, overhead, privacy checks and residual risk.",
+    "A production rollout proposal that starts with contract and schema tests, proceeds through disposable local proof and bounded canaries, changes one policy class at a time, defines owner, observation window, abort threshold and rollback at every stage, and includes backend-delay and routing-change exercises.",
+    "A concise incident handoff and five-minute product-company interview response that explain the strongest evidence, supported mechanism, rejected alternatives, safe recovery, production architecture, trade-offs, remaining unknowns and at least twelve precise proof-limit statements without claiming mastery."
+  ],
+  "evidenceRequirements": [
+    "Use only an instructor-supplied unseen disposable local case or a learner-created and learner-owned disposable non-production target whose answer manifest is withheld until review. The published LES-0027 cases, ASM-0064, ASM-0065 and any known guided fixture are prohibited.",
+    "Complete and timestamp the independence gate before inspecting derived dashboards, solution comments, fault manifests or answered assessments. Disclose any prior exposure to substantially similar material so the reviewer can assign a fresh case.",
+    "After the gate, do not open ASM-0064, ASM-0065, a generated solution, another learner response or instructor fault manifest. The blank ASM-0066 response template, lesson concepts and official references remain allowed.",
+    "Stop and submit a blocker rather than installing packages, elevating privilege, opening firewall paths, disabling TLS or authentication, using credentials, contacting a cloud or external backend, inspecting unrelated data or changing another repository without explicit authorization.",
+    "Verify exact operating system, kernel, native or WSL or container boundary, numeric UID and GID, privilege, process and network namespace, workspace resolution, relevant software versions, configuration identities and clock status locally. Sanitize names and private path segments in submitted evidence without removing proof of boundary and privilege.",
+    "Preserve raw evidence locally before interpretation and submit a sanitized copy. Every excerpt retains command or query, source class, timestamp, timezone, scope, window, filters, grouping, unit, denominator, version and freshness; every redaction or omission is recorded.",
+    "Establish a stable comparable baseline before case activation and repeat the same workload and measurements during the case and after recovery. If any workload, sample, configuration or collection condition changes, disclose it and limit comparison claims.",
+    "Treat application behavior and telemetry behavior as separate contracts. A successful user operation does not prove trace continuity, and a complete trace does not prove the business result without independent outcome evidence.",
+    "For manual, automatic and library instrumentation, identify the owner of each server, client, database, messaging and domain span. Detect duplicate, missing and conflicting operations rather than assuming more spans are better.",
+    "For resources and instrumentation scopes, record exact observed values and sources, detect conflicting identity and distinguish producing-entity attributes from per-operation attributes. Do not use customer or request identifiers as resource identity.",
+    "For Semantic Conventions, record the exact version and status of every convention relied upon. Do not infer that all conventions are stable from the umbrella release, and do not silently mix generations.",
+    "For each carrier, capture sanitized wire or envelope evidence before and after serialization, identify inject and extract code or library ownership, test valid, absent, malformed and untrusted context, and never treat trace context, baggage or a business identifier as authentication.",
+    "For parent and link claims, show the relevant remote context and operation semantics. Do not fabricate trace or span IDs from job, customer, account, request or message identifiers.",
+    "For SDK and sampling behavior, record provider, sampler, processors, exporters, protocol, endpoint, timeout and shutdown or flush behavior. A no-op API call, non-recording span, sampled-out trace and failed export are different states.",
+    "For Collector configuration, use the effective running configuration and pinned binary. A defined component is not enabled unless referenced by service configuration; successful validation and health do not prove an active receiver, successful export or backend visibility.",
+    "For OTLP, distinguish request success, partial success, retryable failure, non-retryable bad data, throttling and transport failure. Protocol acknowledgement is not durable backend storage or query proof.",
+    "For tail sampling, test trace-coherent routing, decision wait, late spans, partial traces, scaling or rebalance behavior and state capacity. State which upstream head decisions restrict the population available to tail policy.",
+    "For queues, retries and persistence, measure admitted rate, bytes, occupancy, age and drops; record retryability and maximum elapsed time; test only a bounded approved delay or outage; and include process, disk and downstream failure modes. Never claim no loss.",
+    "For security and privacy, use synthetic canaries rather than real secrets or personal data, bind diagnostics and receivers only to approved interfaces, preserve transport controls, minimize baggage and attributes, restrict evidence and record any exposure without reproducing values.",
+    "Cost and overhead claims must show formulas, units, workload, spans or items per operation, bytes, sampling, queueing, tail state, retention, replication or index assumptions and uncertainty. Do not invent prices or claim savings without a baseline.",
+    "The investigation must keep the plausible unrelated change as a live alternative until evidence disconfirms it. Timing, change markers and configuration diffs are hypothesis inputs, not automatic cause.",
+    "Recovery requires a declared sample and window of independent user-operation evidence, expected trace topology, pipeline reconciliation, queue and freshness recovery, resource and schema identity, overhead within budget and prohibited-field absence. One request, one trace, one green health endpoint or an empty error log is insufficient.",
+    "Prove cleanup for every file, process, port, listener, container, namespace, queue item, temporary credential reference, debug endpoint and configuration change the case could create. Disclose residual state rather than hiding it.",
+    "State at least twelve narrow proof limits covering population, time, workload, version, carrier, context trust, sampling, routing, missing data, configuration, transport, storage, query, security, privacy, capacity, cost and transfer. Reviewer acceptance applies only to the submitted evidence and does not certify production safety or professional mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Independence, authorization and evidence integrity",
+      "points": 10,
+      "observableEvidence": "The learner completes the gate before investigation, uses an unseen disposable case, stays within the owned local boundary, discloses help and prior exposure, preserves raw sanitized evidence with numeric privilege proof and does not access answer material or invent output."
+    },
+    {
+      "criterion": "Architecture, state ownership and baseline",
+      "points": 10,
+      "observableEvidence": "The submission maps the user and source-to-query paths with owners, versions, trust and loss boundaries; defines healthy topology and invariants; and captures a comparable measured baseline."
+    },
+    {
+      "criterion": "Instrumentation semantics, resources and conventions",
+      "points": 10,
+      "observableEvidence": "Manual, automatic and library ownership is explicit; duplicate and missing spans are reasoned about; resource and scope identity is correct; and exact semantic-convention versions and maturity are evidenced."
+    },
+    {
+      "criterion": "Propagation, relationships and trust",
+      "points": 10,
+      "observableEvidence": "Every carrier has evidenced inject and extract behavior, valid and invalid context tests, correct parent or link semantics, separate application correlation, untrusted context handling and safe baggage controls."
+    },
+    {
+      "criterion": "Collector configuration and end-to-end pipeline diagnosis",
+      "points": 10,
+      "observableEvidence": "The learner distinguishes configured from enabled components and health from delivery, validates the effective pinned configuration, traces a canary across every hop and tests competing application, Collector, transport, backend and query hypotheses."
+    },
+    {
+      "criterion": "Sampling and trace-coherent routing",
+      "points": 10,
+      "observableEvidence": "Head and tail populations and decisions are explicit; parent decision propagation, trace routing, decision state, late spans and partial traces are measured; and retained evidence is not misrepresented as complete or representative."
+    },
+    {
+      "criterion": "Pipeline reliability, backpressure and capacity",
+      "points": 10,
+      "observableEvidence": "The submission measures flow, bytes, tail state, queues, retries, freshness and loss; evaluates in-memory, persistent and downstream failure modes; defines shedding and abort behavior; and never claims unbounded durability."
+    },
+    {
+      "criterion": "Security, privacy and boundary safety",
+      "points": 10,
+      "observableEvidence": "Context and baggage are treated as untrusted, sensitive-field tests use synthetic values, endpoints and identities are least privilege, transport and storage are protected, diagnostics are bounded and submitted evidence is sanitized."
+    },
+    {
+      "criterion": "Overhead, cost, rollout and rollback",
+      "points": 10,
+      "observableEvidence": "The learner calculates volume and overhead with units and uncertainty, avoids invented prices, stages one-class changes through bounded canaries, defines observation and abort gates and demonstrates exact rollback."
+    },
+    {
+      "criterion": "Recovery, communication and proof limits",
+      "points": 10,
+      "observableEvidence": "User, topology, pipeline, resource, overhead, privacy and cleanup recovery are independently evidenced; unrelated changes are fairly rejected or retained; the handoff is concise; and at least twelve precise proof limits prevent mastery inflation."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0175",
+  "title": "Manual instrumentation for OpenTelemetry Python",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/languages/python/instrumentation/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current OpenTelemetry Python instrumentation documentation reviewed 2026-08-02; package releases are not pinned by the page",
+  "lessonIds": ["LES-0027"],
+  "topics": ["manual instrumentation", "OpenTelemetry API", "OpenTelemetry SDK", "traces", "metrics", "logs", "span links", "instrumentation scope"],
+  "relevance": "Official Python guidance for initializing providers and processors, acquiring instruments, creating spans, attributes, events and links, and recording metrics and logs. It supports the rule that libraries depend on the API while applications install and configure an SDK. The examples are teaching snippets rather than a production dependency lock, and the Python page's signal maturity and the exact installed package APIs must be checked before use.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

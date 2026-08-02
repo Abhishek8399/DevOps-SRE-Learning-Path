@@ -6,7 +6,8 @@ Nothing below `drafts/` is canonical book content, a live website route, an acce
 
 ## Current staged work
 
-- No substantive lesson publication candidate is currently staged here.
+- `LES-0027` / `V04-L02` / `OBS-002` is the current quarantined candidate at `LES-0027-opentelemetry-instrumentation-pipelines/`. Its 18-section lesson, three assessments, twelve new official-reference records, two reused canonical reference identities, and bounded local lab design pass direct schema and static-contract validation.
+- `LES-0027` is **not** ready for canonical publication. Its immutable artifact locks remain incomplete, no OpenTelemetry SDK or Collector runtime has executed, and the exact command/evidence gaps are preserved in its `STATUS.md` rather than being converted into claims.
 - `LES-0026` was promoted to canonical `book/` locations as the `substantive-draft` lesson `V04-L01` / `OBS-001` at `/book/reliability/observability-foundations`, with its assessments, references, and bounded lab colocated under their canonical roots.
 - Its local telemetry pipeline remains a teaching implementation. It cannot establish OpenTelemetry, Prometheus, Grafana, Splunk, Elastic, Datadog, Dynatrace, or production-provider behavior, learner competency, formal acceptance, or mastery.
 

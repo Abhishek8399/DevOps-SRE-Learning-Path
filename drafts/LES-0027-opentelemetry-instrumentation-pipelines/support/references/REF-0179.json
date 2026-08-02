@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0179",
+  "title": "OTLP Specification 1.11.0",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/specs/otlp/",
+  "sourceType": "standard",
+  "versionOrDate": "OTLP Specification 1.11.0; reviewed 2026-08-02; trace, metric and log protocol status Stable, profiles Development",
+  "lessonIds": ["LES-0027"],
+  "topics": ["OTLP", "gRPC", "HTTP", "telemetry transport", "partial success", "retry", "throttling", "protocol stability"],
+  "relevance": "Normative protocol contract for encoding, transporting and acknowledging telemetry between sources, Collectors and backends. It defines full success, partial success, failures and retry behavior, including that populated partial-success responses are not retried. Its stable status covers trace, metric and log transport in version 1.11.0, while profiles remain development-stage; protocol acceptance is not proof of durable backend storage, query visibility or complete end-to-end delivery.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

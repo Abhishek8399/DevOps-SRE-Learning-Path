@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0183",
+  "title": "OpenTelemetry semantic conventions 1.43.0",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/specs/semconv/",
+  "sourceType": "standard",
+  "versionOrDate": "OpenTelemetry Semantic Conventions 1.43.0; reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["semantic conventions", "resource attributes", "span names", "metric instruments", "units", "HTTP", "messaging", "schema migration"],
+  "relevance": "Versioned common naming and meaning for resources, spans, metrics, logs and domain operations. It supports consistent service identity, HTTP and messaging instrumentation across teams. Version 1.43.0 does not imply that every convention listed under the umbrella has the same stability: authors must check the exact convention's status, pin the version used, test migrations and avoid mixing incompatible names during rollout.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

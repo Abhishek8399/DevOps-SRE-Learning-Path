@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0174",
+  "title": "OpenTelemetry Python",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/languages/python/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "OpenTelemetry Python status page reviewed 2026-08-02: traces Stable, metrics Stable, logs Development; Python 3.10 and newer listed as supported",
+  "lessonIds": ["LES-0027"],
+  "topics": ["OpenTelemetry Python", "language SDK", "signal maturity", "version support", "packages", "release status"],
+  "relevance": "Official language status and package entry point for the lesson's local Python examples. The review snapshot reports stable traces and metrics, development-stage logs, and Python 3.10 or newer support. Those labels apply at the language-project level on the reviewed date; individual instrumentation, exporter and contrib packages release independently and must be pinned and checked rather than inferred from this page.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

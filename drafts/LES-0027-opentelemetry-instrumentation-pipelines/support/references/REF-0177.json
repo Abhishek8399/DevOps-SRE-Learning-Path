@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0177",
+  "title": "Context propagation for the OpenTelemetry Python SDK",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/languages/python/propagation/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current OpenTelemetry Python propagation documentation reviewed 2026-08-02",
+  "lessonIds": ["LES-0027"],
+  "topics": ["context propagation", "inject", "extract", "carrier", "W3C Trace Context", "baggage", "automatic instrumentation", "asynchronous boundaries"],
+  "relevance": "Official Python explanation and examples for automatic propagation and manual context injection and extraction. It supports explicit carrier adapters at HTTP, queue, retry and worker boundaries. Named framework integrations are examples, not universal coverage: exact propagation behavior depends on the installed instrumentation version and carrier, and a successfully parsed context still does not guarantee recording, export, retention or trust.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}

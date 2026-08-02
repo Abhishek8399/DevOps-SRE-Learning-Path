@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0064",
+  "lessonId": "LES-0027",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A Python payment API accepts a request, writes an idempotency record, publishes a settlement job to a local asynchronous queue and returns HTTP 202. A worker consumes the job and calls a bank simulator. Revision 17 added OpenTelemetry Python HTTP auto-instrumentation and manual spans around publish and consume. User success and latency remain normal. A bounded console-export capture at the two processes shows the API server span and publish span in trace 4a, while the worker consume span and bank-client span form a different root trace 9b. The sanitized queue envelope contains the job identifier and business fields but no trace-context field. The publisher creates the message while an API span is current; the worker starts a new current span directly from the decoded message and never calls a propagator. Separately, the OpenTelemetry Collector health endpoint returns 200 and its configuration file defines an OTLP receiver, batch processor and OTLP trace exporter. The configuration validates, yet the Collector has no traces pipeline under service.pipelines; only a metrics pipeline is enabled. The Python OTLP exporter reports connection failures, Collector accepted-span counters remain zero and the trace backend is empty. An operator says one network outage broke the trace, proposes opening the receiver on every interface without TLS, copying an authorization token into baggage, using the job ID as the worker parent ID, enabling 100 percent tracing indefinitely and restarting every component. Diagnose the two failures from foundation to senior level. Explain API, SDK, instrumentation, context, propagation, carriers, parent versus link, resource and instrumentation scope; distinguish source creation, propagation, Collector activation, transport and backend visibility; state what each observation proves and does not prove; propose the smallest safe recovery and a prevention and verification plan.",
+  "directAnswer": "There are two independent broken contracts. First, the application creates trace data in both processes but does not propagate trace context through its custom queue carrier. A current span in the publisher is process-local; it does not enter an arbitrary message automatically. The publisher must inject approved W3C trace context into a defined envelope field and the consumer must extract and validate it before creating the consume span. For one message that continues one operation, the extracted remote span context normally becomes the consumer span's parent; for batch, fan-in or intentionally decoupled work, one or more links can represent causal relationships more honestly. A job ID is application correlation, not a W3C span ID and must not be fabricated into parent context. Second, the Collector file defines trace components but does not enable them. Collector components become active only when referenced from service pipelines. Health 200 proves the Collector process and health extension answer, not that an OTLP trace receiver is listening or a trace pipeline exports. Add the intended traces pipeline through the reviewed configuration path, validate it, bind only to the required boundary, retain TLS and authentication where the trust model requires them, and canary with sanitized trace data. Do not put credentials in baggage or expose the receiver broadly. Verify source spans, injected carrier, extracted context, parent or link relationship, SDK export result, Collector receive/process/export counters, OTLP response, backend freshness and query identity as separate hops. Use a bounded sampling policy and capacity budget; 100 percent capture is a temporary experiment only when measured overhead, expiry and rollback permit it.",
+  "foundation": "The OpenTelemetry API is the interface application and library code calls to create telemetry and access context. An SDK is the configured implementation that samples, processes and exports that telemetry. Instrumentation is code, an instrumentation library or an automatic mechanism that calls the API around useful operations. Context is execution-scoped state; propagation serializes selected context into a carrier and later extracts it at another boundary. A carrier can be HTTP headers, message properties or an application-defined envelope. A trace ID groups a trace, while a span ID identifies one operation in that trace. Parentage represents a direct continuation; a span link records a causal association without claiming one direct parent. A resource describes the entity producing telemetry, such as a named service and instance. Instrumentation scope identifies the code library or module that produced telemetry and its version when supplied. A Collector receiver accepts a signal, processors transform or batch it, exporters send it onward, and service.pipelines enables the configured component instances. A process health endpoint, a valid YAML file and an empty backend each cover different boundaries and cannot substitute for end-to-end delivery evidence.",
+  "reasoningSteps": [
+    "Freeze the scope before changing anything: payment behavior is healthy; the incident is loss of trace continuity and delivery for revision 17. Record process, service, resource, instrumentation-scope, Collector configuration and backend query identities without collecting secrets.",
+    "Draw two paths. The request path is API to queue to worker to bank simulator. The evidence path is instrumentation to SDK processor to exporter to Collector receiver to processors to exporter to backend to query. A defect in either path can create a broken or missing trace.",
+    "Confirm source creation independently. The bounded console exporter shows API and worker spans exist locally. It establishes that both SDKs can create and end those observed spans, not that OTLP export, propagation or backend storage works.",
+    "Compare trace and span relationships. The API and publisher share trace 4a, while the consumer and bank call share trace 9b and the consumer is a root. That is a trace split at the async boundary, not proof that the worker failed its business action.",
+    "Inspect the carrier contract. The sanitized envelope has no trace-context field even though the publisher had a current span. Automatic HTTP instrumentation covers supported HTTP boundaries; it does not automatically define propagation for a custom queue encoding.",
+    "Inspect the publisher adapter. It must call the configured propagator's inject operation against a carrier setter before serialization. Merely reading the current trace ID, copying it into a business field or logging it does not propagate a valid parent context.",
+    "Inspect the consumer adapter. It must extract using a carrier getter, treat incoming context as untrusted, apply size and format limits, and create the consumer span with the extracted context. It must not attach unvalidated baggage as authority or user identity.",
+    "Choose the relationship deliberately. A single message that continues the request can use the extracted producer context as remote parent according to the reviewed messaging convention. Batch, fan-in, fan-out with independent lifetime or delayed work may require links so the model does not invent one parent for many causes.",
+    "Reject the job-ID shortcut. An application job ID can correlate logs and business state, but it is not a 16-byte trace ID plus 8-byte span ID with W3C flags and trace state. Fabricating parent IDs corrupts semantics and can create collisions or trust vulnerabilities.",
+    "Separate context from baggage. Trace context supplies trace identity and flags; baggage carries application-selected key-value context. Baggage has no built-in integrity guarantee, may cross third-party boundaries and is not automatically a span attribute. Authorization tokens never belong in it.",
+    "Inspect SDK configuration at both processes: provider initialization, propagator, sampler, resource, instrumentation scopes, span processor, OTLP protocol, endpoint, timeout and shutdown flushing. A correct propagation patch still cannot deliver spans if an SDK is no-op or export fails.",
+    "Treat Collector health narrowly. The 200 response establishes that the observed health endpoint answered at that time. It does not establish that the OTLP receiver is enabled, that it is reachable from the SDK boundary, or that any trace passed through a pipeline.",
+    "Read the effective Collector configuration, not just component blocks. Official configuration semantics require components to appear in service.pipelines or the extension list before they are enabled. Here the missing traces pipeline predicts no trace receiver and zero accepted spans despite valid syntax.",
+    "Do not call the configuration validator an end-to-end test. Validation checks that the configuration is structurally acceptable to that binary. It does not prove listeners started, credentials work, downstream endpoints accept data, queues have capacity or queries can find exported records.",
+    "Recover propagation and collection as two bounded changes so evidence remains attributable. First test inject and extract with a local sanitized carrier fixture, including valid, absent, malformed and oversized input. Then canary the enabled traces pipeline with a local debug or test destination before the production exporter path.",
+    "Use least exposure. Bind the receiver only where clients require it, authenticate and encrypt across trust boundaries, restrict debug endpoints, and never solve reachability by opening wildcard listeners and removing TLS. Document exact network direction and identity.",
+    "Verify every counter transition. For a declared canary count, reconcile source span completions, sampled or dropped decisions, SDK export successes and failures, Collector accepted, refused, processed, dropped and exported spans, OTLP partial failures, backend ingest and query freshness.",
+    "Interpret sampling explicitly. A non-recording head decision can validly yield no exported spans, while a recorded trace can still be lost later. Head sampling cannot guarantee retention of future errors, and tail sampling needs complete-enough routing, memory and decision wait capacity.",
+    "Measure overhead and volume before widening capture: spans per request and job, requests per second, bytes per span, batch and queue behavior, sampling ratio, expected outage buffer, memory, network, storage and query value. Put an owner, threshold and expiry on temporary diagnostic changes.",
+    "Prevent recurrence with carrier contract tests across supported queue versions, golden-trace topology tests, resource and semantic-convention schema tests, configuration validation plus active-pipeline canaries, Collector self-telemetry, secure bind checks, pinned compatible versions, bounded rollout and rollback, and a proof-limit checklist."
+  ],
+  "seniorAnswer": "I would declare an observability defect, not a payment outage, and split it into propagation and delivery workstreams. Local console evidence proves both Python processes create spans. The new root at the worker plus an envelope without context identifies the first broken continuity boundary: supported HTTP instrumentation cannot propagate through an arbitrary queue schema. I would add one versioned carrier adapter that injects the configured W3C trace context on publish and extracts and validates it on consume. I would choose remote parentage for one continuing message and links for fan-in or intentionally decoupled work. I would never transform a job ID into a span parent or place credentials in baggage. Independently, the Collector health response is process evidence only. The trace receiver and exporter are defined but absent from service.pipelines, so they are inactive; a syntactically valid file is not an active data path. I would enable the exact trace pipeline through review, preserve least-privilege binding and transport security, validate the pinned binary, and canary locally. Recovery requires a known request and job to retain the expected topology, source and Collector counts to reconcile within the sampling and loss policy, and the backend query to return the same resource, scope and time window. I would then add malformed-context tests, active-pipeline canaries, self-telemetry, version and semantic-convention pins, sampling and queue capacity budgets, staged rollout and rollback. The result proves only the exercised carrier, versions, route, sample and time window.",
+  "weakAnswer": "The network dropped the trace. Restart everything, expose OTLP on all interfaces without TLS, put the authorization token and job ID in baggage, force the job ID to be the parent span, and sample every trace forever.",
+  "whyWeak": "It collapses two independent failures into one guess, ignores direct evidence that the custom carrier never contained trace context, treats health as pipeline success, invents invalid span identity, exposes credentials through untrusted propagated metadata, weakens network controls, changes many variables at once, destroys diagnostic state, creates uncontrolled cost and overhead, and offers no hop-by-hop recovery proof.",
+  "evidence": [
+    {
+      "signal": "Prompt-observed: bounded console exports show API and publish spans in trace 4a and worker consume and bank-client spans in a separate root trace 9b.",
+      "proves": "Both observed processes created spans, and the observed worker span did not use the API trace as parent context.",
+      "doesNotProve": "Why the context split occurred, whether every request splits, whether spans were sampled consistently, or whether OTLP and the backend work."
+    },
+    {
+      "signal": "Prompt-observed: the sanitized queue envelope contains business fields but no trace-context field while an API span was current at publish time.",
+      "proves": "The inspected message did not carry serialized trace context despite a source context being available.",
+      "doesNotProve": "Whether another message format or library version propagates automatically, whether a downstream intermediary removed a field, or whether worker business processing failed."
+    },
+    {
+      "signal": "Proposed test: inject a fixed valid context into the approved carrier, serialize and deserialize it, extract it, and assert the consumer span's trace and parent relationship for valid, missing and malformed cases.",
+      "proves": "If observed, the tested adapter preserves or safely rejects context according to the declared cases and versions.",
+      "doesNotProve": "All production carriers, hostile inputs, batch semantics, end-to-end export or future library compatibility."
+    },
+    {
+      "signal": "Prompt-observed: Collector health returns 200 while accepted-span counters remain zero and the backend query is empty.",
+      "proves": "The health endpoint answered, and the observed Collector boundary reports no accepted spans for the declared query interval.",
+      "doesNotProve": "That the trace receiver is active, that SDK traffic reached it, that all Collector signals are fresh, or that the backend has no unrelated data."
+    },
+    {
+      "signal": "Prompt-observed: receiver, processor and exporter blocks exist, configuration validation passes, but service.pipelines contains only metrics and no traces pipeline.",
+      "proves": "The trace component definitions are not enabled by a trace pipeline in the inspected effective configuration.",
+      "doesNotProve": "That this file is the running process's effective file, that adding the pipeline will satisfy credentials or network policy, or that the backend will retain data."
+    },
+    {
+      "signal": "Prompt-observed: Python OTLP exporters report connection failures.",
+      "proves": "The observed exporter attempts did not establish the expected OTLP delivery path.",
+      "doesNotProve": "Whether the cause is a disabled listener, wrong address, protocol mismatch, firewall, TLS, authentication or another endpoint condition without further evidence."
+    },
+    {
+      "signal": "Required recovery evidence: one bounded canary preserves the expected API-publish-consume-bank relationship and reconciles source, Collector and backend identities and counts within the declared sampling policy.",
+      "proves": "If observed, the exercised carrier and active pipeline delivered the declared canary topology through the measured hops.",
+      "doesNotProve": "Universal propagation, zero telemetry loss, production capacity, safe handling of every untrusted context or future-version behavior."
+    },
+    {
+      "signal": "Required safety evidence: configuration and runtime checks show the receiver bound only to the approved interface with required transport identity, prohibited baggage fields absent and temporary debug paths removed.",
+      "proves": "If observed, the inspected rollout meets the declared exposure and data-minimization controls at that time.",
+      "doesNotProve": "Absence from all historical stores, correctness of external authorization systems or complete security assurance."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why did HTTP auto-instrumentation not propagate through the queue?",
+      "answer": "Automatic instrumentation operates on supported libraries and carrier types. A custom serialized queue envelope needs an adapter that explicitly injects context before publish and extracts it after consume. A current context is execution-local until a propagator serializes it."
+    },
+    {
+      "prompt": "When should the consumer use a parent and when should it use a link?",
+      "answer": "Use extracted remote parentage when one message directly continues one operation under the chosen messaging model. Use links when one span has multiple causes, consumes a batch, follows delayed independent work, or parentage would falsely claim one direct lifecycle. Document the chosen semantic convention version."
+    },
+    {
+      "prompt": "Can the job identifier become the trace or span identifier?",
+      "answer": "No. It is useful application correlation, but it does not satisfy trace-context format, uniqueness, flags, trust or parent semantics. Keep it as a bounded attribute or restricted log field if policy permits."
+    },
+    {
+      "prompt": "Why does a healthy Collector not prove a healthy pipeline?",
+      "answer": "Health checks the selected process endpoint. A receiver can be disabled, a processor can drop, an exporter can fail, a queue can fill and a backend can reject while the process remains healthy. Verify every source-to-query boundary."
+    },
+    {
+      "prompt": "Why can a Collector configuration validate while traces remain disabled?",
+      "answer": "Syntax and component definitions can be valid without being referenced from service.pipelines. Collector configuration uses the service section to activate component instances."
+    },
+    {
+      "prompt": "What is unsafe about putting an authorization token in baggage?",
+      "answer": "Baggage can cross service and third-party boundaries, is visible in carrier headers and has no built-in integrity assurance. Credentials and regulated identifiers must not be propagated as observability context."
+    },
+    {
+      "prompt": "What is the minimum convincing end-to-end trace canary?",
+      "answer": "A sanitized known request with expected span topology and resource identity, a declared sampling decision, successful SDK export, corresponding Collector receive and export evidence, backend freshness, and a query that returns the same trace. Each hop still has a stated scope and time limit."
+    },
+    {
+      "prompt": "Why not enable 100 percent tracing permanently?",
+      "answer": "It can increase application CPU, allocations, network, Collector state, storage and sensitive-data exposure. Choose a policy from traffic, question value and capacity, measure overhead, and give temporary diagnostic increases an owner, expiry, abort threshold and rollback."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Architecture and boundary model",
+      "points": 10,
+      "observableEvidence": "Separates request and evidence paths; defines API, SDK, instrumentation, resource and instrumentation scope; and distinguishes creation, propagation, collection, transport, storage and query boundaries."
+    },
+    {
+      "criterion": "Propagation and relationship diagnosis",
+      "points": 10,
+      "observableEvidence": "Locates the missing carrier inject and extract contract, treats incoming context and baggage as untrusted, distinguishes parent from link, and rejects fabricated identity."
+    },
+    {
+      "criterion": "Collector and pipeline evidence",
+      "points": 10,
+      "observableEvidence": "Explains configured versus enabled components, limits health and validation claims, and specifies source-to-query counters, errors, freshness and effective-configuration evidence."
+    },
+    {
+      "criterion": "Safe recovery and prevention",
+      "points": 10,
+      "observableEvidence": "Uses two bounded attributable changes, least-privilege networking, sanitized canaries, capacity and sampling controls, staged rollout, rollback and contract tests without secrets or broad exposure."
+    },
+    {
+      "criterion": "Evidence reasoning and proof limits",
+      "points": 10,
+      "observableEvidence": "States what each observation proves and does not prove, distinguishes correlation from delivery and business success, preserves unknowns, and limits recovery to the tested versions, path, sample and window."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-02",
+  "reviewAfter": "2027-02-02"
+}
