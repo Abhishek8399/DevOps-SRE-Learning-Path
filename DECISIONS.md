@@ -354,3 +354,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Diagnose workloads through owner/revision, binding, node execution, container history, readiness, endpoint and user-operation evidence. Keep rollout, disruption and autoscaling intent separate from schedulable and serving capacity. A deterministic model may teach boundaries but never counts as Kubernetes runtime.
 
 **Consequences:** `LES-0042` remains quarantined until a pinned local cluster proves the named faults and cleanup. Future chapters must preserve revision-aware user verification and may not use Pod phase as a universal health signal.
+
+### DEC-040 - Kubernetes network incidents are localized by the last proven hop
+
+**Context:** “Networking is broken” collapses resolver, route, transport, TLS, HTTP, Service selection, dataplane, policy, listener and return-path failures into one unsafe guess.
+
+**Decision:** Bind exact identities and five-tuples, then move from name through address, EndpointSlice membership, policy, Service/port mapping, node path, listener and user response. Use a working direct/same-node path as a control without claiming it proves later paths. Keep control-plane acceptance separate from packet forwarding.
+
+**Consequences:** `LES-0043` remains quarantined until pinned multi-node cluster evidence proves CNI, DNS, Service, policy, Gateway, negative controls and cleanup. Future networking lessons must report the last proven hop instead of assigning blame from a timeout alone.
