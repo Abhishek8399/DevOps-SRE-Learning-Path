@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0101",
+  "lessonId": "LES-0039",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "A production pipeline cannot acquire its remote state lock. The prior run disappeared after a provider reported a successful database-policy update, and the backend shows current serial 42 plus versions 41 and 40. Design the diagnosis and recovery without assuming the lock is stale or the failed run had no side effect.",
+  "directAnswer": "Freeze all writers for the exact backend key. Record product/version, root revision, backend/workspace/key, lock ID/owner/operation/time, current lineage/serial/digest and pipeline/provider operation IDs. Prove whether the prior runner or remote execution can resume. Preserve current state and backend versions without overwriting. Query the provider read-only to determine whether the policy update occurred and which object/version is live. If the writer is conclusively dead, use the backend-specific exact-lock recovery with approval. Choose or reconstruct the newest state that reflects remote reality; do not blindly restore serial 41 or force-push. Review a full reconciliation plan, execute one least-changing repair under lock, then verify binding, database policy, connectivity, security, user transactions, fresh plan and backend backup/lock health.",
+  "foundation": "A command failure is not proof of no remote effect. Locks coordinate writers, lineage/serial order snapshots, and recovery must reconcile state with actual provider/user outcomes.",
+  "reasoningSteps": [
+    "Freeze every pipeline and human writer targeting the exact backend key.",
+    "Capture target tuple, lock metadata, state lineage/serial/digest and audit IDs.",
+    "Check local runner, remote execution and provider-operation liveness before any unlock.",
+    "Protect current serial 42 and historical versions 41/40 with provenance and access controls.",
+    "Query the database-policy object and provider audit read-only to establish remote side effects.",
+    "Classify whether serial 42 is corrupt, incomplete, newer-but-wrong, or already reconciled.",
+    "If and only if the owner is dead, perform backend-supported exact lock recovery with approval.",
+    "Select the least-changing state/reconciliation path; avoid force and manual JSON editing.",
+    "Generate a complete plan and review database availability, access and security consequence.",
+    "Execute once under lock with abort conditions and protected recovery artifacts.",
+    "Verify exact provider ID, policy contents, connectivity, transactions and convergence.",
+    "Correct runner cancellation, failed-persistence handling, monitoring and restore drills."
+  ],
+  "seniorAnswer": "I treat this as possible partial execution plus control-plane contention. I freeze the exact state key, correlate lock and pipeline/provider operation IDs, and do not unlock until both local and remote executors are proven dead. I preserve serials 42/41/40 and compare lineage, digests, state bindings, backend audit and the live database policy. The correct recovery may retain 42, restore a backend version, import/reconcile a successful remote change, or roll forward; serial number alone cannot decide. One approved repair runs under lock. Closure requires database connectivity and authorization tests, user transactions, correct binding and a fresh understood plan—not merely an unlocked backend.",
+  "weakAnswer": "Force-unlock because 45 minutes is stale, restore serial 41, and rerun apply.",
+  "whyWeak": "The old writer may resume, serial 41 may forget a successful update, and retry may duplicate or overwrite effects. It ignores target identity, provider evidence, protected snapshots, security and users.",
+  "evidence": [
+    {"signal": "Lock record names the prior pipeline", "proves": "The backend associates that lock with the recorded run.", "doesNotProve": "The run is alive, dead or safe to unlock."},
+    {"signal": "Provider audit reports update success", "proves": "A provider-side operation completed for a recorded object/action.", "doesNotProve": "State persisted or users retain correct access."},
+    {"signal": "Serial 42 is higher than 41", "proves": "42 is a later snapshot in the same lineage if lineage matches.", "doesNotProve": "It contains the correct binding or is uncorrupted."},
+    {"signal": "Fresh plan is empty after repair", "proves": "Selected code/state/observation converge at plan time.", "doesNotProve": "Database data and user authorization are correct."}
+  ],
+  "followUps": [
+    {"prompt": "Why not use lock=false?", "answer": "It allows a concurrent writer based on stale state and can overwrite the newer ownership snapshot."},
+    {"prompt": "When could a recovery state file matter?", "answer": "When remote effects succeeded but backend persistence failed; preserve and validate it as a candidate, never push blindly."},
+    {"prompt": "What alert should fire?", "answer": "Failed state persistence and aged lock correlated with run identity, plus backend version/write anomalies."}
+  ],
+  "rubric": [
+    {"criterion": "Freeze and target", "points": 10, "observableEvidence": "Freezes exact key and pins full target tuple."},
+    {"criterion": "Lock reasoning", "points": 10, "observableEvidence": "Proves owner/run liveness before exact unlock."},
+    {"criterion": "Artifact preservation", "points": 10, "observableEvidence": "Protects current/history/recovery evidence with provenance."},
+    {"criterion": "Lineage and serial", "points": 10, "observableEvidence": "Uses both without treating them as correctness proof."},
+    {"criterion": "Remote evidence", "points": 10, "observableEvidence": "Checks provider audit, object ID and live policy."},
+    {"criterion": "Classification", "points": 10, "observableEvidence": "Distinguishes partial execution, stale lock and state defect."},
+    {"criterion": "Least-changing repair", "points": 10, "observableEvidence": "Avoids force/manual edit and justifies recovery candidate."},
+    {"criterion": "Security and data", "points": 10, "observableEvidence": "Reviews database policy, access, data and credential boundaries."},
+    {"criterion": "Execution control", "points": 10, "observableEvidence": "One reviewed repair under lock with abort path."},
+    {"criterion": "Verification and prevention", "points": 10, "observableEvidence": "Validates bindings/users/convergence and repairs controls."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0100",
+  "lessonId": "LES-0039",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A pull request extracts two existing resources into a child module. The refreshed plan proposes two destroys and two creates even though arguments are unchanged. Diagnose the mechanism and give a production-safe correction path.",
+  "directAnswer": "The full resource addresses changed when the resources moved under the module call. State binds exact old addresses to the remote IDs, and the engine cannot infer that the new addresses represent the same logical objects. Stop before apply, map old addresses, new addresses and remote IDs, add version-supported moved declarations, preserve state, and require a fresh complete plan with move-only semantics and no unintended create/update/delete. Apply the exact reviewed plan under lock, verify IDs and service behavior, and retain migration history for supported upgrade paths.",
+  "foundation": "Configuration structure participates in lifecycle identity. Moving code across a module boundary is an ownership migration even when provider arguments are identical.",
+  "reasoningSteps": [
+    "Pin product/version, root revision, backend/workspace/key, state lineage/serial and plan artifact.",
+    "List each old state address and its provider object ID.",
+    "List the desired new module addresses and prove one-to-one mapping.",
+    "Confirm resource types and selected versions support the proposed moves.",
+    "Add explicit moved declarations from every old address to its new address.",
+    "Test upgrades from each supported prior module version against protected state copies.",
+    "Require a complete refreshed plan with no unintended remote action.",
+    "Execute only the exact approved plan under one state lock.",
+    "Verify state addresses, unchanged remote IDs, service/user outcome and fresh convergence plan.",
+    "Retain move history or treat its later removal as a breaking change."
+  ],
+  "seniorAnswer": "I would reject the plan because the address migration is missing. I would build an old-address/new-address/remote-ID table from the selected state, verify target lineage and serial, and encode supported moved blocks. The migration is tested from every supported consumer version, not only an empty state. Approval requires move-only plan semantics. The run uses the normal backend lock and protected backup, and success requires unchanged remote IDs, service checks and a fresh full plan. I keep the moved chain while older consumers remain supported.",
+  "weakAnswer": "Apply it because modules are only folders and the provider will recognize the same resources.",
+  "whyWeak": "Providers do not generally recover configuration ownership from equal arguments; applying can destroy and recreate stateful or user-facing objects. The answer ignores addresses, state, target, locks, upgrade paths and verification.",
+  "evidence": [
+    {"signal": "Old state lists root addresses with remote IDs", "proves": "Those exact addresses currently own the recorded objects.", "doesNotProve": "The objects are healthy or safe to change."},
+    {"signal": "New plan proposes create/delete at module-prefixed addresses", "proves": "The engine sees old and new identities as different.", "doesNotProve": "Replacement is intended."},
+    {"signal": "Plan with moved blocks reports only address changes", "proves": "The exact proposal preserves those bindings.", "doesNotProve": "Execution or application behavior succeeds."}
+  ],
+  "followUps": [
+    {"prompt": "Why retain moved blocks?", "answer": "Consumers can upgrade from older addresses; removing history can make skipped-version upgrades destructive."},
+    {"prompt": "When might state mv be used?", "answer": "For reviewed exceptional or cross-state migrations when configuration-driven moves do not fit, with protected backups and exact operational control."},
+    {"prompt": "Does same remote ID prove user success?", "answer": "No. Verify data, security, service health and user journeys separately."}
+  ],
+  "rubric": [
+    {"criterion": "Address mechanism", "points": 10, "observableEvidence": "Explains full-address identity and state binding."},
+    {"criterion": "Migration map", "points": 10, "observableEvidence": "Maps old/new addresses to exact remote IDs."},
+    {"criterion": "Safe refactor", "points": 10, "observableEvidence": "Uses supported moved history and upgrade tests."},
+    {"criterion": "Execution safety", "points": 10, "observableEvidence": "Requires protected state, one lock and exact plan approval."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Checks IDs, state, service/users and convergence."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

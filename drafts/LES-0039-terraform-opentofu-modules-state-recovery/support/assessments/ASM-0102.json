@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0102",
+  "lessonId": "LES-0039",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Using a materially different reviewer-held provider-free module and state history, diagnose a mixed refactor, lock, state-candidate and partial-persistence incident. Preserve one-to-one ownership, recover without unsafe state commands, and defend the module/backend design without lesson answers or remote infrastructure.",
+  "deliverables": [
+    "Exact product/version/digest, source revision, root, backend/workspace/key and execution identity.",
+    "Thin-root and child-module contract diagram with provider, lifecycle and blast-radius owners.",
+    "Complete old/new address-to-object table for six bindings including count/for_each or module-path changes.",
+    "Lock ID/operation/actor/time plus independent owner/run liveness evidence and decision.",
+    "State candidate table with provenance, lineage, serial, digest, addresses and rejection reasons.",
+    "Classification of intentional drift, address refactor, corruption/loss and partial persistence.",
+    "Least-changing recovery procedure, writer freeze, approval, abort and interruption recovery.",
+    "Machine-readable plan assertions proving no unreviewed create/delete and one-to-one ownership.",
+    "Security analysis for state, plans, backups, backend metadata, runner identity and encryption keys.",
+    "Reliability/observability/capacity design for locking, persistence, versions, state size and restore RTO/RPO.",
+    "Remote/system/user verification plan and evidence limits for the provider-free simulation.",
+    "Exact cleanup proof plus a delayed second transfer with different module/state identities."
+  ],
+  "evidenceRequirements": [
+    "Reviewer supplies fixtures not derived from LES-0039 and with different addresses, serials and failure order.",
+    "No force-unlock, lock bypass, manual state JSON edit, state push, real provider, credential or cloud resource is permitted.",
+    "All raw outputs are bound to product, version, path, revision and UTC time and sanitized without printing state values.",
+    "At least one tempting state candidate and one tempting address mapping are rejected with evidence.",
+    "A failed first hypothesis is preserved and corrected from lock/provider/state evidence.",
+    "Reviewer observes exact state and working-directory cleanup and no unrelated file change.",
+    "Delayed case changes lineage/serial ordering and refactor direction to test transfer rather than recall."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Boundary identity", "points": 10, "observableEvidence": "Pins engine, source, target, state and actor."},
+    {"criterion": "Module design", "points": 8, "observableEvidence": "Contracts and ownership boundaries are cohesive and explicit."},
+    {"criterion": "Address migration", "points": 10, "observableEvidence": "Every old/new address and object ID maps one to one."},
+    {"criterion": "Lock evidence", "points": 10, "observableEvidence": "Owner liveness and safe decision are evidence-based."},
+    {"criterion": "State candidates", "points": 10, "observableEvidence": "Provenance, lineage, serial and digest are correctly weighed."},
+    {"criterion": "Failure classification", "points": 8, "observableEvidence": "Separates drift, refactor, loss/corruption and partial write."},
+    {"criterion": "Recovery safety", "points": 10, "observableEvidence": "Least-changing sequence preserves ownership and avoids force."},
+    {"criterion": "Plan proof", "points": 8, "observableEvidence": "Machine assertions reject unintended create/delete."},
+    {"criterion": "Security", "points": 8, "observableEvidence": "Protects state/plan/backup/metadata/identity/key boundaries."},
+    {"criterion": "Reliability design", "points": 8, "observableEvidence": "Covers locks, versions, failed persistence and restore objectives."},
+    {"criterion": "Verification and communication", "points": 6, "observableEvidence": "Explains user/system checks, uncertainty and evidence limits."},
+    {"criterion": "Cleanup and delayed transfer", "points": 4, "observableEvidence": "Exact absence and changed-case retention are observed."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
