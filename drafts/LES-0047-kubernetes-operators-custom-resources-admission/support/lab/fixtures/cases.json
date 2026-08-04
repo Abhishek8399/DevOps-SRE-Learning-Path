@@ -1,0 +1,1 @@
+{"schema-rejection":{"boundary":"schema"},"stale-generation":{"boundary":"reconcile"},"duplicate-external":{"boundary":"idempotency"},"stuck-finalizer":{"boundary":"finalizer"},"conversion-loss":{"boundary":"conversion"},"stored-version":{"boundary":"migration"},"webhook-timeout":{"boundary":"admission"},"admission-self-deadlock":{"boundary":"dependency"}}
