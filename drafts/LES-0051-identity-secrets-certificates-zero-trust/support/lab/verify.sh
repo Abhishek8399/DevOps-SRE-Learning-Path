@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail;IFS=$'\n\t';D="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"&&pwd -P)";L="$D/lab.sh";R="/tmp/reliability-atlas-les0051-model-$(id -u)";[[ ! -e "$R" ]]||exit 1;"$L" doctor;"$L" setup;trap '[[ ! -d "$R" ]]||"$L" cleanup>/dev/null' EXIT
+"$L" evaluate baseline|grep -q '"decision": "allow"';for c in expired-token wrong-audience overbroad-role leaked-static-secret stale-certificate revoked-identity key-compromise;do "$L" evaluate "$c"|grep -q '"decision": "deny"';done;"$L" evaluate identity-outage|grep -q 'bounded-existing-session-only';"$L" inject-unknown;if "$L" status>/dev/null 2>&1;then exit 1;fi;"$L" clear-unknown;"$L" cleanup;trap - EXIT;[[ ! -e "$R" ]]||exit 1;printf 'verify=pass cases=9 cleanup=true runtime=model-only\n'
