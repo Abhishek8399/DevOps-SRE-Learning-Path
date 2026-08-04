@@ -440,3 +440,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Keep the outer application within a 10-20 px viewport-aware gutter, size the desktop navigation and context rails with bounded `clamp()` values, and let diagrams, labs, evidence grids and assessment panels use up to 1,120 px. Preserve the independent 720 px default manuscript measure and its reader-controlled narrow/standard/wide options. Place the authoritative 1180 px and 980 px shell rules after compatibility styles so tablet overlays and mobile stacking cannot be overridden by legacy declarations.
 
 **Consequences:** Wide displays now improve workspace context instead of adding decorative empty margins, while paragraph line length remains intentionally constrained. Source/build verification can prove the cascade and tokens, but rendered responsive, keyboard and visual quality still require a real browser backend and remain explicitly unclaimed.
+
+### DEC-050 - Network reachability is a bidirectional evidence chain
+
+**Status:** `ACCEPTED`
+
+**Context:** Cloud consoles expose connected peerings, healthy tunnels, established BGP sessions, allowed firewall rules, healthy load-balancer targets and private endpoints as separate green objects. None proves that one named user operation can resolve the intended address, follow a valid forward path, retain the correct translated/stateful tuple, reach a listening dependency and return through a permitted path. Provider network/subnet scope and route priority also differ, so service-name matching creates false equivalence.
+
+**Decision:** Teach and operate cloud/hybrid connectivity as `name -> address -> forward route -> policy -> translation/endpoint/load balancer -> listener/dependency -> return route -> user result`. Bind the original and translated five-tuples, evaluate the effective route and policy at each actual interface, and treat DNS view, address overlap, peering transitivity, NAT/connection state, MTU and dynamic route acceptance as independent evidence boundaries. Translate this model to current provider mechanisms only after scope, failure, quota, cost and ownership review.
+
+**Consequences:** `LES-0052` remains quarantined until the normal-user Ubuntu lifecycle, reviewer-owned isolated transfer, provider-current design review, formal review and unseen learner evidence pass. The deterministic model cannot be cited as a packet forwarder, network emulator, VPN/BGP session, provider feature, cost result or production recovery. Future troubleshooting content may not claim reachability from connected control-plane objects or from forward-path evidence alone.
