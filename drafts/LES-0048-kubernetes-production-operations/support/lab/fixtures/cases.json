@@ -1,0 +1,1 @@
+{"unsupported-skew":{"boundary":"compatibility"},"deprecated-api":{"boundary":"client"},"webhook-version":{"boundary":"admission"},"drain-deadlock":{"boundary":"disruption"},"autoscaling-delay":{"boundary":"serving-capacity"},"retry-overload":{"boundary":"control-plane"},"invalid-snapshot":{"boundary":"backup"},"incomplete-restore":{"boundary":"user-recovery"}}
