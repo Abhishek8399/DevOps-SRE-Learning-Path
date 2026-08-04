@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0243",
+  "title": "Postmortem Culture: Learning from Failure",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/postmortem-culture/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["postmortem", "learning", "blamelessness", "incident actions", "system improvement"],
+  "relevance": "Supports evidence-based learning from incidents, system-focused analysis, and owned preventive actions instead of blame or recurrence without learning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

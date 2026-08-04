@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0237",
+  "title": "Software Engineering in SRE",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/software-engineering-in-sre/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["software engineering", "production tooling", "scalability", "graceful degradation"],
+  "relevance": "Supports SRE as engineering software and control systems informed by production experience rather than performing only manual administration.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

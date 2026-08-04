@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0241",
+  "title": "Communication and Collaboration in SRE",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/communication-and-collaboration/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["collaboration", "team charter", "shared ownership", "communication", "production wisdom"],
+  "relevance": "Supports explicit team interfaces, early cross-team collaboration, shared product and production goals, and crisp support boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

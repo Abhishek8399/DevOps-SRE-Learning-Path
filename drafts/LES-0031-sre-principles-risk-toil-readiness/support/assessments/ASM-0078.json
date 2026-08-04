@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0078",
+  "lessonId": "LES-0031",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Use an instructor-provided unseen disposable local service-and-team case, or a learner-created and held-back unseen case, materially different from LES-0031 guided fixtures and answered scenarios. It must contain an ambiguous reliability promise, mixed work categories, at least two toil candidates, one automation proposal, incomplete ownership, a production-readiness decision, an on-call or human-sustainability risk, and conflicting product/engineering priorities. After the independence gate, do not open ASM-0076, ASM-0077, the lesson's complete-answer or product-company sections, or generated solutions. Produce a sanitized evidence package that maps users to decisions, classifies work without blaming people, calculates supported risk/work/return values, ranks at least six hypotheses, performs a no-go/limited/go readiness review, proposes a safe operating-model improvement, and gives a five-minute interview explanation with at least twelve explicit proof limits.",
+  "deliverables": [
+    "Completed independence, authorization, environment, help, accessibility and sanitization gate before analysis",
+    "User, service, journey, good/total population, reliability objective, business-risk owner and consequence contract",
+    "Text architecture linking product decisions, development, SRE or operations, service dependencies, telemetry, on-call, incident response and learning",
+    "Raw sanitized work, alert, change, incident, readiness, ownership and user-outcome evidence with time, scope, units and proof limits",
+    "Work taxonomy separating toil, non-toil operations, engineering and overhead with reasons and uncertainty",
+    "At least six ranked falsifiable hypotheses about service and operating-model failure, each with confirming and rejecting evidence",
+    "Risk, work allocation, toil load, automation return, ownership coverage or readiness calculations only where supported",
+    "Production-readiness decision with blockers, accepted risks, non-waivable constraints, owners, evidence, expiry and re-review triggers",
+    "Safe staged improvement with authorization, protected coverage, canary, abort, rollback, manual fallback and cleanup",
+    "Human-sustainability analysis covering pager load, staffing, qualification, escalation, handoff, fatigue and psychological safety",
+    "Ninety-day operating review with user, system, change, work, ownership, on-call and learning measures",
+    "Five-minute interview explanation and at least twelve technically precise non-claims"
+  ],
+  "evidenceRequirements": [
+    "The case was unseen and materially different from published guided and answered scenarios",
+    "The learner was authorized only for the disposable local case and recorded every form of help received",
+    "No personal names, employer names, customer data, secrets, private paths, real tickets, real pager endpoints or confidential organization information are submitted",
+    "Every claim links to sanitized raw evidence or a declared calculation, or is labeled inference, hypothesis, estimate or unknown",
+    "Team labels, job titles, dashboards, checklists and silence are never treated as proof of SRE adoption, user health or readiness",
+    "Work is classified using context and multiple properties rather than personal preference or blame",
+    "Automation estimates include build, maintenance, adoption, failure, security, opportunity cost and uncertainty where data permits",
+    "Missing required evidence remains missing unless a named authorized owner accepts bounded risk with rationale, controls, expiry and follow-up",
+    "No production, shared, employer, online cloud, ticket, identity, notification, email, chat or pager system is modified or contacted",
+    "Cleanup proves exact absence of every file, process, port, container, queue or other resource the local case was allowed to create",
+    "A qualified reviewer confirms no answer leakage, fabricated evidence, unsafe change, blame narrative or mastery inflation"
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independence, authorization and evidence integrity", "points": 10, "observableEvidence": "Unseen case, declared help, safe scope, sanitization, raw evidence and no answer leakage or fabrication."},
+    {"criterion": "User reliability and risk contract", "points": 10, "observableEvidence": "Journey, population, objective, consequence, business owner and uncertainty are explicit."},
+    {"criterion": "Architecture, ownership and incentives", "points": 10, "observableEvidence": "Decision and production feedback paths name owners, authority, handoffs, conflicts and gaps."},
+    {"criterion": "Work taxonomy and toil reasoning", "points": 10, "observableEvidence": "Work categories use multiple properties, measured populations and non-blaming context."},
+    {"criterion": "Hypothesis and diagnostic quality", "points": 10, "observableEvidence": "At least six hypotheses are ranked, falsifiable and tested at discriminating boundaries."},
+    {"criterion": "Risk, capacity and return calculations", "points": 10, "observableEvidence": "Supported math has matched populations, units, assumptions, uncertainty and omitted-cost limits."},
+    {"criterion": "Readiness and risk-acceptance decision", "points": 10, "observableEvidence": "Decision distinguishes blockers, accepted risks, non-waivable controls, owners, expiry and re-review."},
+    {"criterion": "Safe improvement and recovery", "points": 10, "observableEvidence": "Plan protects coverage and includes canary, abort, rollback, fallback, user proof and exact cleanup."},
+    {"criterion": "Human sustainability and learning", "points": 10, "observableEvidence": "Pager load, staffing, qualification, escalation, fatigue, psychological safety and learning loop are actionable."},
+    {"criterion": "Communication and proof limits", "points": 10, "observableEvidence": "Five-minute response is clear and at least twelve non-claims are technically specific."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

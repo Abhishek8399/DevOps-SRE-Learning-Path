@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0240",
+  "title": "Reliable Product Launches at Scale",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/reliable-product-launches/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["launch readiness", "checklists", "risk", "repeatability", "scaling"],
+  "relevance": "Supports a launch process that is repeatable, robust, appropriately thorough, scalable, and adaptable without pretending every launch has identical risk.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

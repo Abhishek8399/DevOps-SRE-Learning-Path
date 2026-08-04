@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0233",
+  "title": "Eliminating Toil",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/eliminating-toil/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["toil", "engineering work", "operational work", "scaling", "automation"],
+  "relevance": "Supports the multi-property definition of toil, the difference between toil and disliked work, and protecting engineering capacity from linearly scaling operations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

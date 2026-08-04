@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0239",
+  "title": "SRE Engagement Model",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/engagement-model/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["service lifecycle", "shared goals", "productionization", "SLOs", "capacity"],
+  "relevance": "Supports whole-lifecycle SRE involvement, shared developer operations, productionization work, and aligning reliability work with business goals.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

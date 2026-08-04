@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0238",
+  "title": "The Evolving SRE Engagement Model",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/evolving-sre-engagement-model/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["production readiness review", "engagement", "onboarding", "shared responsibility", "platforms"],
+  "relevance": "Supports production-readiness reviews, explicit support boundaries, early engagement, and platform patterns that scale reliability expertise.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

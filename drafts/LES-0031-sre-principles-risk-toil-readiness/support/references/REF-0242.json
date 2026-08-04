@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0242",
+  "title": "On-Call",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/on-call/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["on-call", "pager load", "human sustainability", "escalation", "psychological safety"],
+  "relevance": "Supports treating on-call health, load, staffing, training, escalation, and follow-up capacity as reliability constraints rather than personal endurance tests.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0235",
+  "title": "Simplicity",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/simplicity/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["simplicity", "accidental complexity", "modularity", "stability", "agility"],
+  "relevance": "Supports treating simplicity, modularity, small changes, and removal of accidental complexity as reliability mechanisms rather than aesthetic preferences.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

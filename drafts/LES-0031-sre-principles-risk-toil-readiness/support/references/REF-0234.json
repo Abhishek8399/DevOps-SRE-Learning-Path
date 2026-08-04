@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0234",
+  "title": "Eliminating Toil: Workbook Practice",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/eliminating-toil/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["toil inventory", "measurement", "prioritization", "toil reduction", "return on investment"],
+  "relevance": "Supports measuring toil, selecting source-removal strategies, and evaluating whether engineering work actually saves recurring operational effort.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0236",
+  "title": "Testing for Reliability",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/testing-reliability/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["reliability testing", "confidence", "failure testing", "production readiness"],
+  "relevance": "Supports quantifying confidence with layered tests and refusing to treat the absence of observed failure as evidence of readiness.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0230",
+  "title": "How SRE Relates to DevOps",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/how-sre-relates/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["SRE", "DevOps", "culture", "incentives", "whole lifecycle"],
+  "relevance": "Supports the distinction between DevOps as a broad philosophy and SRE as a concrete role, practice set, and incentive model with substantial overlap.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

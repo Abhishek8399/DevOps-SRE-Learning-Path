@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0231",
+  "title": "Embracing Risk",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/embracing-risk/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["risk", "reliability targets", "error budgets", "innovation", "cost"],
+  "relevance": "Supports balancing reliability, innovation, and cost instead of pursuing an unexamined 100 percent target, plus shared error-budget incentives.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

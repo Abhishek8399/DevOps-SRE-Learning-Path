@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0031",
+  "caseId": "sre-operating-model-v1",
+  "risk": {
+    "services": [
+      {"name": "public-checkout", "target": 0.999, "actual": 0.9985, "quarterEvents": 2000000, "additionalReliabilityCostHours": 320},
+      {"name": "internal-preview", "target": 0.99, "actual": 0.995, "quarterEvents": 20000, "additionalReliabilityCostHours": 180},
+      {"name": "settlement-ledger", "target": 0.9999, "actual": 0.99995, "quarterEvents": 4000000, "additionalReliabilityCostHours": 640}
+    ]
+  },
+  "toil": {
+    "tasks": [
+      {"name": "restart-stuck-worker", "minutesPerOccurrence": 15, "occurrencesPerWeek": 20, "manual": true, "repetitive": true, "automatable": true, "tactical": true, "noEnduringValue": true, "scalesWithGrowth": true},
+      {"name": "novel-capacity-design", "minutesPerOccurrence": 240, "occurrencesPerWeek": 1, "manual": true, "repetitive": false, "automatable": false, "tactical": false, "noEnduringValue": false, "scalesWithGrowth": false},
+      {"name": "copy-access-ticket", "minutesPerOccurrence": 10, "occurrencesPerWeek": 30, "manual": true, "repetitive": true, "automatable": true, "tactical": true, "noEnduringValue": true, "scalesWithGrowth": true},
+      {"name": "incident-learning-review", "minutesPerOccurrence": 90, "occurrencesPerWeek": 1, "manual": true, "repetitive": false, "automatable": false, "tactical": false, "noEnduringValue": false, "scalesWithGrowth": false}
+    ]
+  },
+  "automation": {
+    "candidates": [
+      {"name": "worker-self-recovery", "buildHours": 36, "quarterMaintenanceHours": 8, "minutesSavedPerOccurrence": 12, "occurrencesPerWeek": 20, "quarterRiskReductionHours": 10},
+      {"name": "rare-report-generator", "buildHours": 80, "quarterMaintenanceHours": 20, "minutesSavedPerOccurrence": 30, "occurrencesPerWeek": 1, "quarterRiskReductionHours": 0},
+      {"name": "access-workflow", "buildHours": 50, "quarterMaintenanceHours": 10, "minutesSavedPerOccurrence": 8, "occurrencesPerWeek": 30, "quarterRiskReductionHours": 6}
+    ],
+    "weeksPerQuarter": 13
+  },
+  "workload": {
+    "engineers": 6,
+    "hoursPerEngineerWeek": 40,
+    "toilHours": 92,
+    "nonToilOperationalHours": 38,
+    "overheadHours": 46,
+    "minimumEngineeringFraction": 0.5
+  },
+  "ownership": {
+    "requiredDecisions": ["product-risk-owner", "service-code-owner", "slo-owner", "on-call-primary", "on-call-secondary", "incident-commander", "change-approver", "capacity-owner", "security-owner"],
+    "assignments": {
+      "product-risk-owner": "product",
+      "service-code-owner": "development",
+      "slo-owner": "shared-product-development-sre",
+      "on-call-primary": "sre",
+      "incident-commander": "rotating-qualified-responder",
+      "change-approver": "development",
+      "security-owner": "security"
+    }
+  },
+  "readiness": {
+    "controls": [
+      {"name": "user-journey-slo", "required": true, "state": "missing", "evidence": ""},
+      {"name": "capacity-model", "required": true, "state": "present", "evidence": "load-test-2026-07"},
+      {"name": "dependency-failure-test", "required": true, "state": "missing", "evidence": ""},
+      {"name": "rollback-rehearsal", "required": true, "state": "present", "evidence": "rollback-run-18"},
+      {"name": "on-call-secondary", "required": true, "state": "missing", "evidence": ""},
+      {"name": "audit-retention", "required": false, "state": "accepted-risk", "evidence": "risk-acceptance-17-expires-2026-08-31"},
+      {"name": "data-restore-drill", "required": true, "state": "present", "evidence": "restore-drill-42"}
+    ]
+  },
+  "operatingReview": {
+    "periods": [
+      {"name": "week-1", "sloMet": true, "changeFailures": 1, "pages": 8, "toilHours": 70},
+      {"name": "week-2", "sloMet": false, "changeFailures": 3, "pages": 42, "toilHours": 96},
+      {"name": "week-3", "sloMet": true, "changeFailures": 0, "pages": 6, "toilHours": 55}
+    ],
+    "toilLimitHours": 60,
+    "pageLimit": 12
+  },
+  "incident": {
+    "symptom": "The renamed SRE team spends 78 percent of available time on tickets and manual recovery while a customer service has no user-journey SLO and sends sixty low-actionability pages per week.",
+    "facts": [
+      "The team name changed from operations to SRE but its authority, backlog and staffing did not.",
+      "Manual worker restarts and copied access tickets grow with service demand.",
+      "Developers do not participate in on-call or own production defects.",
+      "There is no agreed user-journey SLO or error-budget policy.",
+      "Sixty weekly pages have no measured precision, recall or actionability.",
+      "One engineer is the only secondary escalation for three services."
+    ],
+    "earliestSupportedBoundary": "operating model, incentives, and service ownership",
+    "unsafeFirstMoves": ["rename more teams", "automate every ticket before measuring it", "silence all pages", "transfer all production ownership to SRE", "promise 100 percent availability"]
+  }
+}

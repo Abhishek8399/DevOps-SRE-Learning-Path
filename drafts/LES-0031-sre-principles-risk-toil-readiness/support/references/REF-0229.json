@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0229",
+  "title": "Introduction",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/introduction/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0031"],
+  "topics": ["SRE definition", "software engineering", "operations", "automation"],
+  "relevance": "Supports the definition of SRE as applying software-engineering approaches to operations and the need to engineer away repetitive manual work.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
