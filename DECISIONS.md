@@ -410,3 +410,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Bind every promotion to a protected commit, immutable artifact/config dependency and deterministic render. Give each object/field one desired-state owner; classify drift from tracking, managed fields, audit and break-glass intent before self-heal. Treat retries, automated sync, health, ordering, suspension and prune as production policy with explicit timeouts, empty-set/data/ownership guards and expiry. CI builds/tests/signs and proposes desired-state change; the pull reconciler owns cluster deployment. Recover through a reviewed revert or compatible forward fix in the authoritative source, then verify controller, Kubernetes, dependencies and user SLI.
 
 **Consequences:** `LES-0049` remains quarantined until a pinned local Git remote, immutable synthetic artifacts and one reviewed Argo CD or Flux environment prove source/render/policy, promotion, drift, bad-commit/source-outage containment, prune refusal, recovery and exact cleanup. Future delivery content may not claim truth from Git alone, safety from self-heal, deletion safety from repository absence, or application health from GitOps status alone.
+
+### DEC-047 - Cloud architecture is requirements-to-mechanisms reasoning, not service-name matching
+
+**Status:** `ACCEPTED`
+
+**Context:** AWS, Azure and Google Cloud expose comparable capability families but use different identity, hierarchy, scope, location, quota, networking and managed-service contracts. A logo-first comparison hides failure correlation and creates false equivalence. Managed services transfer selected operations but do not transfer accountability for customer data, identity, configuration, recovery or user outcomes. Quota also does not guarantee provider stock.
+
+**Decision:** Teach a provider-neutral workload contract, data/control paths, state scope, ownership, failure domains, survivor capacity, quota/rate/stock, recovery and cost model before translating mechanisms to provider products. Every provider claim is date-, region-, tier- and scope-sensitive. Cloud chapters remain local-only unless a later explicitly governed disposable exercise authorizes runtime work.
+
+**Consequences:** `LES-0050` is the reasoning prerequisite for AWS, Azure, Google Cloud, cloud identity, networking, DR and FinOps chapters. It remains quarantined until Ubuntu lifecycle, formal review and unseen learner transfer pass. Its deterministic model cannot be cited as provider, quota, availability, failover, backup, restore, security, pricing or production evidence.
