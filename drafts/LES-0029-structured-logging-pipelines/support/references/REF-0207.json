@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0207",
+  "title": "systemd journal fields",
+  "organization": "systemd Project",
+  "url": "https://www.freedesktop.org/software/systemd/man/latest/systemd.journal-fields.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current systemd manual; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["journal entries", "trusted fields", "user fields", "message", "priority", "process identity", "binary values"],
+  "relevance": "Explains journal field ownership, trusted underscore-prefixed metadata, user fields, repeated fields, and the difference between the human-readable message and structured entry data.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

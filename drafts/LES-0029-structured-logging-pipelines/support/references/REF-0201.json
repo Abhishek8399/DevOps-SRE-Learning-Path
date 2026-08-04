@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0201",
+  "title": "Logs Data Model Appendix",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/specs/otel/logs/data-model-appendix/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Non-normative OpenTelemetry mapping appendix; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["format mapping", "syslog", "journald", "Splunk HEC", "Elastic Common Schema", "severity mapping"],
+  "relevance": "Provides non-normative mapping examples across common log formats. The lesson labels it as illustrative rather than a source of provider acceptance behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

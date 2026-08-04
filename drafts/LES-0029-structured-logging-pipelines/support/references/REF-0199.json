@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0199",
+  "title": "Logs Data Model",
+  "organization": "OpenTelemetry Authors",
+  "url": "https://opentelemetry.io/docs/specs/otel/logs/data-model/",
+  "sourceType": "standard",
+  "versionOrDate": "Stable OpenTelemetry logs data model; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["log record", "timestamp", "observed timestamp", "severity", "body", "resource", "attributes", "trace context"],
+  "relevance": "Defines a portable log-record model and separates event time, observed time, body, resource identity, attributes, severity, and trace correlation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

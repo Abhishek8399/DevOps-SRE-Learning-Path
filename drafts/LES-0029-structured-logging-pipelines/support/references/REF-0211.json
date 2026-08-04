@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0211",
+  "title": "Logging Cheat Sheet",
+  "organization": "OWASP Foundation",
+  "url": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current OWASP Cheat Sheet Series; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["security logging", "sensitive data", "log injection", "access control", "integrity", "availability", "retention"],
+  "relevance": "Anchors the lesson's rules for excluding secrets, sanitizing untrusted values, detecting logging failure, protecting access and integrity, and testing denial-of-service boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

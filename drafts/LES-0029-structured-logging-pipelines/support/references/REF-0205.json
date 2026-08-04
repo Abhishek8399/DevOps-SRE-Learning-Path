@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0205",
+  "title": "Data streams",
+  "organization": "Elastic",
+  "url": "https://www.elastic.co/docs/manage-data/data-store/data-streams",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Elastic data-stream documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["append-only events", "backing indices", "rollover", "lifecycle", "retention", "storage tiers"],
+  "relevance": "Supports the storage and retention model: one logical stream can span backing indices with lifecycle and cost controls for append-oriented events.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

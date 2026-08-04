@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0209",
+  "title": "logging — Logging facility for Python",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3/library/logging.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3 documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["logger", "handler", "filter", "formatter", "propagation", "severity", "error handling"],
+  "relevance": "Defines the logger-to-handler path used to explain duplicate propagation, level filtering, formatting failure, and destination ownership in the local example.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

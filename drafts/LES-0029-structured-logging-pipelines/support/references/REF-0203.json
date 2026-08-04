@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0203",
+  "title": "Elastic Common Schema log fields",
+  "organization": "Elastic",
+  "url": "https://www.elastic.co/docs/reference/ecs/ecs-log",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current ECS log-field documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["log origin", "transport metadata", "log level", "file path", "syslog fields"],
+  "relevance": "Distinguishes logging-mechanism and transport metadata under log fields from event-specific business or security fields.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

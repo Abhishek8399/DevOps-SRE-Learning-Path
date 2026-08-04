@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0202",
+  "title": "Elastic Common Schema reference",
+  "organization": "Elastic",
+  "url": "https://www.elastic.co/docs/reference/ecs",
+  "sourceType": "official-documentation",
+  "versionOrDate": "ECS 9.4.0 documentation observed; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["common schema", "field names", "field types", "normalization", "correlation", "custom fields"],
+  "relevance": "Supports treating log fields and types as a shared schema contract that enables normalized analysis and correlation across event sources.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

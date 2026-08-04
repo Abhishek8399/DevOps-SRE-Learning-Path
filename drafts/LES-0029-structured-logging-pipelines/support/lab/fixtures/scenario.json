@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0029",
+  "caseId": "structured-logging-reasoning-v1",
+  "baselineEvents": [
+    {"event_time": 1760000000, "observed_time": 1760000002, "service": "checkout", "environment": "lab", "event_name": "checkout.started", "severity": "INFO", "message": "checkout accepted", "trace_id": "trace-a1", "outcome": "unknown", "duration_ms": 0},
+    {"event_time": 1760000001, "observed_time": 1760000003, "service": "checkout", "environment": "lab", "event_name": "payment.requested", "severity": "INFO", "message": "payment requested", "trace_id": "trace-a1", "outcome": "unknown", "duration_ms": 0},
+    {"event_time": 1760000002, "observed_time": 1760000004, "service": "checkout", "environment": "lab", "event_name": "payment.completed", "severity": "INFO", "message": "payment completed", "trace_id": "trace-a1", "outcome": "success", "duration_ms": 180},
+    {"event_time": 1760000003, "observed_time": 1760000005, "service": "checkout", "environment": "lab", "event_name": "checkout.completed", "severity": "INFO", "message": "checkout completed", "trace_id": "trace-a1", "outcome": "success", "duration_ms": 420},
+    {"event_time": 1760000010, "observed_time": 1760000012, "service": "checkout", "environment": "lab", "event_name": "checkout.started", "severity": "INFO", "message": "checkout accepted", "trace_id": "trace-b2", "outcome": "unknown", "duration_ms": 0},
+    {"event_time": 1760000011, "observed_time": 1760000013, "service": "checkout", "environment": "lab", "event_name": "payment.requested", "severity": "INFO", "message": "payment requested", "trace_id": "trace-b2", "outcome": "unknown", "duration_ms": 0},
+    {"event_time": 1760000015, "observed_time": 1760000017, "service": "checkout", "environment": "lab", "event_name": "payment.completed", "severity": "ERROR", "message": "payment timed out", "trace_id": "trace-b2", "outcome": "timeout", "duration_ms": 4000},
+    {"event_time": 1760000016, "observed_time": 1760000018, "service": "checkout", "environment": "lab", "event_name": "checkout.completed", "severity": "ERROR", "message": "checkout failed", "trace_id": "trace-b2", "outcome": "failure", "duration_ms": 4200}
+  ],
+  "multiline": {
+    "startPattern": "timestamp-prefix",
+    "physicalLines": [
+      "2026-08-04T10:00:00Z ERROR checkout failed",
+      "Traceback (most recent call last):",
+      "  File service.py line 42 in submit",
+      "TimeoutError: dependency deadline",
+      "2026-08-04T10:00:01Z INFO health probe passed"
+    ],
+    "expectedLogicalEvents": 2
+  },
+  "parserDrift": {
+    "requiredFields": ["event_time", "service", "event_name", "severity", "message", "duration_ms"],
+    "integerFields": ["event_time", "duration_ms"],
+    "records": [
+      {"event_time": 1760000100, "service": "checkout", "event_name": "checkout.completed", "severity": "INFO", "message": "ok", "duration_ms": 210},
+      {"event_time": 1760000101, "service": "checkout", "event_name": "checkout.completed", "severity": "INFO", "message": "ok", "duration_ms": 240},
+      {"event_time": 1760000102, "service": "checkout", "event_name": "checkout.completed", "severity": "ERROR", "message": "failed", "duration_ms": "310"},
+      {"event_time": 1760000103, "service": "checkout", "event_name": "checkout.completed", "severity": "INFO", "message": "ok", "duration_ms": 190},
+      {"event_time": 1760000104, "service": "checkout", "event_name": "checkout.completed", "severity": "ERROR", "message": "failed"},
+      {"event_time": 1760000105, "service": "checkout", "event_name": "checkout.completed", "severity": "INFO", "message": "ok", "duration_ms": 205}
+    ]
+  },
+  "backpressure": {
+    "produced": 40,
+    "consumed": 25,
+    "queuedAtEnd": 10,
+    "dropped": 5,
+    "queueCapacity": 10,
+    "policy": "drop-newest-after-capacity"
+  },
+  "duplicateDelivery": {
+    "deliveryMode": "at-least-once-teaching-case",
+    "eventIds": ["evt-001", "evt-002", "evt-003", "evt-002", "evt-004", "evt-004"]
+  },
+  "privacy": {
+    "forbiddenFields": ["authorization", "card_number", "email", "password", "session_token"],
+    "records": [
+      {"event_name": "login.failed", "user_reference": "stable-pseudonym", "email": "value-present", "reason": "credential-rejected"},
+      {"event_name": "payment.rejected", "card_number": "value-present", "authorization": "value-present", "reason": "issuer-declined"},
+      {"event_name": "session.revoked", "session_token": "value-present", "reason": "logout"},
+      {"event_name": "health.checked", "status": "ok"}
+    ]
+  },
+  "clockSkew": {
+    "records": [
+      {"eventId": "clock-1", "eventTime": 1760000200, "observedTime": 1760000202},
+      {"eventId": "clock-2", "eventTime": 1760000205, "observedTime": 1760000280},
+      {"eventId": "clock-3", "eventTime": 1760000290, "observedTime": 1760000287},
+      {"eventId": "clock-4", "eventTime": 1760000300, "observedTime": 1760000309}
+    ]
+  },
+  "incident": {
+    "symptom": "Search results lose about one third of checkout completion events after a deployment while application request metrics remain stable.",
+    "facts": [
+      "source emission counters remain stable",
+      "collector received-record counters remain stable",
+      "parser rejected-record counters increased at deployment time",
+      "the application changed duration_ms from integer to string",
+      "dashboard no-data conversion masks rejected events as zero errors"
+    ],
+    "earliestSupportedBoundary": "parser schema validation before indexing",
+    "unsafeFirstMoves": ["increase retention", "restart the search UI", "convert missing results to zero", "delete rejected-event evidence"]
+  }
+}

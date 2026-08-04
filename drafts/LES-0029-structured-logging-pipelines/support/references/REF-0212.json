@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0212",
+  "title": "RFC 5424: The Syslog Protocol",
+  "organization": "RFC Editor",
+  "url": "https://www.rfc-editor.org/info/rfc5424/",
+  "sourceType": "standard",
+  "versionOrDate": "RFC 5424, March 2009; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["syslog", "header", "structured data", "timestamp", "severity", "transport", "security considerations"],
+  "relevance": "Defines the standard syslog message structure and security/load considerations while reminding the reader that message format and transport reliability are separate contracts.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

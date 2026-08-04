@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0071",
+  "lessonId": "LES-0029",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Design a structured-log pipeline for 150 services with 8 replicas each. Every replica averages 20 events/second at 900 bytes/event; peak is 3 times average. Assume for a planning estimate that compression is 0.35 of raw size, index/metadata overhead is 1.25 times compressed size, two stored copies are retained, and hot retention is 14 days. A downstream outage may last 10 minutes at peak. Calculate average and peak events/second, peak raw throughput, raw bytes per day at peak, the simplified stored capacity for 14 days, and the raw outage-buffer requirement. Then design schema ownership, event identity, clocks, correlation, delivery semantics, backpressure, parsing, sensitive-data controls, retention tiers, search access, SLOs, rollout, rollback, and proof limits. Use decimal units and label every assumption.",
+  "directAnswer": "Average throughput is 150 × 8 × 20 = 24,000 events/s. Peak is 72,000 events/s. At 900 bytes/event, peak raw throughput is 64,800,000 bytes/s or 64.8 MB/s. One peak-rate day is 5,598,720,000,000 bytes, about 5.59872 TB. Applying 0.35 compression and 1.25 index overhead gives 2.44944 TB/day per copy; two copies give 4.89888 TB/day; 14 days give about 68.58432 TB. A ten-minute peak outage holds 72,000 × 600 = 43.2 million events or 38.88 GB raw before framing, queue metadata, filesystem, retry, and safety headroom. These are capacity hypotheses, not measured vendor sizing. The design must declare where events can block, spill, retry, duplicate, drop, reject, redact, age, and become searchable, with conservation and freshness signals at every boundary.",
+  "foundation": "Events per second is a count rate. Raw throughput multiplies event rate by average encoded bytes. Retained size then depends on compression, index structures, replication, lifecycle, and workload shape. A buffer must cover bytes and events during a downstream delay, but also needs headroom for bursts, metadata, retry amplification and slow recovery. Delivery terms describe what the pipeline may do: at-most-once can lose without retry; at-least-once can duplicate; exactly-once is an end-to-end property that cannot be claimed from one queue setting. A schema owner defines field names, types, units and compatibility. Event time, observed time and indexed time answer different questions.",
+  "reasoningSteps": [
+    "Calculate replicas as 150 multiplied by 8 equals 1,200 emitters.",
+    "Multiply 1,200 by 20 events/s to obtain 24,000 average events/s and by the 3x peak factor to obtain 72,000 events/s.",
+    "Multiply peak events by 900 bytes to obtain 64.8 MB/s decimal raw throughput.",
+    "Multiply by 86,400 seconds to obtain 5.59872 TB/day raw at sustained peak.",
+    "Apply the declared compression and index factors, then replication and fourteen days, without pretending those factors are universally accurate.",
+    "Multiply 72,000 events/s by 600 seconds for 43.2 million buffered events and by 900 bytes for 38.88 GB raw.",
+    "Add operational headroom and model recovery time: a consumer that merely returns to peak capacity cannot drain backlog while peak production continues.",
+    "Define a versioned event envelope and domain-owned event schemas with stable event name, type, unit, resource identity and correlation fields.",
+    "Map source, local destination, agent, buffer, transport, parser, index, retention, query and alert boundaries with counters and queue age.",
+    "Choose and document delivery and duplicate policy per event class; use stable event IDs only where deduplication is actually enforced and measured.",
+    "Minimize, validate and redact sensitive or untrusted values before durable storage; separate access roles and audit queries.",
+    "Canary schema and parser changes, simulate failure cases, set rejection/drop/freshness abort thresholds, and retain a reversible rollback path.",
+    "Verify both user outcomes and monitoring coverage after change, including late-arrival and replay effects.",
+    "State that real compression, index overhead, shard behavior, query concurrency and cost require measured workload tests."
+  ],
+  "seniorAnswer": "I would treat 68.58432 TB as a deliberately conservative arithmetic scenario, not a purchase recommendation. The sustained-peak assumption dominates it; real sizing needs rate percentiles, encoded-size distribution, field cardinality, compression tests, shard/index structures, hot/warm tiers, replicas, query concurrency and growth. The 38.88 GB raw outage calculation also needs framing, queue metadata, filesystem reserve, retry amplification and recovery headroom. A consumer must exceed incoming rate after recovery or the queue never drains. Architecturally, producers emit a versioned envelope with event time, event name, severity, resource identity, correlation, outcome and typed attributes. Domain teams own meanings; the platform owns transport and common controls. Every boundary exposes received, accepted, rejected, retried, dropped, duplicated, bytes and oldest-age signals. Sensitive fields are denied or transformed before durable storage, with least-privilege query access and audited retention. I would canary producers and parsers together, run known multiline/type/PII/queue/replay cases, abort on coverage or freshness loss, and keep rollback compatible with both schema versions. Success is a verified user journey plus conserved, fresh, queryable monitoring evidence—not merely a green shipper.",
+  "weakAnswer": "Allocate 70 TB, enable retries, keep DEBUG logs for 14 days, and call the pipeline exactly once because it has a persistent queue.",
+  "whyWeak": "It treats a simplified peak estimate as exact, ignores recovery throughput and overhead uncertainty, increases sensitive/cost exposure, confuses persistence with end-to-end exactly-once delivery, and provides no schema, loss, duplicate, privacy, query, rollout or recovery contract.",
+  "evidence": [
+    {"signal": "The supplied workload arithmetic produces 24,000 average and 72,000 peak events/s.", "proves": "The calculation follows the declared emitter count, rate and peak multiplier.", "doesNotProve": "Actual traffic distribution, burst duration, encoded size, growth or backend capacity."},
+    {"signal": "The simplified factors produce 68.58432 TB for fourteen peak-rate days with two copies.", "proves": "The arithmetic is internally consistent with the stated decimal assumptions.", "doesNotProve": "Real compression, index overhead, filesystem reserve, compaction, shard count, cache or billable capacity."},
+    {"signal": "A ten-minute peak outage represents 43.2 million events and 38.88 GB raw.", "proves": "The minimum raw payload volume under the supplied constant-rate assumption.", "doesNotProve": "Sufficient buffer capacity or drain time after adding overhead, retries and ongoing production."}
+  ],
+  "followUps": [
+    {"prompt": "How fast must the recovered consumer run to drain the ten-minute backlog in twenty minutes while peak traffic continues?", "answer": "It must handle incoming 72,000 events/s plus 43.2 million divided by 1,200 seconds, another 36,000 events/s, for at least 108,000 events/s before safety headroom."},
+    {"prompt": "Why not retain everything hot?", "answer": "Hot searchable storage is expensive and broad access increases exposure. Retention should follow operational, legal and security needs, with aggregation, tiering or deletion tested against investigation requirements."},
+    {"prompt": "What is the best single pipeline SLO?", "answer": "There is no universal single metric. A useful contract combines accepted coverage for an explicitly defined expected population with end-to-end freshness; rejection, drop, duplicate and query success remain diagnostic indicators."}
+  ],
+  "rubric": [
+    {"criterion": "Throughput arithmetic", "points": 10, "observableEvidence": "Calculates emitter count, average and peak EPS, and peak raw MB/s with decimal units."},
+    {"criterion": "Retention arithmetic", "points": 10, "observableEvidence": "Shows daily raw, compression, index overhead, copies and fourteen-day estimate without false precision."},
+    {"criterion": "Buffer and recovery", "points": 10, "observableEvidence": "Calculates outage events/bytes and explains headroom and drain-rate requirements."},
+    {"criterion": "Schema and time model", "points": 10, "observableEvidence": "Defines ownership, versioning, types, units, event/observed/index time and compatibility."},
+    {"criterion": "Delivery and backpressure", "points": 10, "observableEvidence": "Defines block/spill/retry/drop/duplicate behavior and conservation/freshness evidence."},
+    {"criterion": "Security and retention", "points": 10, "observableEvidence": "Uses data minimization, early redaction, least privilege, audit, tiering and bounded retention."},
+    {"criterion": "Rollout and recovery", "points": 10, "observableEvidence": "Canaries producers/parsers, tests faults, defines abort/rollback and verifies user plus monitoring recovery."},
+    {"criterion": "Proof limits and communication", "points": 10, "observableEvidence": "Distinguishes planning estimates from measured vendor capacity and communicates assumptions clearly."}
+  ],
+  "maximumScore": 80,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

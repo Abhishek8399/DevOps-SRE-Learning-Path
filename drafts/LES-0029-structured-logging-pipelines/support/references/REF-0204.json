@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0204",
+  "title": "Troubleshoot ingest pipelines",
+  "organization": "Elastic",
+  "url": "https://www.elastic.co/docs/troubleshoot/elasticsearch/troubleshoot-ingest-pipelines",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Elasticsearch troubleshooting documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["ingest pipelines", "processor failures", "mapping conflicts", "write queues", "simulation", "ingest timestamps"],
+  "relevance": "Anchors the parser, mapping-rejection, pipeline-statistics, ingest-delay, and simulate-before-rollout troubleshooting path.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

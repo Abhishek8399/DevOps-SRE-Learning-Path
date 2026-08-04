@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0206",
+  "title": "Configuration parameters and the data pipeline",
+  "organization": "Splunk",
+  "url": "https://help.splunk.com/en/data-management/splunk-enterprise-admin-manual/10.2/administer-splunk-enterprise-with-configuration-files/configuration-parameters-and-the-data-pipeline",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Splunk Enterprise 10.2 documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["input", "parsing", "indexing", "search", "line breaking", "timestamps", "field extraction", "distributed placement"],
+  "relevance": "Defines the input, parsing, indexing, and search phases and shows why a configuration must be applied at the component that owns the relevant phase.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

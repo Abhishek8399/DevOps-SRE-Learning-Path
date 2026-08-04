@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0208",
+  "title": "journalctl",
+  "organization": "systemd Project",
+  "url": "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current systemd manual; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["journal queries", "units", "boot selection", "time bounds", "output formats", "follow mode", "cursor"],
+  "relevance": "Anchors exact unit, boot, time, field, cursor, and JSON output controls for read-only Ubuntu journal investigation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

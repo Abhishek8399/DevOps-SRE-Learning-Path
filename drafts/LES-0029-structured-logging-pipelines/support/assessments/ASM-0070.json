@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0070",
+  "lessonId": "LES-0029",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "At 14:00 a checkout release changes `duration_ms` from an integer to a quoted string. The application emission counter remains 12,000 records per minute and the collector receive counter remains 12,000 per minute. Before the release, the parser accepted 11,980 and rejected 20 per minute. Afterward it accepts 8,000 and rejects 4,000. Search shows fewer checkout completions, while a dashboard converts missing error results to zero and turns green. A sample rejected record also contains `email` and `authorization` fields. Define every important term, locate the earliest supported failing boundary, calculate pre-change and post-change rejection fractions plus accepted coverage, distinguish facts from hypotheses, propose the safest containment and rollback, verify user and monitoring recovery separately, and explain what the evidence cannot prove.",
+  "directAnswer": "The earliest supported failing boundary is parser schema validation: production and collector receipt are unchanged while parser rejection rises exactly when the field type changes. Before the release, 20/12,000 = 0.001667, about 0.17 percent, were rejected and 99.83 percent were accepted. Afterward, 4,000/12,000 = 0.333333, about 33.33 percent, are rejected and 8,000/12,000 = 0.666667, about 66.67 percent, are accepted. The green dashboard is not recovery because it converts absence to zero. Safest containment is to stop or roll back the incompatible producer or route its known schema version to a compatible parser while preserving rejected-event evidence. Remove or redact prohibited sensitive fields at the earliest controlled boundary, restrict retained evidence, and treat exposed values as a security event according to policy. Verify checkout independently with user-journey evidence, then verify source, receive, parse, index, search, freshness, and dashboard counts. These facts support a parser boundary and a temporal association; they do not prove why the code changed, whether every emitted event is counted correctly, whether user requests failed, or whether sensitive values were accessed.",
+  "foundation": "A log event is one observation about something that happened. Emission means application code handed a record to its logging path; receipt means a downstream component observed it. Parsing turns bytes into an event boundary and fields. Schema validation checks required names and types. Indexing makes accepted events searchable. A rejected record may still exist in a dead-letter or internal diagnostic path, but it is absent from the normal searchable population. Missing data is not numeric zero. Coverage is accepted records divided by the population expected at the same boundary. A timestamp correlation is evidence for ranking a hypothesis, not proof of organizational root cause.",
+  "reasoningSteps": [
+    "Name the user question and the monitoring symptom separately: checkout health is unknown, while searchable completion-log coverage fell.",
+    "Draw the boundaries: application event construction, logger/handler, stdout or file, collector input, buffer, parser/schema, index write, search, dashboard.",
+    "Align every counter to the same one-minute window and scope before comparing values.",
+    "Calculate the pre-change rejection fraction as 20 divided by 12,000 and accepted coverage as 11,980 divided by 12,000.",
+    "Calculate the post-change rejection fraction as 4,000 divided by 12,000 and accepted coverage as 8,000 divided by 12,000.",
+    "Identify the first divergence: collector receipt matches source emission, but parser acceptance falls and parser rejection rises.",
+    "Treat the string type change as the leading mechanism because it is visible in rejected evidence and coincides with the parser counter change.",
+    "Reject the dashboard's zero as evidence because an absent query result was transformed into a value.",
+    "Contain new incompatible records with rollback or an explicitly tested versioned parser; preserve a bounded rejected sample and counters.",
+    "Handle `email` and `authorization` as prohibited or sensitive data: stop new exposure, sanitize evidence, restrict access and follow incident policy.",
+    "Verify real checkout outcomes independently, then prove each monitoring boundary recovered and that backlog age returned to its objective.",
+    "State proof limits and prevention: schema contract tests, canary rejection thresholds, dead-letter limits, sensitive-field tests, and no-data alerting."
+  ],
+  "seniorAnswer": "I would declare a monitoring-data integrity incident and keep user impact unknown until a direct checkout SLI or synthetic journey confirms it. The first supported divergence is parser validation, not the application or collector: scoped counters remain 12,000/min at those boundaries, while acceptance falls from 99.83% to 66.67% and rejection rises from 0.17% to 33.33%. The rejected sample supplies a plausible mechanism—`duration_ms` changed from integer to string—but I would compare desired and running producer/parser versions before calling it root cause. I would canary or roll back the producer, or temporarily route the declared version to a tested compatible parser, with an abort if rejection, queue age, or user outcomes worsen. I would preserve only sanitized rejected evidence, stop sensitive-field emission, restrict access and assess exposure. Recovery requires an independent user journey plus source-to-search conservation, rejection near baseline, bounded backlog age, correct query population, and a dashboard that shows no data as no data. Prevention is a versioned event contract, compatibility test corpus, pre-index PII policy, parser canary, explicit drop/dead-letter metrics, and alerting on coverage rather than only indexed errors.",
+  "weakAnswer": "Restart the dashboard and change the parser to accept strings. Since the dashboard is green, checkout is healthy.",
+  "whyWeak": "It acts at a presentation symptom, changes a schema without compatibility or rollback review, ignores one-third rejection and sensitive data, destroys the distinction between missing and zero, and claims user health from incomplete monitoring evidence.",
+  "evidence": [
+    {"signal": "Application emission and collector receipt both remain 12,000 records per minute in the declared scope.", "proves": "Those counters show no measured loss between their named observation points for that window if their definitions are correct.", "doesNotProve": "That counters cover every user event, that payloads are valid, or that collector buffering and later delivery succeeded."},
+    {"signal": "Parser rejection rises from 20 to 4,000 per minute while acceptance falls to 8,000.", "proves": "The measured divergence begins at parser validation and accounts for the supplied 12,000-record input population.", "doesNotProve": "The human or process cause of the incompatible data or whether another unmeasured parser branch also exists."},
+    {"signal": "A rejected record shows a quoted `duration_ms` after an integer contract and includes sensitive fields.", "proves": "The sample violates the declared type and data-minimization contracts.", "doesNotProve": "That all 4,000 rejections have the same cause, that values were indexed, or that unauthorized access occurred."},
+    {"signal": "The dashboard converts an absent error result to zero.", "proves": "Its green state cannot distinguish no errors from no searchable evidence.", "doesNotProve": "The actual error count or user impact."}
+  ],
+  "followUps": [
+    {"prompt": "Why compare boundary counters instead of grepping one file?", "answer": "A file sample can show payload shape but not end-to-end population conservation. Boundary counters reveal where counts first diverge; samples then explain a likely mechanism."},
+    {"prompt": "Should the parser simply coerce every numeric-looking string?", "answer": "Only under a versioned, tested compatibility decision. Broad coercion can hide producer defects, misinterpret units, accept hostile input, and make rollback ambiguous."},
+    {"prompt": "When is a dead-letter queue useful?", "answer": "It can preserve bounded rejected evidence for replay and diagnosis, but it needs capacity, access, encryption, retention, redaction, replay idempotency, and alerts. It must not become an unbounded store of secrets."}
+  ],
+  "rubric": [
+    {"criterion": "Terms and pipeline boundaries", "points": 10, "observableEvidence": "Defines emission, receipt, parse, schema, rejection, indexing, search, dashboard, coverage, missing and zero."},
+    {"criterion": "Arithmetic", "points": 10, "observableEvidence": "Calculates pre/post rejection and accepted coverage with matched population and units."},
+    {"criterion": "Earliest failing boundary", "points": 10, "observableEvidence": "Uses counter conservation to locate parser validation without skipping ahead to the dashboard."},
+    {"criterion": "Hypothesis discipline", "points": 10, "observableEvidence": "Uses the type change as a supported mechanism but preserves uncertainty about root cause and other rejected records."},
+    {"criterion": "Safe containment", "points": 10, "observableEvidence": "Chooses rollback or tested version routing with abort criteria and evidence preservation."},
+    {"criterion": "Security and privacy", "points": 10, "observableEvidence": "Stops sensitive-field exposure, sanitizes evidence, restricts access, and triggers policy review."},
+    {"criterion": "Recovery verification", "points": 10, "observableEvidence": "Separates user recovery from every monitoring-pipeline boundary and backlog freshness."},
+    {"criterion": "Prevention and proof limits", "points": 10, "observableEvidence": "Proposes contract tests, canary thresholds, no-data handling and precise non-claims."}
+  ],
+  "maximumScore": 80,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

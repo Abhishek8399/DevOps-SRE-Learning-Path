@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0072",
+  "lessonId": "LES-0029",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Use an instructor-provided unseen disposable local logging case, or a learner-created and held-back unseen disposable case, materially different from LES-0029 guided fixtures and answered scenarios. It must include at least one event-boundary or multiline defect, one field type or schema-version defect, one queue/backpressure or delivery-semantics defect, one timestamp/freshness defect, one sensitive or untrusted-data defect, one misleading query/dashboard result, and one safe recovery decision. After the independence gate, do not open ASM-0070, ASM-0071, the lesson's complete-answer or product-company sections, or generated solutions. Produce a sanitized evidence package that traces source to decision, reconciles counts and ages, tests at least five ranked hypotheses, corrects the schema and pipeline contracts, estimates capacity and retention, proves authorized recovery and cleanup, and gives a five-minute interview explanation with at least twelve explicit proof limits.",
+  "deliverables": [
+    "Completed independence, authorization, environment, help and sanitization gate before investigation",
+    "User-operation, event, schema, severity, timestamp, correlation, delivery, missing-data and retention contracts",
+    "Text architecture from application event construction through logger, local destination, collector, buffer, parser, index, query, dashboard and operator decision",
+    "Raw sanitized boundary counters, queue age, rejected samples and query results with exact time, scope, command and proof limits",
+    "At least five ranked falsifiable hypotheses with predicted, confirming and rejecting evidence",
+    "Event-boundary and multiline diagnosis plus a tested corrected framing rule",
+    "Schema-drift diagnosis with versioned compatibility, canary, abort and rollback design",
+    "Produced/received/accepted/rejected/dropped/queued/duplicated count reconciliation and freshness analysis",
+    "Sensitive/untrusted-data minimization, redaction, access, integrity, retention and exposure response",
+    "Capacity estimate for EPS, bytes, outage buffer, drain rate, stored copies and retention with uncertainty",
+    "Authorized containment, user recovery, monitoring recovery and exact cleanup proof",
+    "Five-minute interview explanation and at least twelve technically precise non-claims"
+  ],
+  "evidenceRequirements": [
+    "The case was unseen and materially different from published guided and answered scenarios",
+    "The learner was authorized only for the disposable local target and recorded all help received",
+    "No secrets, personal names, employer names, customer data, raw identifiers or private path segments are submitted",
+    "Every claim links to sanitized raw evidence or a declared calculation, or is labeled inference, hypothesis or unknown",
+    "Source, receive, buffer, parse, index, search and presentation boundaries are distinguished rather than called one logging system",
+    "Missing, zero, late, rejected, dropped and duplicated records are handled as different states",
+    "No production, shared, employer or online cloud system is modified or queried",
+    "Cleanup proves exact absence of every process, port, file, queue, container, network or other resource the case was allowed to create",
+    "A qualified reviewer confirms no answer leakage, unsafe action, fabricated evidence or mastery inflation"
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independence, authorization and evidence integrity", "points": 10, "observableEvidence": "Unseen case, declared help, authorized disposable scope, sanitized raw evidence and no answer leakage or fabrication."},
+    {"criterion": "Record, schema and time mental model", "points": 10, "observableEvidence": "Event boundaries, fields, types, units, versions, severity, event/observed/index time and correlation are precise."},
+    {"criterion": "Architecture and boundary conservation", "points": 10, "observableEvidence": "The source-to-decision path names state owners and reconciles accepted, rejected, queued, dropped, duplicate and late populations."},
+    {"criterion": "Hypothesis and diagnostic quality", "points": 10, "observableEvidence": "At least five hypotheses are ranked, falsifiable and tested at discriminating boundaries."},
+    {"criterion": "Framing, parsing and query correction", "points": 10, "observableEvidence": "Multiline, schema, mapping, missing-data and dashboard contracts are corrected and tested."},
+    {"criterion": "Delivery, backpressure and capacity", "points": 10, "observableEvidence": "Delivery semantics, queue policy, outage buffer, drain rate, retention and uncertainty are explicit."},
+    {"criterion": "Security, privacy and integrity", "points": 10, "observableEvidence": "Minimizes and sanitizes data, handles injection, least privilege, access audit, integrity, retention and exposure."},
+    {"criterion": "Safe rollout, recovery and cleanup", "points": 10, "observableEvidence": "Uses canary, abort, rollback, separate user/monitoring recovery and exact final-absence proof."},
+    {"criterion": "Reliability and operational ownership", "points": 10, "observableEvidence": "Defines coverage/freshness objectives, alerts, owners, runbook actions and evidence preservation."},
+    {"criterion": "Communication and proof limits", "points": 10, "observableEvidence": "The interview response is clear and at least twelve proof limits are technically specific."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

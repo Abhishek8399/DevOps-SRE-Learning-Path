@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0213",
+  "title": "json — JSON encoder and decoder",
+  "organization": "Python Software Foundation",
+  "url": "https://docs.python.org/3/library/json.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Python 3 documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0029"],
+  "topics": ["JSON", "serialization", "deserialization", "types", "duplicate keys", "command-line validation"],
+  "relevance": "Supports the bounded local model's JSON parsing and the distinction between syntactic validity, typed schema validity, and correct event meaning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
