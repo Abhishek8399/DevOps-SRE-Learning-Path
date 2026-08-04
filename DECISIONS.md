@@ -346,3 +346,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach the control plane as an evidence path from request gates to persisted object, ownership graph, level-triggered reconciliation, binding, node execution, status and user-operation verification. Preserve object identity and monotonically advancing resource-version evidence in the model, distinguish generation from observed generation, make stalled reconciliation and recovery explicit, and reject impossible transition order. Label every such fixture `kubernetes-model-only`. Keep deterministic-model evidence, pinned local-cluster evidence, component-fault evidence, formal review and learner transfer as separate promotion gates.
 
 **Consequences:** `LES-0041` can be checkpointed as a substantial quarantined control-plane candidate without pretending a Python state machine is Kubernetes. Future workload, network, storage, security and operator chapters can reuse the ownership/reconciliation mental model, but each must prove its own manifests, faults, observation paths and exact cleanup on a pinned local cluster before publication. No model result may be cited as API, etcd, controller, scheduler, kubelet, CRI, CNI, CSI or production-runtime evidence.
+
+### DEC-039 - Workload health is a chain, not a Pod phase
+
+**Context:** Running, Ready, available, in an EndpointSlice and serving a correct user response are distinct states owned by different loops. Treating one as overall health causes unsafe deletion, probe storms and false rollout success.
+
+**Decision:** Diagnose workloads through owner/revision, binding, node execution, container history, readiness, endpoint and user-operation evidence. Keep rollout, disruption and autoscaling intent separate from schedulable and serving capacity. A deterministic model may teach boundaries but never counts as Kubernetes runtime.
+
+**Consequences:** `LES-0042` remains quarantined until a pinned local cluster proves the named faults and cleanup. Future chapters must preserve revision-aware user verification and may not use Pod phase as a universal health signal.
