@@ -1,0 +1,19 @@
+{
+  "regions": ["primary-country-region"],
+  "zones": ["zone-a", "zone-b", "zone-c"],
+  "replicas": 6,
+  "minimum_ready": 4,
+  "data_scope": "regional",
+  "steady_units": 30,
+  "peak_units": 60,
+  "quota_units": 100,
+  "replacement_units": 20,
+  "scale_rate_per_minute": 10,
+  "startup_minutes": 2,
+  "rpo_minutes": 15,
+  "rto_minutes": 120,
+  "restore_minutes": 90,
+  "control_api_on_request_path": false,
+  "inherited_policy_allows_region": true,
+  "monthly_budget_owner": "platform-finops"
+}
