@@ -362,3 +362,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Bind exact identities and five-tuples, then move from name through address, EndpointSlice membership, policy, Service/port mapping, node path, listener and user response. Use a working direct/same-node path as a control without claiming it proves later paths. Keep control-plane acceptance separate from packet forwarding.
 
 **Consequences:** `LES-0043` remains quarantined until pinned multi-node cluster evidence proves CNI, DNS, Service, policy, Gateway, negative controls and cleanup. Future networking lessons must report the last proven hop instead of assigning blame from a timeout alone.
+
+### DEC-041 - Storage protection is proved by an application restore, not an object status
+
+**Context:** Bound, attached, mounted, writable, snapshotted and restored are different stages. Treating a green PVC or snapshot as data protection hides topology, filesystem and application-consistency failures.
+
+**Decision:** Trace exact PVC/PV/handle identity through provision, bind, schedule, attach, mount, filesystem and application I/O. Treat snapshots as storage evidence only; require isolated restore, integrity, application transaction and measured RPO/RTO before claiming recoverability. Preserve reclaim/finalizer ownership.
+
+**Consequences:** `LES-0044` remains quarantined until pinned CSI/backend evidence proves every stage, faults, restore and exact cleanup. Future DR claims cannot cite snapshot readiness alone.
