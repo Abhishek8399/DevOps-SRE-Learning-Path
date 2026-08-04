@@ -370,3 +370,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Trace exact PVC/PV/handle identity through provision, bind, schedule, attach, mount, filesystem and application I/O. Treat snapshots as storage evidence only; require isolated restore, integrity, application transaction and measured RPO/RTO before claiming recoverability. Preserve reclaim/finalizer ownership.
 
 **Consequences:** `LES-0044` remains quarantined until pinned CSI/backend evidence proves every stage, faults, restore and exact cleanup. Future DR claims cannot cite snapshot readiness alone.
+
+### DEC-042 - Kubernetes security failures are classified by gate before policy changes
+
+**Context:** Unauthorized, Forbidden, admission denial and runtime permission failures have different owners. Broad RBAC or disabled admission can turn a narrow incident into a cluster compromise.
+
+**Decision:** Bind identity and exact action, then classify authentication, authorization, admission or runtime. Require least-privilege positive and negative tests, protect token/Secret values, preserve audit lineage, and treat admission as both a security and availability dependency. Namespace is one tenant layer, never complete isolation.
+
+**Consequences:** `LES-0045` remains quarantined until a pinned cluster proves allowed/denied actions, revocation, admission/runtime enforcement, tenant negatives and cleanup. Future incident guidance may not use cluster-admin or global policy disablement as default repair.
