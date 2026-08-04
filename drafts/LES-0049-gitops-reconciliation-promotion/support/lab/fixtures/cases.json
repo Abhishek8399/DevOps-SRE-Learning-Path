@@ -1,0 +1,1 @@
+{"mutable-artifact":{"boundary":"artifact"},"source-auth":{"boundary":"source"},"policy-denial":{"boundary":"policy"},"ownership-conflict":{"boundary":"ownership"},"emergency-drift":{"boundary":"intent"},"bad-commit-loop":{"boundary":"reconciliation"},"unsafe-prune":{"boundary":"deletion"},"green-user-failure":{"boundary":"user"}}
