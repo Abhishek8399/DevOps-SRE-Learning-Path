@@ -420,3 +420,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach a provider-neutral workload contract, data/control paths, state scope, ownership, failure domains, survivor capacity, quota/rate/stock, recovery and cost model before translating mechanisms to provider products. Every provider claim is date-, region-, tier- and scope-sensitive. Cloud chapters remain local-only unless a later explicitly governed disposable exercise authorizes runtime work.
 
 **Consequences:** `LES-0050` is the reasoning prerequisite for AWS, Azure, Google Cloud, cloud identity, networking, DR and FinOps chapters. It remains quarantined until Ubuntu lifecycle, formal review and unseen learner transfer pass. Its deterministic model cannot be cited as provider, quota, availability, failover, backup, restore, security, pricing or production evidence.
+
+### DEC-048 - Identity assertions and authorization decisions remain separate evidence
+
+**Status:** `ACCEPTED`
+
+**Context:** A subject can authenticate successfully and receive a correctly signed token yet be denied because audience, immutable subject mapping, session context, action, resource, conditions or inherited policy do not authorize the operation. Decoding a JWT is not validation. Static credentials, broad roles and network-location trust hide attribution and extend compromise windows.
+
+**Decision:** Teach and operate identity as `subject → proof → issuer → assertion → policy → resource → audit`. Human and workload identities stay separate, federation prefers short-lived audience-bound sessions, least privilege requires negative tests, and secret/certificate/key rotation is incomplete until old use is revoked and denial is proved. Zero trust is resource-specific continuous decision-making, not a product or automatic denial.
+
+**Consequences:** `LES-0051` remains quarantined until a reviewer-owned local protocol environment proves validation, federation, policy, rotation, revocation, outage behavior and cleanup. No model output may be cited as identity-provider, OAuth/OIDC, TLS/PKI, CA, KMS, secrets-manager, provider or production evidence.
