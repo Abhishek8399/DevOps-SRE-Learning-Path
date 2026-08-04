@@ -6,6 +6,9 @@ Nothing below `drafts/` is canonical book content, a live website route, an acce
 
 ## Current staged work
 
+- `LES-0029` / `V04-L04` / `OBS-004` is a quarantined structured-logging and pipeline candidate at `LES-0029-structured-logging-pipelines/`. Its 18-section lesson, three assessments, fifteen official or primary-source references, and bounded eight-case teaching model pass direct schema, relationship, answer-isolation, rubric-parity, model-assertion, ShellCheck, Git Bash syntax, canonical-regression, build, and hygiene checks.
+- `LES-0029` is **not** ready for canonical publication. WSL Ubuntu 24.04 fails before startup with `0x80070569`; no normal-user lifecycle pass exists, and no reviewed journald/syslog/OpenTelemetry Collector/Elastic/Splunk runtime has run. The deterministic model is not a logging product or production substitute.
+- The visible LES-0029 transfer is an unscored rehearsal. Only a materially different unseen disposable case may be submitted for the answer-isolated `ASM-0072` independent transfer.
 - `LES-0028` / `V04-L03` / `OBS-003` is a quarantined Prometheus, PromQL, and Grafana candidate at `LES-0028-prometheus-promql-grafana/`. Its 18-section lesson, three assessments, fourteen new official-source references, one reused canonical reference, and bounded seven-case teaching model pass direct schema, relationship, answer-isolation, rubric-parity, arithmetic, ShellCheck, and Git Bash syntax checks.
 - `LES-0028` is **not** ready for canonical publication. WSL Ubuntu 24.04 currently fails before startup with `0x80070569`; no normal-user lifecycle pass exists, and no immutable Prometheus, Alertmanager, or Grafana stack has run. The deterministic model is not a PromQL engine or provider-runtime substitute.
 - The visible LES-0028 transfer is an unscored rehearsal. Only a materially different unseen disposable case may be submitted for the answer-isolated `ASM-0069` independent transfer.
