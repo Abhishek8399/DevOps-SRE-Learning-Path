@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0033",
+  "caseId": "incident-command-v1",
+  "incident": {
+    "id": "INC-FICTIONAL-017",
+    "detectedAt": "2026-08-04T02:11:30Z",
+    "declaredAt": "2026-08-04T02:16:00Z",
+    "journey": "correct checkout completion without duplicate orders",
+    "regionsAffected": ["west", "central"],
+    "failurePercent": {"west": 18.0, "central": 11.0},
+    "multiTeamResponse": true,
+    "criticalBusinessJourney": true,
+    "trend": "worsening"
+  },
+  "severityPolicy": {
+    "criticalLabel": "SEV-1",
+    "declareOnCriticalJourney": true,
+    "declareOnMultipleRegions": true,
+    "declareOnMultipleTeams": true
+  },
+  "roles": [
+    {"role": "incident-commander", "owner": "role-ic-1", "acknowledged": true},
+    {"role": "operations-lead", "owner": "role-ops-1", "acknowledged": true},
+    {"role": "communications-lead", "owner": "role-comms-1", "acknowledged": true},
+    {"role": "planning-lead", "owner": "role-plan-1", "acknowledged": true}
+  ],
+  "mitigationCandidates": [
+    {
+      "name": "disable-promotion-enrichment",
+      "reliefMinutes": 3,
+      "reversibility": 5,
+      "blastRadiusSafety": 5,
+      "confidence": 5,
+      "evidencePreservation": 5,
+      "newRisk": 1,
+      "authorized": true
+    },
+    {
+      "name": "rollback-release",
+      "reliefMinutes": 8,
+      "reversibility": 2,
+      "blastRadiusSafety": 2,
+      "confidence": 3,
+      "evidencePreservation": 3,
+      "newRisk": 5,
+      "authorized": false
+    },
+    {
+      "name": "failover-all-traffic",
+      "reliefMinutes": 6,
+      "reversibility": 3,
+      "blastRadiusSafety": 1,
+      "confidence": 2,
+      "evidencePreservation": 3,
+      "newRisk": 5,
+      "authorized": false
+    },
+    {
+      "name": "restart-shared-database",
+      "reliefMinutes": 12,
+      "reversibility": 1,
+      "blastRadiusSafety": 1,
+      "confidence": 1,
+      "evidencePreservation": 1,
+      "newRisk": 5,
+      "authorized": false
+    }
+  ],
+  "recovery": {
+    "journeyErrorWindows": [0.0004, 0.0003, 0.0005],
+    "maximumErrorFraction": 0.001,
+    "telemetryCoverage": 0.998,
+    "minimumCoverage": 0.995,
+    "queuesDraining": true,
+    "dataIntegrity": "verified",
+    "dependenciesHealthy": true,
+    "capacityHeadroomPercent": 31.0,
+    "minimumHeadroomPercent": 20.0,
+    "observeMinutes": 30
+  },
+  "communication": {
+    "timestamp": "2026-08-04T02:25:00Z",
+    "state": "ACTIVE",
+    "impact": "Some checkout attempts in west and central fail before order confirmation.",
+    "scope": "West failure is 18 percent and central failure is 11 percent; no other region is currently observed affected.",
+    "action": "Optional promotion enrichment is disabled in west and is being canaried in central.",
+    "result": "West has completed three healthy five-minute windows; central remains degraded.",
+    "uncertainty": "The trigger is not confirmed and retry-queue duplicate risk remains under review.",
+    "workaround": "Customers may retry once after waiting; support should not request repeated retries.",
+    "owner": "incident-command",
+    "nextUpdateAt": "2026-08-04T02:35:00Z",
+    "speculativeClaims": []
+  },
+  "handoff": {
+    "sender": "role-ic-1",
+    "receiver": "role-ic-2",
+    "liveBriefing": true,
+    "scopeTransferred": true,
+    "rolesTransferred": true,
+    "actionsTransferred": true,
+    "risksTransferred": true,
+    "communicationsTransferred": true,
+    "accessChecked": true,
+    "receiverRestatedPriorities": true,
+    "accepted": true,
+    "broadcast": true
+  },
+  "review": {
+    "impactQuantified": true,
+    "timelineSourcesReconciled": true,
+    "blameTerms": [],
+    "causalLinks": [
+      "synchronous promotion dependency exceeded worker timeout budget",
+      "retry policy amplified worker demand",
+      "shared queue allowed regional work to interfere",
+      "canary traffic missed promotion-heavy requests",
+      "server-response alert missed completed-order failure"
+    ],
+    "actions": [
+      {"id": "ACT-1", "owner": "checkout-owner", "acceptanceTest": "promotion timeout cannot consume the checkout deadline", "riskType": "prevent"},
+      {"id": "ACT-2", "owner": "queue-owner", "acceptanceTest": "replay test proves bounded retries and tenant isolation", "riskType": "contain"},
+      {"id": "ACT-3", "owner": "observability-owner", "acceptanceTest": "fixture failure triggers completed-order alert within five minutes", "riskType": "detect"},
+      {"id": "ACT-4", "owner": "service-owner", "acceptanceTest": "regional feature-bypass exercise restores the journey and rolls back cleanly", "riskType": "mitigate"}
+    ]
+  }
+}

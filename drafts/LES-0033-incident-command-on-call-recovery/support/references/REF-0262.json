@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0262",
+  "title": "Postmortem Culture: Learning from Failure",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/postmortem-culture/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook, chapter 10; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["blameless review", "postmortem template", "action closure", "organizational learning", "incident metrics"],
+  "relevance": "Primary workbook guidance for accurate blameless reviews, incentives, reusable templates, action tracking, and learning from aggregated incident evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0083",
+  "lessonId": "LES-0033",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "A payment service has recovered its public error-rate SLI after a regional feature bypass. However, the retry queue contains 600,000 operations, oldest age is 18 minutes and rising, one merchant cohort still reports missing confirmations, and telemetry coverage fell to 92%. The incident commander wants to close because the page resolved. The current commander has also been active for thirteen hours and plans to post a handoff note and disconnect. Explain the correct incident state, recovery decision, handoff, communications, and post-incident follow-through.",
+  "directAnswer": "The incident is not proven recovered and command must not disappear through an unacknowledged note. The green public SLI is one signal; rising queue age, unresolved cohort impact, and 92% coverage contradict a closure claim. Keep the incident active or downgrade only under explicit policy, define residual impact, investigate queue arrival/completion and transaction correctness, restore measurement validity, and verify the affected cohort. Perform a live handoff to a rested authorized receiver using current scope, roles, changes, risks, actions, access, communication deadline, and explicit acceptance; broadcast the transfer. Communicate partial improvement and remaining risk. Reconcile the bypass and queue safely, then create a causal PIR with owned tested actions.",
+  "foundation": "A page resolves when its rule is no longer true. That can happen because users recovered, traffic disappeared, telemetry went missing, or the service path moved. Here, coverage fell to 92%, so eight percent of the intended population is unknown. A retry queue of 600,000 items with oldest age rising shows deferred work is not recovering even if front-door requests succeed. A merchant cohort reporting missing confirmations is direct evidence of incomplete journey recovery. The commander is fatigued, which is another reliability risk. A handoff requires a receiver who hears the live state, checks access, restates priorities, explicitly accepts command, and is announced to the team. The outgoing commander remains until that happens.",
+  "reasoningSteps": [
+    "Reject the statement that alert resolution equals recovery; record the exact alert reset and its telemetry coverage.",
+    "Quantify unknown population from 92% coverage and apply the approved missing-data policy without calling unknown events failed or successful.",
+    "Measure queue depth, oldest age, arrival rate, completion rate, retry amplification, poison items, and projected drain time with uncertainty.",
+    "Trace the merchant cohort from accepted request through durable payment and confirmation state; protect against duplicate processing during replay.",
+    "Define current incident state as partially mitigated with unresolved correctness, backlog, and observability risk.",
+    "Keep severity or downgrade only according to user impact and policy; preserve ownership of every residual item.",
+    "Publish a timestamped update: front-door improvement, unresolved merchant confirmation and queue impact, coverage limitation, current actions, safe workaround if any, and next update time.",
+    "Escalate for a rested commander before fatigue becomes a decision failure.",
+    "Conduct a live STATE handoff: scope/severity, team/tasks, actions/aftermath, threats/theories, explicit acceptance.",
+    "Verify receiver access and understanding, transfer communication commitments and temporary-state inventory, and broadcast the role change.",
+    "Declare recovery only after representative journeys and affected cohorts pass, integrity is reconciled, queue age and depth drain predictably, telemetry coverage recovers, dependencies and capacity remain healthy, and an observation window holds.",
+    "Track feature bypass, emergency capacity, muted alerts, replay controls, and manual interventions to reviewed expiry and reconciliation.",
+    "Build a causal graph for front-door/async-path observability, retry behavior, cohort isolation, response fatigue, and closure criteria; assign testable actions."
+  ],
+  "seniorAnswer": "I would record the service as partially mitigated, not recovered. The public SLI improved after the bypass, but the intended measurement population is only 92% observed, oldest queue age is worsening, 600,000 operations remain, and one merchant cohort lacks confirmations. Those are independent contradictions to closure. I would keep incident command active, separate front-door availability from durable payment correctness and notification completion, and establish queue arrival/completion, age distribution, retry identity, poison-message, and idempotency evidence. The queue should not simply be purged or replayed faster; both can lose or duplicate money movement. I would restore telemetry coverage or mark the SLO state unknown under policy, and run a sanitized representative merchant journey through terminal durable state. Communication would say that initial availability improved while asynchronous completion and measurement remain degraded, name affected scope and workaround, and commit to the next update without an invented ETA. Thirteen hours is an explicit human-risk signal. I would locate a rested authorized IC, brief live against the canonical record, verify tooling and decision access, ask the receiver to restate current objective, largest risk, next action, and next update, obtain explicit acceptance, and broadcast the transfer before the outgoing IC leaves. Closure requires a service-specific predicate and observation window. The PIR would examine why the SLI omitted async completion, why coverage could fall green, queue/retry isolation, tested degraded mode, staffing and handoff thresholds, and premature-closure incentives. Actions need owners, due dates, risk categories, and executable acceptance tests.",
+  "weakAnswer": "The customer-facing page is green, so close the incident, create a normal backlog ticket, and let the next shift read the notes in the morning.",
+  "whyWeak": "It ignores invalid measurement coverage, direct cohort harm, rising oldest age, payment correctness, duplicate risk, command ambiguity, and fatigue. It converts active residual user impact into unowned work and treats asynchronous notes as acknowledged transfer.",
+  "evidence": [
+    {
+      "signal": "Public error-rate SLI returned to target",
+      "proves": "The evaluated expression is currently within target for observed public events.",
+      "doesNotProve": "Telemetry completeness, async completion, durable correctness, cohort recovery, or queue health."
+    },
+    {
+      "signal": "Telemetry coverage is 92%",
+      "proves": "Eight percent of the declared intended population is unrepresented under the coverage calculation.",
+      "doesNotProve": "The outcome of those unknown events or which source is wrong."
+    },
+    {
+      "signal": "Queue depth 600,000 and oldest age 18 minutes rising",
+      "proves": "Deferred work exists and at least the oldest work is aging at the observation times.",
+      "doesNotProve": "Drain time, item correctness, or that all items are unique and processable."
+    },
+    {
+      "signal": "Live handoff with receiver restatement and explicit acceptance",
+      "proves": "A named receiver participated in and accepted the transfer under the process.",
+      "doesNotProve": "Perfect understanding, future decisions, or sufficient rest by itself."
+    },
+    {
+      "signal": "Terminal merchant transaction and confirmation reconciliation",
+      "proves": "Sampled affected operations reached expected durable states without observed duplication.",
+      "doesNotProve": "Every operation or future replay is correct."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Can the incident be downgraded before the queue drains to zero?",
+      "answer": "Possibly, if policy defines acceptable user impact, the queue is draining predictably, correctness is protected, residual work has explicit ownership, capacity is safe, and communications remain active. Zero is not universal; evidence and risk govern the transition."
+    },
+    {
+      "prompt": "Why not treat the missing 8% as failures?",
+      "answer": "That may be a conservative decision policy, but it does not establish fact. Outcomes remain unknown until sources reconcile. Label the bound and its authority."
+    },
+    {
+      "prompt": "What if no rested incident commander is available?",
+      "answer": "Escalate through the staffing path, reduce work to essential controlled operations, add planning support, and record the readiness gap. Do not hide fatigue or silently abandon command."
+    },
+    {
+      "prompt": "Which action would improve future detection?",
+      "answer": "Add an end-to-end completed-payment-and-confirmation SLI with coverage/freshness monitoring and replayed failure tests, rather than only changing the threshold of the existing front-door SLI."
+    },
+    {
+      "prompt": "What is the best single MTTR value for this incident?",
+      "answer": "There is no safe single value without a definition. Report first impact, detection, acknowledgement, declaration, front-door mitigation, terminal user recovery, and resolution intervals with clock sources and populations."
+    }
+  ],
+  "rubric": [
+    {"criterion": "State and measurement judgment", "points": 10, "observableEvidence": "Refuses closure and interprets page, coverage, cohort, and queue evidence with limits."},
+    {"criterion": "Data and queue safety", "points": 10, "observableEvidence": "Protects idempotency, terminal state, replay boundaries, and evidence rather than purging blindly."},
+    {"criterion": "Recovery predicate", "points": 10, "observableEvidence": "Defines multidimensional user, correctness, telemetry, dependency, capacity, backlog, and observation gates."},
+    {"criterion": "Handoff and sustainability", "points": 10, "observableEvidence": "Escalates fatigue and completes a live acknowledged STATE transfer with access and broadcast."},
+    {"criterion": "Communication and residual ownership", "points": 10, "observableEvidence": "Communicates partial improvement, current harm, uncertainty, action, workaround, and next update."},
+    {"criterion": "Causal learning", "points": 10, "observableEvidence": "Creates mechanism-based PIR themes and specific testable cross-control actions."}
+  ],
+  "maximumScore": 60,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

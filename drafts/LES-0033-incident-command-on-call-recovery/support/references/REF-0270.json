@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0270",
+  "title": "Create an effective incident management plan to manage disruptions",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/well-architected/design-guides/incident-management",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Azure Well-Architected Framework design guide; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["incident plan", "severity", "coordination", "communication", "resolution criteria", "post-incident improvement"],
+  "relevance": "Current cloud-architecture guidance for preparing, scaling, coordinating, validating closure, communicating, documenting, reviewing, and improving incident response.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

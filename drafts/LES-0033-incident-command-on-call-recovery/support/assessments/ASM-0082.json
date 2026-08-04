@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0082",
+  "lessonId": "LES-0033",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "At 02:10 UTC, an alert reports 14% checkout failure in one region. The on-call acknowledges it. Three engineers enter the incident channel: one starts a rollback, one scales workers, and one restarts pods. No incident has been declared, nobody has measured the checkout journey outside the application, and a manager asks who owns the response. What is the first correct conclusion, what should happen in the next five minutes, and what must not be claimed?",
+  "directAnswer": "There are two active risks: possible user harm and uncontrolled concurrent mutation. Acknowledgement proves page receipt, not recovery ownership or cause. Pause additional uncoordinated changes if policy and safety allow, confirm the critical user journey and scope, declare early under the local policy, assign an acknowledged incident commander and operations lead, inventory every in-flight action, establish one incident record and change queue, and communicate the known impact plus uncertainty and next update time. Do not claim the alert is false, the deployment caused the issue, or any change fixed users without independent evidence.",
+  "foundation": "A page is a signal chosen by a rule. The on-call acknowledgement says a human accepted the notification, but the service may still be healthy, partially degraded, or severely broken. The first technical question is whether real or representative checkout operations are failing and for which users, regions, and interval. The first coordination question is whether responders can still understand the system while several changes happen. Rollback, scaling, and restart can interact: the rollback changes code, scaling changes load, and restart destroys process state. If they run together, the team may not know which action helped or harmed. Incident command creates one owner for priorities, operations creates one path for mutation, communications protects engineers from interruptions, and the shared record preserves evidence.",
+  "reasoningSteps": [
+    "Record the alert source, firing time, delivery, acknowledgement, query interval, and current state.",
+    "Check responder fitness and escalate immediately if the primary on-call cannot safely lead or operate.",
+    "Confirm the critical checkout journey using a safe independent source; quantify user, regional, correctness, and time scope.",
+    "Treat the reported 14% as one observation until population, telemetry coverage, freshness, and query semantics are validated.",
+    "Declare an incident when impact, multi-person coordination, or concurrent mutation makes structure useful; record the local severity rationale.",
+    "Name one incident commander and one operations lead with explicit acknowledgement; delegate communications when inquiries begin.",
+    "Inventory rollback, scale, and restart actions with owner, target, start time, expected evidence, abort, rollback, and actual result.",
+    "Pause or serialize additional production changes through the operations lead; do not erase an unsafe in-flight action without understanding it.",
+    "Set a user-centered objective such as restoring correct checkout completion without duplicate orders.",
+    "Publish a timestamped update containing confirmed impact, current coordinated action, uncertainty, owner, and next update time.",
+    "Use before-and-after user evidence plus system, queue, dependency, and correctness evidence to judge each mitigation.",
+    "Keep cause, mitigation, and recovery as separate claims."
+  ],
+  "seniorAnswer": "I would state that the response has a coordination incident in addition to an unverified checkout incident. I would not infer truth from either the 14% panel or the page acknowledgement. I would confirm the journey at an independent boundary, define affected population and data freshness, and declare under policy because multiple responders are already mutating the system. I would either assume IC temporarily or hand command to a trained responder, establish operations ownership, record every in-flight action, and stop further freelancing. I would not cancel a partially executing change blindly; the operations lead assesses its state and safest completion or rollback. The live record would name current impact, severity, objective, roles, facts, hypotheses, changes, risks, and next checkpoint. We would rank reversible mitigations by time-to-relief, blast radius, confidence, evidence preservation, and data risk. Communications would tell the manager who commands, what is known, what is being done, what remains uncertain, and when the next update arrives. Recovery requires independent checkout, correctness, queue, dependency, telemetry, cohort, and observation evidence. I would preserve the timeline for a later causal review of alert coverage, deployment safety, and why the process allowed three uncontrolled mutations.",
+  "weakAnswer": "The last deployment probably caused the 14% error, so let the senior engineer roll it back and ask everyone else to wait until the graph turns green.",
+  "whyWeak": "It invents causality, gives authority by seniority rather than role, ignores two other in-flight changes, assumes rollback compatibility, uses one graph as recovery proof, and creates no durable command, communication, or evidence structure.",
+  "evidence": [
+    {
+      "signal": "Alert reports 14% checkout failure",
+      "proves": "The alert expression evaluated to its firing state for its configured source and interval.",
+      "doesNotProve": "Complete user impact, cause, telemetry validity, or correct severity."
+    },
+    {
+      "signal": "On-call acknowledgement",
+      "proves": "The notification system recorded acknowledgement under its semantics.",
+      "doesNotProve": "Understanding, command ownership, responder fitness, or mitigation."
+    },
+    {
+      "signal": "Rollback, scale, and restart are in flight",
+      "proves": "At least three intended system mutations require coordination and state reconciliation.",
+      "doesNotProve": "That any action executed, helped, or was authorized."
+    },
+    {
+      "signal": "Independent checkout journey before and after a controlled action",
+      "proves": "The sampled path changed over the observed windows if source and coverage are valid.",
+      "doesNotProve": "Every cohort recovered, permanent repair, or sole causality."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why declare before knowing root cause?",
+      "answer": "Declaration provides roles, shared state, change control, and communication while evidence is still incomplete. It can be downgraded cheaply; coordination delay during growing harm is expensive."
+    },
+    {
+      "prompt": "Should all three changes be stopped immediately?",
+      "answer": "Stop new freelancing, then inspect each in-flight action. Abruptly interrupting a rollout, database operation, or failover can be more dangerous than completing or rolling it back through its known recovery path."
+    },
+    {
+      "prompt": "Who should be incident commander?",
+      "answer": "A trained, available person who can maintain global state and coordinate decisions. The deepest service expert often contributes more as operations lead than as both commander and debugger."
+    },
+    {
+      "prompt": "What does a green graph prove?",
+      "answer": "Only that its expression is within its green condition for its data and interval. Recovery needs user, correctness, queues, dependencies, coverage, capacity, cohorts, and observation evidence."
+    }
+  ],
+  "rubric": [
+    {"criterion": "User-impact triage", "points": 10, "observableEvidence": "Validates the journey, population, scope, time, and telemetry before interpreting 14%."},
+    {"criterion": "Command structure", "points": 10, "observableEvidence": "Declares appropriately, assigns acknowledged roles, and establishes canonical state."},
+    {"criterion": "Change safety", "points": 10, "observableEvidence": "Inventories and serializes mutation without blindly interrupting in-flight work."},
+    {"criterion": "Communication", "points": 10, "observableEvidence": "Provides facts, uncertainty, ownership, action, and next update without invented ETA or cause."},
+    {"criterion": "Recovery and proof limits", "points": 10, "observableEvidence": "Requires multidimensional independent proof and separates correlation, mitigation, repair, and recovery."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

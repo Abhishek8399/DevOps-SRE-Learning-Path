@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0271",
+  "title": "Manage your cloud estate with enhanced security",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/secure/manage",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Cloud Adoption Framework; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["security incident preparedness", "response plan", "disaster recovery", "simulation", "containment", "evidence preservation"],
+  "relevance": "Current cloud-security transfer guidance for living response plans, specialized roles, workload recovery, realistic drills, coordinated containment, communications, and evidence preservation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

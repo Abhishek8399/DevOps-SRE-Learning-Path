@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0268",
+  "title": "OPS07-BP03 Use runbooks to perform procedures",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/ops_ready_to_support_use_runbooks.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Well-Architected Operational Excellence Pillar; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["runbook", "procedure", "permissions", "error handling", "escalation", "validation", "automation"],
+  "relevance": "Current provider guidance for runbook outcomes, ownership, tooling, permissions, error handling, validation by another operator, maintenance, and cautious automation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

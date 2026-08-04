@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0264",
+  "title": "NIST SP 800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management",
+  "organization": "National Institute of Standards and Technology",
+  "url": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+  "sourceType": "standard",
+  "versionOrDate": "Revision 3, final, April 2025; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["cybersecurity incident response", "CSF 2.0", "risk management", "preparation", "detection", "response", "recovery"],
+  "relevance": "Current authoritative United States guidance for integrating cybersecurity incident response across organizational risk management; it supersedes Revision 2.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

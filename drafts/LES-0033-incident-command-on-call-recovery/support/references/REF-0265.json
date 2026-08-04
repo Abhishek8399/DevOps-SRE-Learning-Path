@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0265",
+  "title": "Responding to events",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/responding-to-events.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Well-Architected Operational Excellence Pillar; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["event response", "business impact", "escalation", "communication", "automation", "post-incident analysis"],
+  "relevance": "Current AWS operational guidance for planned and unplanned event response, alert ownership, business-impact prioritization, escalation, communications, automation, and recurrence reduction.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

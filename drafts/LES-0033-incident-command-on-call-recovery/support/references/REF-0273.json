@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0273",
+  "title": "PagerDuty Incident Response Documentation",
+  "organization": "PagerDuty",
+  "url": "https://response.pagerduty.com/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Public incident-response documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["incident response", "roles", "severity", "communications", "handoff", "postmortem", "training"],
+  "relevance": "Vendor-maintained operational example of a mature incident-response system. Use as one implementation to compare with local authority and policy, not as a universal standard.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

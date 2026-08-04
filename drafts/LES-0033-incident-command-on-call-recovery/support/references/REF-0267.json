@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0267",
+  "title": "OPS07-BP04 Use playbooks to investigate issues",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/ops_ready_to_support_use_playbooks.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Well-Architected Operational Excellence Pillar; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["playbook", "investigation", "scope", "root cause", "communication", "automation"],
+  "relevance": "Current provider guidance for outside-in investigative playbooks, required tools and permissions, communication, progressive authoring, and safe automation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

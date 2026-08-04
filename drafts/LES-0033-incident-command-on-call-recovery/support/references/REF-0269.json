@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0269",
+  "title": "Operate - Operational Excellence Pillar",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/operate.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Well-Architected Operational Excellence Pillar; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["operational health", "incident response", "post-incident analysis", "feedback loops", "knowledge management", "action investment"],
+  "relevance": "Current provider map connecting operational health, response, post-incident analysis, feedback, knowledge sharing, validation, reviews, and allocated improvement time.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

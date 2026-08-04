@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0260",
+  "title": "Incident Response",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/incident-response/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook, chapter 9; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["incident response", "three Cs", "incident commander", "operations lead", "communications lead", "simulation"],
+  "relevance": "Primary workbook guidance connecting coordination, communication, control, incident roles, response frameworks, practice, and process evolution.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

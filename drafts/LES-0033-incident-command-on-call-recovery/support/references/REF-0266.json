@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0266",
+  "title": "OPS10-BP01 Use a process for event, incident, and problem management",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops_event_response_event_incident_problem_process.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Well-Architected Framework; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["event management", "incident management", "problem management", "process ownership", "continuous improvement"],
+  "relevance": "Current provider framework separating events, incidents, and problems and requiring centrally maintained, reviewed response processes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

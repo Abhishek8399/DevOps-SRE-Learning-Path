@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0272",
+  "title": "Debug Pods",
+  "organization": "Kubernetes",
+  "url": "https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Kubernetes documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0033"],
+  "topics": ["Kubernetes debugging", "pod state", "events", "logs", "configuration", "scoped evidence"],
+  "relevance": "Primary Kubernetes reference for observing pod state, events, logs, and configuration during platform incident transfer without treating one object state as full service health.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
