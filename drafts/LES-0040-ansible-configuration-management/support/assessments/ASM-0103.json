@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0103",
+  "lessonId": "LES-0040",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A 60-host configuration job reports failed=0, changed=42 and unreachable=3. Minutes later user errors rise, and an immediate rerun changes the same template on 42 hosts. Diagnose the evidence without assuming one root cause and give the safest response.",
+  "directAnswer": "Stop new batches and keep affected nodes drained. Bind controller version/config/revision, resolved host set, variables and batch history. Diagnose the three unreachable hosts at the transport boundary separately. Find the first task changing on run two, compare rendered bytes and input provenance for unstable data or competing ownership, and never hide it with changed_when false. Compare configuration, process, service and user evidence; roll back authoritative desired state on the smallest affected batch if health is outside the gate, reconverge, verify a zero-change second run and verify user recovery before resuming.",
+  "foundation": "Ansible recap states describe automation outcomes, not one shared failure class and not user health. Transport failure, non-idempotence and service regression require different evidence.",
+  "reasoningSteps": [
+    "Freeze rollout expansion and preserve the exact run, batch and first causal results.",
+    "Resolve approved versus actual hosts and determine which nodes were changed, unreachable or untouched.",
+    "Bind source revision, controller runtime, collection lock, inventory and critical variable winners.",
+    "Diagnose unreachable nodes through DNS, route, identity, authentication, temporary path and interpreter evidence.",
+    "Find the first task reporting change on the immediate second run and compare state before and after.",
+    "Check unstable template inputs, timestamps, ordering, competing owners and custom change conditions.",
+    "Correlate configuration and handler outcomes with readiness, golden signals and user journeys.",
+    "Revert authoritative intent and reconverge only the affected batch when rollback is safer.",
+    "Require zero unexplained change and healthy service/user gates before any next wave.",
+    "Add regression tests for the discovered platform, variable or rendering difference."
+  ],
+  "seniorAnswer": "I would treat this as three concurrent signals rather than one failed play: transport failures on three hosts, a convergence defect on 42, and a user-impacting rollout. I stop expansion, preserve target and batch evidence, and keep unhealthy nodes out of traffic. I diagnose unreachable hosts separately, then diff the first repeated template and trace its variable provenance. I roll back the versioned desired state on the smallest affected cohort if user health is degraded, reconverge, prove changed=0 on a second run, and require independent user recovery before advancing.",
+  "weakAnswer": "Rerun with more verbosity and changed_when false because no task failed.",
+  "whyWeak": "It widens unknown change, hides non-idempotence, conflates transport with module behavior and ignores actual user impact.",
+  "evidence": [
+    {"signal": "unreachable=3", "proves": "Three hosts lacked a usable task transport at some point.", "doesNotProve": "They are powered off, unhealthy or unchanged."},
+    {"signal": "same template changes on immediate rerun", "proves": "The exact state or reported change has no fixed point.", "doesNotProve": "Whether unstable desired input or external drift is responsible."},
+    {"signal": "user errors rise after rollout", "proves": "A correlated service symptom exists.", "doesNotProve": "Ansible is the only causal change."}
+  ],
+  "followUps": [
+    {"prompt": "Why not retry all unreachable hosts immediately?", "answer": "First prove partial state and transport cause; retries can repeat completed non-idempotent work or amplify authentication and dependency load."},
+    {"prompt": "Why is changed_when false unsafe here?", "answer": "It changes only reporting and handler behavior; the template may still be rewritten and the underlying defect remains."},
+    {"prompt": "What permits rollout resumption?", "answer": "Known scope, repaired convergence, healthy affected batch, independent user gate and an explicit risk decision."}
+  ],
+  "rubric": [
+    {"criterion": "Signal separation", "points": 10, "observableEvidence": "Separates transport, convergence and user-health failures."},
+    {"criterion": "Containment", "points": 10, "observableEvidence": "Stops batches and preserves exact partial state."},
+    {"criterion": "Root-cause evidence", "points": 10, "observableEvidence": "Uses runtime, inventory, variables and before/after bytes."},
+    {"criterion": "Recovery", "points": 10, "observableEvidence": "Rolls back authoritative state and reconverges smallest cohort."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Requires second-run zero and service/user proof."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

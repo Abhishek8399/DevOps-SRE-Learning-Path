@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0105",
+  "lessonId": "LES-0040",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Using a materially different reviewer-held local multi-host simulation, diagnose unsafe inventory selection, a critical variable collision, non-idempotent rendering, a broken handler and a failing canary health gate. Repair the design, demonstrate convergence and defend a production rollout without lesson answers.",
+  "deliverables": [
+    "Exact controller, source, dependency and configuration identity.",
+    "Resolved inventory topology and approved-versus-actual host-set comparison.",
+    "Critical-variable provenance table including every source, precedence class, winner and authorized owner.",
+    "Task/handler graph and first causal defects distinguished from later symptoms.",
+    "Minimal reviewed patch with deterministic state, validation and honest change/failure semantics.",
+    "Initial convergence, immediate zero-change second run, drift prediction, repair and reconvergence.",
+    "Canary/batch design aligned with simulated failure domains and shared dependency capacity.",
+    "Configuration, process, service and user gates with explicit abort and rollback thresholds.",
+    "Security analysis covering controller, collection, connection, become, decrypted secret and artifact surfaces.",
+    "Observability event model correlating revision, host, task, batch, handler, service and user evidence.",
+    "Exact rollback of authoritative desired state and guarded cleanup evidence.",
+    "Five-minute product-company incident briefing plus delayed changed-case transfer."
+  ],
+  "evidenceRequirements": [
+    "Reviewer fixture differs in host/group names, variable sources, template defect and failure ordering from LES-0040.",
+    "No remote host, root, real secret, network endpoint, external collection or cloud object is permitted.",
+    "Every raw output is bound to revision, version, path and UTC time and contains no synthetic secret canary.",
+    "At least one broad limit and one higher-precedence override must be rejected rather than used.",
+    "A failed initial hypothesis must be preserved and corrected using evidence.",
+    "The health gate must stop later batches despite successful Ansible task results.",
+    "Reviewer observes exact cleanup and a delayed case with changed inventory topology."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Execution identity", "points": 8, "observableEvidence": "Pins source, controller, core, Python, config and dependencies."},
+    {"criterion": "Inventory safety", "points": 10, "observableEvidence": "Resolves and bounds exact hosts with rejection guards."},
+    {"criterion": "Variable ownership", "points": 10, "observableEvidence": "Explains sources, winner, authority and validation."},
+    {"criterion": "Causal diagnosis", "points": 10, "observableEvidence": "Separates selection, rendering, handler and health defects."},
+    {"criterion": "Minimal repair", "points": 10, "observableEvidence": "Uses deterministic state-aware implementation without hiding failures."},
+    {"criterion": "Convergence and drift", "points": 10, "observableEvidence": "Proves first/second run, prediction, repair and fixed point."},
+    {"criterion": "Rollout design", "points": 10, "observableEvidence": "Batches respect redundancy, capacity and dependency limits."},
+    {"criterion": "Health and recovery", "points": 10, "observableEvidence": "Independent gates stop rollout and authoritative rollback reconverges."},
+    {"criterion": "Security", "points": 8, "observableEvidence": "Protects identity, privilege, dependencies, secrets and artifacts."},
+    {"criterion": "Observability", "points": 6, "observableEvidence": "Correlates automation through user outcome."},
+    {"criterion": "Cleanup", "points": 4, "observableEvidence": "Guarded exact absence is observed."},
+    {"criterion": "Communication and delayed transfer", "points": 4, "observableEvidence": "Concise uncertainty-aware briefing and changed-case success."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

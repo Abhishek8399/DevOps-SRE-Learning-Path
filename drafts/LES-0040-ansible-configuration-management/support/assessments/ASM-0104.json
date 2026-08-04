@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0104",
+  "lessonId": "LES-0040",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Complete the guarded localhost Ansible lifecycle: prove controller and inventory boundaries, predict without mutation, converge deterministic role state, prove a zero-change second run, inject known drift, predict it without repair, repair, reconverge and prove exact cleanup.",
+  "directAnswer": "Run the wrapper only as a normal Ubuntu user. Bind ansible-core, Python, configuration and fixture identity; prove one local inventory host and expected task graph; use check mode and the guard to prove the sentinel-only root remains unchanged; converge exact content, permissions and handler evidence; require a zero-change second run; inject only the approved file drift; prove check predicts but does not repair; repair and reconverge; exercise unknown-entry cleanup refusal; then prove both exact roots absent. Stop at the first failed assertion and never bypass cleanup with a broad deletion.",
+  "foundation": "A useful configuration-management test proves selection, prediction limits, first convergence, fixed-point behavior, drift observability, repair and bounded cleanup as separate claims.",
+  "reasoningSteps": [
+    "Verify normal-user Ubuntu identity and required controller executables.",
+    "Record ansible-core, Python, configuration and fixture boundaries.",
+    "Create only the exact UID-scoped roots and validate sentinels and ownership.",
+    "Resolve inventory and require exactly one local host and interpreter.",
+    "Run static, syntax, host and task preflight before mutation.",
+    "Run check mode and prove only the pre-existing sentinel remains.",
+    "Apply initial state and validate exact content, modes, owner and handler marker.",
+    "Repeat unchanged and require changed=0, failed=0 and unreachable=0.",
+    "Inject one controlled configuration drift and preserve its bytes.",
+    "Run check mode, require correction prediction and prove drift remains.",
+    "Repair, validate exact state and prove a second fixed point.",
+    "Reject cleanup with an unexpected entry, remove only the known test entry, then prove exact absence."
+  ],
+  "seniorAnswer": "I treat the lab as a chain of bounded proofs. Controller identity does not prove inventory; inventory does not prove execution; check mode does not prove apply; a green apply does not prove idempotence; repair does not prove cleanup. I preserve each artifact, stop on first divergence and accept the run only after deterministic content, two zero-change checks around controlled drift, a tested cleanup refusal and final absence. I explicitly withhold SSH, become, service and fleet claims.",
+  "weakAnswer": "Run ansible-playbook twice, and if both commands are green the role is production ready.",
+  "whyWeak": "It omits host scope, controller identity, check non-mutation, state inspection, honest change counts, drift repair, cleanup safety and production proof limits.",
+  "evidence": [
+    {"signal": "Inventory guard returns one local host", "proves": "The exact fixture resolves only that localhost identity.", "doesNotProve": "A remote inventory or SSH path is safe."},
+    {"signal": "Immediate second run reports changed=0", "proves": "The exact converged fixture reached a reported fixed point.", "doesNotProve": "Every supported platform/input is idempotent."},
+    {"signal": "Check predicts repair while drift bytes remain", "proves": "These tasks predicted the controlled difference without repairing it.", "doesNotProve": "All modules have faithful check support."},
+    {"signal": "Both approved roots are absent", "proves": "The guarded disposable artifacts were removed.", "doesNotProve": "No unrelated host state changed outside the lab boundary."}
+  ],
+  "followUps": [
+    {"prompt": "Why pre-create the managed root?", "answer": "It permits file tasks to predict without failing because their parent is absent; a sentinel proves check mode created no managed files."},
+    {"prompt": "Why test cleanup refusal?", "answer": "A cleanup path must fail closed when inventory differs rather than recursively deleting unknown evidence."},
+    {"prompt": "What is still needed for production?", "answer": "SSH/become, platform matrix, secret, service, batch, dependency, rollback and user-health validation under review."}
+  ],
+  "rubric": [
+    {"criterion": "Identity boundary", "points": 10, "observableEvidence": "Correct user, OS, executable, core, Python and config."},
+    {"criterion": "Inventory boundary", "points": 10, "observableEvidence": "Exactly one expected local target."},
+    {"criterion": "Static preflight", "points": 10, "observableEvidence": "Guard, syntax, host and task previews pass."},
+    {"criterion": "Check non-mutation", "points": 10, "observableEvidence": "Expected prediction and sentinel-only managed root."},
+    {"criterion": "Initial convergence", "points": 10, "observableEvidence": "Exact files, modes, content and handler marker."},
+    {"criterion": "Idempotence", "points": 10, "observableEvidence": "Immediate changed=0 with state unchanged."},
+    {"criterion": "Drift prediction", "points": 10, "observableEvidence": "Correction predicted while injected bytes remain."},
+    {"criterion": "Repair", "points": 10, "observableEvidence": "State corrected and reconverged."},
+    {"criterion": "Cleanup safety", "points": 10, "observableEvidence": "Refusal path and exact absence both proved."},
+    {"criterion": "Reasoning", "points": 10, "observableEvidence": "Every evidence limit is explained accurately."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

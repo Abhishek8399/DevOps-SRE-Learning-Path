@@ -1,0 +1,11 @@
+---
+- name: Converge the bounded LES-0040 local service
+  hosts: lab
+  gather_facts: false
+  become: false
+  vars:
+    managed_service_name: atlas-api
+    managed_service_owner: reliability-team
+    managed_service_port: 8080
+  roles:
+    - role: managed_service

@@ -1,0 +1,4 @@
+---
+managed_service_name: atlas-api
+managed_service_owner: reliability-team
+managed_service_port: 8080

@@ -1,0 +1,7 @@
+---
+- name: Write deterministic activation evidence
+  ansible.builtin.copy:
+    content: "configuration-reloaded\n"
+    dest: "{{ lab_root }}/reload.marker"
+    mode: "0600"
+  listen: Record configuration reload

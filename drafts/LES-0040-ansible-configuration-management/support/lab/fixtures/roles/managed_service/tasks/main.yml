@@ -1,0 +1,31 @@
+---
+- name: Validate the bounded managed-root contract
+  ansible.builtin.assert:
+    that:
+      - lesson_uid | string is match('^[0-9]+$')
+      - lesson_uid | int > 0
+      - lab_root == '/tmp/reliability-atlas-les0040-managed-' ~ lesson_uid
+      - managed_service_name is match('^[a-z][a-z0-9-]{2,31}$')
+      - managed_service_owner is match('^[a-z][a-z0-9-]{2,31}$')
+      - managed_service_port | int >= 1024
+      - managed_service_port | int <= 65535
+    fail_msg: Bounded lab inputs are invalid; no managed state is authorized.
+
+- name: Managed service directory exists with private permissions
+  ansible.builtin.file:
+    path: "{{ lab_root }}"
+    state: directory
+    mode: "0700"
+
+- name: Managed service configuration matches reviewed template
+  ansible.builtin.template:
+    src: service.conf.j2
+    dest: "{{ lab_root }}/service.conf"
+    mode: "0600"
+  notify: Record configuration reload
+
+- name: Managed payload matches reviewed artifact
+  ansible.builtin.copy:
+    src: payload.txt
+    dest: "{{ lab_root }}/payload.txt"
+    mode: "0600"
