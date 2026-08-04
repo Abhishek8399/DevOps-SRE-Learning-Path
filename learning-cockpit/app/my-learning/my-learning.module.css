@@ -1,5 +1,5 @@
 .page { min-height: 100vh; color: var(--ink); }
-.shell { width: min(1120px,calc(100% - 40px)); margin: 0 auto; padding: 22px 0 110px; }
+.shell { width: calc(100% - var(--shell-gutter) - var(--shell-gutter)); margin: 0 auto; padding: 22px 0 110px; }
 .breadcrumbs { min-height: 46px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
 .breadcrumbs a:hover { color: var(--teal-text); text-decoration: underline; }
 .breadcrumbs b { color: var(--ink); }
@@ -95,7 +95,7 @@
   .lessonGrid { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
-  .shell { width: min(100% - 24px,1120px); }
+  .shell { width: calc(100% - var(--shell-gutter) - var(--shell-gutter)); }
   .storageNotice,.recentStrip { grid-template-columns: 1fr; gap: 7px; }
   .libraryHeading,.clearConfirmation { align-items: stretch; flex-direction: column; }
   .filterButton { width: 100%; }
