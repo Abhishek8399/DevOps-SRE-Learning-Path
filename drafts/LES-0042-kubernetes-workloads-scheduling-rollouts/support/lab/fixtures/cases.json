@@ -1,0 +1,10 @@
+{
+  "pending-resources":{"nodeName":"","phase":"Pending","reason":"FailedScheduling","evidence":"0/3 nodes: insufficient memory","boundary":"scheduler-resources"},
+  "impossible-constraints":{"nodeName":"","phase":"Pending","reason":"FailedScheduling","evidence":"affinity and taint intersection has zero feasible nodes","boundary":"scheduler-constraints"},
+  "image-pull":{"nodeName":"node-a","phase":"Pending","reason":"ImagePullBackOff","evidence":"manifest unknown for reviewed image","boundary":"kubelet-image"},
+  "crash-loop":{"nodeName":"node-a","phase":"Running","reason":"CrashLoopBackOff","evidence":"lastState exitCode=2 previous log=config invalid","boundary":"process-config"},
+  "oom-killed":{"nodeName":"node-b","phase":"Running","reason":"OOMKilled","evidence":"lastState reason=OOMKilled limit=128Mi","boundary":"cgroup-memory"},
+  "running-not-ready":{"nodeName":"node-b","phase":"Running","reason":"ReadinessFailed","evidence":"Ready=False endpointReady=false liveness=true","boundary":"application-readiness"},
+  "rollout-stalled":{"nodeName":"mixed","phase":"Progressing","reason":"ProgressDeadlineExceeded","evidence":"new revision available=0 old revision available=3","boundary":"deployment-rollout"},
+  "hpa-capacity":{"nodeName":"","phase":"Scaling","reason":"UnschedulableScaleOut","evidence":"HPA desired=8 Ready=3 Pending=5","boundary":"autoscaling-capacity"}
+}

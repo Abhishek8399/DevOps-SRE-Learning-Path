@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0111",
+  "lessonId": "LES-0042",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Unseen case: six replicas, maxUnavailable one, PDB minAvailable five, required hostname anti-affinity, five eligible nodes, one drain, a new revision and HPA desired ten. Produce evidence, feasibility math, containment, recovery and verification without lesson answers.",
+  "deliverables": [
+    "Exact cluster, context, namespace, controller UID, ReplicaSet revisions and Pod UIDs.",
+    "Feasible-node calculation across requests, affinity, taints, topology, quota and drain state.",
+    "Separation of Deployment availability controls from eviction admission through the PDB.",
+    "Explanation of HPA desired replicas versus schedulable and Ready capacity.",
+    "Impact statement, bounded containment and owner-level recovery.",
+    "Revision-aware endpoints and normal user-operation verification.",
+    "One resilience/cost trade-off and one preventive design correction.",
+    "Exact namespace, credential and disposable-cluster cleanup plus delayed changed-case transfer."
+  ],
+  "evidenceRequirements": [
+    "Reviewer supplies object identities, constraints and timing not derived from LES-0042.",
+    "Learner uses only a namespace-scoped identity; reviewer owns cluster lifecycle and drain authority.",
+    "No external registry, cloud, hostPath, privileged workload, cluster-scoped mutation or unbounded load.",
+    "Raw evidence is tied to context, version, namespace, UID, revision and UTC time.",
+    "One failed hypothesis is preserved and corrected from evidence.",
+    "Reviewer observes recovery, exact cleanup and a delayed case with different constraints."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion":"Environment and identity","points":10,"observableEvidence":"Pins context, namespace, UIDs and revisions."},
+    {"criterion":"Placement mathematics","points":10,"observableEvidence":"Calculates feasible nodes from the full hard-constraint intersection."},
+    {"criterion":"Resource reasoning","points":8,"observableEvidence":"Uses requests, allocatable, quota and headroom correctly."},
+    {"criterion":"Rollout reasoning","points":10,"observableEvidence":"Explains surge/unavailability and new/old revision state."},
+    {"criterion":"Disruption reasoning","points":10,"observableEvidence":"Separates PDB eviction admission from other failures."},
+    {"criterion":"Autoscaling feedback","points":8,"observableEvidence":"Separates desired replicas from executable capacity."},
+    {"criterion":"Evidence preservation","points":8,"observableEvidence":"Retains status, events, prior state and metrics."},
+    {"criterion":"Containment and recovery","points":10,"observableEvidence":"Uses bounded reversible owner-level action."},
+    {"criterion":"User verification","points":8,"observableEvidence":"Proves endpoints, served revision and normal request."},
+    {"criterion":"Security and safety","points":6,"observableEvidence":"Respects identity, scope and abort rules."},
+    {"criterion":"Trade-off and prevention","points":6,"observableEvidence":"Balances resilience, capacity and cost."},
+    {"criterion":"Cleanup and delayed transfer","points":4,"observableEvidence":"Proves absence and changed-case reasoning."},
+    {"criterion":"Communication","points":2,"observableEvidence":"States impact, uncertainty, decision and evidence."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
