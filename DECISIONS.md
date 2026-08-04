@@ -306,3 +306,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Before the lesson's first commit, place `LES-0009` in `book/volumes/03-engineering-delivery`, route it at `/book/engineering/safe-local-workbench`, assign alias `V03-L01`, and keep Volume 00 lessons as explicit prerequisites. Enforce the same prefix-to-volume rule for every structured curriculum ID: foundation and debugging in Volume 00, Linux in Volume 01, networking in Volume 02, engineering and delivery in Volume 03, reliability in Volume 04, infrastructure and platform in Volume 05, and distributed state in Volume 06.
 
 **Consequences:** Physical path, route, alias, local order, and curriculum identity tell one story. Prerequisites may cross volumes without moving lesson ownership. Because this correction happened before publication, it creates no redirect or browser-state migration; later moves of an already published lesson would require explicit compatibility handling.
+
+### DEC-034 - Quarantined curriculum can advance around an independent runtime blocker
+
+**Context:** The OpenTelemetry candidate has unresolved runtime-safety and immutable-artifact blockers. Waiting on that environment must not silently weaken its promotion gates, but treating the entire dependency-ordered book as blocked would prevent independent authoring and review of downstream concepts such as Prometheus semantics.
+
+**Decision:** A later curriculum item may be checkpointed only as a quarantined draft when its own prerequisite concepts are already available, its direct schemas and answer isolation pass, its evidence boundaries are explicit, and it adds no canonical route, registry entry, learner evidence, or mastery claim. Static or deterministic-model success is never substituted for a required Ubuntu, provider, or real-runtime gate. Each draft keeps its own blockers and must independently satisfy the complete promotion contract.
+
+**Consequences:** `LES-0028` may preserve substantial Prometheus/PromQL/Grafana teaching work while `LES-0027` remains blocked, but neither becomes live through proximity or dependency order. Future contributors and AI agents can continue curriculum authoring without manufacturing evidence; promotion still requires exact runtime, safety, relationship, reader, review, commit, and remote-parity gates for the candidate being moved.

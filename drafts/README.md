@@ -6,6 +6,9 @@ Nothing below `drafts/` is canonical book content, a live website route, an acce
 
 ## Current staged work
 
+- `LES-0028` / `V04-L03` / `OBS-003` is a quarantined Prometheus, PromQL, and Grafana candidate at `LES-0028-prometheus-promql-grafana/`. Its 18-section lesson, three assessments, fourteen new official-source references, one reused canonical reference, and bounded seven-case teaching model pass direct schema, relationship, answer-isolation, rubric-parity, arithmetic, ShellCheck, and Git Bash syntax checks.
+- `LES-0028` is **not** ready for canonical publication. WSL Ubuntu 24.04 currently fails before startup with `0x80070569`; no normal-user lifecycle pass exists, and no immutable Prometheus, Alertmanager, or Grafana stack has run. The deterministic model is not a PromQL engine or provider-runtime substitute.
+- The visible LES-0028 transfer is an unscored rehearsal. Only a materially different unseen disposable case may be submitted for the answer-isolated `ASM-0069` independent transfer.
 - `LES-0027` / `V04-L02` / `OBS-002` is the current quarantined candidate at `LES-0027-opentelemetry-instrumentation-pipelines/`. Its 18-section lesson, three assessments, twelve new official-reference records, two reused canonical reference identities, and bounded local lab design pass direct schema and static-contract validation.
 - `LES-0027` is **not** ready for canonical publication. Its immutable artifact locks remain incomplete, no OpenTelemetry SDK or Collector runtime has executed, and the exact command/evidence gaps are preserved in its `STATUS.md` rather than being converted into claims.
 - `LES-0026` was promoted to canonical `book/` locations as the `substantive-draft` lesson `V04-L01` / `OBS-001` at `/book/reliability/observability-foundations`, with its assessments, references, and bounded lab colocated under their canonical roots.
