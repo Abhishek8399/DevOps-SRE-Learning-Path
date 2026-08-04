@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0085",
+  "lessonId": "LES-0034",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A checkout incident began shortly after version 7.42 reached one region. Rollback was followed by recovery. The draft review says: root cause was the deploy, an operator failed to notice retries, and the fix is more training. What is wrong with this conclusion, how would you rebuild the analysis, and what action evidence is required?",
+  "directAnswer": "The draft confuses temporal order and improvement after rollback with a complete causal explanation, labels a person instead of explaining the conditions that made the action reasonable and consequential, and proposes training without a bounded risk or effectiveness test. Rebuild from user impact and preserved evidence: reconcile system and knowledge time, classify claims, compare exposed and control cohorts, establish mechanisms, draw trigger, conditions, propagation, failed defenses and recovery constraints, challenge links with alternatives and counterfactuals, then choose layered actions with owners, acceptance tests, rollback and outcome verification.",
+  "foundation": "A deploy can be a trigger without being the whole cause. Recovery after rollback is intervention evidence, but rollback may also restart workers, drain load, reset caches or coincide with dependency recovery. Human action must be analyzed using what was visible at the time, the interface, workload, policy, authority and safeguards. Training proves exposure to material, not reduced production risk. A defensible review keeps fact, inference, hypothesis and unknown separate and makes every causal arrow reviewable.",
+  "reasoningSteps": [
+    "Bound the affected journey, population, interval, correctness and estimation uncertainty before explaining cause.",
+    "Preserve raw deployment, trace, retry, queue, worker, journey, decision and reconciliation evidence with provenance and access class.",
+    "Normalize timestamps without deleting source values; record clock uncertainty and when responders learned each fact.",
+    "Label the deployment and recovery records as facts, release causality as a hypothesis, and the operator statement as unsupported.",
+    "Compare exposed and unexposed cohorts and inspect the exact release diff.",
+    "Test whether synchronous dependency latency predicts timeouts, retries, concurrency saturation, queue age and checkout failure.",
+    "List alternatives such as independent dependency degradation or worker regression and choose discriminating evidence.",
+    "Treat rollback as supporting but potentially confounded intervention evidence.",
+    "Reconstruct the operator's local information, goals, interface, workload, permissions and available recovery path.",
+    "Map missing retry budgets, queue isolation, journey alerting, progressive exposure and idempotent replay as defense gaps.",
+    "Choose actions across prevention, containment, detection, recovery and learning rather than relying on training.",
+    "Define acceptance and effectiveness evidence before implementation and preserve unknowns after publication."
+  ],
+  "seniorAnswer": "I would reject the single-root-cause wording. The evidence supports a release-associated hypothesis and a useful rollback intervention, not yet sole causality. I would build paired system-time and knowledge-time timelines, validate the customer impact boundary, and compare rollout cohorts. The causal graph would separate release trigger, synchronous enrichment mechanism, retry amplification, finite worker concurrency, shared-queue propagation, failed journey detection, replay constraints and recovery. Each arrow would cite evidence and a falsifier. I would replace the personal attribution with a local-rationality analysis and route any intentional policy violation separately. Actions would include bounded retries, workload isolation, progressive delivery, journey detection and tested idempotent replay. A merged change is not success: fault tests, game days, outcome telemetry, side-effect checks, recurrence review and adoption by similarly exposed services determine effectiveness.",
+  "weakAnswer": "The deploy happened first and rollback fixed it, so the operator caused the outage by missing retries. Retrain the team and close the ticket.",
+  "whyWeak": "It collapses correlation, trigger and mechanism; ignores confounders and latent defenses; uses hindsight against a person; contains no competing hypothesis; and treats attendance and ticket closure as risk reduction.",
+  "evidence": [
+    {
+      "signal": "Version 7.42 preceded observed impact in one cohort",
+      "proves": "The recorded rollout and impact intervals are temporally compatible if their clocks and cohort mappings are valid.",
+      "doesNotProve": "The release was sufficient, necessary or the only cause."
+    },
+    {
+      "signal": "Service improved after rollback",
+      "proves": "The intervention is associated with changed behavior over the observed window.",
+      "doesNotProve": "Which rollback effect mattered or that dependency recovery, load change, restart or cache state did not confound it."
+    },
+    {
+      "signal": "Retry ratio and concurrency rose before queue age",
+      "proves": "The sampled signals support the proposed amplification sequence and provide testable ordering.",
+      "doesNotProve": "All requests followed that mechanism or that retries originated from version 7.42."
+    },
+    {
+      "signal": "Operator did not change retry configuration",
+      "proves": "The audit lacks that action under its coverage and identity semantics.",
+      "doesNotProve": "Negligence, intent, what the person knew, or why safeguards permitted amplification."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is rollback stronger than simple correlation?",
+      "answer": "It is an intervention: the team deliberately changed system state and observed an outcome. Confidence rises when the intervention is specific and repeatable, but simultaneous state changes and production drift remain confounders."
+    },
+    {
+      "prompt": "Is root cause forbidden language?",
+      "answer": "No, but a singular label often hides a causal network. If the organization uses it, define the exact mechanism and retain contributing conditions, failed barriers and recovery constraints."
+    },
+    {
+      "prompt": "Can training ever be a valid action?",
+      "answer": "Yes, when residual judgment genuinely requires knowledge and the training has a performance-based acceptance test. It should not substitute for feasible constraints, feedback, automation or safer defaults."
+    },
+    {
+      "prompt": "What if the evidence cannot resolve one link?",
+      "answer": "Mark the link tentative or unknown, explain consequence and preserve a collection action. Do not delay every lesson for certainty or turn uncertainty into fact."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Claim discipline", "points": 10, "observableEvidence": "Separates facts, inferences, hypotheses and unknowns and does not promote temporal association to cause."},
+    {"criterion": "Causal reconstruction", "points": 10, "observableEvidence": "Maps trigger, mechanism, conditions, propagation, barriers and recovery constraints with evidence."},
+    {"criterion": "Alternative testing", "points": 10, "observableEvidence": "Names confounders, alternatives, predictions and falsifiers, including rollback limits."},
+    {"criterion": "Human and action analysis", "points": 10, "observableEvidence": "Uses local rationality and proposes layered, owned, testable controls instead of blame."},
+    {"criterion": "Effectiveness boundary", "points": 10, "observableEvidence": "Separates implementation, acceptance and verified outcome with recurrence and adoption evidence."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

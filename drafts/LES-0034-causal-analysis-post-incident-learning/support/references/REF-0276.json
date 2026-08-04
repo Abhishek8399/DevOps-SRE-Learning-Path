@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0276",
+  "title": "Postmortem Analysis", "organization": "Google", "url": "https://sre.google/workbook/postmortem-analysis/",
+  "sourceType": "book", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["analysis","postmortem data","trends","action effectiveness"],
+  "relevance": "Primary SRE workbook treatment of analyzing a body of postmortems and turning repeated findings into reliability work.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

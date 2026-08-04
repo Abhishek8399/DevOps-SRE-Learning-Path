@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0287",
+  "title": "NIST SP 800-92: Guide to Computer Security Log Management", "organization": "National Institute of Standards and Technology", "url": "https://csrc.nist.gov/pubs/sp/800/92/final",
+  "sourceType": "standard", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["logs","retention","integrity","analysis"],
+  "relevance": "Official NIST guidance for log management; supports provenance, retention and access considerations while requiring current local policy.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

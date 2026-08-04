@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0284",
+  "title": "Human factors in accident investigations", "organization": "UK Health and Safety Executive", "url": "https://www.hse.gov.uk/humanfactors/topics/investigation.htm",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["human factors","latent conditions","organizational factors","investigation"],
+  "relevance": "Official HSE guidance for examining why human actions occurred and finding latent organizational conditions rather than stopping at error.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

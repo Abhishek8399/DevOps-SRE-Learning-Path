@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0288",
+  "title": "RFC 3339: Date and Time on the Internet: Timestamps", "organization": "RFC Editor", "url": "https://www.rfc-editor.org/rfc/rfc3339",
+  "sourceType": "rfc", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["timestamps","UTC offsets","ordering","interoperability"],
+  "relevance": "Authoritative timestamp profile used to explain explicit offsets and interoperable representation; clock accuracy and event ordering still require separate evidence.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

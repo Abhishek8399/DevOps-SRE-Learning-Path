@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0285",
+  "title": "Conduct thorough postmortems", "organization": "Google Cloud", "url": "https://cloud.google.com/architecture/framework/reliability/conduct-postmortems",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["postmortem criteria","blameless review","readability","action follow-through"],
+  "relevance": "Official Google Cloud Well-Architected guidance on review criteria, blameless practice, audience, proportionate actions and shared learning.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

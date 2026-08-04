@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0283",
+  "title": "Incident Investigation", "organization": "Occupational Safety and Health Administration", "url": "https://www.osha.gov/incident-investigation",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["system causes","near misses","worker participation","corrective actions"],
+  "relevance": "Official OSHA guidance to look beyond immediate acts, include worker knowledge and identify systemic corrective actions.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

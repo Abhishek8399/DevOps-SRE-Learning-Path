@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0282",
+  "title": "StopRansomware Guide", "organization": "Cybersecurity and Infrastructure Security Agency", "url": "https://www.cisa.gov/stopransomware/ransomware-guide",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["security incidents","evidence preservation","coordination","recovery"],
+  "relevance": "Official CISA guidance illustrating security-response coordination, evidence preservation and recovery constraints; it does not replace local legal advice.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

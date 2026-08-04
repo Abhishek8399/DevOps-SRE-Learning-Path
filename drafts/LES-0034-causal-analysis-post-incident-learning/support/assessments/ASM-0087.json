@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0087",
+  "lessonId": "LES-0034",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Analyze a materially different, sanitized incident supplied by a qualified reviewer. Without model answers, produce an evidence-governed causal analysis, blameless and accountable post-incident review, and verified risk-reduction plan. Do not use the queue-collapse scenario, and do not access evidence beyond your authorization.",
+  "deliverables": [
+    "Impact statement covering journey, population, interval, correctness or durability, business effect, estimation method and uncertainty.",
+    "Evidence inventory covering provenance, source and knowledge time, clock quality, transformations, retention, access class, gaps and conflicts.",
+    "Paired system-time and knowledge-time timeline using ranges or partial ordering where necessary.",
+    "Claim ledger classifying facts, inferences, hypotheses, assumptions, decisions and unknowns with confidence.",
+    "Branching causal graph with at least eight supported or explicitly tentative links across trigger, mechanisms, conditions, propagation, barriers, recovery constraints and luck.",
+    "Two alternative explanations with discriminating predictions and rejecting evidence.",
+    "One counterfactual specifying intervention, held conditions, prediction, falsifier, confounders and external-validity limit.",
+    "Human and organizational analysis using local rationality, interface, workload, permissions, incentives, safeguards and due-process boundary.",
+    "At least three action records spanning four defense categories, each with risk, owner role, priority, due logic, acceptance, rollback, telemetry, side effects and effectiveness window.",
+    "Publication and access review plus a 90-day recurrence, near-miss and cross-system adoption plan."
+  ],
+  "evidenceRequirements": [
+    "Sanitized or controlled source references; no secrets, unnecessary personal data or invented evidence.",
+    "Traceability from each factual claim and causal arrow to a source or explicit unknown.",
+    "Clock offsets and uncertainty retained rather than overwritten.",
+    "Reviewer-observed distinction between correlation, mechanism and intervention.",
+    "Acceptance and effectiveness states tracked separately.",
+    "Independent reviewer challenge, recorded dissent and remediation history.",
+    "Delayed reassessment on a second unfamiliar incident."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Impact and scope", "points": 10, "observableEvidence": "Defines user or operator journey, population, interval, correctness or business effect, method and uncertainty."},
+    {"criterion": "Evidence integrity", "points": 10, "observableEvidence": "Shows provenance, access, clocks, transformations and retained conflicts."},
+    {"criterion": "Evidence limitations", "points": 2, "observableEvidence": "Preserves gaps and states what sources cannot prove."},
+    {"criterion": "Timeline", "points": 10, "observableEvidence": "Separates system and knowledge time, uses normalized ranges and invents no ordering."},
+    {"criterion": "Claim discipline", "points": 10, "observableEvidence": "Classifies claims with citations, confidence, alternatives and unknowns."},
+    {"criterion": "Causal model", "points": 10, "observableEvidence": "Builds branching mechanisms, conditions and propagation with reviewed arrows."},
+    {"criterion": "Barrier and recovery model", "points": 8, "observableEvidence": "Explains failed barriers, recovery constraints and luck without calling them root cause."},
+    {"criterion": "Tests and counterfactual", "points": 10, "observableEvidence": "Defines discriminating predictions, a safe method, confounders and falsifiers."},
+    {"criterion": "External-validity limits", "points": 2, "observableEvidence": "States how the test environment or comparison differs from the incident."},
+    {"criterion": "Human and organizational analysis", "points": 8, "observableEvidence": "Uses local rationality, interface, workload, authority and due-process boundary."},
+    {"criterion": "Controls and actions", "points": 10, "observableEvidence": "Provides layered controls, owners, priority, acceptance, rollback and side effects."},
+    {"criterion": "Effectiveness and adoption", "points": 6, "observableEvidence": "Defines exercise, telemetry, recurrence window and similar-system scope."},
+    {"criterion": "Communication and safety", "points": 4, "observableEvidence": "Uses clear uncertainty, neutral language and publication or access review."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

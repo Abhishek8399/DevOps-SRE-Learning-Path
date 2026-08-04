@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0286",
+  "title": "Incident Review", "organization": "GitLab", "url": "https://handbook.gitlab.com/handbook/engineering/infrastructure-platforms/incident-review/",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["incident review","blameless culture","ownership","redaction"],
+  "relevance": "Public operational handbook example connecting blameless learning, service ownership, review workflow, redaction and preventive actions.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

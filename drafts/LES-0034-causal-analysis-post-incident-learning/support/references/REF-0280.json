@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0280",
+  "title": "Incident management design guide", "organization": "Microsoft", "url": "https://learn.microsoft.com/en-us/azure/well-architected/design-guides/incident-management",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["incident lifecycle","root cause analysis","post-incident review","action tracking"],
+  "relevance": "Official Microsoft reliability guidance connecting response, restoration, review, communication and improvement.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

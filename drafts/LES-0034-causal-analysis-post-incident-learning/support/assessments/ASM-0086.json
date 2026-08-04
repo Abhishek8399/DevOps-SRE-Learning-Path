@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0086",
+  "lessonId": "LES-0034",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "A fictional payment API release adds synchronous fraud enrichment. West receives it first. Dependency p99 rises, client retry ratio reaches 3.4, workers saturate, a shared queue ages, and checkout failures rise. East is less affected. Feature disable, worker restart and falling traffic occur within four minutes; service recovers, but replay is delayed because idempotency is uncertain. Produce a defensible post-incident analysis and action-verification plan.",
+  "directAnswer": "Bound the customer and data impact; preserve and reconcile evidence; build system-time and knowledge-time timelines; classify claims; model release, dependency delay, retry amplification, saturation, shared-queue propagation, failed barriers and replay constraints as a graph; compare west with east; challenge the graph with dependency-only and worker-regression alternatives; treat recovery as a confounded multi-intervention result; analyze responder actions through local information; and create layered controls whose acceptance and outcome evidence are defined in advance.",
+  "foundation": "The scenario contains strong clues, not a finished conclusion. West versus east offers a natural comparison only if traffic, versions, capacity and dependency behavior are comparable. Feature disable, restart and falling traffic prevent attributing recovery to one action. Payment recovery includes correctness and duplicate-risk reconciliation, not only availability. A useful review exposes those limits while still making decisions.",
+  "reasoningSteps": [
+    "Define failed payment journey, affected population, interval, amount or correctness exposure and estimation method.",
+    "Apply evidence access, privacy, security, retention and legal-hold rules before collection.",
+    "Preserve deployment digest and cohorts, traces, attempt ratio, worker state, queue age, dependency latency, decisions and transaction reconciliation.",
+    "Record source time, normalized time, uncertainty and knowledge time; use partial ordering where bounds overlap.",
+    "Label direct records as facts and release causality, retry mechanism and operator interpretations as confidence-scored hypotheses or inferences.",
+    "Construct a branching graph including latent retry policy, shared capacity, missing isolation, detection delay and unproven replay.",
+    "Compare west and east after checking exposure, load, capacity and telemetry equivalence.",
+    "Test dependency-only and worker-regression alternatives using predictions that differ from the primary graph.",
+    "Treat disable, restart and traffic decline as a confounded intervention bundle.",
+    "Explain responder choices from the information, interfaces, authority and transaction risk visible then.",
+    "Select bounded retries, queue isolation, progressive exposure, journey alerts and replay proof with rollback and side-effect review.",
+    "Verify through fault injection, load tests, game day, reconciliation, telemetry, recurrence window and similar-service adoption."
+  ],
+  "seniorAnswer": "My impact statement would distinguish availability, latency, possible duplicates and the uncertainty of incomplete client telemetry. I would retain raw and normalized clocks and show when each fact became actionable. The leading hypothesis is that synchronous enrichment exceeded the request budget, eligible clients retried, additional work saturated finite workers, and a shared queue propagated delay to checkout. Version exposure and regional comparison support the graph only after controlling load, capacity and dependency behavior. Missing retry budgets, queue isolation, progressive rollout gates, journey detection and replay proof are contributing defense gaps. Recovery cannot be assigned solely to feature disable because restart and traffic decline overlap. I would publish that uncertainty. Actions would have risk owners, acceptance tests and rollback: total retry budget under injected latency; checkout queue isolation under bulk backlog; canary halt on journey burn; idempotent replay property and reconciliation tests; and a degraded-dependency exercise. Effectiveness requires production telemetry and repeat-signature review over an agreed window, with failed actions reopened or superseded.",
+  "weakAnswer": "Version 7.42 caused a retry storm. Roll it back, add dashboards, retrain the operator and close the review after the service is green.",
+  "whyWeak": "It skips impact and data correctness, assumes one causal path, ignores cohort comparability and recovery confounders, blames a person, proposes untestable controls and equates component health with recovery and ticket closure with effectiveness.",
+  "evidence": [
+    {
+      "signal": "West exposure plus higher west failure",
+      "proves": "Exposure and impact covary across the recorded cohorts if cohort assignment and measurement are correct.",
+      "doesNotProve": "Causality without comparability of load, capacity, dependency behavior and telemetry."
+    },
+    {
+      "signal": "Dependency latency, attempt ratio, concurrency and queue age sequence",
+      "proves": "The measurements are temporally compatible with the proposed propagation chain within stated clock uncertainty.",
+      "doesNotProve": "That the chain is complete, exclusive or present in every transaction."
+    },
+    {
+      "signal": "Feature disable, restart and traffic decline precede recovery",
+      "proves": "A bundle of interventions and environmental change preceded measured improvement.",
+      "doesNotProve": "Which intervention was necessary or sufficient."
+    },
+    {
+      "signal": "Reconciliation passes after bounded replay",
+      "proves": "The checked records satisfy the defined reconciliation predicate and coverage.",
+      "doesNotProve": "Universal correctness outside that population or permanent prevention."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Can east be called a control group?",
+      "answer": "Only cautiously. Validate version exposure, traffic mix, capacity, dependency path and telemetry coverage. It is an observational comparison, not automatically a randomized control."
+    },
+    {
+      "prompt": "Why include a luck edge?",
+      "answer": "Favorable traffic decline or spare capacity may limit harm without being a designed defense. Naming luck prevents the organization from mistaking fortunate conditions for resilience."
+    },
+    {
+      "prompt": "When is the incident recovered?",
+      "answer": "When defined user journeys and correctness or durability predicates hold across required cohorts for a sufficient observation window, temporary state is reconciled and capacity remains safe. Review and action closure happen later."
+    },
+    {
+      "prompt": "What if fault injection is unsafe in production?",
+      "answer": "Use the safest representative layer: unit or property tests, isolated integration, load environment, shadow traffic, canary or approved game day. Document the external-validity gap instead of performing an unauthorized experiment."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Impact and correctness", "points": 10, "observableEvidence": "Bounds journey, population, interval, business or data effect, method and uncertainty."},
+    {"criterion": "Evidence governance", "points": 10, "observableEvidence": "Preserves provenance, clock, access, transformations, retention and conflicts safely."},
+    {"criterion": "Timeline discipline", "points": 10, "observableEvidence": "Separates system and knowledge time and uses uncertainty or partial order."},
+    {"criterion": "Causal graph", "points": 10, "observableEvidence": "Explains trigger, mechanism, propagation, conditions and barriers with supported arrows."},
+    {"criterion": "Recovery and luck", "points": 5, "observableEvidence": "Separates recovery constraints and favorable circumstances from designed defenses."},
+    {"criterion": "Alternatives and tests", "points": 10, "observableEvidence": "Uses discriminating predictions, falsifiers and controlled comparisons."},
+    {"criterion": "Counterfactual quality", "points": 10, "observableEvidence": "Defines intervention, held conditions, prediction, confounders and limits."},
+    {"criterion": "Human factors", "points": 5, "observableEvidence": "Reconstructs local rationality and keeps due process separate."},
+    {"criterion": "Layered actions", "points": 10, "observableEvidence": "Targets demonstrated risk with owners, acceptance, rollback and side effects."},
+    {"criterion": "Effectiveness proof", "points": 10, "observableEvidence": "Uses exercise, outcome telemetry, recurrence window and adoption."},
+    {"criterion": "Communication and review", "points": 10, "observableEvidence": "Publishes neutral claims, unknowns, dissent and privacy or security review."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

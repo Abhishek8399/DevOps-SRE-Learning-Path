@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0279",
+  "title": "OPS11-BP02 Perform post-incident analysis", "organization": "Amazon Web Services", "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops_evolve_ops_perform_rca_process.html",
+  "sourceType": "official-documentation", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["root cause analysis","contributing factors","corrective actions","learning"],
+  "relevance": "Official AWS Well-Architected practice for consistent post-incident analysis, contributing factors and tracked improvements.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

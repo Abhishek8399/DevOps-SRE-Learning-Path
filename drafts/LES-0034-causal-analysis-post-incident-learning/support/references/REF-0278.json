@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0278",
+  "title": "Effective Troubleshooting", "organization": "Google", "url": "https://sre.google/sre-book/effective-troubleshooting/",
+  "sourceType": "book", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["hypothesis","evidence","testing","causal reasoning"],
+  "relevance": "Primary SRE guidance on systematic diagnosis, hypothesis generation, testing and avoiding common reasoning traps.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

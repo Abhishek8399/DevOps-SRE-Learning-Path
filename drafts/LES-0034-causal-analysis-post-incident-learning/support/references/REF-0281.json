@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0281",
+  "title": "NIST SP 800-61 Rev. 3: Incident Response Recommendations and Considerations", "organization": "National Institute of Standards and Technology", "url": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+  "sourceType": "standard", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["security incident response","evidence","lessons learned","governance"],
+  "relevance": "Official NIST cybersecurity incident-response guidance; useful for security scope, evidence governance and learning boundaries.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

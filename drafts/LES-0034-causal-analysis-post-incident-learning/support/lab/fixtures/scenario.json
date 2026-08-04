@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0034",
+  "caseId": "queue-collapse-v1",
+  "fictional": true,
+  "timeline": [
+    {"id": "E1", "source": "edge", "raw": "2026-01-17T02:02:10+00:00", "normalizedEpochMs": 1768615330000, "uncertaintyMs": 300, "knowledgeEpochMs": 1768615350000},
+    {"id": "E2", "source": "worker", "raw": "2026-01-17T02:01:58+00:00", "normalizedEpochMs": 1768615332000, "uncertaintyMs": 2500, "knowledgeEpochMs": 1768615365000},
+    {"id": "E3", "source": "queue", "raw": "2026-01-17T02:02:14+00:00", "normalizedEpochMs": 1768615334000, "uncertaintyMs": 500, "knowledgeEpochMs": 1768615345000}
+  ],
+  "claims": [
+    {"id": "C1", "type": "fact", "text": "Version 7.42 reached west.", "evidenceIds": ["deploy-audit-17"], "confidence": "confirmed"},
+    {"id": "C2", "type": "inference", "text": "West was exposed first.", "evidenceIds": ["deploy-audit-17", "deploy-audit-18"], "confidence": "strongly-supported"},
+    {"id": "C3", "type": "hypothesis", "text": "Retries saturated workers.", "evidenceIds": ["trace-sample-4", "attempt-ratio-2"], "confidence": "plausible"},
+    {"id": "C4", "type": "unknown", "text": "Dependency delay preceded retry growth.", "evidenceIds": [], "confidence": "unknown"},
+    {"id": "C5", "type": "fact", "text": "One operator caused the incident.", "evidenceIds": [], "confidence": "confirmed"},
+    {"id": "C6", "type": "decision", "text": "Disable synchronous enrichment.", "evidenceIds": ["decision-log-9"], "confidence": "confirmed"}
+  ],
+  "graph": {
+    "nodes": ["release", "slow-enrichment", "retry-amplification", "worker-saturation", "shared-queue-age", "checkout-failure", "replay-constrained", "recovery-delay"],
+    "edges": [
+      {"from": "release", "to": "slow-enrichment", "mechanism": "call consumed deadline", "evidenceIds": ["diff-742", "trace-4"]},
+      {"from": "slow-enrichment", "to": "retry-amplification", "mechanism": "timeouts caused retries", "evidenceIds": ["attempt-ratio-2"]},
+      {"from": "retry-amplification", "to": "worker-saturation", "mechanism": "attempts consumed concurrency", "evidenceIds": ["concurrency-7"]},
+      {"from": "worker-saturation", "to": "shared-queue-age", "mechanism": "service rate fell below arrival", "evidenceIds": ["queue-age-5"]},
+      {"from": "shared-queue-age", "to": "checkout-failure", "mechanism": "jobs exceeded deadline", "evidenceIds": ["journey-sli-3"]},
+      {"from": "replay-constrained", "to": "recovery-delay", "mechanism": "reconciliation preceded replay", "evidenceIds": ["reconciliation-2"]},
+      {"from": "checkout-failure", "to": "replay-constrained", "mechanism": "", "evidenceIds": []}
+    ]
+  },
+  "counterfactuals": [
+    {"id": "CF1", "intervention": "disable retries", "heldConstant": ["load", "version", "latency"], "prediction": "attempt ratio stays at one", "falsifier": "workers saturate at ratio one", "confounded": false},
+    {"id": "CF2", "intervention": "isolate checkout queue", "heldConstant": ["load", "version"], "prediction": "bulk backlog cannot age checkout", "falsifier": "checkout ages without bulk work", "confounded": false},
+    {"id": "CF3", "intervention": "remove enrichment", "heldConstant": ["load", "workers"], "prediction": "duration stays within deadline", "falsifier": "deadline fails without enrichment", "confounded": false},
+    {"id": "CF4", "intervention": "rollback and restart", "heldConstant": [], "prediction": "failures stop", "falsifier": "failures continue", "confounded": true}
+  ],
+  "methods": {"fiveWhysCoveredConditions": 4, "causalGraphCoveredConditions": 8, "barriersReviewed": 5},
+  "actions": [
+    {"id": "A1", "proposal": "bound retries", "risk": "amplification", "ownerRole": "service-owner", "acceptanceTest": "fault test holds ratio within budget", "effectivenessSignal": "attempt ratio", "accepted": true},
+    {"id": "A2", "proposal": "isolate checkout queue", "risk": "propagation", "ownerRole": "platform-owner", "acceptanceTest": "bulk cannot breach checkout SLO", "effectivenessSignal": "queue age", "accepted": true},
+    {"id": "A3", "proposal": "progressive exposure", "risk": "wide rollout", "ownerRole": "delivery-owner", "acceptanceTest": "halt on budget burn", "effectivenessSignal": "cohort SLI", "accepted": true},
+    {"id": "A4", "proposal": "prove idempotent replay", "risk": "duplicates", "ownerRole": "data-owner", "acceptanceTest": "duplicate fixture commits once", "effectivenessSignal": "reconciliation", "accepted": true},
+    {"id": "A5", "proposal": "exercise degraded recovery", "risk": "untested recovery", "ownerRole": "reliability-owner", "acceptanceTest": "game day meets objective", "effectivenessSignal": "exercise outcome", "accepted": true},
+    {"id": "A6", "proposal": "be more careful", "risk": "", "ownerRole": "", "acceptanceTest": "", "effectivenessSignal": "", "accepted": false},
+    {"id": "A7", "proposal": "retrain everyone", "risk": "human error", "ownerRole": "all", "acceptanceTest": "attendance", "effectivenessSignal": "", "accepted": false},
+    {"id": "A8", "proposal": "add more logs", "risk": "", "ownerRole": "observability-owner", "acceptanceTest": "volume rises", "effectivenessSignal": "", "accepted": false}
+  ],
+  "verification": [
+    {"actionId": "A1", "state": "verified-effective", "evidence": "fault replay and telemetry"},
+    {"actionId": "A2", "state": "verified-effective", "evidence": "isolation load test"},
+    {"actionId": "A3", "state": "verified-effective", "evidence": "canary halt exercise"},
+    {"actionId": "A4", "state": "verified-effective", "evidence": "replay property test"},
+    {"actionId": "A5", "state": "ineffective", "evidence": "exercise exceeded objective"},
+    {"actionId": "A9", "state": "overdue", "evidence": "due date passed"}
+  ]
+}

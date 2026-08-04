@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0275",
+  "title": "Postmortem Culture: Learning from Failure", "organization": "Google", "url": "https://sre.google/sre-book/postmortem-culture/",
+  "sourceType": "book", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["blameless culture","publication","action ownership","learning"],
+  "relevance": "Primary SRE guidance on blameless postmortem practice, review culture, action tracking and organizational learning.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

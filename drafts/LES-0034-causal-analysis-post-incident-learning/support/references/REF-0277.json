@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0277",
+  "title": "Lessons Learned from Other Industries", "organization": "Google", "url": "https://sre.google/sre-book/lessons-learned/",
+  "sourceType": "book", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["safety systems","human factors","defense layers","organizational learning"],
+  "relevance": "Primary SRE discussion of transferable safety and reliability lessons from high-risk industries.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}

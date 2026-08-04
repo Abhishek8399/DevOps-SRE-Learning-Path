@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-0274",
+  "title": "Example Postmortem", "organization": "Google", "url": "https://sre.google/sre-book/example-postmortem/",
+  "sourceType": "book", "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0034"], "topics": ["worked postmortem","timeline","root cause","action items"],
+  "relevance": "Primary worked SRE example showing impact, timeline, causal findings and follow-up structure.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04", "reviewAfter": "2027-02-04"
+}
