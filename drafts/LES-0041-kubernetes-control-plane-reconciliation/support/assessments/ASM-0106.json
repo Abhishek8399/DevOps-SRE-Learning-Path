@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0106",
+  "lessonId": "LES-0041",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A Deployment apply succeeds. Its generation is 18, observedGeneration is 16, no new ReplicaSet exists, existing Pods are Ready and users still receive the old version. Diagnose the boundary and give a safe response.",
+  "directAnswer": "The API accepted current intent, but the Deployment controller status and children have not reached generation 18. Bind cluster/context/identity and Deployment UID, preserve generation/resourceVersion/managedFields, then inspect controller leader Lease, list-watch/API access, queue age/retries/errors, field conflicts, admission and owned ReplicaSets. Existing Ready Pods correctly serve old intent and do not prove the new rollout happened. Repair the controller/API dependency rather than patching status or creating a ReplicaSet manually. Verify observedGeneration 18, the correct new ReplicaSet owner UID/template, Pod placement/readiness, Service endpoints and user version before closure.",
+  "foundation": "API persistence, controller observation and workload/user convergence are separate asynchronous stages.",
+  "reasoningSteps": [
+    "Bind exact cluster, namespace, Deployment name and UID.",
+    "Confirm apply response, audit ID, generation, resourceVersion and field manager.",
+    "Compare generation with observedGeneration and read conditions.",
+    "List ReplicaSets and owner UIDs; prove the new desired template has no child.",
+    "Identify Deployment controller leader and process health.",
+    "Inspect watch continuity, queue depth/age, retries, errors and API write access.",
+    "Check server-side apply conflicts and admission/API/etcd latency.",
+    "Repair the owning loop or dependency without mutating status/children.",
+    "Verify current-generation ownership chain, scheduling, readiness, endpoints and user version.",
+    "Add stall detection based on generation lag and reconcile age."
+  ],
+  "seniorAnswer": "I classify this after API persistence and before Deployment reconciliation. Ready old Pods explain availability, not rollout success. I freeze further changes, bind UID and field ownership, and inspect the controller leader, watch/cache, queue and API writes. I do not patch observedGeneration or hand-create children. Recovery restores the controller path; success requires the generation-18 ReplicaSet with correct owner/template, healthy Pods, endpoint revision and a user request showing the new version.",
+  "weakAnswer": "Delete the old Pods so Kubernetes recreates them with the new version.",
+  "whyWeak": "The old ReplicaSet still owns the old template, so deletion recreates old Pods while hiding the stalled Deployment controller and risking availability.",
+  "evidence": [
+    {"signal": "generation 18 and observedGeneration 16", "proves": "Reported Deployment status does not cover current desired generation.", "doesNotProve": "Which controller dependency failed."},
+    {"signal": "no new ReplicaSet", "proves": "Expected current-generation child is absent.", "doesNotProve": "Whether watch, queue, conflict or API write caused it."},
+    {"signal": "old Pods Ready", "proves": "Old owned workload currently reports readiness.", "doesNotProve": "New version rollout or user correctness."}
+  ],
+  "followUps": [
+    {"prompt": "Why not patch observedGeneration?", "answer": "It is controller-owned observation; patching hides the failure and creates false status."},
+    {"prompt": "What alert catches this?", "answer": "Age of a nonzero generation-observedGeneration mismatch plus controller queue/reconcile signals."},
+    {"prompt": "When is deletion safe?", "answer": "Only through the owning Deployment/ReplicaSet rollout and disruption policy, not as speculative controller repair."}
+  ],
+  "rubric": [
+    {"criterion": "Boundary classification", "points": 10, "observableEvidence": "Separates API acceptance from Deployment reconciliation."},
+    {"criterion": "Object identity", "points": 10, "observableEvidence": "Uses UID, generations, RV and ownership."},
+    {"criterion": "Controller evidence", "points": 10, "observableEvidence": "Checks leader, watch, queue, errors and writes."},
+    {"criterion": "Safe recovery", "points": 10, "observableEvidence": "Repairs owner without status/child edits."},
+    {"criterion": "End-to-end verification", "points": 10, "observableEvidence": "Checks child, Pod, endpoint and user revision."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

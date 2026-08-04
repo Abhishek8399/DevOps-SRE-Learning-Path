@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0107",
+  "lessonId": "LES-0041",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "After an API latency spike, controllers report old resource versions, unscheduled Pods rise, Node Leases become intermittent, and users see elevated errors. Design containment, diagnosis and recovery without assuming etcd is the only cause.",
+  "directAnswer": "Freeze nonessential mutations and rollout automation while preserving system-critical flows. Bind affected API replicas, time window and audit/request IDs. Correlate API latency/errors/inflight/APF queues with admission latency, etcd leader/quorum/commit/apply/space, controller relist/410/retry/queue behavior, scheduler queue and Node Lease renewals. Identify whether overload, admission, etcd, network or a bad client/controller is causal. Contain noisy clients with rate/priority controls, restore the failing dependency, let correct clients relist/watch with backoff, then verify controller generation lag closes, scheduler backlog drains, Leases stabilize, workloads and user journeys recover. Preserve control-plane and application recovery separately.",
+  "foundation": "Many components depend on the API and etcd path; correlated symptoms require shared-boundary evidence while retaining component-specific queues and outcomes.",
+  "reasoningSteps": [
+    "Declare user impact, freeze changes and protect critical control-plane traffic.",
+    "Bind cluster, API replicas, revision and time window.",
+    "Measure API request rate/latency/errors/inflight by verb/resource/user agent and priority.",
+    "Measure admission webhook latency/failure and failure policy.",
+    "Measure etcd leader/quorum, request/commit/apply latency, database size and alarms.",
+    "Find abusive list/watch/status/retry clients and APF classification.",
+    "Inspect controller 410/relist/backoff/queue and scheduler backlog.",
+    "Inspect Node Lease freshness versus actual node/kubelet reachability.",
+    "Contain the causal load or dependency without broad restarts.",
+    "Verify API, queues, generations, placement, node heartbeats, service and users.",
+    "Review capacity, client rate limits, APF, admission and restore readiness."
+  ],
+  "seniorAnswer": "I treat this as shared API-path degradation with several possible roots, not automatically etcd. I protect critical flows and stop optional writers, then correlate request/user-agent/APF, admission and etcd latency with controller relists, scheduler backlog and Lease gaps. I contain the noisy client or failed dependency, not every downstream component. Recovery requires clients to relist and drain queues, generations to catch up, Pods to bind, Leases to stabilize and user errors to return inside objective.",
+  "weakAnswer": "Restart etcd and all control-plane components because everything depends on them.",
+  "whyWeak": "It destroys evidence, can break quorum, ignores overload/admission/network causes and adds simultaneous leadership and cache churn.",
+  "evidence": [
+    {"signal": "API latency and controller old-RV errors correlate", "proves": "API/watch paths are degraded in the same window.", "doesNotProve": "etcd is root cause."},
+    {"signal": "one user agent dominates expensive LIST requests", "proves": "that client contributes control-plane load.", "doesNotProve": "it solely explains user errors."},
+    {"signal": "queues drain after containment", "proves": "control-loop throughput recovered.", "doesNotProve": "application correctness without user checks."}
+  ],
+  "followUps": [
+    {"prompt": "Why protect Leases?", "answer": "Node and leader liveness depend on timely lease updates; starvation can create false unavailability and churn."},
+    {"prompt": "What if etcd lost quorum?", "answer": "Follow supported quorum/member recovery; do not restart or restore blindly, and preserve application data separately."},
+    {"prompt": "How prevent retry storms?", "answer": "Client QPS/burst limits, exponential backoff/jitter, shared informers, APF and load tests."}
+  ],
+  "rubric": [
+    {"criterion": "Containment", "points": 10, "observableEvidence": "Stops optional writes and protects critical flows."},
+    {"criterion": "API/APF evidence", "points": 10, "observableEvidence": "Measures request classes, clients, latency/errors and queues."},
+    {"criterion": "Dependency separation", "points": 10, "observableEvidence": "Distinguishes admission, etcd, network and clients."},
+    {"criterion": "Controller/node analysis", "points": 10, "observableEvidence": "Uses relist, queue, scheduler and Lease evidence."},
+    {"criterion": "Recovery verification", "points": 10, "observableEvidence": "Proves control loops, workloads and users recover."},
+    {"criterion": "Prevention", "points": 10, "observableEvidence": "Improves rate limits, APF, capacity and client behavior."},
+    {"criterion": "Data safety", "points": 10, "observableEvidence": "Avoids unsafe quorum/restore actions and separates app data."},
+    {"criterion": "Security", "points": 10, "observableEvidence": "Maintains least privilege and protected audit evidence."},
+    {"criterion": "Communication", "points": 10, "observableEvidence": "States impact, evidence, uncertainty and decisions."},
+    {"criterion": "Systems reasoning", "points": 10, "observableEvidence": "Connects shared boundary without collapsing symptoms."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

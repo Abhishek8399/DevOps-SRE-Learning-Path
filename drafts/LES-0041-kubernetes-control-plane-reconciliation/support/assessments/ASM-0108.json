@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0108",
+  "lessonId": "LES-0041",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "On a reviewer-held pinned disposable cluster, trace and repair an unfamiliar object lifecycle containing an API-policy denial, stale controller observation, misleading label match, unscheduled Pod, bound node-side failure, expired watch and legitimate finalizer. Do not use lesson answers or unsafe force.",
+  "deliverables": [
+    "Exact cluster/client/context/identity/namespace/RBAC and immutable fixture identity.",
+    "API write-path evidence separating authentication, authorization, admission, validation and persistence.",
+    "Object table with type, namespace, name, UID, generation, observedGeneration, resourceVersion and field manager.",
+    "Complete owner/dependent graph using UIDs and rejection of the misleading label-only relationship.",
+    "Controller leader/watch/queue/reconcile diagnosis for stale observed generation.",
+    "Scheduler diagnosis for the Pod without nodeName and node-path diagnosis for the bound Pod.",
+    "List-watch-compaction-relist demonstration with explicit history limits.",
+    "Finalizer owner/external obligation analysis without blind removal.",
+    "Least-changing recovery in component ownership order plus authoritative rollback.",
+    "API/etcd/controller/scheduler/node/service/user observability correlation.",
+    "Security and data-risk review including credentials, audit, Secrets and force operations.",
+    "Exact namespace, kubeconfig and disposable-cluster cleanup plus delayed changed case."
+  ],
+  "evidenceRequirements": [
+    "Reviewer supplies names, UIDs, constraints and failure order not derived from LES-0041.",
+    "Learner identity is namespace scoped; cluster lifecycle remains reviewer controlled.",
+    "No external registry/network after preload, cloud object, privileged Pod, hostPath, host namespace or etcd direct access.",
+    "Manual status, nodeName, ownerReference, managedFields or finalizer edits are prohibited.",
+    "Raw evidence is tied to cluster, version, context, UID, resourceVersion and UTC time and sanitized.",
+    "One failed initial hypothesis must be preserved and corrected from evidence.",
+    "Reviewer observes cleanup and a delayed transfer with different failure boundaries."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Environment and RBAC", "points": 8, "observableEvidence": "Pins cluster/caller/fixture and least privilege."},
+    {"criterion": "API path", "points": 10, "observableEvidence": "Separates every request gate and persistence."},
+    {"criterion": "Metadata semantics", "points": 10, "observableEvidence": "Uses UID/RV/generation/observed generation/manager correctly."},
+    {"criterion": "Ownership", "points": 8, "observableEvidence": "Maps UID edges and rejects labels as lifecycle proof."},
+    {"criterion": "Controller diagnosis", "points": 10, "observableEvidence": "Uses leader/watch/queue/reconcile evidence."},
+    {"criterion": "Scheduler diagnosis", "points": 8, "observableEvidence": "Explains no-binding reason and safe correction."},
+    {"criterion": "Node diagnosis", "points": 8, "observableEvidence": "Traces binding through Lease/kubelet/runtime/plugins."},
+    {"criterion": "Watch correctness", "points": 8, "observableEvidence": "Handles compaction with relist and bounded backoff."},
+    {"criterion": "Finalizer/data safety", "points": 8, "observableEvidence": "Preserves cleanup ownership and external state."},
+    {"criterion": "Recovery and rollback", "points": 8, "observableEvidence": "Uses smallest owner-correct change and desired-state rollback."},
+    {"criterion": "Observability/user proof", "points": 6, "observableEvidence": "Correlates API to user outcome."},
+    {"criterion": "Cleanup and delayed transfer", "points": 4, "observableEvidence": "Exact absence and changed-case retention."},
+    {"criterion": "Communication", "points": 4, "observableEvidence": "States impact, evidence, uncertainty and decision."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
