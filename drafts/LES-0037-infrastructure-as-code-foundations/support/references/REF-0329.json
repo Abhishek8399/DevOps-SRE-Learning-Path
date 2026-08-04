@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0329",
+  "title": "Refactor modules",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language/modules/develop/refactoring",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["refactor", "moved block", "resource address", "module evolution"],
+  "relevance": "Primary guidance for preserving object identity while changing resource or module addresses, including the compatibility consequences of refactoring.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

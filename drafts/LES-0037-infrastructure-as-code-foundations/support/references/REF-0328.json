@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0328",
+  "title": "Import resources overview",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language/import",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["import", "existing resources", "resource identity", "configuration generation"],
+  "relevance": "Primary guide to bringing an existing remote object under configuration ownership without pretending import creates or validates the object.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

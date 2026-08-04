@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0094",
+  "lessonId": "LES-0037",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A pull request renames module.database.primary to module.data.primary. The plan proposes creating a new database and deleting the old database, while the author says this is only a code refactor. Diagnose the risk and describe the safe evidence path.",
+  "directAnswer": "The configuration address is part of the tool's ownership identity. Without a supported moved/refactor declaration or a carefully reviewed state operation, the old address appears removed and the new address appears added, so create/delete is expected. Stop before apply, map both addresses to the exact remote database ID and state lineage, confirm the intended object is unchanged, use the product's supported identity-preserving mechanism, regenerate a full plan and require zero replacement. Protect data with tested backup/restore and verify dependants even after an identity-preserving plan.",
+  "foundation": "Configuration, state and remote reality are different. State binds one configuration address to one remote object. A source rename changes the address even when business intent has not changed. A syntactically valid plan is still dangerous if ownership moved incorrectly. Identity changes require explicit evidence and review.",
+  "reasoningSteps": [
+    "Record source revision, tool/provider/module versions, target, backend, workspace, state lineage and serial.",
+    "Read the full replacement reason rather than aggregate action counts.",
+    "Map old configuration address to its current remote database ID.",
+    "Confirm the new address is intended to own that same single remote object.",
+    "Check whether the tool/version supports a declarative moved or refactor construct for this address change.",
+    "If a state operation is necessary, take a protected snapshot and use the supported command under peer review; do not edit JSON manually.",
+    "Regenerate a complete refreshed plan and require the database action to become no-op or an understood in-place change.",
+    "Review downstream references, outputs, policies and module consumers for address or contract changes.",
+    "Confirm backup and restore evidence because accidental replacement remains a high-consequence failure mode.",
+    "After authorized execution, verify state binding, remote ID, data, connectivity, user SLI and a fresh full no-change plan."
+  ],
+  "seniorAnswer": "I would reject the claim that this is only a text refactor. In stateful IaC, the resource address is the ownership key. I would freeze execution and compare the old binding, new desired address, remote database ID, state lineage/serial and plan replacement reason. If logical ownership is unchanged, I would use the version-supported moved/refactor mechanism; a direct state move is a governed fallback with snapshot, exact addresses, peer review and recovery. The replacement must disappear from a newly generated full plan bound to the current state. Because the object is stateful, I would still require tested backup/restore, dependent-service checks, a rollback or roll-forward decision and post-change verification. I would never approve delete/create merely because the source diff is small.",
+  "weakAnswer": "Apply the plan because Terraform will recreate the same database, then restore the data if needed.",
+  "whyWeak": "It accepts unnecessary destructive replacement, assumes identity and data can be recreated, ignores state bindings and supported refactor mechanisms, and has no target, backup, dependency, approval or verification evidence.",
+  "evidence": [
+    {"signal": "Plan shows delete old address and create new address", "proves": "For the exact plan inputs, the engine interprets two ownership lifecycles.", "doesNotProve": "That replacement is desired, safe or actually executed."},
+    {"signal": "Old state binding points to remote ID db-4402", "proves": "That state snapshot maps the old address to that ID.", "doesNotProve": "Current remote health, data correctness or exclusive ownership."},
+    {"signal": "New plan after moved declaration shows no replacement", "proves": "The selected tool/version preserves the binding in that proposal.", "doesNotProve": "Application compatibility, data integrity or post-apply health."}
+  ],
+  "followUps": [
+    {"prompt": "Why not edit the state JSON?", "answer": "The format can change and manual editing bypasses validation, lineage and supported identity operations. Use product commands or declarative refactors with snapshots and review."},
+    {"prompt": "Does prevent-destroy make the rename safe?", "answer": "It may block one deletion path, but it does not repair ownership, prevent duplicate creation or protect changes outside that configuration."},
+    {"prompt": "What is the shortest lesson?", "answer": "A resource address is ownership identity; preserve the binding before treating a rename as refactor."}
+  ],
+  "rubric": [
+    {"criterion": "Identity diagnosis", "points": 10, "observableEvidence": "Explains address-to-remote binding and why rename appears destructive."},
+    {"criterion": "Evidence boundary", "points": 10, "observableEvidence": "Captures source, target, tool/provider and state lineage/serial."},
+    {"criterion": "Safe refactor", "points": 10, "observableEvidence": "Uses supported moved/refactor or governed state operation and a fresh plan."},
+    {"criterion": "Data and dependency safety", "points": 10, "observableEvidence": "Requires backup/restore and downstream compatibility evidence."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Checks binding, remote ID, data, users and a full no-change plan."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

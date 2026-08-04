@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0323",
+  "title": "Backend block configuration overview",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language/backend",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["backend", "remote state", "locking", "credentials"],
+  "relevance": "Primary backend configuration reference supporting state location, initialization, credential-handling and backend-change boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

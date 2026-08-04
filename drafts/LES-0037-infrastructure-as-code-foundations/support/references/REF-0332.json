@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0332",
+  "title": "Choosing an infrastructure as code tool for your organization",
+  "organization": "Amazon Web Services",
+  "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/choose-iac-tool/introduction.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "AWS Prescriptive Guidance; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["IaC tool selection", "organizational requirements", "governance", "operating model"],
+  "relevance": "Official provider guidance that frames IaC tool choice around organizational requirements and operating context rather than syntax preference alone.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

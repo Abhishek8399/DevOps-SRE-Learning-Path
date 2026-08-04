@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0331",
+  "title": "Purpose of OpenTofu State",
+  "organization": "OpenTofu",
+  "url": "https://opentofu.org/docs/language/state/purpose/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "current documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["OpenTofu", "state purpose", "bindings", "remote state"],
+  "relevance": "Primary OpenTofu explanation of state mapping and metadata, supporting the shared tool-neutral model while retaining product-specific boundaries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

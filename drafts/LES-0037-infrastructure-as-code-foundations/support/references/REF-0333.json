@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0333",
+  "title": "Implementation of DevSecOps for a Microservices-based Application with Service Mesh",
+  "organization": "National Institute of Standards and Technology",
+  "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-204C.pdf",
+  "sourceType": "standard",
+  "versionOrDate": "NIST SP 800-204C, March 2022; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["DevSecOps", "policy as code", "infrastructure as code", "continuous assurance"],
+  "relevance": "Authoritative security publication connecting infrastructure and policy automation to a governed DevSecOps pipeline and continuous security practices.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

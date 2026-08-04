@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0327",
+  "title": "Dependency Lock File",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language/files/dependency-lock",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["provider lock", "checksums", "version selection", "supply chain"],
+  "relevance": "Primary reference for repeatable provider selection, package checksum verification and version-controlled review of dependency changes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

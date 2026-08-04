@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0037",
+  "caseId": "iac-change-system-v1",
+  "fictional": true,
+  "desired": [
+    {"name": "network", "kind": "network", "dependsOn": [], "attributes": {"cidr": "10.20.0.0/24"}},
+    {"name": "database", "kind": "database", "dependsOn": ["network"], "attributes": {"size": "medium", "public": false, "sensitiveValue": "fixture-value"}},
+    {"name": "service", "kind": "compute", "dependsOn": ["network", "database"], "attributes": {"replicas": 2}}
+  ],
+  "current": [
+    {"name": "network", "remoteId": "net-001", "kind": "network", "attributes": {"cidr": "10.20.0.0/24"}},
+    {"name": "service", "remoteId": "svc-001", "kind": "compute", "attributes": {"replicas": 1}},
+    {"name": "old-cache", "remoteId": "cache-001", "kind": "cache", "attributes": {"size": "small"}}
+  ],
+  "drift": {"resource": "service", "attribute": "replicas", "source": "out-of-band", "observed": 1, "desired": 2},
+  "policyCandidate": {"resource": "database", "kind": "database", "public": true},
+  "partialExecution": [
+    {"resource": "network", "result": "succeeded"},
+    {"resource": "database", "result": "failed", "reason": "quota"},
+    {"resource": "service", "result": "blocked", "reason": "dependency"}
+  ],
+  "sensitive": {"display": "<redacted>", "stored": "fixture-value"}
+}

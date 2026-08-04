@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0324",
+  "title": "terraform plan command reference",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/cli/commands/plan",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["plan", "saved plan", "refresh", "exit codes"],
+  "relevance": "Primary command reference for speculative and saved plans, input binding, refresh behavior and automation-oriented detailed exit codes.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

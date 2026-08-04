@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0095",
+  "lessonId": "LES-0037",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Design a production IaC workflow for network, database and service resources. A recent apply created the network, failed to create the database because of quota, and blocked the service. Two pipelines can currently use the same state; plans are posted as text; the apply identity has administrator access; and a sensitive output was masked in the console but exposed in a plan artifact. Give the immediate recovery and the durable redesign.",
+  "directAnswer": "Stop concurrent writers and revoke broad artifact access. Preserve the first error, run, exact plan, state lineage/serial, lock and target identity. Determine whether the network remote object exists and whether its binding persisted; do not delete state or blindly rerun. Resolve quota or target error, reconcile ambiguous objects using supported import/state mechanisms, generate and review a new full plan, then verify state, remote and user outcomes. Redesign with protected source, pinned tool/provider/module dependencies, short-lived least-privilege target identity, durable encrypted versioned locked state, separate plan/apply authority, machine-readable exact plan artifacts, policy and human approval bound to a digest, staged apply, secret-safe logs/artifacts, abort and post-change verification.",
+  "foundation": "IaC applies are partial-capable distributed operations. State is the ownership database, plans are sensitive proposals, and provider credentials are production authority. A safe workflow closes the identity chain from source to target and preserves evidence across failure. Convergence does not replace user, data, security or cost verification.",
+  "reasoningSteps": [
+    "Freeze both pipelines and prevent another writer from changing the same lineage.",
+    "Restrict the exposed plan artifact, inspect access logs and rotate any exposed credential or secret.",
+    "Preserve source revision, lock, run ID, target principal, tool/provider/module versions, plan digest and first quota error.",
+    "Read the latest valid state serial and map the network address to its remote ID.",
+    "Inspect the authorized target to determine whether network creation succeeded but state persistence failed or succeeded.",
+    "Fix the quota, region or target condition without deleting valid bindings.",
+    "Use supported import or state reconciliation only for exact known objects under snapshot and peer review.",
+    "Generate a fresh complete plan, review every action and apply only the approved artifact in stages.",
+    "Verify provider objects, state serial, network paths, database readiness, service readiness, data/security/cost and user SLI.",
+    "Harden the backend with encryption, versioning, locking, audit, tested restore and one writer per state boundary.",
+    "Split plan and apply authority, replace administrator access with short-lived least privilege and protect target/network access.",
+    "Pin and verify dependencies; validate, test, policy-check and approve the exact plan digest; sanitize and retain artifacts by policy."
+  ],
+  "seniorAnswer": "I would declare the environment partially changed. I would disable both executors, preserve the state serial and lock evidence, restrict the exposed artifact and rotate any real value it contained. Then I would correlate the plan and provider audit with the exact network remote ID. If the network exists and the binding is present, keep it; if it exists without a binding, reconcile through a supported import after proving exclusive ownership; if state persistence is uncertain, restore only from a verified version and compare remote reality. After fixing quota, I would produce a new full plan and apply it through a single controlled writer. The durable workflow would use immutable source and dependency identity, protected locked/versioned state, separate short-lived plan/apply roles, structured plan policy, accountable environment approval, exact-artifact apply, staged blast radius, sensitive artifact controls and multi-dimensional post-checks. A fresh no-change plan closes the model loop; user and data checks close the service loop.",
+  "weakAnswer": "Force-unlock the state, rerun apply with administrator access and delete the failed resources if the plan still shows changes.",
+  "whyWeak": "It can race an active writer, destroy valid partial outcomes, repeat ambiguous operations, retain excessive privilege, ignore the secret exposure and create a new plan different from the reviewed proposal.",
+  "evidence": [
+    {"signal": "Network API reports created and state maps network to net-001", "proves": "The selected state and provider observation agree on that binding.", "doesNotProve": "Network usability, correct routing or absence of another owner."},
+    {"signal": "Database failed with quota before returning an object ID", "proves": "The recorded call reported that failure path.", "doesNotProve": "That no remote object was created unless provider identity/audit confirms it."},
+    {"signal": "Fresh full plan after recovery has zero changes", "proves": "Desired, state and observed provider values converge for that scope.", "doesNotProve": "User, data, security, capacity or cost correctness."},
+    {"signal": "Sensitive console display was redacted", "proves": "The presentation masked the selected value.", "doesNotProve": "Encryption or absence from state, plans, logs and APIs."}
+  ],
+  "followUps": [
+    {"prompt": "When is force-unlock justified?", "answer": "Only after proving the recorded owner is no longer operating, preserving lock/run evidence and obtaining governed approval. It removes serialization, not the underlying failure."},
+    {"prompt": "Why separate plan and apply roles?", "answer": "It reduces the ability of one compromised or mistaken identity to propose, approve and execute a high-risk change and allows plan permissions to be narrower."},
+    {"prompt": "Can policy replace human review?", "answer": "Policy efficiently enforces known rules. Humans still judge business intent, data/availability consequence, unknowns and exceptions; both bind to exact inputs."}
+  ],
+  "rubric": [
+    {"criterion": "Incident containment", "points": 10, "observableEvidence": "Stops concurrent writers, protects artifacts and preserves first evidence."},
+    {"criterion": "State and remote reconciliation", "points": 10, "observableEvidence": "Maps exact bindings, handles ambiguity and avoids blind state deletion."},
+    {"criterion": "Safe recovery", "points": 10, "observableEvidence": "Fixes root condition, creates a new full plan and stages execution."},
+    {"criterion": "Source and supply chain", "points": 10, "observableEvidence": "Pins and verifies tool, provider, module, variables and policy inputs."},
+    {"criterion": "Backend design", "points": 10, "observableEvidence": "Uses locking, encryption, versioning, audit, restore and segmented ownership."},
+    {"criterion": "Identity and authority", "points": 10, "observableEvidence": "Uses short-lived least privilege, separation of duties and explicit target identity."},
+    {"criterion": "Plan and policy", "points": 10, "observableEvidence": "Uses machine-readable saved plan, exact digest, rules, exceptions and approval."},
+    {"criterion": "Sensitive data", "points": 10, "observableEvidence": "Treats plans/state/logs as sensitive, rotates exposure and applies retention/access controls."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Checks state, remote, user, data, security, capacity and cost plus full plan."},
+    {"criterion": "Communication and trade-offs", "points": 10, "observableEvidence": "States assumptions, owners, abort, rollback/roll-forward, limits and decisions."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

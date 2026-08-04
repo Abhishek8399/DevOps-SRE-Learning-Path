@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0096",
+  "lessonId": "LES-0037",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "For a materially different sanitized infrastructure change supplied by a qualified reviewer, produce and defend a complete IaC change-system design, plan review, partial-failure recovery and post-change verification. Do not use lesson fixtures or model answers, and do not initialize a provider, use credentials or change infrastructure without separate explicit authorization.",
+  "deliverables": [
+    "Managed-system boundary, user objective, resource owners, alternate controllers and explicit exclusions.",
+    "Exact configuration revision, variable source, CLI, provider, module, dependency lock, policy and test identities.",
+    "Target identity covering account/project/subscription, tenant, region, principal, backend, workspace, state lineage and serial.",
+    "Desired configuration, state binding and remote-observation comparison with one-to-one ownership checks.",
+    "Dependency graph with implicit/explicit edges, unknowns, parallelism, cycles, readiness and destruction order.",
+    "Plan review naming every create, update, replace, delete, import, forget and no-op plus consequence and owner.",
+    "Drift classification with actor/source, urgency, authorization and adopt/revert/ownership-transfer decision.",
+    "State design covering locking, concurrency, encryption, access, versioning, audit, snapshots, restore and break-glass operations.",
+    "Pipeline trust design covering protected source, runner isolation, supply chain, short-lived least privilege, plan/apply separation, policy, exceptions and approval.",
+    "Partial-failure timeline with remote/state ambiguity, evidence preservation, supported reconciliation and fresh-plan path.",
+    "Staged execution with communication, abort, rollback or roll-forward, quota, capacity, data, security and cost boundaries.",
+    "Post-change provider, state, user, data, security, observability, capacity and cost verification plus full convergence plan."
+  ],
+  "evidenceRequirements": [
+    "Sanitized inputs with provenance, timestamp, versions, target population and known gaps.",
+    "Graph and action inventory that can be independently recalculated from the supplied case.",
+    "Exact plan or fictional equivalent bound to source, state and target digests; screenshots alone are insufficient.",
+    "At least one replacement or deletion challenged through data, identity, availability and recovery consequences.",
+    "One drift case where automatic revert is unsafe and the ownership decision is defended.",
+    "One partial or ambiguous execution case resolved without deleting state or assuming transaction rollback.",
+    "Reviewer-observed proof that no provider, credential, remote backend, paid resource or real infrastructure was used.",
+    "Delayed reassessment on a second unseen system with different ownership and failure semantics."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Boundary and ownership", "points": 8, "observableEvidence": "Defines managed scope, owners, objectives, alternate controllers and exclusions."},
+    {"criterion": "Input and target identity", "points": 10, "observableEvidence": "Pins source, dependencies, variables, policy, backend, state, target and principal."},
+    {"criterion": "State model", "points": 10, "observableEvidence": "Explains binding, lineage, locking, sensitivity, versioning and recovery."},
+    {"criterion": "Dependency graph", "points": 8, "observableEvidence": "Explains edges, unknowns, parallelism, cycles, readiness and destruction."},
+    {"criterion": "Plan review", "points": 10, "observableEvidence": "Names every action and consequence, especially replacements and deletions."},
+    {"criterion": "Drift decision", "points": 8, "observableEvidence": "Classifies source, authorization, urgency and adopt/revert/transfer path."},
+    {"criterion": "Policy and security", "points": 10, "observableEvidence": "Covers supply chain, credentials, artifacts, state, policy, exceptions and duties."},
+    {"criterion": "Partial-failure recovery", "points": 10, "observableEvidence": "Preserves evidence, resolves ambiguity and creates a fresh complete plan."},
+    {"criterion": "Execution safety", "points": 8, "observableEvidence": "Stages change with approval, communication, abort and rollback/roll-forward."},
+    {"criterion": "Verification", "points": 8, "observableEvidence": "Checks provider, state, users, data, security, capacity, cost and convergence."},
+    {"criterion": "Trade-offs", "points": 4, "observableEvidence": "Compares module, state, environment and automation alternatives."},
+    {"criterion": "Communication", "points": 6, "observableEvidence": "States decision, evidence, uncertainty, owner, limits and review trigger."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

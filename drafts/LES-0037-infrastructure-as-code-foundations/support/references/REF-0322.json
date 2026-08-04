@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0322",
+  "title": "Purpose of Terraform State",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language/state/purpose",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["state purpose", "bindings", "metadata", "performance"],
+  "relevance": "Primary explanation of why Terraform keeps state, how it maps configuration to remote objects, and why state cannot be treated as disposable cache.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

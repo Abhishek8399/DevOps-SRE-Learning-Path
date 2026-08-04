@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0319",
+  "title": "Terraform Language Documentation",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/language",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["declarative configuration", "resources", "dependencies", "modules"],
+  "relevance": "Primary language overview for declaring managed resources, composing configuration and deriving dependencies from references.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

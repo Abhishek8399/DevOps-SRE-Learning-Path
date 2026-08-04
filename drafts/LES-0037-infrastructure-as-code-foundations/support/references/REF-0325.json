@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0325",
+  "title": "JSON output format",
+  "organization": "HashiCorp",
+  "url": "https://developer.hashicorp.com/terraform/internals/json-format",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0037"],
+  "topics": ["machine-readable plan", "JSON", "unknown values", "sensitive values"],
+  "relevance": "Primary structure reference for machine-readable plans and state, including action representations, incomplete values and sensitive-value metadata.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
