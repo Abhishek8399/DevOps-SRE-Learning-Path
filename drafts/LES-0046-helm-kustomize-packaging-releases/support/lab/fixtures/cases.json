@@ -1,0 +1,10 @@
+{
+  "values-type-drift":{"gate":"values-schema","boundary":"inputs","safeNext":"reject values and repair typed contract"},
+  "rendered-name-collision":{"gate":"identity-inventory","boundary":"render","safeNext":"stop and assign one object owner"},
+  "selector-drift":{"gate":"normalized-diff","boundary":"diff","safeNext":"stop before immutable identity change"},
+  "hook-side-effect":{"gate":"data-compatibility","boundary":"hook","safeNext":"freeze retries and involve data owner"},
+  "crd-ordering":{"gate":"api-discovery","boundary":"server","safeNext":"sequence compatible CRD lifecycle"},
+  "partial-upgrade":{"gate":"controller-condition","boundary":"rollout","safeNext":"preserve evidence and choose bounded recovery"},
+  "rollback-incompatibility":{"gate":"user-journey","boundary":"user","safeNext":"use compatible forward fix or data recovery"},
+  "overlay-ownership-conflict":{"gate":"field-ownership","boundary":"composition","safeNext":"remove duplicate field owner"}
+}
