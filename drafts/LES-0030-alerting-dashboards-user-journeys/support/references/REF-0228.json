@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0228",
+  "title": "Understanding and using the multi-target exporter pattern",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/guides/multi-target-exporter/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["black-box monitoring", "synthetic probes", "multi-target exporter", "latency", "reachability", "relabeling"],
+  "relevance": "Supports black-box probing from an external observation point and clarifies the limits and network boundary of synthetic reachability evidence.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

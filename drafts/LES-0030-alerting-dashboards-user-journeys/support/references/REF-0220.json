@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0220",
+  "title": "Alertmanager",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/alerting/latest/alertmanager/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Alertmanager documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["deduplication", "grouping", "routing", "silences", "inhibition", "high availability"],
+  "relevance": "Supports the distinction between alert rule evaluation and notification delivery, including grouping, deduplication, routing, silencing, and inhibition.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

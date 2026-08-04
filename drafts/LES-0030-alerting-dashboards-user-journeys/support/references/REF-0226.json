@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0226",
+  "title": "Grafana dashboard best practices",
+  "organization": "Grafana Labs",
+  "url": "https://grafana.com/docs/grafana/latest/visualizations/dashboards/build-dashboards/best-practices/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Grafana documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["dashboards", "panel design", "variables", "performance", "testing", "organization"],
+  "relevance": "Supports task-oriented dashboard design, tested promotion, maintainable organization, and query/performance awareness.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

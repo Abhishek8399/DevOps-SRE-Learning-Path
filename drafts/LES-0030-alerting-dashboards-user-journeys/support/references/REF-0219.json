@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0219",
+  "title": "Unit testing for rules",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/unit_testing_rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["promtool", "rule tests", "synthetic series", "evaluation time", "alert assertions"],
+  "relevance": "Supports testing alert logic against controlled time-series inputs and expected alert states before deployment.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

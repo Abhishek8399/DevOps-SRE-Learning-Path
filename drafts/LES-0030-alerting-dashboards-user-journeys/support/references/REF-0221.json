@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0221",
+  "title": "Alertmanager configuration",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/alerting/latest/configuration/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Alertmanager documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["routing tree", "receivers", "grouping intervals", "inhibition", "matchers", "configuration reload"],
+  "relevance": "Supports routing-tree semantics, inherited notification timing, receivers, matcher behavior, inhibition constraints, and fail-closed configuration reload reasoning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

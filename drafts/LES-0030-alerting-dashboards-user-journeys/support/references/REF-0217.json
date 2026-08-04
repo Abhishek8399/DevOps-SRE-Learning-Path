@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0217",
+  "title": "On-Call",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/on-call/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["on-call", "actionability", "alert fatigue", "escalation", "handoff", "human factors"],
+  "relevance": "Supports the requirement that a page have a timely human action, high signal-to-noise, explicit ownership, and an on-call system designed for sustainable response.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

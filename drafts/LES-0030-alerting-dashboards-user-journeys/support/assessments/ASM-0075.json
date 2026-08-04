@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0075",
+  "lessonId": "LES-0030",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Use an instructor-provided unseen disposable local alerting case, or a learner-created and held-back unseen disposable case, materially different from LES-0030 guided fixtures and answered scenarios. It must include an ambiguous user journey or denominator, at least two alert windows or state transitions, one zero/no-data/missing-series/evaluator-error ambiguity, one grouping/deduplication/inhibition/silence or receiver-delivery defect, one misleading dashboard, one low-traffic or synthetic-probe limitation, and one safe recovery decision. After the independence gate, do not open ASM-0073, ASM-0074, the lesson's complete-answer or product-company sections, or generated solutions. Produce a sanitized evidence package that traces signal to human decision, reconciles alert and notification populations, tests at least five ranked hypotheses, computes quality/capacity where supported, redesigns the dashboard and runbook, proves authorized containment and cleanup, and gives a five-minute interview explanation with at least twelve explicit proof limits.",
+  "deliverables": [
+    "Completed independence, authorization, environment, help, accessibility and sanitization gate before investigation",
+    "User-operation, good/total event, SLI/SLO, coverage, freshness, no-data, severity, ownership and response-time contracts",
+    "Text architecture from user event and probe through telemetry, evaluator, alert state, routing, suppression, receiver, acknowledgement, escalation and human action",
+    "Raw sanitized evaluation, state, fingerprint, grouping, receiver and dashboard evidence with exact time, scope and proof limits",
+    "At least five ranked falsifiable hypotheses with predicted, confirming and rejecting evidence",
+    "Correct zero/no-data/missing-series/error classification and tested rule-state timing",
+    "Alert-instance, duplicate, inhibited, silenced, grouped, delivered, acknowledged, escalated and resolved population reconciliation",
+    "Quality, burn-rate or capacity calculations only where the unseen data supports them, with assumptions and uncertainty",
+    "Task-oriented dashboard and runbook redesign with owner, immediate action, abort, rollback and missing-evidence behavior",
+    "Low-traffic and synthetic-probe coverage analysis without mixing synthetic success into real-user truth",
+    "Authorized containment plus separate user, telemetry, evaluator, receiver, human-response and cleanup proof",
+    "Five-minute interview explanation and at least twelve technically precise non-claims"
+  ],
+  "evidenceRequirements": [
+    "The case was unseen and materially different from published guided and answered scenarios",
+    "The learner was authorized only for the disposable local target and recorded all help received",
+    "No secrets, personal names, employer names, customer data, raw identifiers, private paths or real notification endpoints are submitted",
+    "Every claim links to sanitized raw evidence or a declared calculation, or is labeled inference, hypothesis or unknown",
+    "User health, telemetry health, evaluator state, notification delivery, acknowledgement and resolution are distinguished",
+    "Zero, no data, missing series, stale, partial, query error and healthy results are not collapsed",
+    "A silence or stopped notification is never presented as user or monitoring recovery",
+    "No production, shared, employer, online cloud, email, SMS, paging or chat system is modified or contacted",
+    "Cleanup proves exact absence of every process, port, file, queue, container, network or other resource the case was allowed to create",
+    "A qualified reviewer confirms no answer leakage, unsafe action, fabricated evidence or mastery inflation"
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independence, authorization and evidence integrity", "points": 10, "observableEvidence": "Unseen case, declared help, authorized disposable scope, sanitized raw evidence and no answer leakage or fabrication."},
+    {"criterion": "User journey, SLI and objective model", "points": 10, "observableEvidence": "Good/total events, scope, SLO, clocks, coverage, freshness and synthetic boundaries are precise."},
+    {"criterion": "Architecture and population reconciliation", "points": 10, "observableEvidence": "Signal-to-human path names owners and reconciles instances, duplicates, suppression, delivery, acknowledgement and resolution."},
+    {"criterion": "Hypothesis and diagnostic quality", "points": 10, "observableEvidence": "At least five hypotheses are ranked, falsifiable and tested at discriminating boundaries."},
+    {"criterion": "State and missing-evidence correctness", "points": 10, "observableEvidence": "Timing and zero/no-data/missing-series/stale/partial/error states are correctly classified and tested."},
+    {"criterion": "Quality, burn and capacity reasoning", "points": 10, "observableEvidence": "Supported calculations use matched populations, units, assumptions, uncertainty and precise limits."},
+    {"criterion": "Routing, containment and human factors", "points": 10, "observableEvidence": "Grouping, dedupe, inhibition, silence, owner, action, runbook, expiry, escalation and fatigue are handled safely."},
+    {"criterion": "Dashboard, security and governance", "points": 10, "observableEvidence": "Dashboard supports real tasks; access, secrets, templates, silences, audit and sensitive data are controlled."},
+    {"criterion": "Recovery, rollout and cleanup", "points": 10, "observableEvidence": "Canary, abort, rollback, separate recovery planes, observation window and exact final absence are proved."},
+    {"criterion": "Communication and proof limits", "points": 10, "observableEvidence": "The interview response is clear and at least twelve proof limits are technically specific."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

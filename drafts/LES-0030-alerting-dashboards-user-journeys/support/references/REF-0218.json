@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0218",
+  "title": "Alerting rules",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["alerting rules", "pending", "firing", "for", "keep_firing_for", "labels", "annotations"],
+  "relevance": "Supports the Prometheus rule state model, condition evaluation, pending duration, continued firing, and the separation of labels used for routing from annotations used for human context.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

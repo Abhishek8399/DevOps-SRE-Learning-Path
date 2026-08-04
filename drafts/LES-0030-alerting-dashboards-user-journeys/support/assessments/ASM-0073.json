@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0073",
+  "lessonId": "LES-0030",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A database outage causes checkout failures. Eighty checkout instances each create dependency alert instances. The user-journey alert and one database-root alert are also firing. Because the intended grouping label is absent, child alerts are not grouped; because the inhibition rule does not match, they are not suppressed; and receiver acknowledgement timeouts cause some notification retries. The on-call receives 480 notifications in fifteen minutes. Define rule, evaluation, alert instance, state, notification, delivery, page, grouping, deduplication, inhibition, silence, acknowledgement, and resolution. Calculate the observed notification rate. Identify what can and cannot be calculated about duplicates. Locate the earliest supported amplification boundary, rank hypotheses, choose safe containment, preserve actionable coverage, and prove user, alert-engine, and notification recovery separately.",
+  "directAnswer": "The user incident is checkout failure; the human-response incident is notification amplification. The observed delivery rate is 480/15 = 32 notifications per minute. Dividing by eighty instances gives six notifications per instance only as an average under an even-allocation assumption; it does not reveal unique alert instances or retry count because the data does not provide fingerprints or per-receiver delivery IDs. The earliest supported amplification boundary is notification policy: missing grouping and nonmatching inhibition allow many child instances to become deliveries, while acknowledgement timeouts can add retries after that boundary. Preserve the user-journey and database-root alerts, apply only an authorized, exact-match, expiring containment to redundant child notifications, correct and test grouping/inhibition/deduplication, and keep an out-of-band path for notification-system failure. User recovery requires successful checkout evidence; alert-engine recovery requires correct state/evaluation results; notification recovery requires the intended bounded receiver delivery, acknowledgement, and resolved message. Silence alone proves none of those.",
+  "foundation": "A rule is versioned logic evaluated on a schedule. One evaluation produces zero or more alert instances, commonly separated by label set. An instance has a state such as normal, pending, or firing. A notification is the message assembled after routing policy; a delivery is one attempt to send it; and a page is the human-interrupting outcome. Grouping combines related instances, deduplication prevents repeated delivery of the same identity, inhibition suppresses a dependent alert while a source alert is active, and a silence mutes matching notifications for a bounded time without changing the underlying alert condition. Acknowledging human receipt does not necessarily resolve the technical condition. Resolution means the declared condition has recovered according to its rule and evidence contract.",
+  "reasoningSteps": [
+    "Separate user impact from alert delivery volume: checkout is failing, and the notification path is amplifying evidence.",
+    "Draw the path from metric or probe through rule evaluation, alert instance, state, routing, grouping, inhibition, deduplication, receiver delivery, acknowledgement, escalation, and human action.",
+    "Calculate 480 deliveries divided by fifteen minutes as 32 deliveries per minute.",
+    "Refuse to call 480 unique pages or retries because fingerprints, grouping keys, receiver IDs, attempts, acknowledgements, and human interruptions are not enumerated.",
+    "Rank missing grouping label first because it directly explains per-instance fan-out; rank inhibition mismatch next because the root condition should suppress dependent noise; rank receiver retry next because it can duplicate already-routed notifications.",
+    "Preserve raw, sanitized alert instances, rule versions, routing configuration, receiver attempt IDs, acknowledgement results, and the user-journey SLI before modifying policy.",
+    "Contain only redundant child delivery with an exact selector, owner, reason, expiry, and abort condition; retain the root and symptom alerts plus an out-of-band notification-path alert.",
+    "Correct policy in a test or canary using known input: expected fingerprints, group count, inhibited population, deliveries, and resolved behavior.",
+    "Verify checkout recovery independently, then rule evaluation/state recovery, then receiver delivery/acknowledgement and escalation recovery.",
+    "Review page usefulness, time-to-acknowledge, false positives, duplicates, missed significant events, and runbook action after the incident."
+  ],
+  "seniorAnswer": "I would declare two coupled incidents: a checkout-impact incident and an alert-delivery amplification incident. We observe 32 notification deliveries per minute, but unique incidents, duplicate count, and actual human pages remain unknown until we reconcile alert fingerprints and receiver delivery IDs. The first supported policy defects are absent grouping identity and failed inhibition; receiver acknowledgement timeouts are a later duplication path. I would preserve evidence and keep one user-symptom plus one database-root signal active. If authorized, I would apply an exact, expiring mute only to the redundant child population while testing a corrected group key and inhibition matcher against recorded fixtures, with an abort if the root/symptom page disappears or another service is suppressed. I would verify three recoveries independently: successful checkout journeys and SLI, correct evaluator and alert-instance states including no-data/error behavior, and one bounded notification group reaching the correct owner with acknowledgement and resolution. The PIR would calculate delivery amplification from reconciled identities, test the policy as code, add configuration ownership and expiry checks, and measure page precision, recall, duplicates, time-to-detect, time-to-acknowledge, and time-to-action.",
+  "weakAnswer": "Silence everything until the database is fixed, then close the alert because pages stopped.",
+  "whyWeak": "It removes detection coverage, has no scope or expiry, confuses notification suppression with service recovery, destroys the evidence needed to distinguish grouping from retry duplication, and can leave future outages invisible.",
+  "evidence": [
+    {"signal": "480 notification deliveries were observed over fifteen minutes.", "proves": "The measured delivery rate for that scope is 32 per minute.", "doesNotProve": "Unique alert instances, unique incidents, receiver retries, human pages, or even allocation across instances."},
+    {"signal": "The intended grouping label is absent and child alerts are not grouped.", "proves": "The declared grouping policy cannot aggregate those instances as intended.", "doesNotProve": "That grouping is the only duplication source or that a corrected label is safe for every route."},
+    {"signal": "The inhibition rule does not match while the database-root alert fires.", "proves": "The declared dependent child population is not suppressed by that rule.", "doesNotProve": "That every checkout failure shares the database cause or that broad inhibition is safe."},
+    {"signal": "Receiver acknowledgement timeouts trigger retries.", "proves": "One delivery can be attempted more than once under the stated behavior.", "doesNotProve": "The retry count or whether a receiver or human processed an earlier attempt."},
+    {"signal": "The user-journey SLI confirms checkout failures.", "proves": "There is independent evidence of user impact in that journey and scope.", "doesNotProve": "Every checkout mode, geography, customer segment, dependency, or root cause."}
+  ],
+  "followUps": [
+    {"prompt": "Why not inhibit every checkout alert when the database alert fires?", "answer": "A broad dependency assumption can hide a second simultaneous checkout failure. Match only proven dependency labels and keep the user-symptom alert visible."},
+    {"prompt": "What makes a silence safe?", "answer": "Authorization, exact matchers, reason, owner, start/end time, linked incident, retained root and symptom coverage, verification, and explicit removal. It is containment, not a permanent fix."},
+    {"prompt": "What is the recovery proof if the pager vendor is down?", "answer": "Use an independently monitored out-of-band path and a known test notification with a non-production recipient. A green vendor dashboard alone is circular evidence."}
+  ],
+  "rubric": [
+    {"criterion": "Terms and lifecycle boundaries", "points": 10, "observableEvidence": "Defines rule through human page, including all suppression and recovery terms without conflation."},
+    {"criterion": "Arithmetic and population limits", "points": 10, "observableEvidence": "Calculates 32 deliveries/minute and refuses unsupported unique/duplicate counts."},
+    {"criterion": "Earliest amplification boundary", "points": 10, "observableEvidence": "Locates grouping/inhibition/deduplication policy and separates later receiver retries."},
+    {"criterion": "Hypothesis discipline", "points": 10, "observableEvidence": "Ranks falsifiable mechanisms and names confirming/rejecting identity evidence."},
+    {"criterion": "Safe containment", "points": 10, "observableEvidence": "Preserves root/symptom coverage and uses exact, expiring, authorized suppression with aborts."},
+    {"criterion": "Recovery verification", "points": 10, "observableEvidence": "Separates user, evaluator/state, and receiver/human-response recovery."},
+    {"criterion": "Prevention and human factors", "points": 10, "observableEvidence": "Tests policy as code and measures actionable quality rather than only volume."},
+    {"criterion": "Proof limits and communication", "points": 10, "observableEvidence": "States precise non-claims and communicates two coupled incidents clearly."}
+  ],
+  "maximumScore": 80,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

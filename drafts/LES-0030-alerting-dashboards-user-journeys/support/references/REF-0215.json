@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0215",
+  "title": "Monitoring",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/monitoring/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["monitoring systems", "metrics with purpose", "severity", "suppression", "dashboards", "alert testing"],
+  "relevance": "Supports purpose-driven metrics, severity choice, suppression, dashboard investigation flow, monitoring-system self-observation, and testing alert logic as code.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

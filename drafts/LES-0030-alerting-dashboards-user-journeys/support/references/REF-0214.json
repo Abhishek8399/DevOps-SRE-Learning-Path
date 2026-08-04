@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0214",
+  "title": "Monitoring Distributed Systems",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["monitoring", "black-box", "white-box", "golden signals", "dashboards", "paging", "noise"],
+  "relevance": "Supports the symptom-versus-cause distinction, simple actionable paging, dashboard purpose, four golden signals, and the operational cost of noisy pages.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

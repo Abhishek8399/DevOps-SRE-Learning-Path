@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0223",
+  "title": "No Data and Error states",
+  "organization": "Grafana Labs",
+  "url": "https://grafana.com/docs/grafana/latest/alerting/fundamentals/alert-rule-evaluation/nodata-and-error-states/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Grafana documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["no data", "error", "pending", "alert state", "keep last state", "missing series"],
+  "relevance": "Supports explicit no-data and evaluator-error states, their configurable transitions, special alert instances, and the danger of treating missing evidence as healthy zero.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

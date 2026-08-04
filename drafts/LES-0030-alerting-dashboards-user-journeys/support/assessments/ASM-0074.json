@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0074",
+  "lessonId": "LES-0030",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Design a local-first alerting and dashboard contract for a checkout user journey with a 99.9% availability SLO over thirty days. The current bad-event ratios are 2.0% over one hour, 1.8% over five minutes, 0.7% over six hours, and 0.65% over thirty minutes. Use starting page thresholds of 14.4x for the one-hour/five-minute pair and 6x for the six-hour/thirty-minute pair. Six hundred services each evaluate four rule groups every thirty seconds, and each group can return at most forty alert instances. Calculate error-budget fraction, all four burn rates, which page paths fire, rule-group evaluations per second, and the maximum alert-instance evaluations per second. Then design the user-journey contract, alert lifecycle, no-data/error handling, grouping/routing, dashboard hierarchy, runbook, test matrix, security controls, rollout, recovery proof, and explicit limits. Explain low-traffic and synthetic-probe trade-offs.",
+  "directAnswer": "A 99.9% target leaves an error-budget fraction of 0.001. The burn rates are 0.020/0.001 = 20x, 0.018/0.001 = 18x, 0.007/0.001 = 7x, and 0.0065/0.001 = 6.5x. Both long and short windows exceed 14.4x for the fast page, and both exceed 6x for the slower page, so both policies are active; routing should group them into one actionable incident rather than interrupt twice. Six hundred services times four groups divided by thirty seconds equals 80 rule-group evaluations per second. At forty instances per evaluation, the declared upper bound is 3,200 alert-instance evaluations per second. The design must start with valid good/total user events and explicit coverage/freshness, then keep evaluator, routing, receiver, and human-response health observable. The landing dashboard answers whether users are succeeding now, whether budget is burning, whether evidence is complete/fresh, and what changed; deeper dashboards explain causes. Pages require immediate owned action and a runbook, while slower risks become tickets. No-data, missing-series, and query-error states must never silently become healthy zero.",
+  "foundation": "The SLO is a product objective, not a CPU threshold. Good events divided by valid total events form the SLI; bad ratio is one minus that ratio. Error-budget fraction is one minus the SLO target. Burn rate is bad-event ratio divided by allowed bad fraction. A multiwindow policy requires both a long window, which establishes significance, and a short window, which establishes that burning is still active. Rule evaluation produces alert instances; notification policy groups and routes them; a dashboard supports a decision but does not itself notify or prove health. A synthetic journey is controlled black-box evidence from one path and vantage point, not a complete sample of real users.",
+  "reasoningSteps": [
+    "Define the user operation precisely: checkout start, payment authorization, order commit, terminal success/failure, exclusions, deadline, identity, and duplicate handling.",
+    "Define good and total events from the same valid population, with units, timestamps, coverage, freshness, late-arrival, and no-data behavior.",
+    "Calculate allowed bad fraction as 1 - 0.999 = 0.001 and divide each measured bad ratio by 0.001.",
+    "Require both windows in each policy: 20x and 18x exceed 14.4x; 7x and 6.5x exceed 6x.",
+    "Treat simultaneous fast and slow policies as one incident with severity determined by the fastest required action, not two human interruptions.",
+    "Calculate evaluation load: 600 * 4 / 30 = 80 rule-group evaluations/second and 80 * 40 = 3,200 maximum instance evaluations/second under the stated ceiling.",
+    "Define alert labels for stable routing identity and annotations for summary, impact, dashboard, runbook, owner, and proof limits; prohibit secrets and unbounded labels.",
+    "Model normal, pending, firing, acknowledged, retained-firing, resolved, no-data, missing-series, and evaluator-error states without converting unknown to healthy.",
+    "Build a landing dashboard from user journey, burn, traffic denominator, coverage/freshness, deploy markers, and regional scope; use drilldowns for dependency, saturation, logs, traces, and capacity.",
+    "Test syntax, known time series, state timing, zero/no-data/error/missing-series, low traffic, resets, gaps, late samples, grouping, inhibition, duplicates, routes, receiver failure, and resolution.",
+    "Roll out with shadow evaluation, canary routes to a non-paging receiver, page-budget and coverage aborts, versioned rollback, and preserved old rules.",
+    "Verify user recovery, telemetry recovery, evaluator recovery, notification delivery, acknowledgement/escalation, and post-recovery stability independently."
+  ],
+  "seniorAnswer": "I would begin with the checkout journey contract and its valid denominator, because an elegant alert on a corrupt SLI is worse than no alert. At 99.9%, allowed bad fraction is 0.001. Current windows burn at 20x, 18x, 7x, and 6.5x, so both the 14.4x fast pair and 6x slow pair fire. They describe one active incident and should group by service, journey, environment, and severity; the faster required response wins. Capacity is 80 group evaluations/s and at most 3,200 instance evaluations/s before query cost, replicas, retries, state retention, and receiver fan-out. I would page only on a user-impact or imminent hard-limit condition with an immediate runbook action, route slow budget threats to owned tickets, and separately alert on the monitoring critical path. The landing view would show good/total, bad ratio, SLO, remaining budget, long/short burns, denominator, coverage, freshness, regions, synthetic versus real traffic, and deploy/config markers. No-data, missing-series, stale, partial, query-error, and real zero are distinct states. Before paging, rules run through syntax and deterministic tests, replay, shadow evaluation, canary notification, duplication/grouping/inhibition checks, and failure injection. Rollback preserves the previous rule version and evidence. Recovery is not a green panel: it is successful independent checkout evidence, restored complete/fresh telemetry, normal evaluator states, one intended receiver delivery, human acknowledgement/escalation proof, resolved behavior, and stability through the observation window.",
+  "weakAnswer": "Create a red panel when errors exceed 1%, page every service instance, and use no data as zero so the dashboard stays clean.",
+  "whyWeak": "It ignores the SLO error budget, long/short window semantics, denominator validity, low traffic, grouping, actionability, notification capacity, and monitoring failure. Converting no data to zero manufactures health and per-instance pages create fatigue.",
+  "evidence": [
+    {"signal": "The SLO target is 0.999 over thirty days.", "proves": "The declared allowed bad-event fraction is 0.001 for that objective and window.", "doesNotProve": "That the SLI population, target, exclusions, or business agreement is valid."},
+    {"signal": "One-hour and five-minute bad ratios are 0.020 and 0.018.", "proves": "Their declared burn rates are 20x and 18x, both above 14.4x.", "doesNotProve": "Traffic sufficiency, sample freshness, causality, or user-segment completeness."},
+    {"signal": "Six-hour and thirty-minute bad ratios are 0.007 and 0.0065.", "proves": "Their declared burn rates are 7x and 6.5x, both above 6x.", "doesNotProve": "That a second human interruption is useful when the fast page already represents the incident."},
+    {"signal": "600 services evaluate four groups every thirty seconds with forty instances at most.", "proves": "The stated arithmetic bounds group evaluations at 80/s and instance evaluations at 3,200/s.", "doesNotProve": "Query latency, series scans, replicas, retries, memory, HA, receiver fan-out, or production capacity."}
+  ],
+  "followUps": [
+    {"prompt": "Why require both a long and short burn window?", "answer": "The long window establishes meaningful budget consumption; the short window confirms the burn is still active, improving reset behavior and reducing pages for already-recovered spikes."},
+    {"prompt": "How do you alert for low traffic?", "answer": "First decide whether a single failure truly warrants urgent action. Consider longer windows, related aggregate populations, controlled synthetic traffic, or product resilience. Label synthetic traffic separately because it can miss real-user paths or mask them if mixed into the denominator."},
+    {"prompt": "Should a dashboard query and an alert query be identical?", "answer": "They should share reviewed definitions or recording rules where appropriate, but dashboard exploration can be complex while the paging path should stay simple, bounded, tested, and independently monitored."},
+    {"prompt": "What security controls matter?", "answer": "Least-privilege rule and route editing, reviewed change history, secret references rather than values, safe notification templates, restricted dashboard data, audit logs, protected silences, and no sensitive labels or annotations."}
+  ],
+  "rubric": [
+    {"criterion": "User journey and SLI contract", "points": 10, "observableEvidence": "Defines good/total, scope, deadlines, exclusions, identity, clocks, coverage, freshness, and missing behavior."},
+    {"criterion": "SLO and burn arithmetic", "points": 10, "observableEvidence": "Computes 0.001 budget and 20x, 18x, 7x, 6.5x burns with both page decisions."},
+    {"criterion": "Evaluation capacity", "points": 10, "observableEvidence": "Computes 80 group and 3,200 maximum instance evaluations/s and states omitted costs."},
+    {"criterion": "Alert lifecycle and missing states", "points": 10, "observableEvidence": "Models state transitions and distinguishes zero, no data, missing series, stale, partial, and error."},
+    {"criterion": "Routing and human response", "points": 10, "observableEvidence": "Groups one incident, chooses page versus ticket, defines owner, action, runbook, acknowledgement, and escalation."},
+    {"criterion": "Dashboard decision design", "points": 10, "observableEvidence": "Builds a user-first landing view and evidence-linked drilldowns with scope and freshness visible."},
+    {"criterion": "Testing and rollout", "points": 10, "observableEvidence": "Covers deterministic rules, routing failures, shadow/canary, aborts, rollback, and version evidence."},
+    {"criterion": "Security and governance", "points": 10, "observableEvidence": "Uses least privilege, secret-safe templates, audit, protected silences, ownership, and review."},
+    {"criterion": "Recovery and reliability", "points": 10, "observableEvidence": "Separately proves user, telemetry, evaluator, receiver, acknowledgement, resolution, and stability."},
+    {"criterion": "Trade-offs and proof limits", "points": 10, "observableEvidence": "Explains low traffic, synthetics, cardinality/cost, monitoring dependency, and precise non-claims."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

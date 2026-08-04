@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0030",
+  "caseId": "alert-lifecycle-reasoning-v1",
+  "alertQuality": {
+    "significantEvents": 10,
+    "alertsFired": 12,
+    "truePositives": 8,
+    "evaluationWindowDays": 30
+  },
+  "stateMachine": {
+    "evaluationIntervalSeconds": 60,
+    "pendingForSeconds": 120,
+    "keepFiringForSeconds": 120,
+    "breaches": [false, true, true, true, true, false, false, false]
+  },
+  "burnRate": {
+    "sloTarget": 0.999,
+    "periodDays": 30,
+    "policies": [
+      {"name": "fast-page", "severity": "page", "longWindow": "1h", "shortWindow": "5m", "threshold": 14.4, "longErrorRatio": 0.0200, "shortErrorRatio": 0.0180},
+      {"name": "slow-page", "severity": "page", "longWindow": "6h", "shortWindow": "30m", "threshold": 6.0, "longErrorRatio": 0.0070, "shortErrorRatio": 0.0065},
+      {"name": "ticket", "severity": "ticket", "longWindow": "3d", "shortWindow": "6h", "threshold": 1.0, "longErrorRatio": 0.0012, "shortErrorRatio": 0.0011},
+      {"name": "recovered-spike", "severity": "page", "longWindow": "1h", "shortWindow": "5m", "threshold": 14.4, "longErrorRatio": 0.0200, "shortErrorRatio": 0.0002}
+    ]
+  },
+  "noData": {
+    "evaluations": [
+      {"name": "healthy-zero", "queryStatus": "success", "expectedSeries": ["region-a"], "returned": {"region-a": 0.0}},
+      {"name": "partial-population", "queryStatus": "success", "expectedSeries": ["region-a", "region-b"], "returned": {"region-a": 0.01}},
+      {"name": "no-data", "queryStatus": "success", "expectedSeries": ["region-a"], "returned": {}},
+      {"name": "query-error", "queryStatus": "error", "expectedSeries": ["region-a"], "returned": {}}
+    ]
+  },
+  "routing": {
+    "alerts": [
+      {"fingerprint": "f-001", "groupKey": "checkout-page", "inhibited": false, "silenced": false},
+      {"fingerprint": "f-001", "groupKey": "checkout-page", "inhibited": false, "silenced": false},
+      {"fingerprint": "f-002", "groupKey": "checkout-page", "inhibited": false, "silenced": false},
+      {"fingerprint": "f-003", "groupKey": "database-critical", "inhibited": false, "silenced": false},
+      {"fingerprint": "f-004", "groupKey": "checkout-page", "inhibited": true, "silenced": false},
+      {"fingerprint": "f-005", "groupKey": "probe-ticket", "inhibited": false, "silenced": true}
+    ]
+  },
+  "flapping": {
+    "fireThreshold": 100,
+    "recoverThreshold": 95,
+    "values": [95, 101, 99, 103, 97, 94, 92]
+  },
+  "dashboard": {
+    "panels": [
+      {"name": "real-zero-errors", "numerator": 0, "denominator": 100, "expectedDenominator": 100, "freshnessAgeSeconds": 10, "freshnessLimitSeconds": 300},
+      {"name": "no-traffic-evidence", "numerator": null, "denominator": null, "expectedDenominator": 100, "freshnessAgeSeconds": 10, "freshnessLimitSeconds": 300},
+      {"name": "stale-success-rate", "numerator": 1, "denominator": 100, "expectedDenominator": 100, "freshnessAgeSeconds": 900, "freshnessLimitSeconds": 300},
+      {"name": "partial-coverage", "numerator": 1, "denominator": 60, "expectedDenominator": 100, "freshnessAgeSeconds": 10, "freshnessLimitSeconds": 300}
+    ]
+  },
+  "incident": {
+    "symptom": "A database outage produces 480 notifications in fifteen minutes while one user-journey alert and one database-root alert describe the actionable impact.",
+    "facts": [
+      "eighty application instances each emit dependency alerts",
+      "duplicate alert instances are routed without the intended grouping key",
+      "dependency alerts are not inhibited while the database-root alert fires",
+      "the notification receiver retries deliveries after acknowledgement timeouts",
+      "the user-journey SLI confirms checkout failures"
+    ],
+    "earliestSupportedBoundary": "notification policy grouping, inhibition, and deduplication",
+    "unsafeFirstMoves": [
+      "disable every alert rule",
+      "silence all severities without an expiry",
+      "declare user recovery because notifications stop",
+      "delete alert history before preserving evidence"
+    ]
+  }
+}

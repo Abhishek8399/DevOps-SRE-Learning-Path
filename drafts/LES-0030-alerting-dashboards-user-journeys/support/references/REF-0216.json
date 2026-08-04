@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0216",
+  "title": "Alerting on SLOs",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/alerting-on-slos/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0030"],
+  "topics": ["SLI", "SLO", "error budget", "burn rate", "multiwindow alerts", "precision", "recall", "synthetic traffic"],
+  "relevance": "Supports alert-quality dimensions, error-budget burn arithmetic, multiwindow multi-burn-rate design, low-traffic limitations, and bounded synthetic-user signals.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
