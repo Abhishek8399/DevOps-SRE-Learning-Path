@@ -1,77 +1,121 @@
 import Link from "next/link";
-import { readerEntriesForVolume } from "../lessons/reader-catalog";
+import LibraryReadingDesk, { type LibraryLesson } from "../library-reading-desk";
+import { readerCatalog, readerEntriesForVolume } from "../lessons/reader-catalog";
+import { isLearningLessonId } from "../my-learning/learning-state";
 
-function lessonState(count: number): string {
-  return `${count} ${count === 1 ? "LESSON" : "LESSONS"} AVAILABLE`;
-}
+type VolumeCover = Readonly<{
+  number: string;
+  title: string;
+  subtitle: string;
+  route?: string;
+  count?: number;
+  tone: string;
+}>;
 
-const startLessonCount = readerEntriesForVolume("00-start-safely").length;
-const linuxLessonCount = readerEntriesForVolume("01-linux-systems").length;
-const connectivityLessonCount = readerEntriesForVolume("02-connectivity").length;
-const engineeringLessonCount = readerEntriesForVolume("03-engineering-delivery").length;
-const reliabilityLessonCount = readerEntriesForVolume("04-reliability-operations").length;
+const availableCounts = {
+  start: readerEntriesForVolume("00-start-safely").length,
+  linux: readerEntriesForVolume("01-linux-systems").length,
+  network: readerEntriesForVolume("02-connectivity").length,
+  engineering: readerEntriesForVolume("03-engineering-delivery").length,
+  reliability: readerEntriesForVolume("04-reliability-operations").length,
+};
 
-const volumes = [
-  { number: "00", title: "Start safely", detail: "Systems thinking, evidence, cleanup, command risk, and a reliable learning workflow.", state: lessonState(startLessonCount), href: "/book/start" },
-  { number: "01", title: "Linux systems", detail: "Storage, processes, CPU, memory, identity, permissions, and operating-system internals.", state: lessonState(linuxLessonCount), href: "/book/linux" },
-  { number: "02", title: "Connectivity", detail: "Ethernet through TLS: routing, TCP, DNS, HTTP, proxies, load balancers, and PKI.", state: lessonState(connectivityLessonCount), href: "/book/connectivity" },
-  { number: "03", title: "Engineering and delivery", detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, and supply chain.", state: lessonState(engineeringLessonCount), href: "/book/engineering" },
-  { number: "04", title: "Reliability and operations", detail: "Observability, SLOs, capacity, overload, incidents, toil, backup, and recovery.", state: lessonState(reliabilityLessonCount), href: "/book/reliability" },
-  { number: "05", title: "Infrastructure and platforms", detail: "Terraform, Ansible, Kubernetes internals, GitOps, golden paths, and platform SLOs.", state: "PLANNED" },
-  { number: "06", title: "State and distributed systems", detail: "Databases, queues, streams, replication, consistency, consensus, and workflows.", state: "PLANNED" },
+const volumes: VolumeCover[] = [
+  { number: "00", title: "Foundations", subtitle: "Safe systems thinking", route: "/book/start", count: availableCounts.start, tone: "moss" },
+  { number: "01", title: "Linux Systems", subtitle: "The machine beneath the platform", route: "/book/linux", count: availableCounts.linux, tone: "slate" },
+  { number: "02", title: "Networking", subtitle: "Packets, names, trust and requests", route: "/book/connectivity", count: availableCounts.network, tone: "blue" },
+  { number: "03", title: "Automation & Programming", subtitle: "Git, shells, Python and delivery", route: "/book/engineering", count: availableCounts.engineering, tone: "ochre" },
+  { number: "04", title: "Site Reliability Engineering", subtitle: "Signals, objectives and incidents", route: "/book/reliability", count: availableCounts.reliability, tone: "rust" },
+  { number: "05", title: "CI/CD & Release Engineering", subtitle: "From commit to safe production", tone: "indigo" },
+  { number: "06", title: "Containers", subtitle: "Isolation, images and runtimes", tone: "blue" },
+  { number: "07", title: "Kubernetes", subtitle: "Control loops and cluster operations", tone: "slate" },
+  { number: "08", title: "Cloud Engineering", subtitle: "Reliable public-cloud systems", tone: "moss" },
+  { number: "09", title: "Infrastructure as Code", subtitle: "Repeatable, reviewable change", tone: "ochre" },
+  { number: "10", title: "Observability", subtitle: "Evidence across the request path", tone: "rust" },
+  { number: "11", title: "Platform Engineering", subtitle: "Golden paths and paved roads", tone: "indigo" },
+  { number: "12", title: "Security", subtitle: "Identity, policy and supply chain", tone: "rust" },
+  { number: "13", title: "Distributed Systems", subtitle: "Time, state and partial failure", tone: "blue" },
+  { number: "14", title: "Production Troubleshooting", subtitle: "Restore service with evidence", tone: "ochre" },
+  { number: "15", title: "Architecture & Leadership", subtitle: "Trade-offs, influence and scale", tone: "moss" },
+  { number: "16", title: "Interview Mastery", subtitle: "Explain and defend the system", tone: "indigo" },
 ];
 
-const tracks = [
-  "AWS and EKS reliability",
-  "Private cloud: KVM, OpenStack, Ceph, OVS/OVN",
-  "Data and ML platforms",
-  "Developer platforms and CI compute",
-  "Security and DevSecOps",
-  "Architecture, leadership, and FinOps",
-  "AI-assisted operations and AI platforms",
-];
+const lessons: LibraryLesson[] = readerCatalog.map((lesson) => {
+  if (!isLearningLessonId(lesson.stateId)) {
+    throw new Error(`reader state identity is not trusted: ${lesson.stateId}`);
+  }
+  return {
+    id: lesson.stateId,
+    number: lesson.number,
+    volumeNumber: lesson.volumeNumber,
+    title: lesson.title,
+    href: lesson.route,
+  };
+});
 
 export default function BookLibraryPage() {
   return (
     <>
-      <header className="library-hero">
-        <p className="eyebrow">THE COMPLETE LEARNING MAP</p>
-        <h1>One field manual.<br /><em>Foundation to staff-level systems.</em></h1>
-        <p>
-          Begin with systems thinking and Ubuntu, then move outward into containers,
-          Kubernetes, cloud, private infrastructure, data platforms, reliability,
-          security, and architecture. Every chapter connects mechanism to production judgment.
-        </p>
-        <div className="library-actions">
-          <Link href="/book/start">Begin with Volume 00</Link>
-          <Link href="/my-learning">Resume and bookmarks</Link>
-          <Link href="/search">Search lessons</Link>
+      <header className="field-library-hero">
+        <div className="main-book-cover" aria-label="The Engineer's Field Manual cover">
+          <span>RELIABILITY ATLAS</span>
+          <div aria-hidden="true" className="cover-mark">
+            <i /><i /><i /><i /><i />
+          </div>
+          <h1>The Engineer’s<br /><em>Field Manual</em></h1>
+          <p>DevOps · SRE · Platform Engineering</p>
+          <small>LOCAL FIELD EDITION / 2026</small>
+        </div>
+        <div className="library-hero-copy">
+          <p className="eyebrow">THE COMPLETE SYSTEMS READING ROOM</p>
+          <h2>Learn the mechanism.<br />Practise the judgment.</h2>
+          <p>
+            A local-first technical book for understanding production systems from the
+            Linux process to the distributed platform. Read in dependency order, run
+            bounded labs, interpret evidence, and return later without losing the map.
+          </p>
+          <div className="library-actions">
+            <Link href="/book/start">Open Volume 00 <span aria-hidden="true">→</span></Link>
+            <Link href="/search">Search the field manual</Link>
+          </div>
+          <dl className="library-edition-facts">
+            <div><dt>Published</dt><dd>{lessons.length} lessons</dd></div>
+            <div><dt>Runtime</dt><dd>Localhost</dd></div>
+            <div><dt>Progress</dt><dd>Browser-local</dd></div>
+          </dl>
         </div>
       </header>
 
-      <section className="knowledge-map" id="knowledge-map">
+      <LibraryReadingDesk lessons={lessons} />
+
+      <section className="volume-collection" aria-labelledby="volume-collection-title">
         <div className="library-section-heading">
-          <div><span>CORE CURRICULUM</span><h2>Build in dependency order</h2></div>
-          <p>Planned means the place is reserved in the architecture. Content appears only after it is reviewed and locally validated.</p>
+          <div><span>The collected field manuals</span><h2 id="volume-collection-title">Seventeen volumes. One dependency map.</h2></div>
+          <p>Published covers open reviewed lessons. Reserved covers show the complete architecture without pretending unfinished content is ready.</p>
         </div>
-        <div className="volume-grid">
+        <div className="field-volume-grid">
           {volumes.map((volume) => {
-            const content = <><div><span>{volume.number}</span><small>{volume.state}</small></div><strong>{volume.title}</strong><p>{volume.detail}</p></>;
-            return volume.href
-              ? <Link className="volume-card available" href={volume.href} key={volume.number}>{content}<b>Open volume -&gt;</b></Link>
-              : <article className="volume-card" key={volume.number}>{content}</article>;
+            const cover = (
+              <>
+                <span className="cover-volume">VOL. {volume.number}</span>
+                <div className="mini-cover-mark" aria-hidden="true"><i /><i /><i /></div>
+                <h3>{volume.title}</h3>
+                <p>{volume.subtitle}</p>
+                <small>{volume.route ? `${volume.count} lessons available` : "Reserved in the curriculum"}</small>
+                <b>{volume.route ? "Open volume →" : "Planned"}</b>
+              </>
+            );
+            return volume.route
+              ? <Link className={`field-volume-cover ${volume.tone}`} href={volume.route} key={volume.number}>{cover}</Link>
+              : <article className={`field-volume-cover ${volume.tone} planned`} key={volume.number} aria-label={`${volume.title}, planned`}>{cover}</article>;
           })}
         </div>
       </section>
 
-      <section className="track-map">
-        <div className="library-section-heading"><div><span>SPECIALIST PATHS</span><h2>Deep tracks after the shared core</h2></div></div>
-        <div className="track-list">{tracks.map((track) => <span key={track}>{track}</span>)}</div>
-      </section>
-
-      <aside className="library-principle">
-        <strong>The promise of this book</strong>
-        <p>Follow the system picture, check prerequisites, run the bounded Ubuntu lab, interpret the evidence, clean up, then see how the same mechanism behaves at production scale.</p>
+      <aside className="field-manual-principle">
+        <span>Operator’s margin</span>
+        <blockquote>“A command is not an answer. It is an experiment that must have a prediction, a boundary, and a recovery path.”</blockquote>
+        <Link href="/my-learning">Open your reading desk →</Link>
       </aside>
     </>
   );

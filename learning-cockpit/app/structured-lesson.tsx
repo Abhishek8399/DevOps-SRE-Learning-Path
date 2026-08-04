@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CopyCommand from "./copy-command";
+import EditorialCodeBlock from "./editorial-code-block";
 import {
   adjacentReaderEntries,
   findReaderEntry,
@@ -60,19 +61,10 @@ function MarkdownBlocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
           );
         }
         if (block.kind === "code") {
-          const copyable = ["bash", "sh", "shell"].includes(block.language);
-          return (
-            <div className={`${styles.codeBlock} ${block.language === "text" ? styles.diagram : ""}`} key={key}>
-              <div>
-                <span>{block.language === "text" ? "SYSTEM MAP" : block.language || "OUTPUT"}</span>
-                {copyable ? <CopyCommand text={block.value} /> : null}
-              </div>
-              <pre><code>{block.value}</code></pre>
-            </div>
-          );
+          return <EditorialCodeBlock diagram={block.language === "text"} key={key} language={block.language} value={block.value} />;
         }
         return (
-          <div className={styles.tableWrap} key={key} role="region" tabIndex={0}>
+          <div aria-label="Scrollable technical table" className={styles.tableWrap} key={key} role="region" tabIndex={0}>
             <table>
               <thead><tr>{block.headers.map((header, headerIndex) => (
                 <th key={`${key}-h-${headerIndex}`} scope="col"><InlineContent content={header} /></th>

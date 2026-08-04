@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { readerEntriesForVolume, type ReaderVolumeId } from "./lessons/reader-catalog";
 import NavigationLink from "./navigation-link";
+import NavigationVolume from "./navigation-volume";
+import ShellToggle from "./shell-toggle";
 
 const availableVolumes: readonly Readonly<{
   id: ReaderVolumeId;
@@ -16,33 +18,48 @@ const availableVolumes: readonly Readonly<{
 ];
 
 const plannedVolumes = [
-  ["05", "Infrastructure & platforms"],
-  ["06", "Distributed systems"],
+  ["05", "CI/CD & release engineering"],
+  ["06", "Containers"],
+  ["07", "Kubernetes"],
+  ["08", "Cloud engineering"],
+  ["09", "Infrastructure as code"],
+  ["10", "Observability"],
+  ["11", "Platform engineering"],
+  ["12", "Security"],
+  ["13", "Distributed systems"],
+  ["14", "Production troubleshooting"],
+  ["15", "Architecture & leadership"],
+  ["16", "Interview mastery"],
 ];
 
 function NavigationLinks() {
   return (
     <nav aria-label="Book contents">
-      <NavigationLink className="nav-home" href="/"><span>RELIABILITY ATLAS</span><strong>DevOps / SRE / Platform</strong></NavigationLink>
-      <NavigationLink className="library-link" href="/book">Knowledge library</NavigationLink>
-      {availableVolumes.map((volume) => (
-        <div className="nav-volume current-volume" key={volume.id}>
-          <div><span>VOLUME {volume.number}</span><strong>{volume.title}</strong></div>
-          <NavigationLink href={volume.route}><b>{volume.number}</b> Volume index</NavigationLink>
-          {readerEntriesForVolume(volume.id).map((lesson) => (
-            <NavigationLink href={lesson.route} key={lesson.canonicalId}><b>{lesson.number}</b> {lesson.title}</NavigationLink>
-          ))}
-        </div>
-      ))}
-      <div className="planned-volumes">
-        <span>KNOWLEDGE MAP</span>
-        {plannedVolumes.map(([number, title]) => (
-          <Link href="/book#knowledge-map" key={number}><b>{number}</b>{title}<small>PLANNED</small></Link>
-        ))}
+      <div className="nav-identity">
+        <NavigationLink className="nav-home" href="/"><span aria-hidden="true">RA</span><strong>Reliability Atlas</strong><small>The Engineer&apos;s Field Manual</small></NavigationLink>
+        <ShellToggle action="close-navigation" className="rail-close" label="Close" />
       </div>
-      <NavigationLink className="practice-link" href="/search">Search the field manual <span>-&gt;</span></NavigationLink>
-      <NavigationLink className="practice-link" href="/my-learning">My Learning <span>-&gt;</span></NavigationLink>
-      <NavigationLink className="practice-link" href="/practice/storage">Storage practice lab <span>-&gt;</span></NavigationLink>
+      <div className="nav-utilities">
+        <NavigationLink href="/book">Library</NavigationLink>
+        <NavigationLink href="/search">Search</NavigationLink>
+        <NavigationLink href="/my-learning">My learning</NavigationLink>
+      </div>
+      {availableVolumes.map((volume) => (
+        <NavigationVolume
+          key={volume.id}
+          lessons={readerEntriesForVolume(volume.id)}
+          number={volume.number}
+          route={volume.route}
+          title={volume.title}
+        />
+      ))}
+      <details className="planned-volumes">
+        <summary><span>Future volumes</span><b aria-hidden="true">+</b></summary>
+        <div>{plannedVolumes.map(([number, title]) => (
+          <Link href="/book#volume-collection-title" key={number}><b>{number}</b>{title}<small>PLANNED</small></Link>
+        ))}</div>
+      </details>
+      <NavigationLink className="practice-link" href="/practice/storage">Open storage practice <span aria-hidden="true">-&gt;</span></NavigationLink>
       <p className="nav-footnote">Available to read is not the same as verified mastery.</p>
     </nav>
   );
@@ -51,11 +68,8 @@ function NavigationLinks() {
 export default function BookNavigation() {
   return (
     <>
-      <aside className="book-sidebar"><NavigationLinks /></aside>
-      <details className="mobile-book-nav">
-        <summary>Open book contents</summary>
-        <NavigationLinks />
-      </details>
+      <aside className="book-sidebar" id="book-navigation"><NavigationLinks /></aside>
+      <ShellToggle action="close-navigation" className="navigation-backdrop" label="Close book navigation" />
     </>
   );
 }
