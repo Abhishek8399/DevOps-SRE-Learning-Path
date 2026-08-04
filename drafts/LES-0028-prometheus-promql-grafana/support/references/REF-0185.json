@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0185",
+  "title": "Data model",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/concepts/data_model/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus concept documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["time series", "metric names", "labels", "samples", "series identity", "UTF-8 compatibility"],
+  "relevance": "Defines a time series as a metric name plus labeled dimensions and a sample as a timestamped value. It anchors the lesson's identity, cardinality, and compatibility reasoning.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0067",
+  "lessonId": "LES-0028",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A payment service is scraped every 15 seconds. Two replicas expose `payment_attempts_total{service=\"payments\",operation=\"submit\",outcome}`. At 09:00:00 replica A success is 1000 and failure is 20; at 09:01:00 they are 1120 and 26. Replica B restarts at 09:00:30: its success samples are 800 at 09:00:00, 835 at 09:00:15, 7 at 09:00:30, and 67 at 09:01:00; failure samples are 10, 11, 0, and 3 at those times. A dashboard computes `sum(payment_attempts_total{outcome=\"failure\"}) / sum(payment_attempts_total)` and labels it `Failure rate`. Explain every term needed to understand the data, identify at least five defects or ambiguities in the panel, derive the simple reset-adjusted one-minute increases from the supplied endpoints, calculate the bounded failure fraction from those increases, show a safer PromQL shape, and state what the result still cannot prove.",
+  "directAnswer": "The panel divides cumulative process-lifetime counter values, so replica age and the restart dominate the ratio; it is not a rate over the incident window. Calculate a reset-aware rate or increase per original series first, then aggregate numerator and denominator to the same service and operation labels. From the supplied simplified endpoints, A increases by 120 successes and 6 failures. B success increases by 102: 800 to 835 adds 35, the reset correction includes the new value 7 as increase since zero, and 7 to 67 adds 60. B failures increase by 4: 10 to 11 adds 1, the reset value is 0, and 0 to 3 adds 3. The bounded observed completion increase is 232, of which 10 are failures, so the fraction is 10 / 232 = 0.043103, about 4.31 percent. This simplified correction assumes a counter reset to zero between observations; it is not exact Prometheus `rate()` extrapolation and does not prove user impact, complete outcome instrumentation, or behavior outside the supplied samples.",
+  "foundation": "A counter is a cumulative value that normally rises and can reset when a process restarts. Each metric name plus complete label set is a separate time series. A sample is one timestamp and value in that series. A rate asks how quickly a counter increases over a time window, while a ratio divides compatible populations. PromQL range selectors such as `[5m]` provide several samples to functions such as `rate()`. Aggregation changes label sets, and vector division matches the resulting label sets rather than rows by position.",
+  "reasoningSteps": [
+    "State the operational question: the fraction of completed submit attempts that failed during a declared recent window, grouped by the intended service and operation boundary.",
+    "List series identities. Replica and outcome produce independently resetting counters even if the prompt omits the visible instance label from the shorthand.",
+    "Reject the raw cumulative ratio because values cover different process lifetimes and change discontinuously across restarts.",
+    "For replica A, calculate 1120 minus 1000 equals 120 successes and 26 minus 20 equals 6 failures.",
+    "For replica B success, add 835 minus 800 equals 35, then include the observed post-reset value 7 as increase since an assumed zero reset, then add 67 minus 7 equals 60, producing 102.",
+    "For replica B failure, add 11 minus 10 equals 1 and 3 minus 0 equals 3, producing 4.",
+    "Use a denominator of all supplied terminal outcomes: 120 plus 102 plus 6 plus 4 equals 232. The numerator is 6 plus 4 equals 10.",
+    "Calculate 10 divided by 232 equals about 0.043103. Label it a fraction or convert deliberately to about 4.31 percent.",
+    "Use `rate()` on each original counter series before `sum by (service, operation)`, with the same window and label scope in numerator and denominator.",
+    "Inspect zero traffic, absent failure series, scrape gaps, too few points, counter semantics, duplicate retry counting, and operations that never reach a recorded terminal outcome.",
+    "State proof limits: the arithmetic covers only supplied samples; the simple reset handling is not exact Prometheus extrapolation; and metrics do not independently establish the user journey or cause."
+  ],
+  "seniorAnswer": "I would rename the question before writing syntax: `Among instrumented terminal payment-submit attempts in the last five minutes, what fraction is classified failure per service and operation?` Then I would verify that the instrument increments exactly once at terminal outcome and that retries, cancellation and timeout are defined. The safer shape is `sum by (service, operation) (rate(payment_attempts_total{outcome=\"failure\"}[5m])) / sum by (service, operation) (rate(payment_attempts_total[5m]))`. `rate` remains inside `sum` so each replica reset is visible. I would display the result as a fraction or explicit percent, expose numerator and denominator, keep no-data different from zero, and test reset, missing-series, zero-traffic and scrape-gap cases. The simplified hand result is 10 failures among 232 observed completions, about 4.31 percent, after including each observed post-reset value as increase since zero. A real Prometheus result depends on all samples and extrapolation. I would correlate with an approved user-journey indicator and deployment evidence before calling this impact or root cause.",
+  "weakAnswer": "The failure rate is `(26 + 3) / (1120 + 67 + 26 + 3)`, so the dashboard is correct because it uses the latest values.",
+  "whyWeak": "It divides cumulative process-lifetime totals, ignores the restart, mixes process ages, does not define the time window or population, assumes missing labels match, calls a fraction a rate without units, and provides no zero, missing, scrape-gap, or user-impact analysis.",
+  "evidence": [
+    {
+      "signal": "Supplied counter samples show replica B success dropping from 835 to 7 and failure dropping from 11 to 0 at the restart boundary.",
+      "proves": "The supplied series reset or were replaced at that boundary, so direct subtraction across the entire window is invalid.",
+      "doesNotProve": "The process identity, restart cause, exact scrape timing, or whether samples between displayed timestamps exist."
+    },
+    {
+      "signal": "The reset-adjusted endpoint arithmetic produces 222 successes and 10 failures from the supplied samples.",
+      "proves": "Under the declared simplified zero-reset algorithm, the supplied terminal-outcome increase is 232 with a 10/232 failure fraction.",
+      "doesNotProve": "Exact Prometheus `rate()` output, complete request population, or user-visible failure."
+    },
+    {
+      "signal": "Proposed direct evidence: inspect numerator and denominator queries separately with their complete result labels and evaluation time.",
+      "proves": "If observed, it would show whether each intended matching key has a compatible numerator and non-zero denominator.",
+      "doesNotProve": "That instrumentation records the correct business outcomes or that the chosen five-minute window is operationally appropriate."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why should `rate` normally be applied before `sum`?",
+      "answer": "Each original counter can reset independently. Aggregating raw counters first can hide one series' decrease behind another series' increase, preventing correct reset reasoning."
+    },
+    {
+      "prompt": "What if no failure series exists during a successful period?",
+      "answer": "Absence and numeric zero are different. Decide whether the client initializes the bounded label set, whether the query should safely supply a zero only when the denominator population exists, and how a broken measurement path is detected separately."
+    },
+    {
+      "prompt": "Why is a one-minute window risky with a 15-second scrape interval?",
+      "answer": "It may contain only a few samples, so one delayed or failed scrape materially changes the estimate. The window must balance detection speed, expected sample count, signal variance and incident needs."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Term and series-identity accuracy", "points": 10, "observableEvidence": "Defines counter, series, sample, rate, window, labels and reset without conflation."},
+    {"criterion": "Reset-adjusted arithmetic", "points": 10, "observableEvidence": "Shows A and B segment calculations and reaches 222 success, 10 failure and 232 total."},
+    {"criterion": "Ratio and unit", "points": 10, "observableEvidence": "Calculates 10/232 and distinguishes fraction from percent and per-second rate."},
+    {"criterion": "PromQL shape", "points": 10, "observableEvidence": "Applies reset-aware rate before aggregation and aligns numerator and denominator labels/windows."},
+    {"criterion": "Missing and zero behavior", "points": 10, "observableEvidence": "Explains absent series, zero traffic and non-zero denominator handling."},
+    {"criterion": "Evidence and proof limits", "points": 10, "observableEvidence": "Separates supplied arithmetic from exact engine, user impact and cause claims."},
+    {"criterion": "Production verification", "points": 10, "observableEvidence": "Requires direct query labels plus approved user-journey and change evidence."},
+    {"criterion": "Communication", "points": 10, "observableEvidence": "Explains the correction from first-year foundations through senior operational reasoning."}
+  ],
+  "maximumScore": 80,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

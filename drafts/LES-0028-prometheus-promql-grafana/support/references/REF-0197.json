@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0197",
+  "title": "Provision Grafana",
+  "organization": "Grafana Labs",
+  "url": "https://grafana.com/docs/grafana/latest/administration/provisioning/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Grafana documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["Grafana provisioning", "data sources", "dashboards", "version control", "secure JSON data", "dashboard overwrite"],
+  "relevance": "Official provisioning contract for version-controlled data sources and dashboards, including environment expansion, secure values, UI-update behavior, and overwrite risks.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

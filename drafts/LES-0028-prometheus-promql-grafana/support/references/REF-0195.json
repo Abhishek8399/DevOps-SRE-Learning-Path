@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0195",
+  "title": "Unit testing for rules",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/unit_testing_rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus rule-testing documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["promtool", "rule tests", "input series", "alert tests", "PromQL expression tests", "evaluation time"],
+  "relevance": "Provides the official deterministic rule-test format for known input, expression output, alert labels, annotations, and evaluation timestamps.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

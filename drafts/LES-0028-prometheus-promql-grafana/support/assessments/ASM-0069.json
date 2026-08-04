@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0069",
+  "lessonId": "LES-0028",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Use an instructor-provided unseen disposable local metrics case, or a learner-created and learner-owned unseen disposable case, that is materially different from the LES-0028 guided fixture and answered scenarios. The case must include at least one independently resetting counter, one missing or stale series, one distribution metric, one deliberate label-cardinality defect, one query population or vector-matching defect, one alert-state problem, and one ambiguous dashboard panel. Without opening ASM-0067, ASM-0068, the lesson's complete-answer or product-company sections, or any generated solution after the independence gate, investigate the case. Produce a sanitized evidence package that defines the user operation and measurement contracts, diagrams the source-to-decision path, records baseline and predictions, distinguishes observation/inference/hypothesis, tests at least four ranked hypotheses, corrects metric and PromQL contracts, bounds cardinality/sample/retention/query cost, designs a safe alert and dashboard, demonstrates authorized recovery and cleanup, and gives a five-minute interview explanation with at least twelve explicit proof limits.",
+  "deliverables": [
+    "Completed independence, authorization, environment and sanitization gate before investigation",
+    "User-operation, metric-type, unit, label-domain, timestamp, reset, population and missing-data contracts",
+    "Text architecture and source-discovery-scrape-ingest-store-query-rule-dashboard-notification path",
+    "Raw sanitized baseline and faulted evidence with exact commands, times, windows, steps, labels, units and result shapes",
+    "At least four ranked falsifiable hypotheses with predicted, confirming and rejecting evidence",
+    "Corrected PromQL or equivalent query sketches for rate, ratio, distribution, saturation and absence",
+    "Cardinality, samples-per-second, retention and query-work estimates with assumptions and uncertainty",
+    "Alert state, ownership, severity, runbook, routing and missing-data design plus deterministic test evidence",
+    "Dashboard question hierarchy, units, scope, freshness, no-data behavior and drill-down contract",
+    "Authorized containment, abort, rollback, user recovery, monitoring recovery and exact cleanup proof",
+    "Security and privacy review for labels, endpoints, APIs, dashboards and retained evidence",
+    "Five-minute interview explanation and at least twelve precise proof-limit statements"
+  ],
+  "evidenceRequirements": [
+    "The case was unseen and materially different from published guided and answered scenarios",
+    "The learner was authorized to operate only on the disposable local target and recorded all help received",
+    "No secrets, personal names, employer names, customer data, raw identifiers or private path segments are submitted",
+    "Every claim links to raw sanitized evidence, a calculation, a declared contract, or is labeled inference, hypothesis or unknown",
+    "Counter-reset, zero-traffic, missing-series, scrape-gap, vector-match, threshold-edge, pending, firing and recovery branches are addressed",
+    "No production, shared, online cloud, or employer system is modified or queried",
+    "Cleanup proves exact absence of every process, port, file, container, network or other resource the case was allowed to create",
+    "A qualified reviewer confirms no answer leakage, fabricated evidence, unsafe action or mastery inflation"
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Independence, authorization and evidence integrity", "points": 10, "observableEvidence": "Unseen case, declared help, authorized disposable scope, raw sanitized evidence and no answer leakage or fabrication."},
+    {"criterion": "Measurement and series mental model", "points": 10, "observableEvidence": "Types, units, labels, series, samples, timestamps, resets, populations and missing states are precise."},
+    {"criterion": "Architecture and boundary evidence", "points": 10, "observableEvidence": "The full source-to-decision path names owners, state, failures, evidence and limits."},
+    {"criterion": "PromQL and arithmetic correctness", "points": 10, "observableEvidence": "Rates, aggregation, ratios, matching, histograms, absence and time controls answer declared questions."},
+    {"criterion": "Hypothesis and diagnostic quality", "points": 10, "observableEvidence": "At least four hypotheses are ranked, falsifiable and tested with discriminating evidence."},
+    {"criterion": "Alert and dashboard decision quality", "points": 10, "observableEvidence": "Rules are tested; alert ownership/state/runbook and panel question/unit/scope/no-data/drill-down are explicit."},
+    {"criterion": "Cardinality, capacity and cost", "points": 10, "observableEvidence": "Bounds domains, active series, sample rate, retention and query work without fabricated precision."},
+    {"criterion": "Security and privacy", "points": 10, "observableEvidence": "Minimizes sensitive/untrusted data, protects endpoints and stored evidence, and uses least privilege."},
+    {"criterion": "Safe recovery and cleanup", "points": 10, "observableEvidence": "Containment is reversible with abort/rollback; user and monitoring recovery are separate; exact cleanup passes."},
+    {"criterion": "Communication and proof limits", "points": 10, "observableEvidence": "The interview response is clear and at least twelve proof limits are technically specific."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

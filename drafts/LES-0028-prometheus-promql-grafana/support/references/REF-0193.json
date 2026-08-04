@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0193",
+  "title": "Prometheus configuration",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/configuration/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus configuration documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["scrape configuration", "service discovery", "relabeling", "rule files", "reload", "TLS", "authentication"],
+  "relevance": "Authoritative configuration schema and reload boundary for scrape jobs, discovery, relabeling, rule files, and HTTP client settings.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

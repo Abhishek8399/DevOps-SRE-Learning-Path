@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0068",
+  "lessonId": "LES-0028",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "At 10:05 checkout success falls in one region. At 10:08 Grafana becomes slow and two panels show no data. Most Prometheus targets remain green. A 09:55 application release added `customer_id`, `request_id`, and raw URL labels to `http_requests_total`; the service handles 18,000 requests per second across 80 replicas. Active series rise from 1.2 million to 19 million, new-series creation remains steep, scrape bodies and scrape duration grow, Prometheus Head memory reaches 91 percent of its limit, WAL and disk consumption accelerate, query p99 rises from 1.1 seconds to 28 seconds, and rule groups miss evaluations. A monitoring engineer proposes doubling memory and retention. An application engineer proposes restarting Grafana. Lead the incident using FRAME. Separate confirmed user impact, monitoring impact, trigger, mechanism and uncertainty; choose containment, rollback and verification; explain why green targets and blank panels do not identify root cause; estimate the label-design risk without inventing exact byte cost; address privacy and evidence preservation; and define prevention.",
+  "directAnswer": "Treat checkout degradation and monitoring degradation as separate confirmed symptoms. The release timing and measured growth strongly support an uncontrolled-cardinality mechanism: unique customer, request and raw-URL values create new series, which expand scrape payload, Head/WAL/disk work, query latency and rule delay. First stop new-series creation through the approved instrumentation rollback or kill switch in a bounded cohort while preserving core bounded request, error and duration signals. Do not restart Grafana because it is downstream, and do not make memory or retention the first fix because neither stops growth; longer retention increases storage pressure. Verify the user journey, deployment state, new/active series trajectory, scrape size/duration, Head/WAL/disk, query/rule recovery and panel freshness. Preserve sanitized evidence and investigate whether personal identifiers entered metrics storage. Exact bytes cannot be inferred from series count alone.",
+  "foundation": "Prometheus stores one time series for every metric name and unique label set. Labels such as status class or normalized route can have bounded value domains. Request IDs and customer IDs can change for nearly every event, while raw URLs can contain identifiers and attacker-controlled values. This creates high cardinality and churn. Grafana queries Prometheus; a slow panel can therefore be a downstream symptom of expensive or unavailable query results. The `up` metric describes scrape success, not checkout success or metric usefulness.",
+  "reasoningSteps": [
+    "Frame the user journey, affected region, versions, start time, traffic and data-safety constraints using an independent approved probe or business outcome.",
+    "Declare monitoring impact separately: slow queries, missed rule evaluations and no-data panels reduce detection and diagnosis quality.",
+    "Build the timeline: release at 09:55, checkout impact at 10:05, dashboard impact at 10:08, and measured active/new-series, scrape, Head, WAL, disk, query and rule changes.",
+    "Classify facts versus inference. Series growth and resource/query changes are observed. The label release is a high-confidence mechanism because it predicts those observations, but user checkout causality still needs application evidence.",
+    "Estimate risk by multiplying bounded domains and noting that `request_id` can approach event count, `customer_id` approaches users and raw URLs may be effectively unbounded. Do not multiply all observed values into an exact active-series claim without knowing combinations and lifetimes.",
+    "Contain at the earliest owned boundary by rolling back or disabling the new labels. Preserve a minimal bounded metric schema so the incident does not become blind.",
+    "Define abort criteria for rollback: checkout worsens, core telemetry disappears, deployment stalls, or series growth does not slow as predicted.",
+    "Do not delete TSDB data as immediate containment; it destroys evidence and does not stop ingestion. Do not broadly copy label values into incident channels because they may contain personal data.",
+    "Use memory increase only as an explicitly temporary capacity measure if required to avoid imminent monitoring loss while source containment proceeds, with cost, limit and rollback ownership. Reject longer retention during disk acceleration unless justified by a separate preservation plan.",
+    "Verify source containment through deployment/config identity and falling new-series creation, then monitor active-series trajectory, scrape size/duration, Head memory, WAL/disk, compaction, query and rule latency.",
+    "Verify the real checkout journey independently. Monitoring recovery does not prove checkout recovery, and checkout recovery does not prove the telemetry platform has recovered.",
+    "Perform privacy response according to policy: identify affected metric families, retention and replicas; restrict access; preserve audit evidence; avoid repeating sensitive values; and involve the authorized data/security owners.",
+    "Prevent with instrumentation schema review, bounded label allowlists, CI checks, canary series budgets, sensitive-data tests, kill switches, query/rule load tests, monitoring-path objectives and independent black-box coverage."
+  ],
+  "seniorAnswer": "I would run two coordinated workstreams. The incident commander owns customer impact and stabilization; an observability owner protects the evidence system. The measured series jump, growth rate, larger scrape bodies, Head/WAL/disk pressure, query latency and missed rules are a coherent causal chain from the three unbounded labels. I would roll back that instrumentation or activate a pre-reviewed label kill switch in the affected release cohort, preserving bounded RED metrics and deployment events. I would set abort thresholds and keep exact before/after configuration evidence. A temporary memory increase may buy a bounded safety margin only if source containment is already underway; increasing retention is opposite to the current disk constraint. Grafana restart is not a discriminating experiment. I would verify customer success from an independent path and monitoring recovery from new/active series, scrapes, Head/WAL/disk, queries, rule evaluations and freshness. I would preserve sanitized series-schema and aggregate evidence, initiate a privacy assessment for customer and request identifiers, and avoid exposing raw values. Prevention is a governed metric schema with bounded domains, canary budgets and automated sensitive/high-cardinality checks, plus rollback and degraded diagnostic paths.",
+  "weakAnswer": "Prometheus needs more resources. Double memory and retention, restart Grafana, and delete older blocks if the disk fills.",
+  "whyWeak": "It treats downstream saturation as the root cause, preserves new-series creation, worsens retention pressure, destroys or risks evidence, ignores personal-data exposure, fails to protect the user journey, and has no prediction, abort, rollback or independent recovery criteria.",
+  "evidence": [
+    {
+      "signal": "Observed active series rise from 1.2 million to 19 million while new-series creation remains steep after the label release.",
+      "proves": "Prometheus currently holds far more series and identities continue to be created during the stated window.",
+      "doesNotProve": "Exact bytes per series, which label contributes how much, or that the series growth caused checkout failure."
+    },
+    {
+      "signal": "Observed scrape bodies/duration, Head memory, WAL/disk, query p99 and missed rule evaluations all worsen.",
+      "proves": "Multiple monitoring-path capacity and latency contracts degraded concurrently.",
+      "doesNotProve": "That every blank panel has the same cause or that Grafana itself is healthy."
+    },
+    {
+      "signal": "Proposed canary evidence: remove the three labels from a bounded cohort and compare its new-series creation and scrape payload with unchanged cohorts.",
+      "proves": "If observed under comparable load, it would strongly test the label-growth mechanism before fleet rollout.",
+      "doesNotProve": "Fleet recovery, historical-series removal, or absence of another instrumentation defect."
+    },
+    {
+      "signal": "Required user evidence: an approved regional checkout probe with counts, success definition and duration before and after mitigation.",
+      "proves": "If collected, it would bound user recovery for that path and interval.",
+      "doesNotProve": "All users, all regions, long-term recovery, or the cause of the initial checkout failure."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why might active series remain high after new-series creation stops?",
+      "answer": "Recent series and Head/index structures do not disappear instantly; retained blocks remain until retention and compaction. Recovery has different curves for creation rate, active identity, memory, disk and query behavior."
+    },
+    {
+      "prompt": "Can metric relabeling simply remove `request_id`?",
+      "answer": "Removing a distinguishing label can collapse multiple samples from one scrape into the same identity and create duplicate/conflicting samples. Dropping the whole offending family may be safer as emergency protection, but source instrumentation should be fixed and exact behavior tested."
+    },
+    {
+      "prompt": "How do you monitor the monitoring system without a circular dependency?",
+      "answer": "Use Prometheus self-metrics and rules, but add an independent external check for critical query, freshness or notification paths and retain a minimal diagnostic path that does not depend on the entire primary stack."
+    },
+    {
+      "prompt": "What should the management update say?",
+      "answer": "State confirmed customer and monitoring impact, the strongly supported but still tested label-cardinality mechanism, containment in progress, privacy review, recovery evidence, remaining risks and next update time without exposing identifiers."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Impact and incident framing", "points": 10, "observableEvidence": "Separates checkout and observability impact with scope, timeline and uncertainty."},
+    {"criterion": "Mechanism reasoning", "points": 10, "observableEvidence": "Connects label identity growth to scrape, Head, WAL/disk, query and rule effects without claiming unsupported checkout causality."},
+    {"criterion": "Safe containment", "points": 10, "observableEvidence": "Stops source growth through bounded rollback or kill switch and preserves core evidence with abort criteria."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Defines independent user and monitoring recovery signals, windows and proof limits."},
+    {"criterion": "Cardinality and capacity", "points": 10, "observableEvidence": "Uses bounded domain estimates and measured canary without inventing byte cost."},
+    {"criterion": "Security and privacy", "points": 10, "observableEvidence": "Treats customer/request/raw URL data as sensitive or untrusted and preserves sanitized evidence."},
+    {"criterion": "Data and rollback safety", "points": 10, "observableEvidence": "Rejects premature TSDB deletion and documents rollback, ownership and evidence retention."},
+    {"criterion": "Prevention and communication", "points": 10, "observableEvidence": "Defines schema governance, tests, budgets, fallbacks, runbooks and accurate stakeholder updates."}
+  ],
+  "maximumScore": 80,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

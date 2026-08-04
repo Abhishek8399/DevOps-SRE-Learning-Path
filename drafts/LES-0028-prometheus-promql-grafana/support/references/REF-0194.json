@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0194",
+  "title": "Defining recording rules",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus rule documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["recording rules", "alerting rules", "rule groups", "evaluation interval", "promtool", "missed evaluations"],
+  "relevance": "Defines rule-file structure, sequential group evaluation, syntax checks, recording output, alert fields, limits, offsets, and missed-evaluation behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

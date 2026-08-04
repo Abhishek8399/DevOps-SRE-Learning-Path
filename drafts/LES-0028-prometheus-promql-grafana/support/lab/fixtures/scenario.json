@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0028",
+  "caseId": "prometheus-reasoning-v1",
+  "counterWindow": {
+    "elapsedSeconds": 60,
+    "series": [
+      {"labels": {"service": "payments", "operation": "submit", "instance": "a", "outcome": "success"}, "samples": [1000, 1030, 1060, 1090, 1120]},
+      {"labels": {"service": "payments", "operation": "submit", "instance": "a", "outcome": "failure"}, "samples": [20, 21, 23, 24, 26]},
+      {"labels": {"service": "payments", "operation": "submit", "instance": "b", "outcome": "success"}, "samples": [800, 835, 7, 37, 67]},
+      {"labels": {"service": "payments", "operation": "submit", "instance": "b", "outcome": "failure"}, "samples": [10, 11, 0, 1, 3]}
+    ]
+  },
+  "vectorMatch": {
+    "matchLabels": ["service", "operation"],
+    "numerators": [
+      {"labels": {"service": "payments", "operation": "submit"}, "value": 0.1666666667}
+    ],
+    "denominators": [
+      {"labels": {"service": "payments", "operation": "submit"}, "value": 3.75}
+    ]
+  },
+  "histogram": {
+    "unit": "seconds",
+    "threshold": 0.3,
+    "quantile": 0.95,
+    "buckets": [
+      {"le": 0.1, "count": 120},
+      {"le": 0.3, "count": 180},
+      {"le": 0.6, "count": 194},
+      {"le": 1.2, "count": 198},
+      {"le": "+Inf", "count": 200}
+    ],
+    "count": 200
+  },
+  "cardinality": {
+    "boundedDomains": {"operation": 4, "outcome": 3, "region": 4, "version": 2, "instance": 20},
+    "unboundedLabels": ["request_id"],
+    "seriesBudget": 5000,
+    "scrapeIntervalSeconds": 15,
+    "retentionSeconds": 1296000
+  },
+  "alertState": {
+    "threshold": 0.05,
+    "forEvaluations": 2,
+    "values": [0.01, 0.07, 0.08, 0.09, 0.02],
+    "expectedStates": ["inactive", "pending", "firing", "firing", "resolved"]
+  },
+  "dashboard": {
+    "owner": "payments-sre",
+    "panels": [
+      {
+        "id": "checkout-failure-fraction",
+        "question": "What fraction of completed checkout attempts failed by operation?",
+        "queryId": "payment-failure-ratio",
+        "unit": "percent",
+        "scope": "production payments service by operation",
+        "freshness": "newest sample age shown; five-minute rate window",
+        "noData": "show measurement-path unavailable; never convert to zero",
+        "drillDown": "numerator, denominator, outcomes, deploy events and traces",
+        "owner": "payments-sre"
+      },
+      {
+        "id": "monitoring-series-budget",
+        "question": "Is new or active series growth threatening the monitoring path?",
+        "queryId": "series-budget",
+        "unit": "series",
+        "scope": "Prometheus shard serving payments",
+        "freshness": "current self-metrics and one-hour growth view",
+        "noData": "show monitoring self-observation unavailable",
+        "drillDown": "metric families, label names, targets, Head, WAL and query work",
+        "owner": "observability-platform"
+      }
+    ],
+    "queries": ["payment-failure-ratio", "series-budget"]
+  },
+  "incident": {
+    "symptom": "Grafana query latency and no-data panels begin after a request_id label release.",
+    "facts": [
+      "new-series creation rises with the release cohort",
+      "scrape body and duration increase",
+      "Head memory and WAL growth increase",
+      "service user impact is not yet independently measured"
+    ],
+    "earliestSupportedBoundary": "series-identity at instrumentation",
+    "unsafeFirstMoves": ["restart Grafana", "delete TSDB blocks", "increase retention"]
+  }
+}

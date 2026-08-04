@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0187",
+  "title": "Metric and label naming",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/practices/naming/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus best-practice documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["metric naming", "units", "labels", "cardinality", "semantic contracts"],
+  "relevance": "Supports the lesson's stable naming, base-unit, bounded-label, and series-schema rules, including the prohibition on high-cardinality identity values.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

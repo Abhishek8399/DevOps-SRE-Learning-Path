@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0191",
+  "title": "Histograms and summaries",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/practices/histograms/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus best-practice documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["classic histograms", "native histograms", "summaries", "quantiles", "buckets", "aggregation", "Apdex"],
+  "relevance": "Primary guidance for distribution instruments, aggregation limits, bucket and quantile error, and the invalidity of averaging precomputed summary quantiles.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

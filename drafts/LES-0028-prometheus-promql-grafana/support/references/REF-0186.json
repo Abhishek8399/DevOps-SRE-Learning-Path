@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0186",
+  "title": "Instrumentation",
+  "organization": "Prometheus Authors",
+  "url": "https://prometheus.io/docs/practices/instrumentation/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Prometheus best-practice documentation; reviewed 2026-08-04",
+  "lessonIds": ["LES-0028"],
+  "topics": ["instrumentation", "labels", "cardinality", "online services", "batch jobs", "counters", "gauges"],
+  "relevance": "Provides official instrumentation guidance, including service-type signals, counter/gauge selection, label use, and warnings about excessive label cardinality.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
