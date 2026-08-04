@@ -43,8 +43,8 @@ No information depends on colour alone. Focus uses a visible two-tone outline. T
 
 ## Layout
 
-- Desktop shell: collapsible 272 px navigator, centred flexible manuscript, optional 248 px context rail.
-- The outer workspace is fluid and uses only the responsive `--shell-gutter`; diagrams, labs, tables and page-level grids may use the available screen width.
+- Desktop shell: collapsible 240-272 px navigator, centred flexible workspace, optional 216-248 px context rail.
+- The outer workspace is fluid and uses only the responsive 10-20 px `--shell-gutter`; diagrams, labs, tables and page-level grids may use up to 1,120 px when the viewport allows.
 - The manuscript remains centred inside that fluid workspace using an inner `--manuscript-width`, so wider screens improve spatial context without producing unreadably long prose lines.
 - At 1180 px the context rail becomes an overlay/drawer; at 980 px the navigator becomes a modal drawer.
 - Page-level horizontal scrolling is forbidden; code and large tables own their overflow.

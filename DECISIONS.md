@@ -430,3 +430,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach and operate identity as `subject → proof → issuer → assertion → policy → resource → audit`. Human and workload identities stay separate, federation prefers short-lived audience-bound sessions, least privilege requires negative tests, and secret/certificate/key rotation is incomplete until old use is revoked and denial is proved. Zero trust is resource-specific continuous decision-making, not a product or automatic denial.
 
 **Consequences:** `LES-0051` remains quarantined until a reviewer-owned local protocol environment proves validation, federation, policy, rotation, revocation, outage behavior and cleanup. No model output may be cited as identity-provider, OAuth/OIDC, TLS/PKI, CA, KMS, secrets-manager, provider or production evidence.
+
+### DEC-049 - Fluid workspace width and prose readability are separate controls
+
+**Status:** `ACCEPTED`
+
+**Context:** A learning application can feel cramped on a large display when page shells, navigation rails and technical artifacts retain fixed desktop dimensions. Stretching every element to solve that problem makes long-form prose harder to scan and remember. The legacy stylesheet also declared the book grid after the newer shell rules, which could reclaim precedence at responsive breakpoints.
+
+**Decision:** Keep the outer application within a 10-20 px viewport-aware gutter, size the desktop navigation and context rails with bounded `clamp()` values, and let diagrams, labs, evidence grids and assessment panels use up to 1,120 px. Preserve the independent 720 px default manuscript measure and its reader-controlled narrow/standard/wide options. Place the authoritative 1180 px and 980 px shell rules after compatibility styles so tablet overlays and mobile stacking cannot be overridden by legacy declarations.
+
+**Consequences:** Wide displays now improve workspace context instead of adding decorative empty margins, while paragraph line length remains intentionally constrained. Source/build verification can prove the cascade and tokens, but rendered responsive, keyboard and visual quality still require a real browser backend and remain explicitly unclaimed.
