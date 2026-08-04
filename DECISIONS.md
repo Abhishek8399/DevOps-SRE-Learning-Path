@@ -378,3 +378,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Bind identity and exact action, then classify authentication, authorization, admission or runtime. Require least-privilege positive and negative tests, protect token/Secret values, preserve audit lineage, and treat admission as both a security and availability dependency. Namespace is one tenant layer, never complete isolation.
 
 **Consequences:** `LES-0045` remains quarantined until a pinned cluster proves allowed/denied actions, revocation, admission/runtime enforcement, tenant negatives and cleanup. Future incident guidance may not use cluster-admin or global policy disablement as default repair.
+
+### DEC-043 - Rendered manifests are proposals, not release evidence
+
+**Context:** Helm and Kustomize can emit valid-looking Kubernetes YAML without contacting the current API, exercising admission, waiting for controller convergence, verifying durable-data compatibility or testing the user journey. A Helm rollback creates another desired-state change; it cannot inherently reverse hook side effects, CRD storage changes or database migrations.
+
+**Decision:** Teach every packaged change as an evidence chain: bind source, dependencies and ordered inputs; render deterministically; validate schema and policy; exercise server dry-run; review normalized live diff and ownership; execute one bounded release; observe revision, generation, conditions and endpoints; then verify the original user operation. Treat Helm package/release state, Kustomize composition, Kubernetes object state and durable application data as separate ownership domains. Rollback requires explicit compatibility evidence and may be replaced by a safer forward fix.
+
+**Consequences:** `LES-0046` remains quarantined until pinned Helm/Kustomize binaries and a disposable cluster prove the package-versus-overlay comparison, API acceptance, diff, hook/CRD boundaries, failed upgrade, compatible rollback or forward recovery, user verification and exact cleanup. Future delivery content may not claim success from `helm template`, `kubectl kustomize`, `helm upgrade`, `helm rollback` or controller readiness alone.
