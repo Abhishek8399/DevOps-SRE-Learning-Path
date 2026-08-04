@@ -184,7 +184,7 @@
 .tableWrap th { position: sticky; top: var(--shell-top); padding: 13px 15px; background: var(--surface-subtle); color: var(--ink-primary); font-size: .68rem; }
 .tableWrap td { padding: 15px; border-color: var(--border-subtle); }
 .diagramCards,.incidentCards,.commandCards,.labCards,.answerList,.references,.independentCard {
-  width: min(100%,960px);
+  width: min(100%,1120px);
   margin-left: auto;
   margin-right: auto;
 }
