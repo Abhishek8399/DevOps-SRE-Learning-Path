@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0289",
+  "title": "Site Reliability Engineering: Introduction",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/introduction/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "capacity planning",
+    "demand forecasting",
+    "provisioning",
+    "performance"
+  ],
+  "relevance": "Frames demand forecasting, capacity planning, provisioning, efficiency and performance as coupled reliability responsibilities.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

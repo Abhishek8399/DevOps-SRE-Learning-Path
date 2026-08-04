@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0291",
+  "title": "Production Services Best Practices",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/service-best-practices/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "capacity planning",
+    "failure reserve",
+    "load shedding",
+    "retries"
+  ],
+  "relevance": "Operational guidance for forecast validation, load-tested service capacity, simultaneous failures, graceful degradation and retry control.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

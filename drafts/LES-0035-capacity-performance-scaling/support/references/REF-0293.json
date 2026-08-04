@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0293",
+  "title": "Handling Overload",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/handling-overload/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "overload",
+    "load shedding",
+    "queues",
+    "fairness"
+  ],
+  "relevance": "Explains overload detection and control, including admission, shedding, queue behavior and preserving useful service.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

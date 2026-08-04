@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0294",
+  "title": "PSI - Pressure Stall Information",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/6.10/accounting/psi.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "pressure stalls",
+    "CPU",
+    "memory",
+    "I/O"
+  ],
+  "relevance": "Defines Linux PSI interfaces and semantics used to distinguish lost execution time from simple utilization.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

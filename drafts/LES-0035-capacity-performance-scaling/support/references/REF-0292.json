@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0292",
+  "title": "Testing for Reliability",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/testing-reliability/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "reliability testing",
+    "load testing",
+    "failure testing",
+    "recovery"
+  ],
+  "relevance": "Explains reliability-test strategy and why representative tests, failure modes and repeatable evidence matter.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

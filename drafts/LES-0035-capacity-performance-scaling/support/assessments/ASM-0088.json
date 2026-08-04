@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0088",
+  "lessonId": "LES-0035",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "At 900 requests per second, p99 latency and queue age rise sharply while average host CPU is 45 percent. A teammate says the service has 55 percent headroom and should safely handle 1,400 requests per second. Diagnose the reasoning error and describe the next evidence path.",
+  "directAnswer": "Average host CPU is neither service capacity nor headroom. The service may already be at its performance knee because a shard, cgroup quota, lock, worker pool, database connection pool, storage path, dependency quota or one core is saturated. Define offered, accepted and useful completed work; inspect latency distributions, queue age, wait versus service time, per-instance resource demand, throttling and dependency limits; then use controlled load steps to identify the limiting boundary and safe operating region.",
+  "foundation": "Capacity belongs to a defined workload, system boundary and objective. CPU is one possible resource signal. An average combines time and machines, so idle replicas can hide one hot replica and an unconstrained host can hide a throttled container. Headroom is not one minus CPU utilization; it is the gap between forecast demand and proven safe capacity after uncertainty and failure reserve.",
+  "reasoningSteps": [
+    "State the user journey, request mix, data shape, region, version, interval and latency or correctness objective.",
+    "Separate offered, accepted, rejected, completed, successful and timely useful work.",
+    "Plot p50 through p99.9, errors, queue age and goodput against offered load rather than relying on averages.",
+    "Check per-instance and per-shard distribution before aggregating.",
+    "Split response time into waiting and service time across pools, queues and dependencies.",
+    "Inspect cgroup ceilings, CPU throttling, pressure stalls, memory, I/O, locks, pools and dependency quotas.",
+    "Verify the load generator is achieving the offered schedule without saturation or coordinated omission.",
+    "Locate the first limiting boundary and the load step where tails accelerate while marginal goodput falls.",
+    "Choose a target below the knee with growth uncertainty, maintenance and failure reserve.",
+    "Retest recovery and overload protection before making a production claim."
+  ],
+  "seniorAnswer": "I would reject the 55 percent headroom statement because the denominator is wrong and the objective is missing. The evidence already suggests a knee near 900 RPS: tail latency and queue age accelerate even though an aggregate resource average looks moderate. I would correlate offered, accepted and goodput rates with per-instance histograms, oldest queue age, worker and connection occupancy, cgroup throttling and PSI, shard skew and dependency latency or quota. A staged test with representative mix would calibrate the generator, preserve arrivals, define aborts and prove recovery. Safe capacity would be the highest repeatable load that meets user objectives under required failure conditions, reduced by a documented uncertainty margin—not an extrapolation from host CPU.",
+  "weakAnswer": "CPU is only 45 percent, so add 55 percent more traffic and watch the average latency.",
+  "whyWeak": "It treats utilization as capacity, ignores tails and queues, mixes host and workload boundaries, assumes linear scaling, omits failure reserve, and can drive an already unstable system into collapse.",
+  "evidence": [
+    {"signal": "Average host CPU is 45 percent", "proves": "The selected host CPU accounting averaged to 45 percent over the stated interval.", "doesNotProve": "Per-core, per-cgroup, per-instance, pool, shard, dependency or objective headroom."},
+    {"signal": "p99 and oldest queue age rise at 900 RPS", "proves": "Tail response and waiting worsen for the measured populations near that load.", "doesNotProve": "The exact bottleneck or a universal production limit."},
+    {"signal": "Goodput stops increasing proportionally", "proves": "More offered work produces diminishing useful completion under those conditions.", "doesNotProve": "Whether admission, service, dependency or measurement behavior is responsible."}
+  ],
+  "followUps": [
+    {"prompt": "Why is queue age usually more actionable than depth?", "answer": "Age connects waiting to deadlines. A depth of 1,000 may drain safely at one rate and violate every deadline at another; age exposes that difference."},
+    {"prompt": "Can 100 percent CPU ever be acceptable?", "answer": "For batch work without a latency objective it may be efficient, but interactive services usually need queueing and failure reserve. The answer depends on objective and workload."},
+    {"prompt": "What is the shortest useful summary?", "answer": "Low average CPU does not prove spare service capacity; follow the waiting, useful throughput and narrowest limit."}
+  ],
+  "rubric": [
+    {"criterion": "Boundary and objective", "points": 10, "observableEvidence": "Defines workload, user objective, population and interval."},
+    {"criterion": "Work accounting", "points": 10, "observableEvidence": "Separates offered, accepted, completed and useful work."},
+    {"criterion": "Bottleneck evidence", "points": 10, "observableEvidence": "Uses tails, queues, per-instance demand, constraints and dependencies."},
+    {"criterion": "Safe test reasoning", "points": 10, "observableEvidence": "Proposes calibrated staged testing with abort and recovery evidence."},
+    {"criterion": "Capacity conclusion", "points": 10, "observableEvidence": "Defines safe capacity below a proven knee with uncertainty and failure reserve."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

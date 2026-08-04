@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0299",
+  "title": "Histograms and summaries",
+  "organization": "Prometheus",
+  "url": "https://prometheus.io/docs/practices/histograms/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "histograms",
+    "quantiles",
+    "aggregation",
+    "latency"
+  ],
+  "relevance": "Explains distribution representations, aggregation limits and why precomputed instance quantiles cannot be combined into a service percentile.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

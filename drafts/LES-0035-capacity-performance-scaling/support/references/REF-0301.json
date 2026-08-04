@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0301",
+  "title": "The Tail at Scale",
+  "organization": "Google Research",
+  "url": "https://research.google/pubs/the-tail-at-scale/",
+  "sourceType": "research-paper",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "tail latency",
+    "distributed systems",
+    "utilization",
+    "mitigation"
+  ],
+  "relevance": "Research foundation for why rare component delays dominate large fan-out systems and why tail behavior changes with utilization.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

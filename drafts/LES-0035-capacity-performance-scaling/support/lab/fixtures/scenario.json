@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0035",
+  "caseId": "capacity-knee-v1",
+  "fictional": true,
+  "baseline": {"offered": 1200, "accepted": 1100, "completed": 1060, "goodput": 1040, "retriedAttempts": 260},
+  "curve": [
+    {"offeredRps": 300, "goodputRps": 298, "p99Ms": 90, "queueAgeMs": 0, "errorPct": 0.2},
+    {"offeredRps": 600, "goodputRps": 594, "p99Ms": 120, "queueAgeMs": 5, "errorPct": 0.5},
+    {"offeredRps": 900, "goodputRps": 870, "p99Ms": 260, "queueAgeMs": 80, "errorPct": 2.0},
+    {"offeredRps": 1050, "goodputRps": 900, "p99Ms": 850, "queueAgeMs": 600, "errorPct": 8.0},
+    {"offeredRps": 1200, "goodputRps": 820, "p99Ms": 4800, "queueAgeMs": 3700, "errorPct": 22.0}
+  ],
+  "queue": {"throughputPerSecond": 600, "averageTimeSeconds": 0.3, "observedConcurrency": 184, "tolerancePct": 5},
+  "forecast": {"baselineRps": 1000, "growthFactor": 1.2, "eventFactor": 1.25, "uncertaintyFactor": 1.1, "failureReserveFactor": 1.09, "safeRpsPerReplica": 150},
+  "autoscale": {"metricDelaySeconds": 30, "controllerDelaySeconds": 15, "supplyDelaySeconds": 35, "warmupSeconds": 25, "queueBufferSeconds": 75},
+  "workload": {"classes": [{"name": "read", "share": 0.55}, {"name": "write", "share": 0.25}, {"name": "search", "share": 0.2}], "generatorCpuPct": 60},
+  "overload": [
+    {"class": "checkout", "priority": 1, "admit": true},
+    {"class": "auth", "priority": 1, "admit": true},
+    {"class": "status", "priority": 2, "admit": true},
+    {"class": "recommendation", "priority": 4, "admit": false},
+    {"class": "bulk-export", "priority": 5, "admit": false}
+  ]
+}

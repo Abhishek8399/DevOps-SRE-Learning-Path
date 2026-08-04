@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0296",
+  "title": "Horizontal Pod Autoscaling",
+  "organization": "Kubernetes",
+  "url": "https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "autoscaling",
+    "control loop",
+    "metrics",
+    "stabilization"
+  ],
+  "relevance": "Documents HPA control-loop calculations, metric behavior, missing samples, tolerance, bounds and stabilization.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

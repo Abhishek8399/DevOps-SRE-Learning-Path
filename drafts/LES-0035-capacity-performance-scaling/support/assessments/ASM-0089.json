@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0089",
+  "lessonId": "LES-0035",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "A payment service currently peaks at 1,000 RPS. Forecast growth is 20 percent, a planned event multiplier is 1.25, uncertainty reserve is 1.10, and required single-failure reserve is 1.09. Tests show one ready replica safely sustains 150 RPS for the representative mix. The autoscaling loop takes 105 seconds from demand to ready capacity, but the queue can protect only 75 seconds. Build and defend the capacity and overload plan.",
+  "directAnswer": "The multiplicative requirement is 1,798.5 RPS, rounded by the stated planning rule to 1,800 RPS, so at least 12 ready-equivalent replicas are required. That number remains conditional on workload, objectives and test validity. Because 105 seconds exceeds the 75-second queue buffer, reactive autoscaling alone is unsafe. Provision enough minimum ready capacity before the event, verify quotas and failure placement, use bounded admission and priority-aware shedding, keep queues bounded, constrain retries, stage the event, and define rollback, recovery, cost and real-time decision thresholds.",
+  "foundation": "A capacity plan is an evidence-backed decision under uncertainty, not spreadsheet certainty. Multiplying distinct factors is acceptable only when their meanings and dependence are understood; correlated buffers can double-count risk. Replica capacity must come from representative objective-constrained tests, not maximum throughput. Ready capacity excludes pending, warming and unhealthy replicas. Overload controls protect correctness and high-priority work when supply cannot arrive in time.",
+  "reasoningSteps": [
+    "Define baseline population, peak window, mix, seasonality and freshness.",
+    "Confirm every multiplier has a unit, owner, source, horizon and uncertainty interpretation.",
+    "Calculate 1000 times 1.20 times 1.25 times 1.10 times 1.09 as 1798.5 RPS.",
+    "Round according to the declared 50-RPS planning increment to 1800 RPS.",
+    "Divide by proven safe 150 RPS per ready replica and round up to 12.",
+    "Validate that per-replica evidence includes tails, correctness, saturation, dependency quotas and sustained behavior.",
+    "Model loss of the required failure unit and confirm 1800 RPS remains available after it.",
+    "Compare the 105-second control-loop delay with 75 seconds of queue protection and reject scale-from-zero or purely reactive coverage.",
+    "Set pre-event minimum ready capacity and verify scheduler, node, network, database and dependency quotas.",
+    "Define admission, priority, bounded queue, degradation and retry-budget policies before overload.",
+    "Create staged ramp, abort, rollback, reconciliation and recovery criteria tied to user outcomes.",
+    "Track sensitivity, cost, owner approvals and forecast error after the event."
+  ],
+  "seniorAnswer": "I would present 1,800 RPS and 12 replicas as a base ready-capacity requirement, then show sensitivity and constraints. I would verify that losing the planned failure domain still leaves the required serving capacity; if 12 is the total before failure rather than after failure, the topology calculation is incomplete. Autoscaling cannot cover the first 30+15+35+25 seconds, so minimum ready capacity must absorb the arrival until new supply is healthy. The event plan would pre-scale in stages, validate quota and placement, calibrate a representative canary, monitor offered/accepted/goodput, p99, queue age and dependency saturation, and stop on predefined user or correctness thresholds. Admission and priority-aware shedding would preserve payment authorization over optional work. Afterward I would reconcile outcomes, forecast error, cost and recovery before lowering capacity.",
+  "weakAnswer": "Twelve replicas are enough. Configure the autoscaler for 12 and let the queue absorb the event.",
+  "whyWeak": "It confuses desired with ready capacity, ignores that scaling arrives after the buffer expires, does not prove failure reserve or quota, omits objective and workload assumptions, and has no overload, abort, rollback, recovery or cost plan.",
+  "evidence": [
+    {"signal": "Representative test reports 150 safe RPS per ready replica", "proves": "The tested replica met the stated predicates under that environment, mix and duration.", "doesNotProve": "Production equivalence, linear multi-replica scaling, failure-domain capacity or future dependency headroom."},
+    {"signal": "Forecast calculation produces 1,798.5 RPS", "proves": "The declared factors produce that arithmetic result.", "doesNotProve": "Independence, forecast accuracy, feasibility or approval."},
+    {"signal": "Autoscaling reaction is 105 seconds and buffer is 75 seconds", "proves": "The modeled reactive path arrives 30 seconds after protection expires.", "doesNotProve": "Every event follows those fixed delays or that more buffering is the best mitigation."},
+    {"signal": "Priority-aware shedding passes a controlled test", "proves": "The tested policy preserved priority ordering under defined overload.", "doesNotProve": "Fairness, correctness and recovery across all production populations."}
+  ],
+  "followUps": [
+    {"prompt": "Should reserve factors always be multiplied?", "answer": "No. Use a model that matches dependence and failure semantics. Multiplication is a transparent conservative rule here, but overlapping uncertainty and failure buffers may double-count."},
+    {"prompt": "Why not just enlarge the queue to 105 seconds?", "answer": "A larger queue converts rejection into waiting and may violate deadlines, consume memory and cause retry amplification. Fix supply timing and control demand before hiding it in backlog."},
+    {"prompt": "What makes a replica ready-equivalent?", "answer": "It is healthy, warmed, placed on required failure domains, connected to dependencies and able to deliver the tested goodput within objectives—not merely scheduled."}
+  ],
+  "rubric": [
+    {"criterion": "Demand model", "points": 10, "observableEvidence": "Defines baseline, mix, factors, horizon, ownership and sensitivity."},
+    {"criterion": "Capacity arithmetic", "points": 10, "observableEvidence": "Derives 1,800 RPS and 12 ready-equivalent replicas with units and rounding."},
+    {"criterion": "Evidence limits", "points": 10, "observableEvidence": "States test, linearity, topology, quota and forecast limitations."},
+    {"criterion": "Control-loop reasoning", "points": 10, "observableEvidence": "Compares 105-second reaction with 75-second protection and pre-provisions safely."},
+    {"criterion": "Failure reserve", "points": 10, "observableEvidence": "Tests required capacity after the declared failure and verifies placement."},
+    {"criterion": "Overload controls", "points": 10, "observableEvidence": "Designs bounded admission, queues, degradation, retry budgets and fairness."},
+    {"criterion": "Execution safety", "points": 10, "observableEvidence": "Defines staged ramp, authorization, abort, rollback and recovery proof."},
+    {"criterion": "Observability", "points": 10, "observableEvidence": "Measures offered, accepted, goodput, tails, age, readiness and dependencies."},
+    {"criterion": "Cost and ownership", "points": 10, "observableEvidence": "Includes feasibility, cost, decision owners and lead time."},
+    {"criterion": "Learning loop", "points": 10, "observableEvidence": "Reconciles outcomes and updates model error after the event."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

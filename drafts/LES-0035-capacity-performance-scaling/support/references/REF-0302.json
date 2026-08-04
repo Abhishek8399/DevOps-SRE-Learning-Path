@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0302",
+  "title": "Using load shedding to avoid overload",
+  "organization": "Amazon Web Services",
+  "url": "https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "load shedding",
+    "overload",
+    "testing",
+    "visibility"
+  ],
+  "relevance": "Engineering guidance on overload anatomy, visibility, testing and load-shedding mechanisms in distributed services.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

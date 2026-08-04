@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0290",
+  "title": "Addressing Cascading Failures",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/addressing-cascading-failures/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "overload",
+    "capacity",
+    "load testing",
+    "cascading failure"
+  ],
+  "relevance": "Primary SRE guidance for testing capacity limits, rejecting overload, degradation, retries and failure reserve.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

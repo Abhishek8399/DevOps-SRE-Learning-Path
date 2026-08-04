@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0298",
+  "title": "Resource metrics pipeline",
+  "organization": "Kubernetes",
+  "url": "https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "metrics server",
+    "resource metrics",
+    "autoscaling",
+    "measurement path"
+  ],
+  "relevance": "Maps the resource-metric path from runtime and kubelet through metrics-server and API consumers, exposing control-loop dependencies.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

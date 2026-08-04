@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0295",
+  "title": "Control Group v2",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "cgroups",
+    "CPU quota",
+    "memory limits",
+    "pressure"
+  ],
+  "relevance": "Authoritative interface definitions for workload resource ceilings, throttling, memory events and cgroup pressure.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

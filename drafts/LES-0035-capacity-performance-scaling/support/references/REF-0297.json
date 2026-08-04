@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0297",
+  "title": "Resource Management for Pods and Containers",
+  "organization": "Kubernetes",
+  "url": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "requests",
+    "limits",
+    "CPU throttling",
+    "memory"
+  ],
+  "relevance": "Defines Kubernetes requests and limits and clarifies why node capacity, scheduling reservation and runtime ceilings differ.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

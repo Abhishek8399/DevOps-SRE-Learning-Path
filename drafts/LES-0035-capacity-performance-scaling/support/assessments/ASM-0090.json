@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0090",
+  "lessonId": "LES-0035",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "For a materially different sanitized system supplied by a qualified reviewer, produce and defend a capacity model, safe performance-test plan, scaling design and overload policy. Do not use the lesson fixture or model answers, and do not generate load against any unapproved target.",
+  "deliverables": [
+    "System and user-journey boundary with objectives, workload classes, populations, units, windows and exclusions.",
+    "Demand history and forecast covering baseline, seasonality, event uplift, growth, uncertainty, model error and provisioning lead time.",
+    "Offered, accepted, rejected, completed, timely-correct goodput and retry accounting.",
+    "Latency distributions plus wait, service, queue age, concurrency, utilization, saturation and dependency evidence.",
+    "Safe load, stress, spike and soak design with representative data, generator calibration, staged ramps, aborts and recovery proof.",
+    "Measured performance curve identifying linear region, knee, objective loss, collapse or unexplored range.",
+    "Bottleneck argument using per-boundary evidence, alternatives, discriminating tests and external-validity limits.",
+    "Little's Law consistency check with matching boundary, units, interval, stationarity assumptions and measurement error.",
+    "Capacity requirement and sensitivity table including failure reserve, placement, quota, cost and ready-capacity semantics.",
+    "Autoscaling design covering signal, target, bounds, measurement, decision, provisioning, warm-up, stabilization and missing-signal behavior.",
+    "Overload design covering admission, bounded queues, priority, fairness, degradation, retry budgets and recovery.",
+    "Runbook with authorization, owners, go or no-go thresholds, rollback, reconciliation, evidence retention and post-event model update."
+  ],
+  "evidenceRequirements": [
+    "Sanitized sources with provenance, timestamp, population, units, aggregation and known gaps.",
+    "Raw histograms or mergeable distributions where percentile aggregation matters.",
+    "Generator and target saturation measured separately.",
+    "At least three repeatable load points below the knee and controlled evidence around objective loss.",
+    "Failure-reserve test or calculation tied to an explicit failure unit.",
+    "Sensitivity analysis for at least three uncertain assumptions.",
+    "Reviewer-observed cleanup and proof that no unapproved target, data, cost or infrastructure changed.",
+    "Delayed reassessment using a second unseen workload."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Boundary and objectives", "points": 8, "observableEvidence": "Defines journey, workload, population, units, windows, correctness and latency objectives."},
+    {"criterion": "Demand and forecast", "points": 10, "observableEvidence": "Uses sourced baseline, seasonality, events, growth, uncertainty, lead time and model error."},
+    {"criterion": "Work accounting", "points": 8, "observableEvidence": "Separates offered, accepted, rejected, completed, useful and retried work."},
+    {"criterion": "Distribution evidence", "points": 8, "observableEvidence": "Uses valid latency distributions, counts, buckets, populations and tail limitations."},
+    {"criterion": "Test safety", "points": 10, "observableEvidence": "Shows authorization, realism, calibration, stages, aborts, recovery and cleanup."},
+    {"criterion": "Knee and bottleneck", "points": 10, "observableEvidence": "Identifies safe region and limiting boundary with alternatives and falsifiers."},
+    {"criterion": "Queueing reasoning", "points": 6, "observableEvidence": "Applies Little's Law and queue intuition with matching units and assumptions."},
+    {"criterion": "Capacity and failure reserve", "points": 10, "observableEvidence": "Calculates ready capacity with sensitivity, failure unit, placement and quota."},
+    {"criterion": "Autoscaling control", "points": 8, "observableEvidence": "Models complete control-loop delay, bounds, stabilization and failure modes."},
+    {"criterion": "Overload and fairness", "points": 8, "observableEvidence": "Uses bounded admission, queues, degradation, retry budgets and explicit fairness."},
+    {"criterion": "Cost and feasibility", "points": 6, "observableEvidence": "Explains unit cost, marginal choice, commitments, lead time and decision authority."},
+    {"criterion": "Communication and learning", "points": 8, "observableEvidence": "States uncertainty, rollback, reconciliation, ownership and model-update evidence."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

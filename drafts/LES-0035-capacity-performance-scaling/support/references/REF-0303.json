@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0303",
+  "title": "SRE Best Practices for Capacity Management",
+  "organization": "Google",
+  "url": "https://sre.google/static/pdf/login_winter20_10_torres.pdf",
+  "sourceType": "research-paper",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": [
+    "LES-0035"
+  ],
+  "topics": [
+    "capacity management",
+    "forecasting",
+    "overload",
+    "provisioning"
+  ],
+  "relevance": "Practitioner treatment of capacity-management processes, overload behavior, forecasting and empirical validation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
