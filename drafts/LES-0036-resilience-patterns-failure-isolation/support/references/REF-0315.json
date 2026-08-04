@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0315",
+  "title": "Retry Storm antipattern",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/architecture/antipatterns/retry-storm/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["retry storm", "overload", "backoff", "circuit breaker"],
+  "relevance": "Official failure pattern showing how excessive immediate retries prevent recovery and how bounded backoff and protection reduce amplification.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0311",
+  "title": "Overload manager",
+  "organization": "Envoy Project",
+  "url": "https://www.envoyproxy.io/docs/envoy/latest/configuration/operations/overload_manager/overload_manager",
+  "sourceType": "official-documentation",
+  "versionOrDate": "latest documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["overload manager", "resource monitors", "load shedding", "scaling actions"],
+  "relevance": "Official Envoy resource-pressure triggers and overload actions used to distinguish monitored pressure, mitigation action and policy scope.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

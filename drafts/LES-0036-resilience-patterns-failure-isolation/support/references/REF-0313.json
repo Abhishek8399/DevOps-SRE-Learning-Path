@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0313",
+  "title": "Bulkhead pattern",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["bulkheads", "resource isolation", "pools", "fault containment"],
+  "relevance": "Official architecture pattern for isolating resources so failure or exhaustion in one workload does not consume every shared resource.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

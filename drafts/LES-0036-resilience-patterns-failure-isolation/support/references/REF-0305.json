@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0305",
+  "title": "Timeouts, retries, and backoff with jitter",
+  "organization": "Amazon Web Services",
+  "url": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["timeouts", "retries", "backoff", "jitter"],
+  "relevance": "Official engineering guidance for selecting timeouts, limiting retries, avoiding layered amplification and spreading retry arrivals with jitter.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

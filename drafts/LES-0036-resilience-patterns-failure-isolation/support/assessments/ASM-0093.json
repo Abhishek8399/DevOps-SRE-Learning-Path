@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0093",
+  "lessonId": "LES-0036",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "For a materially different sanitized system supplied by a qualified reviewer, design and defend a complete failure-containment and recovery contract. Do not use the lesson fixture or model answers, and do not send traffic or change any real policy without explicit separate authorization.",
+  "deliverables": [
+    "User journey, correctness objective, side effects, failure domains, dependencies and explicit exclusions.",
+    "End-to-end absolute deadline with queue, service, dependency, response and guard allocations plus cancellation behavior.",
+    "Original-operation and attempt model with maximum layered amplification and measured attempt ratio.",
+    "Failure-class matrix covering before-send, after-send unknown, timeout, reset, overload, permanent, conflict and cancellation cases.",
+    "One retry owner with total budget, attempt cap, exponential backoff, jitter, remaining-deadline and overload stop rules.",
+    "Idempotency state machine with principal scope, canonical fingerprint, atomic claim, fencing or lease, durable result, conflict, expiry and reconciliation.",
+    "Circuit-breaker design with scope, rolling population, minimum sample, thresholds, open interval, half-open probes, fallback and manual-control risk.",
+    "Bulkhead, rate, concurrency and connection limits with critical reserves, tenant or priority fairness and controlled borrowing.",
+    "Bounded queue design covering arrival, departure, depth, oldest age, memory, expiry, redrive and recovery drain.",
+    "Admission, load-shedding and graceful-degradation contract with approved priority and explicit valid output.",
+    "Observability design correlating operations, attempts, deadlines, retry reasons, states, rejects, goodput and recovery.",
+    "Authorized fault-test and rollout plan with baseline, cohort, abort, rollback, communications, reconciliation, cleanup and proof limits."
+  ],
+  "evidenceRequirements": [
+    "Sanitized input provenance, timestamp, units, populations, topology and known gaps.",
+    "Arithmetic showing all timeout allocations fit one deadline and all retry layers fit one total budget.",
+    "At least two idempotency crash points and a conflicting-payload test with observed side-effect count.",
+    "A same-window comparison demonstrating whether critical work remains protected when another lane saturates.",
+    "Circuit evidence with sufficient sample size, open rejection, limited probes and stable recovery or justified continued open state.",
+    "Queue evidence including oldest age and expired-work behavior, not depth alone.",
+    "Reviewer-observed cleanup and proof that no unapproved target, data, credential, paid resource or policy changed.",
+    "Delayed reassessment on a second unseen system with different side-effect and workload semantics."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Journey and correctness", "points": 8, "observableEvidence": "Defines user intention, success, unknown outcome, side effects and exclusions."},
+    {"criterion": "Deadline and cancellation", "points": 8, "observableEvidence": "Uses one coherent budget, per-hop arithmetic, guard and cancellation semantics."},
+    {"criterion": "Failure classification", "points": 8, "observableEvidence": "Distinguishes transport phase, overload, permanent, semantic and unknown outcomes."},
+    {"criterion": "Retry amplification and control", "points": 10, "observableEvidence": "Calculates layered attempts and enforces one owner, global budget, backoff, jitter and stop rules."},
+    {"criterion": "Idempotency and reconciliation", "points": 10, "observableEvidence": "Shows scoped key, fingerprint, atomicity, lifecycle, conflict, retention and crash recovery."},
+    {"criterion": "Circuit behavior", "points": 8, "observableEvidence": "Defines scope, population, threshold, interval, probes, fallback and convergence."},
+    {"criterion": "Bulkhead and fairness", "points": 8, "observableEvidence": "Reserves critical capacity, bounds borrowing and measures isolation and fairness."},
+    {"criterion": "Queue and overload", "points": 10, "observableEvidence": "Bounds age, count and memory and defines admission, shedding, degradation and drain."},
+    {"criterion": "Observability", "points": 8, "observableEvidence": "Correlates user operations, attempts, budgets, policy states, reasons, goodput and correctness."},
+    {"criterion": "Test, rollout and recovery", "points": 10, "observableEvidence": "Uses authority, bounded cohort, baseline, abort, rollback, paced recovery, reconciliation and cleanup."},
+    {"criterion": "Security, capacity and cost", "points": 6, "observableEvidence": "Addresses abuse, secrets, cardinality, fallback capacity, retention and cost per useful operation."},
+    {"criterion": "Evidence discipline", "points": 6, "observableEvidence": "States alternatives, falsifiers, assumptions, external-validity limits and review triggers."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

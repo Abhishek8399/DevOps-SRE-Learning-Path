@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0307",
+  "title": "Retry",
+  "organization": "gRPC Authors",
+  "url": "https://grpc.io/docs/guides/retry/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["retry policy", "backoff", "retry throttling", "observability"],
+  "relevance": "Official gRPC retry lifecycle, policy, exponential backoff, jitter, throttling and observability behavior used to bound implementation claims.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

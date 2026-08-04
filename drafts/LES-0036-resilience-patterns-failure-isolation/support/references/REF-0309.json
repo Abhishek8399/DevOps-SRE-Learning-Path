@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0309",
+  "title": "RFC 6585: Additional HTTP Status Codes",
+  "organization": "Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc6585.html",
+  "sourceType": "rfc",
+  "versionOrDate": "April 2012; reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["HTTP 429", "rate limiting", "Retry-After", "overload signaling"],
+  "relevance": "Normative definition of HTTP 429 Too Many Requests and optional retry guidance for rate-limited callers.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

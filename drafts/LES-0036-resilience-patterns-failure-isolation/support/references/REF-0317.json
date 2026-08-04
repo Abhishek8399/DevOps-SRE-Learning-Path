@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0317",
+  "title": "Embedding an SRE to Recover from Operational Overload",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/operational-overload/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["operational overload", "prioritization", "recovery", "sustainable operations"],
+  "relevance": "SRE case study for making overload and prioritization explicit, reducing reactive work and building a sustainable recovery system.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0308",
+  "title": "RFC 9110: HTTP Semantics",
+  "organization": "Internet Engineering Task Force",
+  "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+  "sourceType": "rfc",
+  "versionOrDate": "June 2022; reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["HTTP semantics", "idempotent methods", "Retry-After", "status codes"],
+  "relevance": "Normative HTTP semantics for idempotent methods, automatic retry constraints and Retry-After, separated here from business-level side-effect guarantees.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

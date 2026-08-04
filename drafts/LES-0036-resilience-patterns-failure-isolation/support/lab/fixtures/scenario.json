@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0036",
+  "caseId": "resilience-containment-v1",
+  "fictional": true,
+  "deadline": {
+    "totalMs": 800,
+    "allocationsMs": {
+      "edge": 40,
+      "queue": 50,
+      "inventory": 120,
+      "paymentAttempt": 350,
+      "outcomeLookup": 40,
+      "response": 40,
+      "guard": 40
+    }
+  },
+  "retries": {
+    "layerTotalAttempts": [3, 3, 3],
+    "globalTotalAttempts": 4
+  },
+  "jitter": {
+    "slots": [0, 3, 7, 1, 5, 2, 6, 4]
+  },
+  "idempotency": {
+    "requests": [
+      {"key": "op-17", "principal": "tenant-a", "fingerprint": "amount-500", "outcome": "committed"},
+      {"key": "op-17", "principal": "tenant-a", "fingerprint": "amount-500", "outcome": "replay"},
+      {"key": "op-17", "principal": "tenant-a", "fingerprint": "amount-500", "outcome": "replay"},
+      {"key": "op-17", "principal": "tenant-a", "fingerprint": "amount-900", "outcome": "conflict"}
+    ]
+  },
+  "circuit": {
+    "minimumSamples": 5,
+    "openFailureRatio": 0.6,
+    "closedWindow": ["failure", "failure", "success", "failure", "failure"],
+    "halfOpenProbes": ["success", "success"]
+  },
+  "bulkhead": {
+    "sharedCapacity": 4,
+    "criticalDemand": 2,
+    "optionalDemand": 4,
+    "criticalReserve": 2,
+    "optionalReserve": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0314",
+  "title": "Transient fault handling",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["transient faults", "retry strategy", "timeouts", "idempotency"],
+  "relevance": "Official guidance for distinguishing transient faults, choosing delay and attempt policies, setting timeouts and avoiding duplicate effects.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

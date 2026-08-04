@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0306",
+  "title": "Deadlines",
+  "organization": "gRPC Authors",
+  "url": "https://grpc.io/docs/guides/deadlines/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["deadlines", "timeouts", "cancellation", "propagation"],
+  "relevance": "Official gRPC guidance distinguishing deadlines from indefinite waits and explaining cancellation and downstream deadline propagation.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

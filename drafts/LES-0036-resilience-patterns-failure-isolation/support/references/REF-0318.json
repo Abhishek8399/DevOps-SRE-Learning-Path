@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0318",
+  "title": "Avoiding overload in distributed systems by putting the smaller service in control",
+  "organization": "Amazon Web Services",
+  "url": "https://aws.amazon.com/builders-library/avoiding-overload-in-distributed-systems-by-putting-the-smaller-service-in-control/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["overload control", "backpressure", "admission", "distributed systems"],
+  "relevance": "Official engineering guidance for placing overload decisions where constrained capacity is understood and preventing a larger caller population from overwhelming a smaller service.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

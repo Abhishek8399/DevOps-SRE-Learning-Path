@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0316",
+  "title": "A Collection of Best Practices for Production Services",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/service-best-practices/",
+  "sourceType": "book",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["production readiness", "overload", "dependencies", "graceful degradation"],
+  "relevance": "Official SRE checklist connecting dependency behavior, overload protection, deadlines, graceful degradation and tested operational readiness.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

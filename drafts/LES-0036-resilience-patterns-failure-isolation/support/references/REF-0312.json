@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0312",
+  "title": "Circuit Breaker pattern",
+  "organization": "Microsoft",
+  "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker",
+  "sourceType": "official-documentation",
+  "versionOrDate": "reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["circuit breaker", "closed state", "open state", "half-open state"],
+  "relevance": "Official architecture pattern describing caller protection, state transitions, failure counting, timeout and recovery-probe considerations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

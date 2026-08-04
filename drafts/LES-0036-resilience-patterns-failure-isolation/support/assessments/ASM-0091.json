@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0091",
+  "lessonId": "LES-0036",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A checkout dependency becomes slow. User operations remain near 1,000 per second, but database attempts rise toward 27,000 per second because gateway, service and database client each permit three total attempts. Explain the mechanism, the first safe containment actions and the evidence required before restoring retries.",
+  "directAnswer": "Layer-local retry policies multiply: three gateway attempts each create three service attempts, and each service attempt creates three database attempts, so one logical operation can create 27 leaf attempts. First protect correctness and useful capacity: stop blind side-effect retries, identify the one retry owner, cap total attempts, reject expired work, shed optional load and preserve a critical lane. Then classify failures, propagate remaining deadlines, add randomized backoff and verify operation-to-attempt ratio, dependency saturation, user goodput and stable recovery before restoring any bounded retry.",
+  "foundation": "An operation is the user's intention; an attempt is one execution try. Retry can improve success for a genuinely transient failure, but during overload it is additional demand. Backoff changes timing, jitter reduces synchronization, and a retry budget limits total manufactured work. None of them makes a non-idempotent side effect safe.",
+  "reasoningSteps": [
+    "Define the user journey and separate original operations from gateway, service and database attempts.",
+    "Calculate the maximum leaf amplification as the product of total attempts at each retrying layer.",
+    "Classify whether failures occur before send, after send, during response, from overload or from permanent semantics.",
+    "Stop retries for unknown side-effect outcomes and use the same operation key for durable lookup or reconciliation.",
+    "Choose one retry owner and enforce a global token or percentage budget inside the remaining end-to-end deadline.",
+    "Use capped exponential backoff with randomized jitter only for approved transient cases.",
+    "Reject work whose deadline is exhausted and shed optional work before shared pools and the dependency.",
+    "Reserve critical concurrency and keep queue count and oldest age bounded.",
+    "Observe user goodput, attempts per operation, retry reason, remaining deadline, queue age and dependency saturation.",
+    "Restore policy gradually with limited probes and prove stable recovery without a second attempt wave."
+  ],
+  "seniorAnswer": "I would declare this a positive-feedback failure, not a demand spike. The 27x bound is 3 cubed and explains why the database sees 27,000 attempts from 1,000 intentions. I would immediately disable or sharply budget lower-layer retries, preserve one upper-layer owner for explicitly retryable idempotent operations, propagate the absolute deadline, expire stale queue entries and shed optional checkout features. Payment outcomes after send are unknown, so I would query by the same durable idempotency key and reconcile rather than create a new charge. Recovery would use randomized capped delay, limited breaker probes and paced backlog drain. I would restore only after original-to-attempt ratio, critical goodput, tail latency, queue age, dependency pressure and reconciliation all return to a stable baseline.",
+  "weakAnswer": "Increase timeout and use five retries with exponential backoff because the database error is temporary.",
+  "whyWeak": "It increases occupied concurrency and attempt load, ignores multiplicative layers, lacks jitter and a global budget, assumes the failure is transient, ignores unknown payment outcomes, and has no admission, isolation or recovery proof.",
+  "evidence": [
+    {"signal": "1,000 original operations and 27,000 database attempts", "proves": "The observed attempt ratio is 27 for that population and interval.", "doesNotProve": "Which layers created attempts unless identifiers and parentage are recorded."},
+    {"signal": "Database latency and rejection rise with attempt load", "proves": "The measured dependency path worsens while extra attempts arrive.", "doesNotProve": "That retries are the only cause or that every failure is overload."},
+    {"signal": "Disabling lower-layer retries reduces attempts and restores goodput", "proves": "The intervention contained amplification for the tested cohort.", "doesNotProve": "That all future retries are unsafe or that side-effect correctness is reconciled."}
+  ],
+  "followUps": [
+    {"prompt": "Why is backoff alone insufficient?", "answer": "Clients that fail together can use identical delays and wake together. Randomized jitter spreads attempts, while a budget limits total work."},
+    {"prompt": "What if the timeout happened after a payment request was sent?", "answer": "The outcome is unknown. Query or resume using the same scoped idempotency key and durable outcome record; do not issue a new logical operation."},
+    {"prompt": "What is the shortest incident summary?", "answer": "Demand was stable, attempts multiplied 27x, retries became overload, and recovery requires fewer attempts plus correctness reconciliation."}
+  ],
+  "rubric": [
+    {"criterion": "Operation and attempt distinction", "points": 10, "observableEvidence": "Separates user intentions from execution attempts and identifies populations."},
+    {"criterion": "Amplification math", "points": 10, "observableEvidence": "Derives 27 leaf attempts and 27,000 attempts per second."},
+    {"criterion": "Correctness", "points": 10, "observableEvidence": "Treats post-send side effects as unknown and uses durable idempotency and reconciliation."},
+    {"criterion": "Containment", "points": 10, "observableEvidence": "Centralizes and budgets retry, expires stale work, sheds optional demand and reserves critical capacity."},
+    {"criterion": "Recovery evidence", "points": 10, "observableEvidence": "Requires limited probes, paced drain and operation, attempt, user and dependency recovery proof."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

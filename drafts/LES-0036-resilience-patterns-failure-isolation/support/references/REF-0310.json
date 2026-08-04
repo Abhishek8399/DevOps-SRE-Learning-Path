@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0310",
+  "title": "Circuit breaking",
+  "organization": "Envoy Project",
+  "url": "https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking",
+  "sourceType": "official-documentation",
+  "versionOrDate": "latest documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0036"],
+  "topics": ["circuit breaking", "connection limits", "pending requests", "retry limits"],
+  "relevance": "Official Envoy description of distributed per-cluster circuit-breaking limits for connections, pending requests, active requests and retries.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

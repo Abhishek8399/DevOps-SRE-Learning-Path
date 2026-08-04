@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0092",
+  "lessonId": "LES-0036",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Design the resilience contract for a payment API with an 800 ms user deadline. Authentication consumes 40 ms, queueing 50 ms, inventory 120 ms, a payment attempt may use 350 ms, durable outcome lookup 40 ms, response work 40 ms and guard time 40 ms. Optional recommendations share workers with payment. The payment provider can become slow and may commit after the caller times out. Defend timeout, retry, idempotency, circuit, bulkhead, overload and recovery decisions.",
+  "directAnswer": "The allocations consume 680 ms and leave 120 ms, so every downstream wait must use the remaining absolute deadline rather than restart 800 ms. A timed-out payment is unknown, not failed. Require a stable principal-scoped idempotency key and fingerprint, atomically claim and persist the payment outcome, replay matching results, reject conflicts and reconcile in-progress states. Give one layer a small total retry budget only for classified retryable cases with enough remaining time, capped exponential backoff and jitter. Use a scoped breaker with rolling minimum samples and limited probes, isolate payment workers and connections from recommendations, bound queues by age and count, shed or omit recommendations first, and pace probes and backlog drain during recovery.",
+  "foundation": "Resilience controls spend the same finite resources: time, concurrency, queue memory, dependency quota and correctness risk. The design is safe only when one user deadline, operation semantics, retry ownership, durable state and overload priorities agree. The control plane must roll out and reverse policy without synchronized fleet behavior.",
+  "reasoningSteps": [
+    "Define correct payment success, failure, unknown and duplicate outcomes before availability targets.",
+    "Add the seven allocations to 680 ms and retain the 120 ms remainder as unallocated safety, not automatic retry time.",
+    "Propagate an absolute deadline and cancellation; ensure every attempt timeout is less than remaining time minus return guard.",
+    "Classify connect-before-send, after-send timeout, explicit overload, permanent validation and authorization outcomes.",
+    "Scope an idempotency key to authenticated principal and operation, fingerprint canonical input and atomically claim durable state.",
+    "Return stored terminal results for matching replay, reject changed payloads and reconcile in-progress or unknown records.",
+    "Assign one retry owner and require semantics, remaining deadline, total budget, dependency headroom, backoff and jitter.",
+    "Configure a payment-provider breaker with minimum samples, rolling window, open interval, limited half-open probes and scoped fallback.",
+    "Reserve payment concurrency and connections; cap recommendation demand and prevent borrowing from violating the payment reserve.",
+    "Bound queues by oldest age, memory and deadline; reject expired work and degrade by omitting recommendations explicitly.",
+    "Instrument operations, attempts, deadline, idempotency state, circuit state, lane occupancy, rejection reason and user outcome.",
+    "Roll out to a bounded cohort, test provider delay and post-commit timeout, abort on correctness or user thresholds, restore gradually, pace drain and reconcile."
+  ],
+  "seniorAnswer": "I would treat 800 ms as one absolute budget. The listed phases consume 680 ms, leaving 120 ms for variance; no proxy or client may restart the full timeout. Cancellation stops optional and pre-commit work, but a committed payment continues to a durable terminal record. Every mutation carries a tenant-scoped key and canonical fingerprint. The payment transaction and idempotency state must produce one durable effect, matching replays return the recorded result, conflicts fail, and uncertain leases reconcile. One selected caller may retry a classified transient pre-send failure only while tokens and remaining time allow; overload and unknown post-send outcomes do not get blind retries. A per-provider and per-region breaker uses sufficient rolling evidence and two or fewer controlled probes. Payment owns reserved workers and connections; recommendation traffic has a separate bounded lane and is shed first. Old queue entries expire before execution. I would canary the policy, inject bounded latency and post-commit response loss, verify no duplicate effect and preserved payment goodput, then restore via limited probes, jittered attempts and paced drain. Rollback reverts policy, not durable outcome records.",
+  "weakAnswer": "Set every timeout to 800 ms, retry payment three times, open the circuit after one failure, and double the shared queue so users do not see errors.",
+  "whyWeak": "It creates timeout inversion, duplicate-payment risk, tiny-sample breaker flapping, shared-pool starvation and stale queued work. It omits one retry owner, idempotency atomicity, jitter, deadlines, overload priority, observability and recovery.",
+  "evidence": [
+    {"signal": "The phase budget totals 680 ms", "proves": "The declared deterministic allocations leave 120 ms inside the 800 ms deadline.", "doesNotProve": "That real latency distributions fit or that 120 ms is an approved retry allocation."},
+    {"signal": "Four matching requests create one payment and one changed payload conflicts", "proves": "The tested idempotency path suppresses matching replays and rejects a conflict.", "doesNotProve": "Crash atomicity, retention, multi-region consistency or every payment-provider behavior."},
+    {"signal": "Recommendation saturation does not reduce reserved payment concurrency", "proves": "The tested bulkhead preserves the declared critical reserve.", "doesNotProve": "Optimal allocation, tenant fairness or dependency capacity."},
+    {"signal": "A bounded fault test recovers with no attempt wave and no duplicate payment", "proves": "The tested cohort met its recovery and correctness predicates.", "doesNotProve": "All fleet scopes, failures or correlated outages are safe."}
+  ],
+  "followUps": [
+    {"prompt": "Should the remaining 120 ms always be used for a retry?", "answer": "No. It is safety margin for latency variation, scheduling and return work. Retry requires its own semantics, budget and enough time to complete usefully."},
+    {"prompt": "Where should the idempotency record live?", "answer": "At the authoritative side-effect boundary or in a state machine transactionally coupled to it, not only in an evictable cache."},
+    {"prompt": "How can a fallback make the outage worse?", "answer": "It may be more expensive, stale, insecure or dependent on another constrained system. Model and protect fallback capacity before enabling it."}
+  ],
+  "rubric": [
+    {"criterion": "Correctness contract", "points": 10, "observableEvidence": "Defines success, failure, unknown, duplicate and reconciliation semantics."},
+    {"criterion": "Deadline arithmetic", "points": 10, "observableEvidence": "Derives 680 ms allocation and 120 ms remainder with one propagated deadline."},
+    {"criterion": "Retry design", "points": 10, "observableEvidence": "Uses one owner, classification, remaining time, total budget, backoff and jitter."},
+    {"criterion": "Idempotency design", "points": 10, "observableEvidence": "Covers principal, fingerprint, atomic claim, durable outcome, conflict, lease, expiry and reconciliation."},
+    {"criterion": "Circuit design", "points": 10, "observableEvidence": "Defines scope, minimum sample, rolling evidence, open interval, probes and fallback."},
+    {"criterion": "Isolation and overload", "points": 10, "observableEvidence": "Reserves payment capacity and bounds recommendation, queue, admission, shedding and degradation."},
+    {"criterion": "Observability", "points": 10, "observableEvidence": "Correlates operations, attempts, deadlines, states, lane decisions and user outcomes."},
+    {"criterion": "Test safety", "points": 10, "observableEvidence": "Uses authorization, bounded cohort, correctness abort, rollback and cleanup."},
+    {"criterion": "Recovery", "points": 10, "observableEvidence": "Limits probes, jitters attempts, paces drain and reconciles uncertain outcomes."},
+    {"criterion": "Trade-off communication", "points": 10, "observableEvidence": "States capacity, security, fairness, cost, assumptions and proof limits."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
