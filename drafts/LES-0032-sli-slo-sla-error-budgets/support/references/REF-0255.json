@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0255",
+  "title": "Defining recording rules",
+  "organization": "Prometheus",
+  "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Latest documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["rule files", "evaluation interval", "promtool", "recorded series"],
+  "relevance": "Supports validation, evaluation timing, and operational behavior of Prometheus recording rules used to materialize SLI components.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

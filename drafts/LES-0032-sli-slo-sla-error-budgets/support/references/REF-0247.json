@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0247",
+  "title": "Example SLO Document",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/slo-document/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook Appendix A; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["SLO document", "authors", "reviewers", "approvers", "measurement implementation"],
+  "relevance": "Provides a concrete documentation pattern tying a service overview, indicators, objectives, calculation, ownership, and review lifecycle together.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

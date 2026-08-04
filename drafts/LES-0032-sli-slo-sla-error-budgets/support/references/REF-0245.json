@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0245",
+  "title": "Implementing SLOs",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/implementing-slos/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["SLI specification", "SLI implementation", "error budgets", "stakeholder approval", "iteration"],
+  "relevance": "Provides the end-to-end recipe for choosing user-centered indicators, documenting objectives, obtaining approval, using policy, and refining SLOs.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

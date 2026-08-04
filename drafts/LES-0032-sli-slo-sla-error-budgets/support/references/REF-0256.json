@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0256",
+  "title": "OpenSLO specification",
+  "organization": "OpenSLO",
+  "url": "https://github.com/OpenSLO/OpenSLO",
+  "sourceType": "standard",
+  "versionOrDate": "Repository specification reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["SLO as code", "vendor-neutral specification", "objective", "budgeting method", "time window"],
+  "relevance": "Provides a vendor-neutral declarative vocabulary for versioning SLO intent while the lesson separates a specification from provider execution and approval.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

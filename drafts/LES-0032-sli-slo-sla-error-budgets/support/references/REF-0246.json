@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0246",
+  "title": "SLO Engineering Case Studies",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/slo-engineering-case-studies/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["case studies", "user journeys", "SLI implementation", "SLO evolution"],
+  "relevance": "Supports transfer from simple request services to varied service shapes and the need to adapt measurement to the actual user contract.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

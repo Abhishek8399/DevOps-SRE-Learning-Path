@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0257",
+  "title": "Concepts in service monitoring",
+  "organization": "Google Cloud",
+  "url": "https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Google Cloud Observability documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["request-based SLO", "window-based SLO", "rolling period", "calendar period", "error-budget trajectory"],
+  "relevance": "Supports distinctions among request and time-window objectives, rolling and calendar periods, and why remaining budget can move as traffic or old samples change.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

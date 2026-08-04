@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0244",
+  "title": "Service Level Objectives",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/service-level-objectives/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["SLI", "SLO", "SLA", "indicator selection", "statistical fallacies"],
+  "relevance": "Primary terminology and design guidance for indicators, objectives, agreements, user relevance, percentiles, measurement conditions, and expectations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

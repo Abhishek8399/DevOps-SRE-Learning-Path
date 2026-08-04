@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0253",
+  "title": "Query functions",
+  "organization": "Prometheus",
+  "url": "https://prometheus.io/docs/prometheus/latest/querying/functions/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Latest documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["rate", "increase", "histogram_fraction", "histogram_quantile", "counter resets"],
+  "relevance": "Defines the current PromQL functions used to derive rates and latency fractions, including type and interpolation behavior that affects SLI validity.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0250",
+  "title": "Embracing Risk",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/embracing-risk/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["risk", "reliability tradeoff", "error budget", "innovation"],
+  "relevance": "Supports the business and engineering rationale for explicit acceptable risk and error budgets instead of pursuing unbounded reliability.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

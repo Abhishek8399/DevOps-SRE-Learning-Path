@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0254",
+  "title": "Recording rules",
+  "organization": "Prometheus",
+  "url": "https://prometheus.io/docs/practices/rules/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["recording rules", "ratio aggregation", "naming", "numerator", "denominator"],
+  "relevance": "Supports aggregating ratio numerators and denominators separately and using reviewable recording-rule names rather than averaging ratios.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

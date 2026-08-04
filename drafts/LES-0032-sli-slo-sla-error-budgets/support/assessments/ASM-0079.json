@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0079",
+  "lessonId": "LES-0032",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A checkout dashboard reports 99.95% success against a 99.9% objective. The success ratio uses 1,999 successful requests divided by 2,000 requests observed at the application. An independently owned edge counter reports 2,500 eligible checkout attempts in the same UTC interval. A manager says the SLO is healthy and releases can accelerate. What is the first correct conclusion, what calculations are valid, and what evidence must come next?",
+  "directAnswer": "The reported 99.95% is an observed-only ratio, not a valid SLO verdict, because measurement coverage is 2,000 / 2,500 = 80%. Five hundred eligible attempts are unaccounted for. Their outcomes are unknown, so they cannot silently disappear from the denominator or be called good. Stop the release conclusion, reconcile the event population and instrumentation boundary, and apply the approved missing-data policy before evaluating budget or policy.",
+  "foundation": "An SLI is a fraction: good eligible events divided by all eligible events. Both words matter. The application saw 2,000 events and labeled 1,999 good, so its local ratio is 1,999 / 2,000 = 0.9995, or 99.95%. But the edge says 2,500 attempts should have been eligible. Coverage is therefore 2,000 / 2,500 = 0.8, or 80%. The missing 500 might have failed before reaching the application, succeeded through another path, been duplicated at the edge, or reflect a clock/filter mismatch. We do not know. If a declared conservative teaching policy treats unknown as not good, a lower bound is 1,999 / 2,500 = 79.96%, but that is a policy-bound bound—not proof that all 500 failed. Until populations reconcile, neither the SLO status nor error-budget state is trustworthy.",
+  "reasoningSteps": [
+    "Write the user operation and exact eligibility rule before using any percentage.",
+    "Align interval start/end, timezone, environment, route, tenant, retry, duplicate, cancellation, and exclusion rules at both counters.",
+    "Keep raw good, bad, total, unknown, and coverage counts; do not rely on a precomputed percentage.",
+    "Calculate the application-local observed ratio: 1,999 / 2,000 = 99.95%.",
+    "Calculate measurement coverage: 2,000 / 2,500 = 80%, leaving 500 unknown events.",
+    "Do not label missing events successful merely because no application error was recorded.",
+    "Test boundary hypotheses: edge/application clock skew, request loss before instrumentation, retry semantics, filter differences, sampling, pipeline loss, and counter reset.",
+    "Use the approved missing-data policy only after confirming it applies; otherwise report the SLO as unknown or invalid rather than green.",
+    "Recalculate the SLI and budget from reconciled good and total counters, then invoke the error-budget policy through its named owners.",
+    "State that measurement repair and release authorization are separate decisions."
+  ],
+  "seniorAnswer": "I would challenge the decision, not the person. The service-local ratio is mathematically 99.95%, but its denominator covers only 80% of independently counted eligible attempts. That violates the measurement contract, so it cannot authorize release acceleration. I would freeze the conclusion while preserving normal service operation, align the two sources by immutable interval and label contract, and compare deltas at each boundary from edge acceptance through terminal checkout state. I would quantify missing, duplicate, late, excluded, and unknown events, verify counter monotonicity and reset handling, and inspect whether retries represent attempts or user operations. If the approved policy says unknown is bad, 79.96% is a conservative bound; if not, status is unknown. I would not fabricate an exact production SLI from either. Once coverage and semantics are restored, I would aggregate numerators and denominators—not average percentages—recompute remaining budget, and let the signed policy owners decide change posture. I would add a coverage SLI and independent journey signal so the next green panel cannot hide a blind spot.",
+  "weakAnswer": "The dashboard is above 99.9%, so the SLO passes; the missing requests probably timed out before they counted.",
+  "whyWeak": "It treats silence as success, assumes a cause without evidence, ignores 20% denominator loss, and turns a measurement defect into release authority. Requests failing before application instrumentation are often exactly the user failures an application-only SLI misses.",
+  "evidence": [
+    {"signal": "Application good=1,999 and total=2,000", "proves": "The application-local observed ratio is 99.95% if those counters share semantics and interval.", "doesNotProve": "All eligible user attempts reached the application or were represented once."},
+    {"signal": "Independent edge eligible total=2,500", "proves": "The two declared totals differ by 500 for the stated interval.", "doesNotProve": "Which source is correct or what happened to each unmatched event."},
+    {"signal": "Coverage=80%", "proves": "Observed application population divided by the declared authoritative population is 0.8.", "doesNotProve": "That every missing event failed, succeeded, or belongs in the final population."},
+    {"signal": "Approved missing-data policy and reconciled event samples", "proves": "How unknown data must affect status and whether boundary hypotheses match examples.", "doesNotProve": "Future coverage or business authorization beyond the policy scope."}
+  ],
+  "followUps": [
+    {"prompt": "Why not average the edge and application percentages?", "answer": "They do not represent two comparable samples of the same known population. Even for comparable groups, ratios must usually be aggregated as sum(good) / sum(total), not by averaging percentages, because denominators differ."},
+    {"prompt": "Does treating unknown as bad prove 500 failures?", "answer": "No. It creates a conservative decision bound under a declared policy. The outcomes remain unknown until reconciled."},
+    {"prompt": "What dashboard should accompany the SLI?", "answer": "Raw good, bad, total and unknown counts; telemetry coverage; source freshness; resets/gaps; segmentation by user journey and failure domain; objective target/window; remaining budget; and links to the exact specification and policy."},
+    {"prompt": "Can SRE unilaterally change the target?", "answer": "No. SRE can expose measurement and feasibility evidence, but target and consequences require the authorized product, service, risk, and contractual owners named by the organization."}
+  ],
+  "rubric": [
+    {"criterion": "Population validity", "points": 10, "observableEvidence": "Identifies the denominator mismatch and refuses an SLO verdict."},
+    {"criterion": "Correct arithmetic", "points": 10, "observableEvidence": "Computes 99.95%, 80% coverage, 500 unknown, and clearly labels any conservative bound."},
+    {"criterion": "Evidence sequence", "points": 10, "observableEvidence": "Aligns interval and semantics, tests boundary hypotheses, then recalculates."},
+    {"criterion": "Decision safety", "points": 10, "observableEvidence": "Separates measurement repair, budget status, and authorized release policy."},
+    {"criterion": "Proof limits", "points": 10, "observableEvidence": "Does not call missing events good, bad, or caused without evidence."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

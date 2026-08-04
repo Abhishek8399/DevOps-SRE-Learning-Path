@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0258",
+  "title": "Alerting on your burn rate",
+  "organization": "Google Cloud",
+  "url": "https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Google Cloud Observability documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["burn-rate alert", "lookback period", "fast burn", "slow burn", "threshold"],
+  "relevance": "Provides current provider documentation for normalized burn-rate semantics and operational differences between fast- and slow-burn alerts.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

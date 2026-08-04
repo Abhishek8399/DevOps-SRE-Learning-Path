@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0249",
+  "title": "Alerting on SLOs",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/alerting-on-slos/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["burn rate", "multi-window alerts", "precision", "recall", "low traffic"],
+  "relevance": "Primary source for significant-event alert design, normalized burn rate, multi-window AND logic, notification urgency, reset time, and low-traffic limitations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0251",
+  "title": "Availability Table",
+  "organization": "Google",
+  "url": "https://sre.google/sre-book/availability-table/",
+  "sourceType": "book",
+  "versionOrDate": "Site Reliability Engineering reference table; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["availability", "downtime budget", "nines", "time windows"],
+  "relevance": "Provides reference conversions between availability targets and allowed unavailability while the lesson explains their assumptions and limitations.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

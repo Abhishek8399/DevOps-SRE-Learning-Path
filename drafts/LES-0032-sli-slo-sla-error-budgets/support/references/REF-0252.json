@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0252",
+  "title": "Histograms and summaries",
+  "organization": "Prometheus",
+  "url": "https://prometheus.io/docs/practices/histograms/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current documentation reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["histograms", "summaries", "latency", "quantiles", "aggregation"],
+  "relevance": "Supports correct latency-threshold and percentile reasoning, bucket error, native/classic histogram distinctions, and refusal to average precomputed quantiles.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2026-11-04"
+}

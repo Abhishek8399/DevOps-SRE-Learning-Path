@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "LES-0032",
+  "caseId": "slo-control-loop-v1",
+  "measurementPeriod": {
+    "start": "2026-07-01T00:00:00Z",
+    "end": "2026-07-29T00:00:00Z",
+    "days": 28,
+    "windowType": "calendar-fixture"
+  },
+  "eventObjectives": [
+    {
+      "name": "checkout-completion",
+      "target": 0.999,
+      "totalEvents": 2000000,
+      "goodEvents": 1996800,
+      "eligiblePopulation": "accepted checkout attempts with a terminal result",
+      "goodDefinition": "order committed exactly once and confirmation returned within 2 seconds"
+    },
+    {
+      "name": "catalog-read",
+      "target": 0.995,
+      "totalEvents": 400000,
+      "goodEvents": 399000,
+      "eligiblePopulation": "valid catalog reads reaching the public edge",
+      "goodDefinition": "correct non-stale response returned within 500 milliseconds"
+    }
+  ],
+  "timeObjective": {
+    "name": "merchant-portal-reachability",
+    "target": 0.999,
+    "windowDays": 28,
+    "badMinutesObserved": 47.5,
+    "samplingIntervalSeconds": 30,
+    "goodDefinition": "a representative authenticated synthetic journey can load the portal and retrieve a known test record"
+  },
+  "latencyObjective": {
+    "name": "search-latency",
+    "target": 0.99,
+    "thresholdMilliseconds": 400,
+    "totalEvents": 100000,
+    "goodEvents": 98750,
+    "eligiblePopulation": "valid interactive searches excluding explicitly documented load tests",
+    "goodDefinition": "correct complete result has time to last byte at or below 400 milliseconds"
+  },
+  "coverage": {
+    "name": "checkout-telemetry-coverage",
+    "authoritativeEligibleEvents": 10000,
+    "observedEligibleEvents": 9000,
+    "observedGoodEvents": 8991,
+    "unknownEventsPolicy": "unknown-not-good"
+  },
+  "aggregation": {
+    "name": "regional-checkout",
+    "groups": [
+      {"name": "region-small", "totalEvents": 100, "goodEvents": 100},
+      {"name": "region-large", "totalEvents": 900, "goodEvents": 891}
+    ]
+  },
+  "burnWindows": {
+    "sloTarget": 0.999,
+    "signals": [
+      {"name": "page-fast", "longWindow": "1h", "longErrorRate": 0.020, "shortWindow": "5m", "shortErrorRate": 0.025, "threshold": 13.44, "severity": "page"},
+      {"name": "page-medium", "longWindow": "6h", "longErrorRate": 0.008, "shortWindow": "30m", "shortErrorRate": 0.010, "threshold": 5.6, "severity": "page"},
+      {"name": "ticket-slow", "longWindow": "3d", "longErrorRate": 0.0012, "shortWindow": "6h", "shortErrorRate": 0.0011, "threshold": 0.933333, "severity": "ticket"},
+      {"name": "recovered-spike", "longWindow": "1h", "longErrorRate": 0.020, "shortWindow": "5m", "shortErrorRate": 0.0002, "threshold": 13.44, "severity": "page"}
+    ]
+  },
+  "lowTraffic": {
+    "name": "monthly-settlement-trigger",
+    "sloTarget": 0.999,
+    "totalEvents": 10,
+    "badEvents": 1,
+    "singleFailureImpact": "one merchant settlement is delayed until an authorized replay",
+    "automaticActionAllowed": false
+  },
+  "policy": {
+    "service": "checkout-completion",
+    "remainingBudgetFraction": -0.60,
+    "measurementValid": true,
+    "userRiskIncreasingChange": "new recommendation dependency in checkout",
+    "reliabilityChange": "idempotency fix with canary and rollback",
+    "securityChange": "critical credential-rotation control",
+    "approvers": ["product-risk-owner", "service-owner", "sre-owner"],
+    "reviewAt": "2026-07-29T09:00:00Z"
+  }
+}

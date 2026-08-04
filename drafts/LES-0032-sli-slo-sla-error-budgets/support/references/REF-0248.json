@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-0248",
+  "title": "Example Error Budget Policy",
+  "organization": "Google",
+  "url": "https://sre.google/workbook/error-budget-policy/",
+  "sourceType": "book",
+  "versionOrDate": "The Site Reliability Workbook Appendix B; reviewed 2026-08-04",
+  "lessonIds": ["LES-0032"],
+  "topics": ["error-budget policy", "change posture", "exceptions", "stakeholders", "escalation"],
+  "relevance": "Supports treating an error budget as a pre-agreed prioritization control rather than punishment, dashboard color, or automatic blanket freeze.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0080",
+  "lessonId": "LES-0032",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "A payment authorization journey has an approved 99.9% event-based SLO over a rolling 28-day window. Over the last hour, the valid bad-event ratio is 2.0%; over the last five minutes it is 2.5%. The page tier is designed to notify after approximately 2% of the 28-day budget is consumed, producing a 13.44x threshold on both windows. During the current 28-day population, 2,000,000 eligible operations include 3,200 bad operations. A proposed feature adds a synchronous recommendation dependency to authorization. Explain the incident response, math, policy decision, and the evidence you would demand before resuming the feature.",
+  "directAnswer": "The sustainable bad ratio is 1 - 0.999 = 0.001, or 0.1%. The one-hour burn rate is 0.020 / 0.001 = 20x and the five-minute burn rate is 0.025 / 0.001 = 25x; both exceed 13.44x, so the page condition is active if the measurement and routing contracts are valid. The period allows about 2,000 bad events, but 3,200 occurred, so 1,200 events beyond budget were consumed and 160% of budget is spent. Stabilize the user journey, verify recovery independently, and apply the approved exhausted-budget policy: pause the user-risk-increasing dependency while permitting only reviewed reliability or security exceptions. Resume only after valid measurement, causal risk reduction, tested rollback, representative canary evidence, and authorized policy review.",
+  "foundation": "For a 99.9% SLO, the service may have 0.1% bad events because 100% - 99.9% = 0.1%. Written as a decimal, 0.1% is 0.001. Burn rate compares the current bad ratio with that sustainable ratio. Two percent is 0.020, so 0.020 / 0.001 = 20. Five-minute bad ratio 0.025 produces 25. A 28-day window contains 672 hours; notifying after 2% of budget is spent in one hour gives 0.02 × 672 / 1 = 13.44x. Because the rule requires the long and short window to exceed 13.44, it fires: the long window shows significant budget use and the short window shows the problem is still active. For the whole population, allowed bad events are 2,000,000 × 0.001 = approximately 2,000. Actual bad events are 3,200, so remaining events are -1,200 and budget consumption is 3,200 / 2,000 = 1.6, or 160%. An error budget is not permission to harm users or a punishment. The signed policy changes priorities: stop adding avoidable risk, restore the journey, and invest in reliability with controlled exceptions.",
+  "reasoningSteps": [
+    "Confirm the alert represents the payment user journey, exact SLI implementation, correct environment, fresh data, sufficient traffic, and delivered route before acting on its number.",
+    "Calculate sustainable bad ratio as 1 - 0.999 = 0.001.",
+    "Derive the 13.44x threshold from 2% × 672 hours / 1 hour, then calculate long and short burn rates as 20x and 25x; both exceed it, satisfying the AND condition.",
+    "Declare the page actionable because urgent intervention can still reduce user harm, not merely because a threshold crossed.",
+    "Calculate the period allowance from matched population: 2,000,000 × 0.001 is approximately 2,000 bad events; acknowledge floating-point/display rounding in automation.",
+    "Calculate remaining budget -1,200 events and consumption 160%.",
+    "During response, protect users: identify affected segments, stop unsafe recent changes through reviewed controls, preserve evidence, constrain retries, and verify payment state/idempotency.",
+    "Use independent success evidence from the user boundary before declaring recovery; silence or falling burn alone is insufficient.",
+    "Apply the pre-approved policy through named owners. Pause the synchronous recommendation dependency because it adds failure and latency coupling to an already noncompliant critical path.",
+    "Allow reliability or urgent security changes only through their reviewed exception path, with canary, abort, rollback, authority, and observation window.",
+    "Before resuming the feature, require valid complete SLI coverage, restored budget trajectory or explicit authorized decision, tested dependency timeout/fallback, load and failure tests, canary segmentation, rollback proof, ownership, and post-incident actions.",
+    "Keep SLA consequences separate: consult the actual contract and legal/business owners rather than inferring credits from the internal SLO."
+  ],
+  "seniorAnswer": "I would first validate that good/total counters describe payment authorization as experienced by users, not just healthy application responses. Given valid measurement, the budget rate is 0.1%. A 28-day window has 672 hours, so a 2%-in-one-hour tier is 13.44x. Long and short burns are 20x and 25x, so the 13.44x/1h AND 13.44x/5m page is firing and the incident remains active. The 28-day population permits roughly 2,000 bad operations; 3,200 means -1,200 remaining and 160% consumed. I would establish incident command, segment user and monetary impact, inspect recent change and dependency boundaries, stop or roll back only through reviewed controls, protect idempotency and reconciliation, and verify recovery with an independent authorization journey plus stable short-window burn. The error-budget policy is a pre-agreed prioritization control, not a punishment. I would pause the recommendation dependency because it adds synchronous failure coupling. Reliability and critical security work can proceed only through defined exceptions. Resumption requires reconciled measurement, an owned causal account, verified corrective controls, timeout/fallback and capacity evidence, representative canary with abort/rollback, observation long enough for recurrence, and approval from product-risk, service and SRE owners. I would separately inspect the actual SLA scope and consequences; an internal SLO miss does not automatically establish a contractual breach.",
+  "weakAnswer": "The budget is gone, so freeze every deployment for 28 days and increase the SLO to 99.99% after the outage.",
+  "whyWeak": "It ignores emergency reliability and security exceptions, mistakes a rolling window for a fixed waiting period, raises a target without user/business/cost evidence, and offers no stabilization or measurement validation. A blanket freeze can preserve a defect and block the fix users need.",
+  "evidence": [
+    {"signal": "One-hour bad ratio 2.0% and five-minute bad ratio 2.5%", "proves": "Given a 0.1% sustainable ratio, the evaluated burn rates are 20x and 25x.", "doesNotProve": "Measurement validity, root cause, user segmentation, page delivery, or response actionability."},
+    {"signal": "3,200 bad of 2,000,000 eligible events", "proves": "Given a 99.9% event objective and matched population, about 160% of the allowed 2,000 bad events was consumed.", "doesNotProve": "Contractual breach, financial impact, or which component caused the failures."},
+    {"signal": "Independent payment journey and reconciled terminal transaction state", "proves": "The tested path and sampled transaction outcomes recovered at the observation times.", "doesNotProve": "All segments recovered or recurrence is impossible."},
+    {"signal": "Signed error-budget policy and exception record", "proves": "Named owners agreed to the declared change posture and exception conditions.", "doesNotProve": "That an implementation is safe or an SLA consequence applies."}
+  ],
+  "followUps": [
+    {"prompt": "Why use both one hour and five minutes?", "answer": "The long window selects significant budget consumption; the short window confirms the service is still burning, improving reset time after recovery. The pair is an AND condition."},
+    {"prompt": "Why is allowed bad events approximately 2,000?", "answer": "Decimal 0.999 is not represented exactly by binary floating point in many tools. Policy and code must define rounding for discrete events; calculations should preserve numerator/denominator and use reviewed numeric handling rather than silently truncating."},
+    {"prompt": "What if traffic falls to zero?", "answer": "The event ratio becomes undefined or absent, not magically healthy. Use a declared missing-data policy, coverage/freshness alert, and an independent synthetic or state-based signal appropriate to the journey."},
+    {"prompt": "Does an exhausted budget mean stop every change?", "answer": "No. Follow the signed policy. Usually user-risk-increasing feature changes pause, while controlled reliability fixes and urgent security changes have explicit exception paths because blocking them could increase risk."},
+    {"prompt": "How would you defend a very high target such as 99.999%?", "answer": "Show user and contractual need, measurement resolution, achievable architecture, dependency objectives, change isolation, cost, recovery time, and that a full outage can exhaust the budget faster than detection. The target requires design, not only faster paging."}
+  ],
+  "rubric": [
+    {"criterion": "SLI and burn math", "points": 10, "observableEvidence": "Correct sustainable ratio, 20x/25x burn, AND logic, and units."},
+    {"criterion": "Period budget math", "points": 10, "observableEvidence": "Correct allowance, remaining events, 160% consumption, and rounding caveat."},
+    {"criterion": "Incident safety", "points": 10, "observableEvidence": "Stabilizes users, protects transaction state, preserves evidence, and verifies recovery independently."},
+    {"criterion": "Policy judgment", "points": 10, "observableEvidence": "Pauses added risk while preserving reviewed reliability/security exceptions and owner authority."},
+    {"criterion": "Resumption evidence", "points": 10, "observableEvidence": "Demands measurement, causal, failure-mode, canary, rollback, observation, and approval evidence."},
+    {"criterion": "SLO/SLA separation", "points": 10, "observableEvidence": "Does not infer contractual consequences from internal objective status."}
+  ],
+  "maximumScore": 60,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}
