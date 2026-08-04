@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0097",
+  "lessonId": "LES-0038",
+  "type": "diagnostic",
+  "difficulty": "intermediate",
+  "prompt": "A team models named services with count over a list. Adding one service at position zero makes the plan update or replace several existing addresses. Diagnose the mechanism and give the safe correction path.",
+  "directAnswer": "Count uses positional indices as instance identity. Inserting at position zero shifts the association between indices and business services while state still binds old addresses to remote objects. Stop before apply, map every old address to its remote identity, choose stable immutable service keys for for_each, preserve existing bindings with supported moved declarations where valid, and require a fresh complete plan with no unintended replacement.",
+  "foundation": "A resource block is expanded into instances. State binds each full instance address, not the human meaning of a list item, to a remote object. Attribute similarity cannot compensate for unstable identity.",
+  "reasoningSteps": [
+    "Record exact source, CLI/provider versions, target, state lineage and plan artifact.",
+    "List old and proposed addresses and map them to business and remote identities.",
+    "Separate intentional new service creation from positional remapping.",
+    "Select immutable non-secret for_each keys that survive ordering and mutable-name changes.",
+    "Use version-supported moved declarations for each unchanged logical object where appropriate.",
+    "Regenerate a full refreshed plan and review every action and downstream edge.",
+    "Protect state and data recovery before any separately authorized execution.",
+    "Verify bindings, remote IDs, users and a fresh convergence plan afterward."
+  ],
+  "seniorAnswer": "I would reject the change until identity is reconciled. Count indices are lifecycle addresses, so list insertion can remap existing state bindings. I would build an address-to-remote-ID table, distinguish the one new service from unchanged services, move the configuration to for_each keyed by immutable service IDs, and encode supported moves rather than editing state JSON. A new full plan must remove unintended replacements. I would then review data, availability, permissions, graph cascades, rollback/roll-forward and post-change verification before separate apply approval.",
+  "weakAnswer": "Run apply once so Terraform can reorder the resources, then switch to for_each.",
+  "whyWeak": "Apply may replace real objects and data, makes the identity problem worse, assumes transactional recovery and omits state, target, review and verification evidence.",
+  "evidence": [
+    {"signal": "Addresses change from count indices after list insertion", "proves": "Positional configuration identities changed for that proposal.", "doesNotProve": "Which remote objects are safe to replace."},
+    {"signal": "State maps each old index to a remote ID", "proves": "The selected state snapshot owns those bindings.", "doesNotProve": "Current health or authorization."},
+    {"signal": "Fresh plan after moves shows only one create", "proves": "The selected proposal preserves other logical bindings.", "doesNotProve": "Apply or user success."}
+  ],
+  "followUps": [
+    {"prompt": "When is count appropriate?", "answer": "For truly fungible positional instances where insertion, removal and replacement semantics are explicitly acceptable."},
+    {"prompt": "Can a display name be the for_each key?", "answer": "Only if it is an immutable lifecycle identity; mutable or secret values make unsafe keys."},
+    {"prompt": "Does prevent_destroy solve this?", "answer": "It may block deletion but does not repair address ownership or duplicate creation."}
+  ],
+  "rubric": [
+    {"criterion": "Mechanism", "points": 10, "observableEvidence": "Explains count index identity and state binding."},
+    {"criterion": "Evidence", "points": 10, "observableEvidence": "Maps old/new addresses and remote IDs."},
+    {"criterion": "Stable design", "points": 10, "observableEvidence": "Chooses justified immutable for_each keys."},
+    {"criterion": "Safe migration", "points": 10, "observableEvidence": "Uses supported moves and a complete reviewed plan."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Protects state/data and verifies bindings plus users."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

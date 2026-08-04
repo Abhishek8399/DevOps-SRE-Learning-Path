@@ -7,7 +7,7 @@
   "url": "https://developer.hashicorp.com/terraform/internals/graph",
   "sourceType": "official-documentation",
   "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
-  "lessonIds": ["LES-0037"],
+  "lessonIds": ["LES-0037", "LES-0038"],
   "topics": ["dependency graph", "implicit dependency", "explicit dependency", "parallelism"],
   "relevance": "Primary description of graph nodes, edge construction, cycle validation, create and destroy ordering, and parallel graph walking.",
   "usagePolicy": "paraphrase-first",

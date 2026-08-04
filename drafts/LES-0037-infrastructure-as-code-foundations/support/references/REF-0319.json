@@ -7,7 +7,7 @@
   "url": "https://developer.hashicorp.com/terraform/language",
   "sourceType": "official-documentation",
   "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
-  "lessonIds": ["LES-0037"],
+  "lessonIds": ["LES-0037", "LES-0038"],
   "topics": ["declarative configuration", "resources", "dependencies", "modules"],
   "relevance": "Primary language overview for declaring managed resources, composing configuration and deriving dependencies from references.",
   "usagePolicy": "paraphrase-first",

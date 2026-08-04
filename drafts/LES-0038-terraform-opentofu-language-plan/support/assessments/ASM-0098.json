@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0098",
+  "lessonId": "LES-0038",
+  "type": "production",
+  "difficulty": "advanced",
+  "prompt": "Design the review and test path for a shared network module whose plan contains known CIDRs, unknown gateway IDs, one provider upgrade, keyed subnets and a new explicit module-level depends_on. No apply is authorized during review.",
+  "directAnswer": "Bind the exact CLI, provider, module, source, lock, variables, backend, state and target first. Validate typed CIDRs and stable subnet keys with positive and negative tests. Trace every known and unknown value and graph edge. Challenge the provider upgrade and broad depends_on separately because each can change plan semantics and unknown propagation. Produce a complete saved plan, inspect JSON by address/action/after_unknown, run policy that fails closed for high-consequence unknowns, and require accountable review of replacements, routing, availability, security and cost. Apply remains a separate decision followed by user and convergence verification.",
+  "foundation": "Configuration text, interpreter/dependencies, concrete inputs, state/refresh and graph jointly determine a plan. Unknown is not null, plan is not approval, and explicit ordering is not readiness.",
+  "reasoningSteps": [
+    "Record product/version/digest, provider lock change, module revision and supported compatibility.",
+    "Record backend/workspace/state lineage, target account/region and review principal without exposing secrets.",
+    "Inventory variable sources and validate CIDR containment, overlap, reserved ranges and subnet-key stability.",
+    "Trace gateway unknowns and determine which policies can decide before apply.",
+    "Explain every implicit edge and demand a real side-effect reason for module-level depends_on.",
+    "Test default, boundary, invalid, upgrade and reordered-input cases without apply.",
+    "Generate a complete refreshed plan and inspect every address, action, replacement path and unknown field.",
+    "Review network reachability, route blast radius, quotas, security controls, availability and cost.",
+    "Bind policy, exception and human approval to the exact saved-plan digest.",
+    "Define abort, rollback/roll-forward and post-apply routing, security, user and convergence checks."
+  ],
+  "seniorAnswer": "I treat the provider upgrade, module code and dependency change as three coupled risk sources. I pin their exact identities, compare provider schema/release behavior, and require a clean dependency lock review. Typed variables and negative tests cover CIDR and stable-key contracts. I trace plan-known CIDRs separately from gateway IDs that remain unknown, and policy fails closed where an unknown could alter privilege or public reachability. I remove module-level depends_on unless a documented side-effect relationship cannot be expressed through data, because it broadens ordering and unknowns. The complete plan is reviewed by address and consequence, stored as a protected digest-bound artifact, and cannot be applied under review authority. Execution, if later approved, is staged with route/user probes and full reconciliation.",
+  "weakAnswer": "Validate passed, so approve the provider upgrade and depends_on; unknown gateway IDs are normal.",
+  "whyWeak": "It ignores dependency identity, state/target, unknown-value consequence, overbroad graph edges, negative tests, plan binding, network blast radius and separate execution authority.",
+  "evidence": [
+    {"signal": "Lock file selects a new provider checksum", "proves": "Dependency selection changed to recorded bytes.", "doesNotProve": "Compatibility, provenance or safe plan semantics."},
+    {"signal": "Plan JSON marks gateway IDs after_unknown", "proves": "Those values cannot be decided during this plan.", "doesNotProve": "They are harmless or will be valid."},
+    {"signal": "Graph gains edges from module-level depends_on", "proves": "More nodes are ordered after the dependency.", "doesNotProve": "The edge expresses readiness or is necessary."}
+  ],
+  "followUps": [
+    {"prompt": "How should policy handle an unknown public flag?", "answer": "Fail closed or require an explicit accountable exception; never coerce unknown to false."},
+    {"prompt": "Why review provider upgrade separately?", "answer": "Provider schema, defaults, diff and API behavior can change even when HCL does not."},
+    {"prompt": "Why save a plan?", "answer": "It can bind review to exact calculated actions, but only while all relevant inputs remain unchanged and the artifact is protected."}
+  ],
+  "rubric": [
+    {"criterion": "Identity boundary", "points": 10, "observableEvidence": "Pins source, CLI, provider, module, state and target."},
+    {"criterion": "Type and input design", "points": 10, "observableEvidence": "Validates CIDRs, precedence and stable keys."},
+    {"criterion": "Unknown reasoning", "points": 10, "observableEvidence": "Classifies propagation and fail-closed decisions."},
+    {"criterion": "Graph review", "points": 10, "observableEvidence": "Explains edges and challenges broad depends_on."},
+    {"criterion": "Testing", "points": 10, "observableEvidence": "Positive, negative, boundary and upgrade cases are plan-only."},
+    {"criterion": "Plan review", "points": 10, "observableEvidence": "Reviews each address, action and replacement path."},
+    {"criterion": "Security", "points": 10, "observableEvidence": "Covers supply chain, sensitive artifacts, privilege and reachability."},
+    {"criterion": "Reliability", "points": 10, "observableEvidence": "Covers blast radius, quota, staged execution and recovery."},
+    {"criterion": "Decision authority", "points": 10, "observableEvidence": "Separates review, policy, approval and apply."},
+    {"criterion": "Verification", "points": 10, "observableEvidence": "Defines routes, users, security and convergence checks."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

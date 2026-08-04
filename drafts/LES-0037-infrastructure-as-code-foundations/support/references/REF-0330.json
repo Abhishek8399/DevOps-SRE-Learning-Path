@@ -7,7 +7,7 @@
   "url": "https://developer.hashicorp.com/terraform/language/tests",
   "sourceType": "official-documentation",
   "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
-  "lessonIds": ["LES-0037"],
+  "lessonIds": ["LES-0037", "LES-0038"],
   "topics": ["tests", "assertions", "mocking", "validation"],
   "relevance": "Primary language reference for Terraform test files, run blocks and assertions, used to separate configuration testing from production verification.",
   "usagePolicy": "paraphrase-first",

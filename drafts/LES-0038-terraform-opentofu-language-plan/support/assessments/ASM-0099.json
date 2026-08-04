@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0099",
+  "lessonId": "LES-0038",
+  "type": "independent-transfer",
+  "difficulty": "advanced",
+  "prompt": "Using a materially different reviewer-held provider-free module, explain and defend its type system, expression flow, instance identity, dependency graph, known/unknown values, tests and saved-plan consequences with exact Terraform and OpenTofu versions. Do not use lesson answers, credentials, a backend, external providers or apply.",
+  "deliverables": [
+    "Exact product/version/platform/digest, acquisition evidence and provenance limitations.",
+    "Module root, source revision, file inventory and variable-source precedence.",
+    "Type and validation table covering defaults, nulls, optional fields, sensitive values and two negative cases.",
+    "Expression trace through variables, locals, functions, conditions and collection transforms.",
+    "Expanded module/resource addresses with count or for_each identity rationale.",
+    "Dependency graph with implicit and explicit edges, cycles, parallel branches and readiness limits.",
+    "Known, sensitive and unknown value map with propagation into outputs and policy.",
+    "Format, backend-disabled initialization, validation and plan-only native test evidence.",
+    "Saved plans produced separately by both CLIs and reviewed by address, action, values and unknowns.",
+    "Compatibility conclusion limited to exact observed semantics and documented differences.",
+    "Proof of no credentials, external provider/module, backend, state, apply, network side effect or remote resource.",
+    "Exact cleanup, proof limits, remediation and delayed second unseen transfer."
+  ],
+  "evidenceRequirements": [
+    "Reviewer supplies a module not derived from LES-0038 and with different collection/identity shapes.",
+    "Raw outputs are sanitized and bound to product, version, path, revision and UTC time.",
+    "At least one initially plausible but invalid assumption is corrected from evidence.",
+    "At least one negative variable case and one plan-unknown assertion boundary are demonstrated.",
+    "Opaque plan files are never crossed between products and are removed after evidence extraction.",
+    "Reviewer observes final absence and confirms no apply or external access occurred.",
+    "A second unseen case after delay changes identity or unknown-value semantics."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Boundary and provenance", "points": 10, "observableEvidence": "Pins products, digests, source, inputs and trust limits."},
+    {"criterion": "Type design", "points": 10, "observableEvidence": "Explains exact contracts, defaults, nulls and refusals."},
+    {"criterion": "Expression flow", "points": 8, "observableEvidence": "Traces transformations without hand-waving."},
+    {"criterion": "Instance identity", "points": 10, "observableEvidence": "Expanded addresses and stable-key reasoning are correct."},
+    {"criterion": "Graph", "points": 10, "observableEvidence": "Edges, concurrency, cycles and readiness limits are correct."},
+    {"criterion": "Knowledge state", "points": 10, "observableEvidence": "Known, sensitive and unknown propagation is correct."},
+    {"criterion": "Validation and tests", "points": 10, "observableEvidence": "Positive, negative and plan-phase assertions are reproducible."},
+    {"criterion": "Plan review", "points": 10, "observableEvidence": "Every action and material value is reviewed by address."},
+    {"criterion": "Product comparison", "points": 8, "observableEvidence": "Exact-version conclusions avoid blanket compatibility."},
+    {"criterion": "Safety and cleanup", "points": 8, "observableEvidence": "No apply/external authority and exact absence are observed."},
+    {"criterion": "Communication", "points": 6, "observableEvidence": "Decision, uncertainty, limits and next evidence are clear."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-04",
+  "reviewAfter": "2027-02-04"
+}

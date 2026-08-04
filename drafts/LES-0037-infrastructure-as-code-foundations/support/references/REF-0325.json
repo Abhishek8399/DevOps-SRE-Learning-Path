@@ -7,7 +7,7 @@
   "url": "https://developer.hashicorp.com/terraform/internals/json-format",
   "sourceType": "official-documentation",
   "versionOrDate": "Terraform v1.15.x documentation; reviewed 2026-08-04",
-  "lessonIds": ["LES-0037"],
+  "lessonIds": ["LES-0037", "LES-0038"],
   "topics": ["machine-readable plan", "JSON", "unknown values", "sensitive values"],
   "relevance": "Primary structure reference for machine-readable plans and state, including action representations, incomplete values and sensitive-value metadata.",
   "usagePolicy": "paraphrase-first",
