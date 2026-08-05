@@ -1,0 +1,12 @@
+{
+  "baseline":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "flat-subscription":{"tenant_governed":false,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "client-secret":{"tenant_governed":true,"managed_identity":false,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "mutable-image":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":false,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "public-data":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":false,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "single-zone":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":false,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "quota-no-headroom":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":false,"restore_tested":true,"user_sli":true},
+  "restore-untested":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":false,"user_sli":true},
+  "resource-only-monitoring":{"tenant_governed":true,"managed_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":false}
+}
+
