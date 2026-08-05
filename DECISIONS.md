@@ -470,3 +470,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach Azure as `user operation -> tenant/management scope -> principal/role/scope and Policy -> DNS/VNet/private path -> compute -> data/Key Vault -> quota and zone capacity -> user SLI -> restored business operation -> cost meters`. Keep Policy distinct from permission, management actions distinct from data actions, desired scale distinct from available capacity, redundancy distinct from backup, and resource telemetry distinct from service reliability.
 
 **Consequences:** `LES-0054` stays quarantined until Ubuntu, provider-current design, sanitized plan, reviewer failure/recovery, formal review and learner evidence pass. Its model is not Entra/RBAC/Policy, VNet, VMSS, AKS, Functions, Storage, SQL, Key Vault, Monitor, backup, price or production evidence.
+
+### DEC-053 - Google Cloud reliability crosses global, regional, zonal, and policy scopes
+
+**Status:** `ACCEPTED`
+
+**Context:** Google Cloud combines a hierarchical organization/folder/project authority model, a global VPC with regional subnets, global or regional frontends, zonal workload capacity, regional managed services and product-specific data locations. IAM allow, deny and access-boundary policy, Organization Policy, service perimeters, backend health, autoscaler intent, managed-service state and Monitoring signals each describe only one boundary.
+
+**Decision:** Teach Google Cloud as `user operation -> organization/folder/project ownership -> principal/role/permission/policy -> DNS/frontend/global VPC/regional subnet -> zonal compute -> data/KMS -> quota and surviving capacity -> user SLI -> restored business operation -> cost units`. Keep project scope distinct from network and failure scope, IAM distinct from Organization Policy, quota distinct from stock, regional placement distinct from useful surviving capacity, replication distinct from recovery and resource telemetry distinct from user reliability.
+
+**Consequences:** `LES-0055` remains quarantined until Ubuntu, provider-current design, sanitized plan, reviewer failure/recovery, formal review and learner evidence pass. Its model is not IAM, VPC, MIG, GKE, Cloud Run, Storage, SQL, KMS, Monitoring, quota, failover, restore, price or production evidence.

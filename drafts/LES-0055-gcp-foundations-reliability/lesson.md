@@ -444,48 +444,48 @@ Tomorrow, redraw `LES-0055-DIA-002` and explain why the VPC is global while a su
 
 ## Complete answers
 
-**Why can a project have quota available while a scale-out still fails?**  
+**Why can a project have quota available while a scale-out still fails?**
 Quota is only an allowed ceiling. The requested region or zone might lack stock; a reservation might not cover that resource; the MIG maximum, instance template, image permission, service account, subnet address space, GKE scheduler or downstream connection pool can block useful capacity. Inspect the first rejected create or schedule event, not merely the autoscaler recommendation.
 
-**Why is a regional MIG not automatically highly available?**  
+**Why is a regional MIG not automatically highly available?**
 It improves placement across zones, but availability still depends on application health, update policy, state placement, load-balancer routing, surviving capacity and dependencies. If the database, KMS key dependency, NAT path or all application state remains in one failure domain, the user operation can still fail.
 
-**How do IAM and Organization Policy differ?**  
+**How do IAM and Organization Policy differ?**
 IAM generally authorizes principals to use permissions on resources. Organization Policy constrains allowed resource configuration across hierarchy scopes. A principal can have permission to create a resource while an organization policy forbids the requested configuration. Deny policies and access boundaries add other authorization constraints; do not flatten all denials into “IAM.”
 
-**Why prefer Workload Identity Federation?**  
+**Why prefer Workload Identity Federation?**
 It exchanges trusted external workload identity for short-lived Google credentials and avoids distributing long-lived service-account private keys. It still needs strict issuer, audience, subject and attribute mapping plus narrow IAM. Federation reduces credential inventory; it does not eliminate authorization or token-theft risk.
 
-**When would you choose Cloud Run instead of GKE?**  
+**When would you choose Cloud Run instead of GKE?**
 Choose Cloud Run when the service, job or worker contract fits, the application can honor the runtime and scaling constraints, and the team benefits from delegating cluster and node operations. Choose GKE when Kubernetes APIs, custom scheduling, ecosystem integration, portability or platform controls justify cluster complexity. The decision must include team capacity, dependency pressure, networking, observability and cost.
 
-**Does Cloud Storage dual-region remove the need for DR?**  
+**Does Cloud Storage dual-region remove the need for DR?**
 No. Geographic redundancy improves selected availability and durability outcomes, but asynchronous replication windows, deletion, corruption, credentials, application metadata and dependent services still matter. Define RPO/RTO, retain protected recovery points where required, and restore into an isolated environment.
 
-**What makes a Cloud SQL failover successful?**  
+**What makes a Cloud SQL failover successful?**
 Not merely a provider state transition. Clients must reconnect within their deadline, transaction retry must be safe, connection pools must recover, dependent DNS or private paths must work, and the business operation must be correct. Measure interruption and data state against the declared objectives.
 
-**What does a green backend health check prove?**  
+**What does a green backend health check prove?**
 Only that the configured probe succeeded from its probe context. It may not exercise authentication, the real host/path, a write, KMS, database, external dependency or the affected cohort. Compare the probe with the failed user path.
 
-**What is the safe first action for an access denial?**  
+**What is the safe first action for an access denial?**
 Preserve one denied request, bind principal, permission, resource ancestry, project, time and audit record, then evaluate effective allow, conditions, deny, access boundaries, organization policy, perimeters and service controls. Do not broaden access before identifying the deciding boundary.
 
-**How do you prove backup readiness?**  
+**How do you prove backup readiness?**
 Restore a selected recovery point into an isolated, authorized environment; measure elapsed time; validate schema, counts, integrity and business invariants; quantify achieved RPO/RTO; test application reconnection and record cleanup. A successful backup job alone proves only that the job reported success.
 
 ## Product-company interview
 
-**Question: Design a zone-resilient order API on Google Cloud.**  
+**Question: Design a zone-resilient order API on Google Cloud.**
 A strong answer starts with order semantics, demand, SLI/SLO, RPO/RTO and team constraints. It defines organization/project ownership and federated identity; traces DNS, frontend, VPC and private data paths; compares regional MIG, GKE and Cloud Run; calculates capacity after the largest zone loss; protects Cloud SQL and Storage state; binds immutable rollout; correlates user SLIs; and proves restore. Product names come after contracts.
 
-**Senior follow-up: The regional MIG target is 300 and only 190 instances run during a zone outage. What next?**  
+**Senior follow-up: The regional MIG target is 300 and only 190 instances run during a zone outage. What next?**
 Calculate useful capacity versus critical demand. Inspect per-zone distribution and instance creation failures for quota, stock, reservation, image, identity and addresses. Reduce noncritical load, use preapproved alternate shapes or zones, preserve data dependencies and verify the transaction. Repeatedly increasing target size can amplify API noise without adding capacity.
 
-**Question: A developer asks for project Owner because Workload Identity Federation returns permission denied.**  
+**Question: A developer asks for project Owner because Workload Identity Federation returns permission denied.**
 Separate token exchange from resource authorization. Validate issuer, audience, subject and attribute mapping; identify the resulting principal; inspect the exact permission and resource ancestry; then grant the narrowest role or correct the mapping. Owner is neither a diagnostic method nor a safe default.
 
-**Question: Cloud Run scales up but latency worsens. Why?**  
+**Question: Cloud Run scales up but latency worsens. Why?**
 Instances are only one capacity layer. Cold starts, high concurrency, database connections, NAT ports, queue retries, KMS calls and downstream quotas can saturate. Graph arrivals, queue age, instance count, concurrency, retries and dependency latency together; then bound pressure and protect the critical operation.
 
 Interviewers are evaluating whether you reason across ownership and failure boundaries, not whether you can list services.
