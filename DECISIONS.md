@@ -500,3 +500,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Choose request/reply, operation resources, commands, events and webhooks from timing, coupling and ownership. At every boundary record the stable logical identity, exact acknowledgement meaning, authoritative state owner, duplicate and ordering scope, compatible versions, retry owner, retention and reconciliation path. Use local transactions such as outbox/inbox only for the state they actually own; never extend an exactly-once claim across unsupported external effects.
 
 **Consequences:** `LES-0057` remains quarantined until Ubuntu execution, representative API/broker/schema/webhook behavior, failure and replay exercises, formal review, reviewer-owned transfer and learner evidence pass. Its deterministic model cannot prove serialization, compatibility, delivery, ordering, signature security, external effects or production recovery.
+
+### DEC-056 - Distributed correctness is operation-scoped authority, order, and repair
+
+**Status:** `ACCEPTED`
+
+**Context:** Replica count, health endpoints, wall-clock timestamps, leases and product-wide CAP labels do not prove what one user operation may observe or mutate. A timeout is compatible with delay, loss, pause, crash, commit or a lost response. Consensus can preserve one committed log while stale actors still mutate external state. Weaker consistency can preserve availability only when conflicts, convergence and user invariants are explicit.
+
+**Decision:** Design and troubleshoot distributed state as `operation -> invariant and acknowledgement -> owner/partition -> failure and timing model -> consistency/session contract -> configuration/quorum -> election/epoch -> commit/apply -> lease and target-enforced fencing -> conflict/repair -> business and user proof`. Separate safety from liveness, reachability from authority, physical time from causality, replication from backup, and quorum arithmetic from a complete consistency proof. Require supported membership transitions, stable operation identities, explicit partition behavior and bounded repair capacity.
+
+**Consequences:** `LES-0058` remains quarantined until its guarded Ubuntu lifecycle, representative disposable-cluster and history evidence, partition/election/membership/lease/fencing/repair fault matrix, formal review, reviewer-owned unseen transfer, delayed recall and learner evidence pass. Its thirteen-case offline model cannot prove consensus, linearizability, availability, time bounds, conflict convergence, recovery or product behavior. No canonical route, registry record or learner level changes.
