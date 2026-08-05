@@ -490,3 +490,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach and operate PostgreSQL as `user operation -> pool queue -> authenticated backend -> transaction snapshot and locks -> planner/executor -> pages and WAL -> commit or rollback -> application acknowledgement`. Bind diagnosis to operation identity, session, query fingerprint, parameter class, plan, wait owner and transaction result. Choose constraints, isolation, indexes, pool budgets, timeout layers and retries from explicit correctness and workload contracts. Keep high availability, replication, backup, point-in-time recovery, failover and verified restore as separate mechanisms and evidence.
 
 **Consequences:** `LES-0056` remains quarantined until its Ubuntu/Docker lifecycle, representative scale, physical backup/PITR, standby/fencing/failover, formal review, reviewer-owned unfamiliar transfer and learner evidence pass. The disposable PostgreSQL lab cannot be cited as durable storage, TLS, pooler, replication, production performance, recovery objectives, formal acceptance or mastery.
+
+### DEC-055 - Integration reliability is an acknowledgement and state-ownership contract
+
+**Status:** `ACCEPTED`
+
+**Context:** HTTP responses, broker acknowledgements, consumer checkpoints and webhook responses describe different durable facts. Treating accepted as completed, appended as processed, checkpointed as externally effected, or signed as fresh and authorized produces false success. Compatibility also depends on actual independently deployed producers and consumers, not whether a schema edit appears additive.
+
+**Decision:** Choose request/reply, operation resources, commands, events and webhooks from timing, coupling and ownership. At every boundary record the stable logical identity, exact acknowledgement meaning, authoritative state owner, duplicate and ordering scope, compatible versions, retry owner, retention and reconciliation path. Use local transactions such as outbox/inbox only for the state they actually own; never extend an exactly-once claim across unsupported external effects.
+
+**Consequences:** `LES-0057` remains quarantined until Ubuntu execution, representative API/broker/schema/webhook behavior, failure and replay exercises, formal review, reviewer-owned transfer and learner evidence pass. Its deterministic model cannot prove serialization, compatibility, delivery, ordering, signature security, external effects or production recovery.
