@@ -460,3 +460,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach and review AWS workloads as `user operation -> organization/account/Region/AZ scope -> authentication/authorization -> DNS/network/entry path -> compute contract -> data/key contract -> quota and failure capacity -> user-centered evidence -> tested recovery -> cost units`. Distinguish guardrails from grants, intent to scale from available capacity, target health from user SLIs, Multi-AZ from backup/DR, quota from provider stock, and configured backup from restored business correctness. Select EC2, ECS, EKS or Lambda from workload and team constraints rather than service prestige.
 
 **Consequences:** `LES-0053` remains quarantined until Ubuntu execution, provider-current design review, sanitized plan review, reviewer-owned failure/recovery transfer, formal review and unseen learner evidence pass. Its local model cannot be cited as IAM evaluation, AWS networking, compute, data, telemetry, quota, failover, restore, pricing or production evidence. Azure and Google Cloud specializations must translate the same operating boundaries rather than copy AWS service names.
+
+### DEC-052 - Azure reliability begins with scope and ends with the user
+
+**Status:** `ACCEPTED`
+
+**Context:** Tenant, management group, subscription, resource group, Region, zone, VNet and resource are different identity, governance, billing, lifecycle, network and failure scopes. Portal provisioning, RBAC assignments, backend probes, zone redundancy, Monitor alerts and backup jobs each expose bounded state but cannot individually prove a customer operation.
+
+**Decision:** Teach Azure as `user operation -> tenant/management scope -> principal/role/scope and Policy -> DNS/VNet/private path -> compute -> data/Key Vault -> quota and zone capacity -> user SLI -> restored business operation -> cost meters`. Keep Policy distinct from permission, management actions distinct from data actions, desired scale distinct from available capacity, redundancy distinct from backup, and resource telemetry distinct from service reliability.
+
+**Consequences:** `LES-0054` stays quarantined until Ubuntu, provider-current design, sanitized plan, reviewer failure/recovery, formal review and learner evidence pass. Its model is not Entra/RBAC/Policy, VNet, VMSS, AKS, Functions, Storage, SQL, Key Vault, Monitor, backup, price or production evidence.
