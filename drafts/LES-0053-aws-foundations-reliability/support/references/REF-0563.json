@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0563","title":"Configuring and managing a Multi-AZ deployment for Amazon RDS","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"RDS Multi-AZ DB instance and DB cluster standby and failover distinctions","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

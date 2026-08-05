@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0560","title":"Amazon EKS Best Practices Guide","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/eks/latest/best-practices/introduction.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"EKS day-two security reliability scaling networking upgrades and cost operational scope","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

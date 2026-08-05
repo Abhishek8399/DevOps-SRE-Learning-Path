@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "lessonId": "LES-0053",
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-05",
+  "reviewAfter": "2027-02-05",
+  "id": "ASM-0143",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "Design an AWS order platform that must survive an Availability Zone failure, protect regulated data, scale through ten-times bursts, recover from data loss, and remain operable by a small team.",
+  "directAnswer": "Define order create, read and cancel semantics, idempotency, correctness and latency SLIs, demand, data class, RPO and RTO first. Use workload-oriented production accounts with federated human sessions, workload roles, organization guardrails, protected audit destinations and tested break-glass. Trace a regional request through DNS, an entry point such as ALB, private multi-AZ compute and data. Select EC2, ECS, EKS or Lambda from runtime, portability and team-operability requirements; do not choose EKS by default. Bind deployments to immutable artifacts and reviewed IaC plans with progressive rollout and rollback. Size surviving-zone compute, subnet IPs, quotas, queue drain, database connections and dependencies for burst plus failure. Use private data access, least privilege, KMS policy, retention and separately protected backups. Test failover, isolated restore, application correctness and failback against RPO/RTO. Observe user SLIs with correlated application and AWS signals, bound retries and concurrency to protect dependencies, and model compute, requests, storage, data movement, NAT/endpoint, telemetry and recovery-capacity costs.",
+  "foundation": "A reliable AWS platform is a user-operation contract carried across governance, identity, regional failure domains, compute, data, capacity, observability, recovery and cost.",
+  "reasoningSteps": [
+    "Define operations, objectives and data.",
+    "Design account and identity boundaries.",
+    "Trace the regional request path.",
+    "Choose the simplest suitable compute model.",
+    "Bind immutable artifacts and safe delivery.",
+    "Design private data, encryption and retention.",
+    "Calculate burst and AZ-loss capacity.",
+    "Bound timeouts, retries and downstream load.",
+    "Design SLI-led observability and response.",
+    "Prove backup, restore, RPO, RTO and cost trade-offs."
+  ],
+  "seniorAnswer": "I defend each managed service through the responsibility it removes and the new limits it introduces. I do not count configured Multi-AZ, Auto Scaling or backups as evidence until failure capacity, application recovery and user transactions are exercised.",
+  "weakAnswer": "Use Route 53, ALB, EKS, RDS Multi-AZ and S3 because they are highly available, then enable Auto Scaling and CloudWatch.",
+  "whyWeak": "It provides a product list without workload semantics, identity, capacity math, retry safety, restore proof, team burden, cost units or user evidence.",
+  "evidence": [
+    {
+      "signal": "workload, account, trust and request-path diagrams",
+      "proves": "explicit architecture intent and ownership",
+      "doesNotProve": "runtime behavior"
+    },
+    {
+      "signal": "burst and AZ-loss capacity model",
+      "proves": "quantified assumptions for chosen constraints",
+      "doesNotProve": "provider stock or future demand"
+    },
+    {
+      "signal": "reviewer-owned failover and restore exercise",
+      "proves": "sampled achieved recovery and application validation",
+      "doesNotProve": "every disaster or production mastery"
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why might Auto Scaling fail during an AZ outage?",
+      "answer": "Maximum size, quota, instance stock, subnet addresses, launch configuration or downstream capacity can block useful replacement."
+    },
+    {
+      "prompt": "When is EKS justified?",
+      "answer": "When required Kubernetes APIs, ecosystem, platform consistency or portability outweigh cluster, add-on, upgrade, networking, security and on-call cost."
+    },
+    {
+      "prompt": "How do you protect RDS from a Lambda burst?",
+      "answer": "Queue where appropriate, cap concurrency, bound retries and connections, make handlers idempotent and size the database from tested demand."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Workload contract", "points": 10, "observableEvidence": "Operations SLI demand RPO RTO"},
+    {"criterion": "Accounts and identity", "points": 10, "observableEvidence": "Governance trust least privilege"},
+    {"criterion": "Network and scope", "points": 10, "observableEvidence": "Regional multi-AZ private path"},
+    {"criterion": "Compute and delivery", "points": 10, "observableEvidence": "Justified runtime immutable rollout"},
+    {"criterion": "Data and security", "points": 10, "observableEvidence": "Consistency policy encryption retention"},
+    {"criterion": "Capacity and resilience", "points": 10, "observableEvidence": "Burst failure headroom retry controls"},
+    {"criterion": "Observability", "points": 10, "observableEvidence": "User SLI correlation alert response"},
+    {"criterion": "Recovery", "points": 10, "observableEvidence": "Backup restore failover failback"},
+    {"criterion": "Cost", "points": 10, "observableEvidence": "Usage units and explicit trade-offs"},
+    {"criterion": "Operational ownership", "points": 10, "observableEvidence": "Runbooks approvals evidence limits"}
+  ],
+  "maximumScore": 100
+}
+

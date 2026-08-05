@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "lessonId": "LES-0053",
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-05",
+  "reviewAfter": "2027-02-05",
+  "id": "ASM-0142",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A federated operator can sign in to the correct AWS account, but decrypting one application object returns AccessDenied. Diagnose safely.",
+  "directAnswer": "Bind the assumed-role session, account, Region, exact API action, object or resource ARN, KMS key ARN, request context, timestamp and request ID. Successful federation proves authentication only. Evaluate the role trust and session, identity policy, permissions boundary, session policy, applicable SCP or RCP, S3 bucket or other resource policy, VPC endpoint policy if present, and the KMS key policy or grants. Look for explicit deny and condition mismatch before missing allow. Use CloudTrail and service evidence without exposing object data or credentials. Correct the narrowest owner-controlled statement, test the intended decrypt and an intended deny, then reconcile the reviewed change into code.",
+  "foundation": "AWS authorization is an exact request decision across multiple grant and restriction layers; an organization guardrail limits permission but does not grant it.",
+  "reasoningSteps": [
+    "Bind one principal session and request.",
+    "Separate authentication from authorization.",
+    "Inspect role trust, identity and session controls.",
+    "Inspect boundaries and organization guardrails.",
+    "Inspect resource, endpoint and KMS policy.",
+    "Prioritize explicit deny and condition context.",
+    "Apply the narrowest reviewed correction.",
+    "Verify both intended allow and intended deny.",
+    "Record and reconcile the change."
+  ],
+  "seniorAnswer": "I will not attach AdministratorAccess or disable the key policy. Those changes widen blast radius and can still lose to an explicit deny. I preserve the failed request identity and evaluate every policy plane that owns that exact action.",
+  "weakAnswer": "The login worked, so I would attach AdministratorAccess and rotate the access key.",
+  "whyWeak": "Federated sessions need no new long-lived key, broad access is unsafe, and the denial may come from organization, resource, endpoint or KMS policy.",
+  "evidence": [
+    {
+      "signal": "assumed-role session and request ID",
+      "proves": "the authenticated caller and one attempted API request",
+      "doesNotProve": "authorization or business entitlement"
+    },
+    {
+      "signal": "effective policy layers and condition context",
+      "proves": "the documented authorization inputs",
+      "doesNotProve": "application correctness"
+    },
+    {
+      "signal": "successful intended operation plus preserved intended denial",
+      "proves": "the narrow policy correction for sampled requests",
+      "doesNotProve": "all resources or future context"
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "What does an SCP grant?",
+      "answer": "Nothing by itself; it defines a maximum permission boundary for affected accounts or principals."
+    },
+    {
+      "prompt": "Why can KMS deny an otherwise allowed S3 read?",
+      "answer": "Decrypting the encrypted data can require a separate KMS authorization path governed by key policy, grants and caller permissions."
+    },
+    {
+      "prompt": "What must never enter shared evidence?",
+      "answer": "Credentials, secret values, decrypted customer data and unnecessary sensitive identifiers."
+    }
+  ],
+  "rubric": [
+    {"criterion": "Request identity", "points": 10, "observableEvidence": "Principal action resource context request ID"},
+    {"criterion": "Policy layers", "points": 10, "observableEvidence": "Grant and restriction map"},
+    {"criterion": "Explicit deny reasoning", "points": 10, "observableEvidence": "Condition and deny analysis"},
+    {"criterion": "Least-privilege fix", "points": 10, "observableEvidence": "Narrow reviewed change"},
+    {"criterion": "Verification and record", "points": 10, "observableEvidence": "Allow deny and audit evidence"}
+  ],
+  "maximumScore": 50
+}
+

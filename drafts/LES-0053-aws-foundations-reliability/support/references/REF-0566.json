@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0566","title":"AWS Key Management Service","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/kms/latest/developerguide/overview.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"managed cryptographic key material key policy and regional service boundaries","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

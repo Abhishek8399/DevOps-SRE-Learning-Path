@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0565","title":"What is Amazon CloudWatch?","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"metrics alarms dashboards application signals logs traces SLO and cross-account observability","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

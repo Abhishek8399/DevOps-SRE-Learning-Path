@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0556","title":"Regions and Zones","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"Region Availability Zone scope and failure-domain design","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

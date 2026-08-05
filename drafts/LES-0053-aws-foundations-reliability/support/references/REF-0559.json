@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0559","title":"What is an Application Load Balancer?","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"listener rule target group health and request-routing boundaries","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

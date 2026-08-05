@@ -1,0 +1,93 @@
+{
+  "baseline": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "long-lived-admin": {
+    "identity_bounded": false,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "mutable-artifact": {
+    "identity_bounded": true,
+    "immutable_artifact": false,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "public-database": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": false,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "single-az": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": false,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "quota-no-headroom": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": false,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "restore-untested": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": false,
+    "user_sli": true,
+    "bounded_retries": true
+  },
+  "no-user-sli": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": false,
+    "bounded_retries": true
+  },
+  "unbounded-retries": {
+    "identity_bounded": true,
+    "immutable_artifact": true,
+    "private_data": true,
+    "multi_az": true,
+    "quota_headroom": true,
+    "restore_tested": true,
+    "user_sli": true,
+    "bounded_retries": false
+  }
+}
+

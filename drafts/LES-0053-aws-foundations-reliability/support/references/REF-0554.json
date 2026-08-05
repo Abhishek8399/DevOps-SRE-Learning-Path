@@ -1,0 +1,2 @@
+{"schemaVersion":1,"kind":"reference","id":"REF-0554","title":"Best practices for a multi-account environment","organization":"Amazon Web Services","url":"https://docs.aws.amazon.com/organizations/latest/userguide/orgs_best-practices.html","sourceType":"official-documentation","versionOrDate":"current documentation reviewed 2026-08-05","lessonIds":["LES-0053"],"topics":["cloud","aws"],"relevance":"organization account OU workload isolation root and cost governance boundaries","usagePolicy":"paraphrase-first","lastReviewed":"2026-08-05","reviewAfter":"2027-02-05"}
+

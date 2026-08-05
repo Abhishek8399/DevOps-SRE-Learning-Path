@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "lessonId": "LES-0053",
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-05",
+  "reviewAfter": "2027-02-05",
+  "id": "ASM-0144",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "Review an unseen regulated AWS workload from organization and identity through VPC, compute, data, observability, quota, recovery and cost; adapt after the reviewer changes one major constraint without using an AWS account.",
+  "deliverables": [
+    "User-operation, data-class, demand, SLI, SLO, RPO and RTO contract.",
+    "Organization, OU and account model with governance, audit and break-glass ownership.",
+    "Human and workload identity map with every relevant policy boundary.",
+    "Regional request and state path across DNS, network, entry point, compute and data.",
+    "EC2, ECS, EKS and Lambda comparison with a justified selection.",
+    "Immutable artifact, IaC plan review, progressive rollout and rollback contract.",
+    "S3 or RDS consistency, encryption, key, retention, backup and restore design.",
+    "Burst and AZ-loss capacity model including quota, stock, subnet and dependency limits.",
+    "User-centered telemetry, alert, incident and recovery-verification design.",
+    "Cost-unit model, rejected alternative, migration risks and exact local cleanup."
+  ],
+  "evidenceRequirements": [
+    "Reviewer supplies an unseen workload and changes Region, recovery, traffic, residency, team-skill or budget constraints after the first design.",
+    "No AWS account, credential, CLI, SDK, API, provider download, terraform apply, public endpoint or paid resource is used.",
+    "A sanitized pre-generated Terraform plan may be reviewed but cannot be treated as deployment or capacity evidence.",
+    "Every diagram labels scope, state owner, failure domain, trust boundary and operating owner.",
+    "Capacity calculations include steady state, burst, one-AZ loss, scaling delay, quotas, subnet IPs and downstream limits.",
+    "One broad IAM fix, one unjustified Kubernetes design and one unsafe cost reduction are explicitly rejected.",
+    "Recovery evidence specifies point selection, restore order, application validation, achieved RPO/RTO and failback.",
+    "Reviewer observes changed-constraint reasoning, delayed recall, uncertainty labels and cleanup."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Workload contract", "points": 10, "observableEvidence": "Operation data demand objectives"},
+    {"criterion": "Governance identity", "points": 10, "observableEvidence": "Accounts roles policy audit"},
+    {"criterion": "Request path", "points": 10, "observableEvidence": "Scope network compute data"},
+    {"criterion": "Compute delivery", "points": 10, "observableEvidence": "Trade-off artifact rollout"},
+    {"criterion": "Data security", "points": 10, "observableEvidence": "Consistency key retention"},
+    {"criterion": "Reliability recovery", "points": 10, "observableEvidence": "Failure matrix restore objectives"},
+    {"criterion": "Capacity quota", "points": 10, "observableEvidence": "Burst AZ-loss dependency math"},
+    {"criterion": "Observability incident", "points": 10, "observableEvidence": "User SLI correlation response"},
+    {"criterion": "Cost trade-offs", "points": 10, "observableEvidence": "Units alternatives consequences"},
+    {"criterion": "Transfer evidence", "points": 10, "observableEvidence": "Changed constraint limits cleanup"}
+  ],
+  "maximumScore": 100
+}
