@@ -480,3 +480,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Decision:** Teach Google Cloud as `user operation -> organization/folder/project ownership -> principal/role/permission/policy -> DNS/frontend/global VPC/regional subnet -> zonal compute -> data/KMS -> quota and surviving capacity -> user SLI -> restored business operation -> cost units`. Keep project scope distinct from network and failure scope, IAM distinct from Organization Policy, quota distinct from stock, regional placement distinct from useful surviving capacity, replication distinct from recovery and resource telemetry distinct from user reliability.
 
 **Consequences:** `LES-0055` remains quarantined until Ubuntu, provider-current design, sanitized plan, reviewer failure/recovery, formal review and learner evidence pass. Its model is not IAM, VPC, MIG, GKE, Cloud Run, Storage, SQL, KMS, Monitoring, quota, failover, restore, price or production evidence.
+
+### DEC-054 - Relational reliability follows the transaction and separates availability from recovery
+
+**Status:** `ACCEPTED`
+
+**Context:** A database can report healthy CPU, storage and readiness while a user operation waits for a pool slot, row lock, parameter-specific plan or stale replica. MVCC reduces reader/writer blocking but creates tuple-lifecycle and vacuum obligations. More connections and retries can amplify overload. A standby copies current state, including bad changes, while a completed backup job does not prove that a useful business state can be restored.
+
+**Decision:** Teach and operate PostgreSQL as `user operation -> pool queue -> authenticated backend -> transaction snapshot and locks -> planner/executor -> pages and WAL -> commit or rollback -> application acknowledgement`. Bind diagnosis to operation identity, session, query fingerprint, parameter class, plan, wait owner and transaction result. Choose constraints, isolation, indexes, pool budgets, timeout layers and retries from explicit correctness and workload contracts. Keep high availability, replication, backup, point-in-time recovery, failover and verified restore as separate mechanisms and evidence.
+
+**Consequences:** `LES-0056` remains quarantined until its Ubuntu/Docker lifecycle, representative scale, physical backup/PITR, standby/fencing/failover, formal review, reviewer-owned unfamiliar transfer and learner evidence pass. The disposable PostgreSQL lab cannot be cited as durable storage, TLS, pooler, replication, production performance, recovery objectives, formal acceptance or mastery.
