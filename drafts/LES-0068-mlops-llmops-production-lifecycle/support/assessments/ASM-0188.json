@@ -1,0 +1,122 @@
+{
+    "schemaVersion":  1,
+    "kind":  "assessment",
+    "id":  "ASM-0188",
+    "lessonId":  "LES-0068",
+    "type":  "production",
+    "difficulty":  "expert",
+    "prompt":  "Review a proposed LLM serving release. Candidate B uses a new model, tokenizer and prompt. Offline evaluation has 1,000 examples: incumbent A passes 860, candidate B passes 890, but the regulated slice has A=96/100 and B=90/100. A canary sends 900 requests to A and 100 to B. A has 9 user-impact failures and B has 4. B\u0027s p95 TTFT is 1.8 s against a 1.5 s SLO; A is 1.1 s. B processes 120,000 input and 30,000 output tokens during a 10-minute window using one GPU at $3.60 per GPU-hour. Only 80 B requests reach a verified useful outcome. A prompt-cache entry is keyed by prompt alias and tenant is omitted. The old release is scaled to zero and takes 12 minutes to reload while the rollback objective is 5 minutes. Decide whether to promote and show the calculations.",
+    "directAnswer":  "Do not promote. Candidate B improves aggregate offline pass rate by 3 percentage points but regresses the regulated slice by 6 points, has an observed canary user-impact failure rate of 4% versus A\u0027s 1%, breaches TTFT, has a cross-tenant and mutable-alias cache key, and cannot meet rollback time. Its measured GPU cost is $0.60 for ten minutes, $0.0075 per verified useful outcome, with 1,875 total tokens per useful outcome; these values need a baseline and do not override safety failures.",
+    "foundation":  "Promotion is a multi-gate decision. Quality, critical slices, safety, SLOs, security, capacity, rollback and economics are conjunctive gates: one material failed gate stops the ramp. Unequal canary traffic requires rates rather than raw counts, and small samples require uncertainty rather than false precision.",
+    "reasoningSteps":  [
+                           "Compute aggregate offline rates: A=860/1000=86%; B=890/1000=89%; absolute gain=3 percentage points.",
+                           "Compute regulated-slice rates: A=96%; B=90%; absolute regression=6 percentage points. If the slice is protected, this alone blocks promotion.",
+                           "Compute canary impact rates: A=9/900=1%; B=4/100=4%. B has four times the observed rate, though the B sample is small and uncertainty must be reported.",
+                           "Compare B p95 TTFT 1.8 seconds with the 1.5-second objective: 0.3 seconds or 20% over the limit.",
+                           "Calculate tokens: 120,000+30,000=150,000 total; 150,000/80=1,875 tokens per verified useful outcome, not 1,500.",
+                           "Calculate ten-minute GPU cost: 10/60 times $3.60 equals $0.60. Cost per verified useful outcome is $0.60/80=$0.0075.",
+                           "Identify cache failure: prompt alias is mutable and tenant omission permits incorrect or cross-tenant reuse. A safe key includes tenant or isolation boundary plus immutable prompt, model/tokenizer, policy and relevant input identity.",
+                           "Compare rollback: 12-minute reload exceeds the 5-minute objective by 7 minutes. Keep a warm or otherwise proven compatible rollback target before exposure.",
+                           "Stop B traffic, preserve paired evidence, correct cache and rollback readiness, diagnose the protected-slice and failure regressions, then rerun versioned evaluation and canary gates."
+                       ],
+    "seniorAnswer":  "I reject promotion and reduce candidate exposure to zero through the tested route. B\u0027s headline score is 89% versus 86%, but the regulated cohort falls from 96% to 90%. Its observed canary impact rate is 4/100=4%, compared with 9/900=1% for A; the sample is too small for a confident effect estimate but is already unsafe evidence, not a reason to ramp. B\u0027s p95 TTFT is 20% over SLO. It used 150,000 tokens for 80 verified outcomes, or 1,875 tokens per useful outcome, and $0.60 of GPU time, or $0.0075 per useful outcome. Those economics need comparison with A. More urgently, the cache key can mix mutable prompt versions and tenants, and a 12-minute cold rollback misses a 5-minute objective. I would restore A, reconcile cache state, keep the previous release warm, repair identity and slice gates, then repeat a predeclared canary with per-release quality, reliability, safety and cost evidence.",
+    "weakAnswer":  "Promote B because it is three percent more accurate and only has four failures compared with A\u0027s nine.",
+    "whyWeak":  "It compares raw event counts under 9:1 traffic, ignores the protected-slice regression, violates TTFT and rollback objectives, overlooks cache isolation, misreads percentage points, and ignores uncertainty and useful-outcome economics.",
+    "evidence":  [
+                     {
+                         "signal":  "Versioned evaluation dataset and scorer results by slice",
+                         "proves":  "Candidate performance on declared examples under declared scorers",
+                         "doesNotProve":  "Live user benefit or future populations"
+                     },
+                     {
+                         "signal":  "Canary allocation and per-release impact counts",
+                         "proves":  "Observed rate under the actual exposure when routing identity is trustworthy",
+                         "doesNotProve":  "A stable causal effect with only 100 candidate requests"
+                     },
+                     {
+                         "signal":  "TTFT histogram by release and operation",
+                         "proves":  "Tail first-token latency for represented traffic",
+                         "doesNotProve":  "Total completion quality"
+                     },
+                     {
+                         "signal":  "Cache key and access tests",
+                         "proves":  "Whether required identity and isolation dimensions are enforced",
+                         "doesNotProve":  "All leakage paths are absent"
+                     },
+                     {
+                         "signal":  "Warm rollback exercise",
+                         "proves":  "Observed recovery time and compatibility in the tested state",
+                         "doesNotProve":  "Recovery under every failure"
+                     }
+                 ],
+    "followUps":  [
+                      {
+                          "prompt":  "What is wrong with saying B is three percent better?",
+                          "answer":  "The result is an increase from 86% to 89%, which is 3 percentage points and about 3.49% relative. Neither description includes the protected-slice regression or uncertainty."
+                      },
+                      {
+                          "prompt":  "How should nondeterministic output be evaluated?",
+                          "answer":  "Pin the complete release and evaluator identities, run repeated or otherwise variance-aware measurements where appropriate, preserve raw outputs, use human-reviewed representative slices, and report confidence and disagreement rather than one judge score."
+                      },
+                      {
+                          "prompt":  "What must happen before the canary resumes?",
+                          "answer":  "Repair the protected slice or reject the candidate, create tenant-safe immutable cache keys, meet TTFT and rollback gates, verify release-labeled telemetry, and approve a bounded exposure and abort policy."
+                      }
+                  ],
+    "rubric":  [
+                   {
+                       "criterion":  "Offline and slice calculations",
+                       "points":  10,
+                       "observableEvidence":  "86 89 3-point gain and 96-to-90 protected regression"
+                   },
+                   {
+                       "criterion":  "Canary-rate reasoning",
+                       "points":  10,
+                       "observableEvidence":  "1 percent versus 4 percent with uncertainty warning"
+                   },
+                   {
+                       "criterion":  "Latency gate",
+                       "points":  10,
+                       "observableEvidence":  "1.8 versus 1.5 and 20 percent breach"
+                   },
+                   {
+                       "criterion":  "Token economics",
+                       "points":  10,
+                       "observableEvidence":  "150000 total and 1875 per useful outcome"
+                   },
+                   {
+                       "criterion":  "GPU economics",
+                       "points":  10,
+                       "observableEvidence":  "0.60 window cost and 0.0075 per outcome"
+                   },
+                   {
+                       "criterion":  "Cache security",
+                       "points":  10,
+                       "observableEvidence":  "Tenant isolation and immutable version key"
+                   },
+                   {
+                       "criterion":  "Rollback readiness",
+                       "points":  10,
+                       "observableEvidence":  "Twelve versus five minutes and warm target"
+                   },
+                   {
+                       "criterion":  "Decision quality",
+                       "points":  10,
+                       "observableEvidence":  "Rejects promotion using conjunctive gates"
+                   },
+                   {
+                       "criterion":  "Recovery path",
+                       "points":  10,
+                       "observableEvidence":  "Stops traffic preserves lineage reconciles cache restores A"
+                   },
+                   {
+                       "criterion":  "Prevention",
+                       "points":  10,
+                       "observableEvidence":  "Versioned sliced gates telemetry and rehearsed rollback"
+                   }
+               ],
+    "maximumScore":  100,
+    "masteryBoundary":  "requires-reviewed-learner-evidence",
+    "lastReviewed":  "2026-08-05",
+    "reviewAfter":  "2027-02-05"
+}
