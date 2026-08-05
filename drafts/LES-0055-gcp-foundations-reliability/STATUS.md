@@ -1,0 +1,7 @@
+# LES-0055 draft status
+
+Status: **quarantined substantive candidate - not canonical, accepted, or mastery evidence**
+
+The 7,066-word candidate has one H1 and the exact 18-section structure, six diagrams, twelve command contracts, two labs, five incidents, three assessments and fifteen current official Google Cloud references. Direct lesson, assessment and reference schemas pass; relationships are exactly 3/15; rubrics total 50/100/100; independent transfer is answer-isolated. Nineteen JSON files parse, Python compiles, Git Bash syntax and ShellCheck pass, the baseline plus eight first-boundary decisions match, and all fifteen canonical source URLs resolve. Canonical content validation, registry parity, 38/39 schema tests with one Windows capability skip, 21/21 reader tests, lint, typecheck and production build pass without publishing the draft.
+
+The offline model opens no network connection, imports no Google Cloud SDK, invokes no cloud CLI or Terraform provider, requests no credential, creates no provider resource and produces no cloud or production evidence. Ubuntu execution is blocked before VM startup by `Wsl/Service/CreateInstance/CreateVm/HCS/0x80070569`, so runtime refusals and cleanup remain unproved. The draft remains outside the canonical registry and website; provider-current review, formal review, reviewer transfer, learner evidence and delayed recall remain required.

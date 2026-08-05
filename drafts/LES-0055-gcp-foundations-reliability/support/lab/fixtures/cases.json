@@ -1,0 +1,11 @@
+{
+  "baseline":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "project-sprawl":{"project_governed":false,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "service-account-key":{"project_governed":true,"federated_identity":false,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "mutable-image":{"project_governed":true,"federated_identity":true,"immutable_artifact":false,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "public-data":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":false,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "single-zone":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":false,"quota_headroom":true,"restore_tested":true,"user_sli":true},
+  "quota-no-headroom":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":false,"restore_tested":true,"user_sli":true},
+  "restore-untested":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":false,"user_sli":true},
+  "resource-only-monitoring":{"project_governed":true,"federated_identity":true,"immutable_artifact":true,"private_data":true,"zone_resilient":true,"quota_headroom":true,"restore_tested":true,"user_sli":false}
+}
