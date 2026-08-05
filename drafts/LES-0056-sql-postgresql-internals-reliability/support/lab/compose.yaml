@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: docker.io/library/postgres:18.4-bookworm@sha256:05f40072be9e1568469812836a2dc2780158ba9352a825282e59a1533127d08c
+    read_only: true
+    user: "999:999"
+    environment:
+      POSTGRES_USER: lab_admin
+      POSTGRES_DB: reliability
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      PGDATA: /var/lib/postgresql/data
+    command:
+      - postgres
+      - -c
+      - max_connections=30
+      - -c
+      - reserved_connections=2
+      - -c
+      - log_lock_waits=on
+      - -c
+      - deadlock_timeout=200ms
+      - -c
+      - log_min_duration_statement=250ms
+    secrets:
+      - db_password
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d:ro
+    tmpfs:
+      - /var/lib/postgresql:rw,noexec,nosuid,size=512m,uid=999,gid=999,mode=0700
+      - /tmp:rw,noexec,nosuid,size=64m,uid=999,gid=999,mode=1777
+      - /var/run/postgresql:rw,nosuid,size=16m,uid=999,gid=999,mode=0770
+    networks:
+      - database
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab_admin -d reliability"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 10s
+
+networks:
+  database:
+    internal: true
+    labels:
+      reliability-atlas.lesson: LES-0056
+
+secrets:
+  db_password:
+    file: ${LAB_STATE_DIR:?LAB_STATE_DIR must name the guarded temporary directory}/db_password
