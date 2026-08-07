@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0214",
+  "lessonId": "LES-0077",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "During a mixed-version OpenStack control-plane upgrade, a client retries server creation after a timeout and receives two server UUIDs. One remains BUILD with task_state=scheduling and later appears in cell0; the other becomes ACTIVE but the user flow fails. Keystone issued a valid token for the wrong project and its catalog points one region to an old Nova endpoint. Placement inventory is stale and shows an allocation for the failed build. Glance says the selected image is active although one required store lacks bytes. Neutron reports the port ACTIVE and bound, but the target compute has no effective dataplane flow and metadata is unreachable. Cinder shows an attachment while the backend has no corresponding connection. The API tier is healthy, but one cell database and RabbitMQ path are intermittent, online data migrations are incomplete, and the failed compute has not been fenced. Diagnose the first evidence boundaries, contain safely, recover the user operation, reconcile orphaned state, and redesign the request path and upgrade controls.",
+  "directAnswer": "Treat the response, server status and service records as asynchronous control-plane claims, not proof of one successful instance. Freeze retries and the upgrade, bind both request IDs/server UUIDs/project/region/microversion, preserve API, cell, Placement, Glance, Neutron, Cinder, compute and message evidence, and establish which server and storage/network identities may remain authoritative. The wrong project scope and stale catalog must be corrected before interpreting downstream records. The BUILD/cell0 path indicates scheduling or cell-local failure; stale Placement allocation must be reconciled only after proving it is not consumed. ACTIVE does not prove image bytes, effective port binding, metadata, volume connection, guest boot or user readiness. Isolate duplicate identities, fence the failed compute before any evacuation or shared-write recovery, repair the cell database/RPC path, verify image-store bytes and provenance, rebuild or recover on an admitted compute with a fresh Placement claim, effective Neutron dataplane and consistent Cinder attachment, then validate guest, application and user flow. Reconcile cell mappings, allocations, ports, attachments, image tasks and orphan records through supported service procedures. Redesign with scoped token/catalog validation, request IDs and bounded retry/idempotency, API microversion pinning, quota and cell admission, fresh Placement inventory/claims, image-store verification, desired-versus-effective network and volume state, correlated evidence, independent database/message/service HA, fenced recovery, release-compatible rolling upgrade, completed online data migrations, canary, rollback and cleanup proofs.",
+  "foundation": "OpenStack is a federation of asynchronous service APIs and state owners. Keystone authenticates and scopes; each service authorizes. Nova coordinates server lifecycle across API/global and cell-local databases, RPC, Placement, compute and hypervisor. Glance, Neutron and Cinder own different resource records and backends. API success, ACTIVE, bound or available are bounded service states, not the complete user outcome.",
+  "reasoningSteps": [
+    "Name the user operation, project, region, request ID, server UUIDs and exact time window.",
+    "Stop blind create retries and mixed-version expansion.",
+    "Validate token authenticity, scope, roles and downstream service policy separately.",
+    "Resolve the exact service-catalog interface, region and endpoint.",
+    "Pin the requested and accepted API microversion.",
+    "Separate Nova API/global state from cell mapping, cell0 and cell-local state.",
+    "Trace API database, scheduler, Placement, conductor, RPC, compute and hypervisor boundaries.",
+    "Treat cell0 as failed scheduling evidence, not a compute cell.",
+    "Compare Placement inventory, traits, allocation candidates, claims and consumer allocations.",
+    "Identify and safely reconcile orphaned allocations only after authoritative instance state is known.",
+    "Verify Glance record, task, each required store, artifact digest/provenance and project access.",
+    "Compare Neutron port record/binding with effective host dataplane, DHCP, metadata, security policy and packet path.",
+    "Compare Cinder volume/attachment records with backend connection, connector identity and writer authority.",
+    "Fence the failed compute before evacuation or duplicate writer activation.",
+    "Establish one authoritative server, port, volume attachment and application identity.",
+    "Recover on an admitted compatible host with capacity and verified dependencies.",
+    "Validate guest boot, metadata, application dependencies, user flow and data invariants.",
+    "Reconcile duplicate server records, allocations, ports, attachments, tasks and temporary artifacts.",
+    "Require independent HA for databases, messaging and every critical service role, not only API load balancing.",
+    "Complete release-required schema and online data migrations within the documented compatibility window.",
+    "Canary upgrades and preserve an executable rollback/recovery plan.",
+    "Bound every conclusion to exact release, service versions, topology, workload and evidence."
+  ],
+  "seniorAnswer": "I would declare both the build and the upgrade unsafe, freeze retries and further rollout, and correlate the original request ID to both server UUIDs across Keystone/catalog, Nova API and cell state, Placement, Glance, Neutron, Cinder, RPC and compute logs. I correct scope and endpoint identity first. I do not trust ACTIVE, bound or attachment records without backend and user evidence. I fence the failed compute, establish one authoritative instance and writer, repair cell/RPC dependencies, reclaim only proven orphan allocations, recover on an admitted host with verified image bytes, effective network and consistent volume state, then prove guest, application, user and data correctness. Prevention is bounded retry/idempotency, release-pinned APIs, fresh resource claims, desired/effective reconciliation, correlated request evidence, real dependency HA, completed online migrations, canary/abort/rollback and exact orphan cleanup.",
+  "weakAnswer": "Restart Nova, Neutron and Cinder, delete the BUILD server, clear the Placement allocation and retry after the upgrade.",
+  "whyWeak": "It may delete or duplicate authoritative state, ignores wrong scope/catalog, cell ownership, image-store loss, ineffective dataplane, attachment/backend drift, unfenced compute, mixed-version compatibility, online migrations, request duplication, user evidence and supported reconciliation.",
+  "evidence": [
+    {"signal":"Keystone token plus catalog and service policy result","proves":"Observed caller scope, endpoint discovery and covered authorization decision","doesNotProve":"Downstream service or user success"},
+    {"signal":"Nova request ID, server UUID, cell mapping, vm_state/task_state and cell logs","proves":"Covered asynchronous lifecycle and ownership path","doesNotProve":"Effective network/storage or application readiness"},
+    {"signal":"Placement inventory generation and consumer allocation","proves":"Recorded capacity claim at the observed time","doesNotProve":"The compute build consumed it correctly"},
+    {"signal":"Glance store verification, Neutron host dataplane and Cinder backend connection","proves":"Covered backend realization for named resources","doesNotProve":"Complete guest and user correctness"},
+    {"signal":"Fencing receipt plus external user/data validation","proves":"Covered old authority removal and observed recovery","doesNotProve":"Every failure or future release"}
+  ],
+  "followUps": [
+    {"prompt":"Why can a valid token still fail safely?","answer":"Its project/domain/system scope or roles may not authorize the intended resource, and each target service applies its own policy."},
+    {"prompt":"Why is ACTIVE insufficient?","answer":"Nova reports its server lifecycle view; image bytes, effective Neutron/Cinder state, guest boot, application and user flow require separate evidence."},
+    {"prompt":"Why not delete a stale allocation immediately?","answer":"The allocation may still correspond to authoritative or partially created state. First bind the consumer and server/cell state, then use supported reconciliation."},
+    {"prompt":"What is the upgrade stop condition?","answer":"Any incompatible RPC/object/API behavior, incomplete required migration, dependency instability, state divergence, failed canary or user/data guardrail crossing stops expansion."}
+  ],
+  "rubric": [
+    {"criterion":"Identity and request correlation","points":10,"observableEvidence":"Binds project, region, token, catalog, request IDs, UUIDs and microversion"},
+    {"criterion":"Nova, cells and Placement diagnosis","points":10,"observableEvidence":"Separates global/cell state, RPC, scheduling, allocation and compute execution"},
+    {"criterion":"Image, network and volume realization","points":10,"observableEvidence":"Finds record/backend drift and validates effective dataplane and storage state"},
+    {"criterion":"Containment and recovery authority","points":10,"observableEvidence":"Stops retries/upgrades, fences, selects one authority and proves user/data recovery"},
+    {"criterion":"Upgrade, HA and prevention","points":10,"observableEvidence":"Adds dependency HA, compatibility, migrations, canary, rollback, observability and cleanup"}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

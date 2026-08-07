@@ -1,6 +1,6 @@
 # LES-0077 draft status
 
-Status: **identity, official-source lock and guarded offline lab complete; assessments and lesson not yet created**
+Status: **identity, official-source lock, guarded offline lab and assessment set complete; lesson not yet created**
 
 This quarantined directory is reserved for `LES-0077` / `V09-L02` / `PRV-002`: OpenStack identity, API, service-catalog, Nova, Placement, Neutron, Glance and Cinder request paths; cells, databases, queues and agents; instance build, scheduling, image, network and volume state; HA, upgrades, incidents and recovery.
 
@@ -8,4 +8,6 @@ Fifteen official OpenStack sources are locked across the current security guide 
 
 A guarded no-service lab now evaluates a defensible baseline plus fifty ordered OpenStack request-path evidence failures. JSON and Python validation, Bash syntax, ShellCheck, all fifty-one cases, Ubuntu 24.04 UID-1000 lifecycle, exported-endpoint refusal, root refusal, unknown-artifact refusal and exact cleanup pass. Its read-only tool inventory invokes no discovered tool or endpoint and makes no service call.
 
-No lesson, assessment, package, OpenStack service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, learner evidence or mastery evidence exists.
+Diagnostic, guided-transfer and independent-transfer records pass direct schemas with 50/100/100 rubrics. The independent record contains reviewer-owned deliverables, evidence requirements and scoring criteria but zero answer-bearing fields.
+
+No lesson, package, OpenStack service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, learner evidence or mastery evidence exists.
