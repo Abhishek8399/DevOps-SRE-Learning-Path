@@ -643,7 +643,7 @@ Always ask: **If the failure happened, would this instrument have recorded it?**
 
 Run commands from `drafts/LES-0088-production-service-reliability-capstone/support/project` inside Ubuntu. Read `README.md` first. Never paste an incident command before naming its question.
 
-### `bash ops/verify.sh`
+### `bash verify.sh`
 
 `bash` runs the guarded lifecycle. The script checks normal-user authority and bounded paths, compiles Python, executes seven tests, starts local service modes, exercises HTTP and idempotency, asserts record conservation, checks telemetry, performs backup and separate restore, evaluates SLO calculations, validates three injected faults and proves cleanup.
 
