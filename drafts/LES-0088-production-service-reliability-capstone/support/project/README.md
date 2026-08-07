@@ -20,7 +20,7 @@ The application and Prometheus share an internal backend network. Host access us
 From Ubuntu 24.04 WSL, run:
 
 ```bash
-cd /mnt/c/Users/ajha/Repos/DevOps-SRE-Learning-Path/drafts/LES-0088-production-service-reliability-capstone/support/project
+cd /path/to/DevOps-SRE-Learning-Path/drafts/LES-0088-production-service-reliability-capstone/support/project
 bash verify.sh
 ```
 
