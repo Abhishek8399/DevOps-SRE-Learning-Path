@@ -1,0 +1,53 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0221",
+  "lessonId":"LES-0079",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Design a production operating model for multi-rack OpenStack with OVN/OVS: tenant east-west, distributed routing, centralized north-south gateways, ACL/security groups, NAT, load balancing, provider VLANs and Geneve. Define ownership, failure domains, capacity, security, observability, incident response, upgrade/rollback and recovery acceptance.",
+  "directAnswer":"Map each owner: CMS intent, NB desired state, northd compilation, SB flows/bindings, chassis controller translation, local OVSDB configuration, OpenFlow policy, datapath cache, Linux/NIC/underlay transport and workload/user outcome. Cluster NB/SB across independent failures and measure quorum plus commit progress. Measure northd/controller generation lag. Standardize chassis identity, encap endpoints, bridge mappings, VLANs, ofports and MTU. Version policy inputs and schema/protocol contracts. Capacity-plan state/update rates, compile/recompute latency, flows/masks/upcalls/conntrack, tunnels, gateways, CPU/memory/bandwidth and largest-failure reserve. Protect database/OpenFlow channels, certificates, sockets, RBAC, logs and captures. Alert on user symptoms and sustained convergence or transport risk. Canary one failure domain with old/new bidirectional application flows. Accept recovery only after authoritative state, correct policy/NAT, observed delivery/reply, stable SLI and exact cleanup.",
+  "foundation":"Control-plane availability, convergence and forwarding are separate. Capacity is multidimensional and recovery becomes unsafe when stale bindings, duplicate gateways, broad flow mutation or ambiguous ownership exists.",
+  "reasoningSteps":[
+    "Define critical journeys, traffic classes, SLOs and failure objectives.",
+    "Draw every intent, compilation, realization, transport and outcome owner.",
+    "Map rack, power, management, tunnel, provider and gateway failure domains.",
+    "Define stable resource, chassis, port, flow, tunnel and request identities.",
+    "Design database clustering, backup/restore, schema governance and progress monitoring.",
+    "Design northd/controller convergence objectives and failure behavior.",
+    "Standardize bridges, mappings, VLANs, ofports and MTU envelopes.",
+    "Design logical switching/routing, policy, NAT, load balancing and gateways.",
+    "Budget flows, masks, revalidation, upcalls, conntrack, CPU, memory and bandwidth.",
+    "Secure control channels, credentials, sockets, diagnostics and tenant data.",
+    "Build user, database, compilation, binding, flow, tunnel and gateway telemetry.",
+    "Use canaries, stop gates, rollback/reconciliation, application proof and cleanup."
+  ],
+  "seniorAnswer":"I would require stable identities and progress markers at every handoff. NB/SB quorum, northd and controller convergence, OVS/OpenFlow realization, physical transport and user results get separate objectives. Capacity covers state/update rate, compile time, flows/masks/upcalls/conntrack, gateway and underlay throughput, and survivor reserve. Changes canary one domain and stop on convergence or SLI regression. Recovery requires correct authoritative state, policy/NAT, observed bidirectional application behavior and residue removal.",
+  "weakAnswer":"Use three database nodes, two gateways and monitoring; restart agents when ping fails.",
+  "whyWeak":"It omits progress, ownership, physical failures, compatibility, capacity, security, reverse path, safe mutation, application evidence and cleanup.",
+  "evidence":[
+    {"signal":"Ownership and failure-domain maps","proves":"declared responsibility and correlated-risk design","doesNotProve":"runtime survival"},
+    {"signal":"Progress, generation, flow and transport dashboards","proves":"bounded convergence and path observations","doesNotProve":"application correctness alone"},
+    {"signal":"Game-day application and cleanup records","proves":"reviewed behavior for exercised cases","doesNotProve":"unexercised failures"}
+  ],
+  "followUps":[
+    {"prompt":"What is the dangerous shortcut?","answer":"Treating database or process HA as network HA, which hides compilation, realization, transport and reply failures."},
+    {"prompt":"What makes rollback credible?","answer":"Exact compatibility, immutable prior intent, bounded canary, one reversal owner, reconciliation, bidirectional validation and residue proof."}
+  ],
+  "rubric":[
+    {"criterion":"Architecture ownership","points":10,"observableEvidence":"Maps all owners and state transitions"},
+    {"criterion":"Failure domains HA","points":10,"observableEvidence":"Defends database controller gateway and underlay survival"},
+    {"criterion":"Logical network design","points":10,"observableEvidence":"Covers switching routing policy NAT load balancing and providers"},
+    {"criterion":"OVS datapath","points":10,"observableEvidence":"Covers OVSDB OpenFlow caches upcalls conntrack and offload"},
+    {"criterion":"Overlay underlay","points":10,"observableEvidence":"Covers keys endpoints MTU routes VLANs bandwidth and reply"},
+    {"criterion":"Security","points":10,"observableEvidence":"Protects authority channels secrets tenancy and diagnostics"},
+    {"criterion":"Observability incidents","points":10,"observableEvidence":"Defines user progress convergence flow and packet evidence"},
+    {"criterion":"Capacity performance","points":10,"observableEvidence":"Quantifies multidimensional limits and survivor reserve"},
+    {"criterion":"Change recovery","points":10,"observableEvidence":"Uses compatibility canary stop rollback validation and cleanup"},
+    {"criterion":"Governance","points":10,"observableEvidence":"Defines owners reviews residual risk and retest"}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

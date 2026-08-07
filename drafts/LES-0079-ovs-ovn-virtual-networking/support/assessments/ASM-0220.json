@@ -1,0 +1,48 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0220",
+  "lessonId":"LES-0079",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"After an OpenStack policy rollout, one east-west TCP journey times out in one direction. Ports are ACTIVE and OVN NB has the intended ACL. NB/SB processes have quorum, but progress differs; northd is behind, one Port_Binding names the old chassis, and the destination controller is stale. Local OVSDB has br-int but one ofport is -1. A flow dump used the wrong OpenFlow protocol. ovn-trace predicts output, yet oversized Geneve packets leave only the source host. An address set and conntrack entry are stale, gateway failover changed NAT placement, and the return underlay route is absent. Diagnose, contain, recover and prove the user result.",
+  "directAnswer":"Freeze rollout and broad retries. Bind the original five-tuple, both directions, OpenStack UUID/revision, exact OVS/OVN releases, schemas, datapath and protocol. Quorum is not progress: compare NB commit, northd input/output and SB generation. Reconcile the stale binding and controller through supported ownership, not row deletion. On each chassis bind system ID, encap endpoint, logical port, interface/ofport, link and MTU. Correlate logical flow to exact OpenFlow table, priority, cookie, match, actions and counters. Treat ovn-trace only as a logical prediction. Prove outer route, effective MTU, source transmit, remote receive, decapsulation and destination delivery. Bind ACL direction/membership revision and the exact conntrack zone; never flush globally. Bind gateway, NAT tuple, provider VLAN, neighbor and reverse route. Recover one failed boundary at a time, then canary existing and new connections, both directions and the application transaction. Prove cleanup before resuming.",
+  "foundation":"OVN NB stores intent, northd compiles it into SB, controllers realize relevant state into local OVSDB and OpenFlow, and OVS executes it through a datapath. ACTIVE, quorum, a row, an installed flow, a trace and a transmitted frame are separate claims. Recovery requires current generations, correct selection, physical delivery, reverse processing and an application result.",
+  "reasoningSteps":[
+    "Name the user journey, endpoints, tenant, five-tuple, direction, time and SLO.",
+    "Stop rollout expansion, global restarts, row deletion, policy weakening and global state flush.",
+    "Bind releases, schemas, datapath and OpenFlow protocol.",
+    "Correlate OpenStack revisions with NB topology and policy.",
+    "Separate database quorum from commit and client-visible progress.",
+    "Compare northd input/output and SB generation.",
+    "Bind chassis, encapsulation and requested/actual Port_Binding.",
+    "Prove controller convergence and local OVSDB/interface identity.",
+    "Correlate logical flows to exact installed OpenFlow and datapath evidence.",
+    "Calculate Geneve overhead and prove underlay route, MTU and both endpoints.",
+    "Bind ACL membership, conntrack zone, gateway, NAT and reverse path.",
+    "Validate old/new application flows in both directions and remove exact residue."
+  ],
+  "seniorAnswer":"I would diagnose a generation-aware user path, not restart daemons. I would freeze expansion, bind versions and resources, prove NB progress, northd compilation, SB binding and controller convergence, then correlate logical and installed flows. The trace is prediction only; the one-sided outer capture requires route/MTU/remote-receive proof. I would correct the first failed owner, review only the affected conntrack zone, restore gateway and reverse authority, and accept recovery only after bidirectional application proof and exact cleanup.",
+  "weakAnswer":"ACTIVE ports and a passing trace mean OVN is healthy; restart everything, flush conntrack and recreate the ports.",
+  "whyWeak":"It confuses local claims with delivery, destroys evidence, expands tenant blast radius and proves neither reverse traffic nor application recovery.",
+  "evidence":[
+    {"signal":"NB/SB leader, term, commit index and northd progress","proves":"bounded database authority and compilation progress","doesNotProve":"chassis realization or packets"},
+    {"signal":"Binding, controller generation, OpenFlow table/cookie/actions/counters","proves":"compiled placement and installed policy claims","doesNotProve":"physical delivery"},
+    {"signal":"Outer/inner captures and application reply","proves":"observed transport, delivery and outcome at named points","doesNotProve":"all traffic or future resilience"}
+  ],
+  "followUps":[
+    {"prompt":"Why can ovn-trace pass while traffic fails?","answer":"It simulates the logical pipeline from SB and does not simulate chassis reachability, tunnel transport, underlay MTU, destination state or reply."},
+    {"prompt":"When may conntrack be changed?","answer":"Only after binding the exact zone, tuple, policy/NAT revision and owner, proving staleness and using a bounded supported action."}
+  ],
+  "rubric":[
+    {"criterion":"Identity and state path","points":10,"observableEvidence":"Binds user resources releases schemas NB northd SB chassis controller and OVS"},
+    {"criterion":"Flow and policy","points":10,"observableEvidence":"Correlates logical flow OpenFlow datapath ACL membership and conntrack"},
+    {"criterion":"Overlay and underlay","points":10,"observableEvidence":"Proves keys endpoints MTU routes transmission reception delivery and reply"},
+    {"criterion":"Safe recovery","points":10,"observableEvidence":"Uses bounded owner-specific reconciliation with canary and rollback gates"},
+    {"criterion":"Outcome and prevention","points":10,"observableEvidence":"Proves application recovery cleanup and durable controls"}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
