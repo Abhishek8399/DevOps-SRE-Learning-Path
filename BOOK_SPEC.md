@@ -123,7 +123,7 @@ Every stable domain ID has one canonical home. Prerequisite links and cross-cutt
 | Volume 05 — Infrastructure and platforms | `IAC-001`, `TFM-001..002`, `CFG-001`, `K8S-001..008`, `PLT-001..004` |
 | Volume 06 — State and distributed systems | `DST-001..006` |
 | Clouds specialist track | `CLD-001..002`, `AWS-001`, `AZR-001`, `GCP-001`, `IAM-001`, `FIN-001` |
-| Private-cloud specialist track | `PRV-001..004` |
+| Private-cloud specialist track | `PRV-001..005` |
 | Data and ML specialist track | `DMP-001..004` |
 | Security specialist track | `SEC-001..003` |
 | Architecture, leadership, career, and interviews specialist track | `ARC-001..002`, `LDR-001`, `INT-001..002`, `CAR-001` |
