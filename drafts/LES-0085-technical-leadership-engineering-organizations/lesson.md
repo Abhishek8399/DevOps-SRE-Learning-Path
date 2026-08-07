@@ -821,13 +821,14 @@ The commands do not manage people. They exercise a fictional packet so you can i
 
 ### Before running
 
-Open Ubuntu 24.04 as a normal user:
+Open Ubuntu 24.04 as a normal user from any directory inside the repository:
 
 ```bash
-cd /mnt/c/Users/ajha/Repos/DevOps-SRE-Learning-Path/drafts/LES-0085-technical-leadership-engineering-organizations/support/lab
+BOOK_ROOT="$(git rev-parse --show-toplevel)"
+cd "$BOOK_ROOT/drafts/LES-0085-technical-leadership-engineering-organizations/support/lab"
 ```
 
-If your clone is elsewhere, replace the path. Do not use `sudo`. Do not export cloud, Kubernetes, Docker, human-resources, messaging, ticket, calendar or production credentials.
+`git rev-parse --show-toplevel` finds the clone root, so the command does not depend on a username or install location. If the shell is outside the clone, enter the repository first. Do not use `sudo`. Do not export cloud, Kubernetes, Docker, human-resources, messaging, ticket, calendar or production credentials.
 
 ### CMD-001: doctor
 

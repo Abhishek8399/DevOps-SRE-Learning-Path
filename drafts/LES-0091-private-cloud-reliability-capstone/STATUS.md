@@ -1,6 +1,6 @@
 # LES-0091 draft status
 
-Status: **source-locked implementation-and-assessment-complete quarantined capstone; manuscript, review and publication pending**
+Status: **source-locked implementation-assessment-and-manuscript-complete quarantined capstone; formal review, transfer and publication pending**
 
 This quarantined directory reserves `LES-0091` / `V11-L04` / `CAP-004` for the private-cloud reliability capstone at `/book/capstones/private-cloud-reliability-capstone`, volume `11-capstones`, order 4 and domain `capstone-engineering`.
 
@@ -16,6 +16,8 @@ The full verifier runs twelve decisions: compute-host loss, rack loss, stale Pla
 
 `ASM-0256` diagnoses a quantified rack-loss incident spanning controller quorum, OVN gateway/MTU, Ceph protection/recovery margin and migration compatibility. `ASM-0257` replaces an unsafe private-cloud design with workload, topology, capacity, security, upgrade, recovery and migration evidence. `ASM-0258` reserves reviewer-owned independent transfer using a different topology and at least four hidden faults. Direct schemas pass; rubrics total 50/100/100 and the independent record contains no answer-derived fields.
 
-The exact eighteen-section manuscript, formal multidisciplinary review and execution of the reviewer-owned transfer remain pending.
+The 9,574-word manuscript has one exact title H1 and all eighteen canonical H2 sections. It connects component vocabulary, four architecture contracts, state ownership, evidence decoding, twelve failure decisions, two bounded labs, production transfer, capacity and security review, twenty complete answers, twelve product-company scenarios, independent transfer and twenty references. Direct lesson/assessment/reference schemas and exact 3/20 relationships pass.
+
+Formal multidisciplinary review, representative authorized component evidence, execution of the reviewer-owned transfer and canonical publication remain pending.
 
 No real infrastructure, credential, tenant, customer data, production action, accepted capacity/availability/recovery objective, learner result or mastery is claimed.
