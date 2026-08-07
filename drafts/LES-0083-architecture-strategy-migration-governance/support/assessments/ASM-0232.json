@@ -1,0 +1,58 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0232",
+  "lessonId":"LES-0083",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"A board directs a team to 'move all 120 applications to cloud in 18 months and reduce cost 30 percent.' The inventory spreadsheet is six months old: 60 percent of records are observed, 25 percent are owner-declared and 15 percent are unknown. Seven days of network flows are treated as a complete dependency map. Month-end freezes, residency, license renewals, staff capacity and shared identity are absent. A managed vendor wins a weighted score but cannot demonstrate a tested export or exit plan. Current and target costs use different allocation semantics. A 48 TB database has a four-hour cutover window, dual writing has no authority rule, rollback is 'switch DNS back,' and success means servers started. Define the first safe strategy path.",
+  "directAnswer":"Reframe the mandate as an owned, measurable portfolio decision rather than a predetermined migration. Bind outcomes, scope, non-goals, deadlines, risk appetite and hard constraints. Version the portfolio and label each fact observed, declared, inferred or unknown; combine telemetry with owner and business evidence to classify dependencies, criticality and business cycles. Consider retire, retain, rehost, relocate, repurchase, replatform and refactor without assuming every application should move. Establish target principles, decision rights, exceptions and evidence cadence. Normalize current/target cost meanings and model ranges, capacity growth, one-time transition cost, opportunity cost and break-even. Apply residency, security, data-export and exit requirements as vetoes before scoring vendors. Prove foundation readiness, dependency-aware wave capacity, coexistence, compatibility, writer fencing, synchronization lag, cutover time, rollback feasibility, forward recovery, reconciliation and decommission evidence. Define go/no-go authority, stop conditions, user outcomes and post-wave learning before authorizing a pilot.",
+  "foundation":"Technical strategy connects organizational outcomes to a portfolio of decisions under uncertainty. Governance supplies decision rights, evidence and exceptions; it is not a meeting that automatically approves change. Migration is a temporary operating architecture with old and new systems, data movement, compatibility and recovery obligations.",
+  "reasoningSteps":[
+    "Clarify whether the board statement is an outcome, constraint, target or already-authorized solution.",
+    "Name accountable executive, portfolio, security, finance, platform, application and operations owners.",
+    "Define measurable business, user, risk, financial and decommission outcomes.",
+    "Version inventory and label evidence origin, time, confidence and owner.",
+    "Resolve unknown critical applications before sequencing them.",
+    "Map technical, data, identity, business-cycle and shared-service dependencies.",
+    "Separate hard constraints from preferences and assumptions.",
+    "Evaluate all relevant migration strategies including retain and retire.",
+    "Define target-state principles and time-bounded exception governance.",
+    "Normalize cost periods, currencies, allocation and included service levels.",
+    "Calculate growth and capacity after the largest declared failure.",
+    "Estimate transfer, source change, final synchronization, validation and cutover budgets.",
+    "Create dependency groups and size waves to actual team/platform capacity.",
+    "Design coexistence, compatibility, writer authority, fencing and reconciliation.",
+    "Apply supplier security, portability, export and exit vetoes before weighting.",
+    "Model one-time cost, run cost, opportunity cost, benefit range and break-even.",
+    "Define pilot acceptance, leading/lagging signals, stop and go/no-go authority.",
+    "Record the decision, residual risks, review triggers and audience-fit narrative."
+  ],
+  "seniorAnswer":"I would not execute the board sentence literally because its inventory, outcome and cost claims are not yet comparable or evidenced. Fifteen percent unknown and a seven-day flow sample can conceal critical batch and shared-service dependencies. I would establish a versioned portfolio evidence register, classify hard constraints, rationalize each workload and prove the common foundation before a small reversible pilot. The vendor without an exit plan is infeasible regardless of its weighted total. For the 48 TB state transition I would calculate bulk transfer plus ongoing change and final-sync/validation time, then design writer fencing, rollback feasibility and forward reconciliation. Approval would be wave-specific and evidence-gated; 'servers started' would not demonstrate user, data, security, cost or decommission outcomes.",
+  "weakAnswer":"Choose the highest-scoring cloud vendor, divide 120 applications into monthly batches, copy the database before cutover, switch DNS and report the 30 percent target as savings.",
+  "whyWeak":"It treats a mandate and estimates as facts, ignores unknown dependencies and hard constraints, accepts incomparable cost semantics, has no writer/recovery design, mistakes vendor score for due diligence and measures activity rather than outcomes.",
+  "evidence":[
+    {"signal":"Versioned inventory with observed/declared/inferred/unknown classifications","proves":"what is known about the portfolio at a stated time","doesNotProve":"unobserved business or runtime dependencies are absent"},
+    {"signal":"Dependency groups plus owner validation across representative cycles","proves":"reviewed sequencing inputs for covered workloads","doesNotProve":"every rare dependency has been observed"},
+    {"signal":"Normalized cost and benefit model with ranges","proves":"financial result under explicit semantics and assumptions","doesNotProve":"future invoices or realized value"},
+    {"signal":"Vendor security, export and exit evidence","proves":"specified capabilities were reviewed or tested","doesNotProve":"all supplier and concentration risk is eliminated"},
+    {"signal":"Pilot cutover, rollback/forward recovery and reconciliation receipts","proves":"observed behavior for the tested wave and conditions","doesNotProve":"later complex waves behave identically"}
+  ],
+  "followUps":[
+    {"prompt":"Why is seven days of network flow insufficient?","answer":"It can miss monthly, quarterly, failure-only, manual, batch, file, identity and business dependencies. Combine representative observation windows with configuration, data, contract and owner evidence and retain uncertainty."},
+    {"prompt":"Why can the cheaper vendor be rejected?","answer":"Security, residency, export or exit can be hard feasibility constraints. Price and weighted preferences are compared only among feasible options."},
+    {"prompt":"When is DNS rollback not rollback?","answer":"When target writes, schema changes or external effects cannot be safely understood by the old system. Then writer fencing, data reversal or forward recovery and reconciliation are required."},
+    {"prompt":"What should a wave success gate measure?","answer":"User operation, data correctness, security controls, performance/reliability, operations readiness, cost telemetry and decommission/recovery evidence—not only resource health."}
+  ],
+  "rubric":[
+    {"criterion":"Mandate portfolio and evidence","points":10,"observableEvidence":"Reframes outcomes and versions inventory confidence dependencies criticality and constraints"},
+    {"criterion":"Options governance and vendor risk","points":10,"observableEvidence":"Considers credible strategies decision rights vetoes exceptions security export and exit"},
+    {"criterion":"Quantitative strategy","points":10,"observableEvidence":"Normalizes units and calculates capacity transfer cutover economics ranges and sensitivity"},
+    {"criterion":"Migration correctness","points":10,"observableEvidence":"Defines waves coexistence compatibility authority fencing rollback forward recovery and reconciliation"},
+    {"criterion":"Validation communication and learning","points":10,"observableEvidence":"Creates pilot gates owners stop conditions outcomes evidence review triggers and audience-fit narrative"}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
