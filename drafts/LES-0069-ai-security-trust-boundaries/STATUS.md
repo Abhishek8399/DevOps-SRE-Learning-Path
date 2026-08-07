@@ -1,6 +1,6 @@
 # LES-0069 draft status
 
-Status: **scaffolded candidate and quarantined - not canonical, accepted, or mastery evidence**
+Status: **substantive authorship in progress and quarantined - not canonical, accepted, or mastery evidence**
 
 This directory contains the developing LES-0069 AI-security trust-boundary candidate. It is intentionally outside the canonical publication registry and cannot change learner progress or mastery.
 
@@ -8,4 +8,4 @@ The source packet uses current primary or official material from NIST, OWASP, MI
 
 The 25-file scaffold has the exact 18-section lesson order, three assessment tiers, fifteen audited references and a 31-case model. Direct lesson, assessment and reference schemas, JSON parsing, all modeled decisions, Bash syntax, the Git Bash lifecycle, unknown-artifact refusal, cleanup and ShellCheck pass.
 
-Substantive authorship, full repository regression, formal review, representative runtime evidence, independent transfer, delayed recall, publication and learner evidence remain required.
+The first ten ordered sections now contain 6,182 body words across the mental model, terminology, architecture, request path, attack classes, state ownership, evidence matrix, command decoders, decision ladder and guided lab. Direct lesson validation still passes. The final eight sections, final depth review, full repository regression, formal review, representative runtime evidence, independent transfer, delayed recall, publication and learner evidence remain required.
