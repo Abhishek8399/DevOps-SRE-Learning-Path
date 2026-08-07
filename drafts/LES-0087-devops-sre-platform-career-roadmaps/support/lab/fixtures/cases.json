@@ -1,0 +1,25 @@
+{
+  "lesson_id":"LES-0087",
+  "baseline":"truthful-versioned-roadmap",
+  "gate_groups":[
+    {"boundary":"baseline","cases":["truthful-versioned-roadmap"]},
+    {"boundary":"role-source","cases":["role-url-missing","role-date-missing","role-context-erased","expired-role-treated-current"]},
+    {"boundary":"title-level","cases":["title-proves-level","years-prove-seniority","self-rating-promotes-level","repository-count-proves-architect"]},
+    {"boundary":"evidence-provenance","cases":["claim-source-missing","artifact-owner-unknown","evidence-stale-unmarked","unknown-promoted-observed"]},
+    {"boundary":"course-credential","cases":["course-completion-equals-skill","certificate-equals-production","exam-version-missing","tutorial-called-enterprise"]},
+    {"boundary":"dependency","cases":["kubernetes-before-linux-networking","slo-before-user-operation","terraform-before-state","architecture-before-requirements"]},
+    {"boundary":"capacity","cases":["hours-exceed-week","zero-recovery-reserve","all-domains-parallel","fixed-commitment-ignored"]},
+    {"boundary":"milestone","cases":["reading-only-milestone","acceptance-owner-missing","artifact-without-explanation","deadline-overrides-evidence"]},
+    {"boundary":"failure-recovery","cases":["happy-path-only","destructive-fault-unbounded","cleanup-unproved","rollback-authority-missing"]},
+    {"boundary":"cloud-authority","cases":["aws-credential-requested","azure-credential-requested","gcp-credential-requested","provider-apply-requested"]},
+    {"boundary":"production-claim","cases":["local-lab-called-production","fixture-benchmark-generalized","simulated-incident-called-oncall","design-called-deployment"]},
+    {"boundary":"confidentiality","cases":["employer-secret-copied","customer-data-copied","private-message-copied","production-endpoint-recorded"]},
+    {"boundary":"portfolio-truth","cases":["team-work-claimed-personal","metric-denominator-missing","scope-inflated","failure-removed"]},
+    {"boundary":"assessment-authority","cases":["fixture-scores-learner","self-review-only","protected-attribute-inferred","personality-scored"]},
+    {"boundary":"hiring-prediction","cases":["roadmap-guarantees-job","score-predicts-offer","certificate-predicts-hire","company-dependence-promised"]},
+    {"boundary":"roadmap-version","cases":["old-plan-overwritten","change-trigger-missing","role-diff-unrecorded","decision-history-erased"]},
+    {"boundary":"review-independence","cases":["answer-key-exposed","learner-controls-hidden-fault","reviewer-evidence-missing","delayed-transfer-skipped"]},
+    {"boundary":"ai-boundary","cases":["ai-invents-experience","resume-secret-sent-to-ai","live-interview-assistance","generated-level-accepted"]},
+    {"boundary":"cleanup-authority","cases":["unknown-artifact-delete","wrong-owner-state","symlink-state","broad-cleanup-target"]}
+  ]
+}

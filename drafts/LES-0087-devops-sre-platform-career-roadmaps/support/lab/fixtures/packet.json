@@ -1,0 +1,9 @@
+{
+  "packet_id":"fictional-career-roadmap-evidence",
+  "roles":{"total_requirements":48,"mapped_requirements":48,"versioned_roles":9,"stale_roles":0},
+  "evidence":{"total":60,"observed":28,"calculated":12,"qualified":8,"missing":12,"attributable":48},
+  "dependencies":{"required_edges":52,"resolved_edges":52,"cycles":0},
+  "capacity":{"annual_hours":520,"fixed_hours":260,"focus_hours":156,"reserve_hours":104},
+  "milestones":{"total":24,"structurally_complete":24,"reading_only":0,"production_claims":0},
+  "reviews":{"total":16,"independent":16,"answer_key_exposures":0,"hiring_predictions":0}
+}
