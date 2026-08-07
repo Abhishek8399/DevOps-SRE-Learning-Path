@@ -1,0 +1,47 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0238",
+  "lessonId":"LES-0085",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"A checkout team has 40 delivery points available for the next iteration. Leaders request 58 points, every requester calls their work priority one, the primary engineer is holding six unrelated decisions, and an incident review action has no owner. Diagnose the leadership failure. Produce a safe first response without inventing authority, capacity, business value or employee-performance facts.",
+  "directAnswer":"The visible conflict is not solved by asking people to work harder. Demand exceeds the declared 40-point capacity by 18 points, priorities have lost ordering power, decision rights are concentrated, and one risk-reduction action has no accountable owner. First preserve four points of explicit interrupt reserve if that is the agreed operating rule, leaving 36 committed points. Ask the authorized decision owner to order outcomes using evidence such as customer harm, risk exposure, cost of delay, dependency timing and effort confidence. Record the selected work and the 18 points stopped or deferred. Assign each decision and action one accountable owner whose authority, boundaries, information, resources, checkback and escalation path are explicit. Treat point values and business impact as planning assumptions until their sources and uncertainty are reviewed.",
+  "foundation":"Technical leadership is a control system for outcomes, evidence, authority, capacity and learning. Ownership does not mean doing every task. Priority does not mean emotional importance. Delegation does not mean transferring responsibility without decision rights. A defensible leader makes constraints visible, routes decisions to the right authority, protects dissent and records what will not be done.",
+  "reasoningSteps":[
+    "Separate observed state from interpretation: 40 available, 58 requested, six held decisions and an ownerless action are facts only if their sources and windows are known.",
+    "Conserve capacity: committed work plus explicit reserve cannot exceed available capacity.",
+    "Restore priority as an ordering decision by comparing outcomes, risk, cost of delay, dependencies and confidence rather than requester seniority or volume.",
+    "Name the decision authority and escalation boundary; do not silently assume that the technical lead can accept product, people or legal risk.",
+    "Publish selected, deferred and stopped work so the organization sees the consequence of the constraint.",
+    "Move decisions to accountable owners with matching authority and a complete delegation contract.",
+    "Preserve material objections and unknowns so apparent agreement does not erase risk.",
+    "Recheck customer, reliability, delivery and team-load signals after the decision."
+  ],
+  "seniorAnswer":"I would state the constraint before offering a schedule: the fictional planning packet has 40 available points and 58 requested, so 18 points cannot enter the iteration. If the team has agreed to a four-point interrupt reserve, only 36 points may be committed; consuming the reserve is a separate risk decision. I would ask the named product or portfolio decision owner to order outcomes from a one-page evidence table: affected customer operation, harm or opportunity, deadline source, dependency, estimated effort range, confidence, reliability/security exposure and consequence of delay. The result must show 36 committed, four reserved and 18 stopped or deferred. For the six decisions, I would identify one accountable decision owner each, distinguish people who provide input from anyone with explicit veto authority, record deadline and reversibility, and delegate execution with outcome, boundary, authority, information, resources, checkback and escalation. The incident action receives an accountable owner and an effectiveness measure; completing a meeting or document is not enough. I would not claim that points equal hours, that the selected work has value 85, or that one engineer is a bottleneck because of personal weakness without evidence. The next review examines decision age, blocked time, interrupt consumption, outcome signals and load distribution.",
+  "weakAnswer":"Tell everyone that checkout is critical, assign all tasks to the strongest engineer, work overtime, and finish the incident action after the release.",
+  "whyWeak":"It accepts contradictory priorities, violates capacity conservation, creates a single point of coordination failure, hides authority and risk, postpones prevention, and converts an organizational design problem into unsustainable individual effort.",
+  "evidence":[
+    {"signal":"40 available points, 36 committed points and four reserve points","proves":"The fictional plan conserves the declared capacity and preserves ten percent reserve.","doesNotProve":"That point estimates are accurate, comparable between teams or equivalent to hours."},
+    {"signal":"58 requested points and 18 stopped points","proves":"The modeled plan makes the demand-capacity gap explicit.","doesNotProve":"Which outcomes should be selected or who has authority to stop them."},
+    {"signal":"Nine of twelve decisions close within their boundary and three are escalated with none unresolved","proves":"The fixture's decision routing accounts for all twelve decisions.","doesNotProve":"That the decisions are correct, timely or accepted by a real organization."},
+    {"signal":"Ten fictional delegation records contain all six required contract fields","proves":"The modeled records are structurally complete.","doesNotProve":"That a delegate understood the outcome, had practical access or developed capability."}
+  ],
+  "followUps":[
+    {"prompt":"Why keep reserve when demand already exceeds capacity?","answer":"Reliability work receives interrupts, incidents and discovery. If every unit is precommitted, the first surprise silently displaces work and makes the plan dishonest. Reserve size is an explicit operating decision, not a universal ten-percent rule."},
+    {"prompt":"Who decides which 18 points stop?","answer":"The person or group with the declared product, risk and budget authority. A technical lead supplies evidence, alternatives and consequences; the lead must not invent authority that belongs to product, security, legal, finance or management."},
+    {"prompt":"Does one owner mean one worker?","answer":"No. One accountable owner maintains the outcome, decision path and escalation. Many people may execute, review or advise. Requiring the owner to perform every task destroys delegation and concentrates knowledge."},
+    {"prompt":"What makes an incident action complete?","answer":"A named system change or control has an owner, due condition and observable effectiveness measure; representative evidence later shows the intended risk changed without unacceptable new harm. Activity alone is not closure."}
+  ],
+  "rubric":[
+    {"criterion":"Fact and assumption separation","points":10,"observableEvidence":"Distinguishes sourced capacity and work state from inferred value, performance or authority."},
+    {"criterion":"Capacity conservation","points":10,"observableEvidence":"Shows available, committed, reserve, requested and stopped work without over-allocation."},
+    {"criterion":"Priority decision","points":10,"observableEvidence":"Uses outcome, risk, cost of delay, dependency and confidence with a named decision owner."},
+    {"criterion":"Ownership and delegation","points":10,"observableEvidence":"Pairs one accountable owner with sufficient authority, boundaries, information, resources, checkback and escalation."},
+    {"criterion":"Safety and learning","points":10,"observableEvidence":"Preserves dissent, avoids fabricated people judgments and verifies actions by effect."}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

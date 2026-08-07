@@ -1,0 +1,56 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0239",
+  "lessonId":"LES-0085",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Using only the fictional LES-0085 packet, design and defend a technical-leadership operating system for a checkout platform. Include an outcome map, evidence ledger, decision-rights table, capacity and stop-work decision, delegation contracts, stakeholder views, psychological-safety and accountability mechanisms, feedback and mentoring plans, incident leadership, ethical boundaries, review cadence and effectiveness checks.",
+  "directAnswer":"Create one reviewable system that connects outcomes to evidence, authority, capacity, execution and learning. Define customer and reliability outcomes with source, window and uncertainty. Conserve 40 available points as 36 committed plus four reserve and show the 18 requested points not selected. Give every material decision one accountable owner, consultation path, explicit veto if any, deadline, reversibility and escalation. Delegate outcomes with boundaries and matching authority rather than tasks alone. Give stakeholder audiences different detail but the same facts. Make questions, dissent and early risk reporting safe while keeping behavior and outcomes accountable. Feedback uses observable behavior, impact, expectation and support; mentoring uses questions, bounded practice, checkbacks and fading help. Incident roles prevent freelancing and fatigue. Ethics, confidentiality and conflicts constrain speed. Close the loop with outcome, decision-flow, load, safety and learning evidence.",
+  "foundation":"Leadership without formal authority works through credible evidence, explicit decisions, coherent constraints and relationships that permit truth to travel. The system must remain safe under disagreement, urgency and unequal power. It cannot manufacture consent, employee evaluation, business authority or favorable career stories.",
+  "reasoningSteps":[
+    "Name customer, service, delivery and learning outcomes with measures, windows, owners and known limitations.",
+    "Build a claim ledger so observations, estimates, preferences, decisions and unknowns cannot silently merge.",
+    "Map each decision to one accountable owner, required consultation, explicit veto authority, deadline, reversibility and escalation.",
+    "Conserve capacity and reserve; compare requested outcomes and record both selected and stopped work.",
+    "Write delegation contracts that transfer an outcome with boundaries, authority, information, resources, checkback and escalation.",
+    "Map stakeholders by decision, impact, influence, information need and confidentiality rather than title alone.",
+    "Use one canonical fact set for operator, product, executive, security and support views.",
+    "Create dissent, feedback and mentoring practices that protect questions while retaining clear standards and consequences.",
+    "Define incident command, communication, handoff, fatigue and mutation-control rules.",
+    "Measure whether decisions, outcomes, capability, load and risk improve; revise the operating system when evidence disagrees."
+  ],
+  "seniorAnswer":"I would begin with a compact outcome-and-authority map. The fictional customer outcome, service objective, delivery constraint and risk-reduction outcome each receive a measure, observation window, source, confidence and accountable owner. A claim ledger distinguishes observed queue age and error rate from estimated cost of delay and from leadership preferences. The planning view conserves 40 points as 36 committed and four reserve; the 58 requested points are ordered by affected operation, harm/opportunity, deadline authority, dependency, risk and estimate confidence, and 18 points are explicitly stopped. A decision-rights table gives each of twelve decisions one owner, consultation group, any named veto, deadline, reversibility and escalation; the modeled result routes nine locally and three by escalation with none silently unresolved. Delegation records transfer outcomes, not errands, and contain outcome, boundary, authority, information, resources, checkback and escalation. Stakeholder views use all 52 required canonical fact links with zero fixture conflicts, while confidentiality limits detail. Team practice invites early uncertainty, records minority risks, and separates respectful challenge from freedom from accountability. Feedback describes an observation, behavior, impact, expected future behavior and offered support. Mentoring starts with questions, provides a bounded challenge and gradually removes scaffolding. During incidents, the commander owns coordination, operators own authorized actions, communication has a cadence, handoffs require acknowledgement and fatigue triggers relief. Ethical boundaries prevent customer pressure, speed or seniority from overriding harm, confidentiality or conflicts of interest. Reviews examine outcome movement, decision age, escalation quality, reserve consumption, load spread, handoff completion, repeated failure and action effectiveness. The model proves only deterministic fixture structure and arithmetic; a real organization must authorize, trial and review it.",
+  "weakAnswer":"Be a servant leader, communicate more, hold daily meetings, empower everyone to decide, and track team velocity.",
+  "whyWeak":"The advice is unactionable and internally unsafe. It supplies no outcome, authority, capacity, evidence, confidentiality, disagreement, escalation or effectiveness boundary; universal decision authority can conflict with legal, security and operational accountability, while velocity can become a misleading target.",
+  "evidence":[
+    {"signal":"The fictional plan accounts for 40 available points as 36 committed and four reserved while stopping 18 of 58 requested","proves":"Declared capacity arithmetic and a visible stop-work choice.","doesNotProve":"Estimate accuracy, relative value or organizational authorization."},
+    {"signal":"All ten delegation records contain six required fields","proves":"Structural completeness of the fixture contracts.","doesNotProve":"Understanding, trust, access, execution quality or capability growth."},
+    {"signal":"Twelve decisions equal nine closed within boundary plus three escalated and zero unresolved","proves":"Decision routing conservation in the fixture.","doesNotProve":"Decision quality, latency or stakeholder acceptance."},
+    {"signal":"Five stakeholder views contain all 52 required fact links with zero conflicts","proves":"Fixture link coverage and fact consistency.","doesNotProve":"Appropriate disclosure, comprehension or trust."},
+    {"signal":"Five responders carry 40 pages with a spread of two, maximum share of 22.5 percent and eight of eight acknowledged handoffs","proves":"The declared load and handoff arithmetic.","doesNotProve":"Wellbeing, fairness, fatigue or sustainable staffing."}
+  ],
+  "followUps":[
+    {"prompt":"How is psychological safety compatible with high standards?","answer":"Safety means people can ask, disagree, admit uncertainty and report mistakes without interpersonal punishment. Accountability means commitments, behavior and system outcomes remain visible and addressed fairly. Safety improves the evidence available for accountability; it does not remove standards."},
+    {"prompt":"When should a technical lead escalate instead of decide?","answer":"Escalate when the decision exceeds declared authority, crosses a risk or policy boundary, needs an unavailable resource owner, contains an unresolved material objection, or has irreversible impact beyond the team's mandate. Bring evidence, alternatives, recommendation and consequence of delay."},
+    {"prompt":"How do stakeholder views differ without contradicting each other?","answer":"They select different detail and consequences for different decisions while referencing one canonical fact set. An operator may need queue depth and rollback state, an executive may need user harm and decision options, but time, scope and uncertainty cannot change."},
+    {"prompt":"How do you prevent delegation from becoming abandonment?","answer":"Agree on outcome, constraints, decision authority, available information and resources, checkback timing and escalation triggers. The delegator remains accountable for the environment and responds when a boundary is reached without taking over every decision."},
+    {"prompt":"What would invalidate the operating system?","answer":"Evidence that outcomes do not improve, decisions remain slow or hidden, reserve is routinely consumed, dissent is punished, load concentrates, escalations lose context, stakeholder facts conflict, or actions recur without effectiveness. Those are redesign signals, not reasons to defend the framework."}
+  ],
+  "rubric":[
+    {"criterion":"Outcomes and evidence","points":10,"observableEvidence":"Customer, reliability, delivery and learning outcomes have sources, windows, owners, uncertainty and non-goals."},
+    {"criterion":"Decision rights","points":10,"observableEvidence":"Each material decision has one accountable owner, consultation, explicit veto, deadline, reversibility and escalation."},
+    {"criterion":"Priority and capacity","points":10,"observableEvidence":"Capacity, reserve, selected and stopped work conserve while value and risk assumptions stay visible."},
+    {"criterion":"Delegation","points":10,"observableEvidence":"Outcome, boundaries, authority, information, resources, checkback and escalation transfer coherently."},
+    {"criterion":"Team environment","points":10,"observableEvidence":"Dissent, psychological safety, accountability, feedback and mentoring have observable mechanisms."},
+    {"criterion":"Stakeholders and influence","points":10,"observableEvidence":"Audience decisions and confidentiality guide consistent fact-preserving views and objection handling."},
+    {"criterion":"Communication system","points":10,"observableEvidence":"Async records, meetings, actions, acknowledgement and handoffs have purpose, owners and closure."},
+    {"criterion":"Incident leadership","points":10,"observableEvidence":"Command, operations, communications, mutations, fatigue, handoffs and recovery are controlled."},
+    {"criterion":"Ethics and safety","points":10,"observableEvidence":"Harm, confidentiality, conflicts, authority and honest career evidence constrain action."},
+    {"criterion":"Effectiveness and defense","points":10,"observableEvidence":"Measures, limitations, review triggers and hidden-change adaptation test the system rather than celebrate activity."}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
