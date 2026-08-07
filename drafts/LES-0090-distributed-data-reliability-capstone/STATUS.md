@@ -1,6 +1,6 @@
 # LES-0090 draft status
 
-Status: **source-locked implementation-and-assessment-complete quarantined capstone; manuscript, review and publication pending**
+Status: **source-locked implementation-assessment-and-manuscript-complete quarantined capstone; review and publication pending**
 
 This quarantined directory reserves `LES-0090` / `V11-L03` / `CAP-003` for the distributed data reliability capstone. Its working route is `/book/capstones/distributed-data-reliability-capstone`, volume `11-capstones`, order 3 and domain `capstone-engineering`.
 
@@ -26,6 +26,6 @@ Thirteen Python tests, Compose parsing and the live recovery scenario pass. Exac
 
 The complete verifier then repeated three independent absent-to-absent lifecycles: duplicate/poison containment, nine-record single-partition skew plus fail/pass reconciliation, and six-record logical backup plus isolated restore/replay. It asserted expected exits 2, 4 and 75 as evidence rather than treating them as harness failures. All three scenarios passed in 214.0 seconds, and every cycle ended with zero owned containers, volumes and runtime artifacts.
 
-`ASM-0253` diagnoses a quantified hot-partition freshness/correctness incident, `ASM-0254` replaces an unsafe payment-data platform design and `ASM-0255` reserves a reviewer-owned independent transfer with a new business operation and hidden faults. All three pass the direct assessment schema; the independent record contains deliverables and evidence requirements but no model answer. The manuscript remains unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
+`ASM-0253` diagnoses a quantified hot-partition freshness/correctness incident, `ASM-0254` replaces an unsafe payment-data platform design and `ASM-0255` reserves a reviewer-owned independent transfer with a new business operation and hidden faults. All three pass the direct assessment schema; the independent record contains deliverables and evidence requirements but no model answer. The 10,427-word manuscript has one H1 and the exact eighteen canonical H2 sections, connects all three assessments and twenty references, and explains the complete bounded system from first principles through production transfer. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
 
-Publication remains blocked by the complete source lock, guarded project, three assessments, exact-structure manuscript, direct and canonical gates, representative local failure/recovery evidence, formal multidisciplinary review and reviewer-owned independent transfer.
+Publication remains blocked by formal multidisciplinary review, reviewer-owned independent transfer, representative multi-process failure-domain evidence and final promotion approval. The source lock, guarded project, three assessments, exact-structure manuscript, direct schemas and bounded local failure/recovery evidence are complete.
