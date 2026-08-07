@@ -24,6 +24,8 @@ The first retry did commit the outbox acknowledgement, but `psql` appended the `
 
 `consume` performs a bounded read from the beginning of the local topic. Every record must expose partition, offset, key and a matching payload event ID. PostgreSQL records every first-seen delivery position but creates the inbox/business effect once per event ID and payload hash. Redis is updated only after that transaction and can be rebuilt by replay. This fixture deliberately avoids the phrase “exactly-once delivery”: Kafka contains duplicates while the effect is idempotent.
 
+`inject-poison` publishes one synthetic JSON object with an unsupported event schema/type. `consume` records only its partition, offset, stable event ID, payload hash and reason code in quarantine, then continues. The raw payload is not copied into the quarantine table or logs. Quarantine is containment, not resolution: review, compatibility decision, corrected producer and governed replay still need an operator.
+
 Cleanup will remove only these fixed containers and volumes:
 
 ```text

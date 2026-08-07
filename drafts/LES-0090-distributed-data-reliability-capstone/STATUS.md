@@ -1,6 +1,6 @@
 # LES-0090 draft status
 
-Status: **source-locked implementation-active quarantined capstone; relay/consumer/analytics/recovery, assessments, manuscript, review and publication pending**
+Status: **source-locked implementation-active quarantined capstone; analytics/recovery, assessments, manuscript, review and publication pending**
 
 This quarantined directory reserves `LES-0090` / `V11-L03` / `CAP-003` for the distributed data reliability capstone. Its working route is `/book/capstones/distributed-data-reliability-capstone`, volume `11-capstones`, order 3 and domain `capstone-engineering`.
 
@@ -8,12 +8,14 @@ The planned local product follows one order from a transactional API through an 
 
 The twenty-record primary/official source lock passes the direct reference schema. The first implementation checkpoint pins PostgreSQL 18.4, Redis 8.6.5 and Apache Kafka 4.3.1 by observed Linux/amd64 repository digest. Compose validation passes. All three fixed-name services reached healthy with `network=none`, no host ports and declared CPU/memory ceilings.
 
-Five Python contract tests pass. One synthetic order created one PostgreSQL order and one atomic outbox row. An identical retry returned the same order/event identities with `replayed=true`. The same idempotency key with a changed amount raised `idempotency_conflict` and left counts at one order/one event. Descriptor-gated cleanup removed exactly three containers and two labeled volumes, and independent label queries returned no remainder.
+Ten Python contract tests pass. One synthetic order created one PostgreSQL order and one atomic outbox row. An identical retry returned the same order/event identities with `replayed=true`. The same idempotency key with a changed amount raised `idempotency_conflict` and left counts at one order/one event. Descriptor-gated cleanup removed exactly three containers and two labeled volumes, and independent label queries returned no remainder.
 
 Two corrected failures are retained: Redis initially exited because a root entrypoint could not change tmpfs ownership after capabilities were dropped, so the verified image UID/GID is now explicit; the first PostgreSQL function called a nonexistent `jsonb_object_length`, so it now counts `jsonb_object_keys` and the failed statement is known to have created no order/outbox state.
 
 The relay now has an explicit publish-before-outbox-ack interruption. One interrupted attempt plus one retry produced two Kafka records at distinct offsets with one stable event ID. The consumer recorded both delivery positions, created one inbox/effect, classified one delivery as duplicate and converged Redis after the database transaction. A full replay remains harmless and can rebuild the disposable cache.
 
-Poison quarantine, backlog/skew, analytical quality/lineage, backup/restore/replay, full verifier, assessments and manuscript remain unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
+One deliberately incompatible event was then published beside the duplicate valid records. The consumer continued, created no additional business effect and stored only its event ID, partition, offset, SHA-256 payload hash and `event_contract_invalid` reason. Direct schema evidence proved no raw-payload quarantine column exists. A second full replay reported zero new effects, two duplicate valid deliveries and the same one quarantined delivery. Final status remained one order, one fact, one inbox row, two delivery positions and one quarantine row before exact cleanup again proved zero owned containers and volumes.
+
+Backlog/skew, analytical quality/lineage, backup/restore/replay, full verifier, assessments and manuscript remain unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
 
 Publication remains blocked by the complete source lock, guarded project, three assessments, exact-structure manuscript, direct and canonical gates, representative local failure/recovery evidence, formal multidisciplinary review and reviewer-owned independent transfer.

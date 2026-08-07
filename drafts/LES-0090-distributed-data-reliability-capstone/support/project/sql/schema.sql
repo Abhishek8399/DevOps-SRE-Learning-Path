@@ -58,11 +58,14 @@ CREATE TABLE IF NOT EXISTS atlas.quarantine (
     quarantine_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     source_partition integer,
     source_offset bigint,
+    event_id text,
     raw_hash text NOT NULL,
     reason_code text NOT NULL,
     observed_at timestamptz NOT NULL,
     UNIQUE (source_partition, source_offset, raw_hash)
 );
+
+ALTER TABLE atlas.quarantine ADD COLUMN IF NOT EXISTS event_id text;
 
 CREATE OR REPLACE FUNCTION atlas.submit_order(document jsonb)
 RETURNS jsonb

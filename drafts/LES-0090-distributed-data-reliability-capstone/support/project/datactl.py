@@ -44,6 +44,15 @@ ORDER_FIELDS = {
     "customer_ref",
     "amount_cents",
 }
+EVENT_FIELDS = {
+    "schema_version",
+    "event_id",
+    "event_type",
+    "order_id",
+    "customer_ref",
+    "amount_cents",
+    "occurred_at",
+}
 ORDER_ID = re.compile(r"^ord-[a-z0-9]{8,32}$")
 IDEMPOTENCY_KEY = re.compile(r"^idem-[a-z0-9]{8,48}$")
 CUSTOMER_REF = re.compile(r"^cust-[a-z0-9]{8,32}$")
@@ -101,6 +110,33 @@ def validate_order(document: Any) -> dict[str, Any]:
         canonical_json(document).encode("ascii")
     ).hexdigest()
     return normalized
+
+
+def validate_event(document: Any) -> dict[str, Any]:
+    if not isinstance(document, dict) or set(document) != EVENT_FIELDS:
+        raise ContractError("event fields invalid")
+    if document["schema_version"] != 1:
+        raise ContractError("event schema version unsupported")
+    if document["event_type"] != "order.accepted.v1":
+        raise ContractError("event type unsupported")
+    if not isinstance(document["event_id"], str) or not EVENT_ID.fullmatch(
+        document["event_id"]
+    ):
+        raise ContractError("event identity invalid")
+    if not isinstance(document["order_id"], str) or not ORDER_ID.fullmatch(
+        document["order_id"]
+    ):
+        raise ContractError("event order identity invalid")
+    if not isinstance(document["customer_ref"], str) or not CUSTOMER_REF.fullmatch(
+        document["customer_ref"]
+    ):
+        raise ContractError("event customer reference invalid")
+    amount = document["amount_cents"]
+    if isinstance(amount, bool) or not isinstance(amount, int) or amount <= 0:
+        raise ContractError("event amount invalid")
+    if not isinstance(document["occurred_at"], str) or len(document["occurred_at"]) > 64:
+        raise ContractError("event timestamp invalid")
+    return document
 
 
 def sql_for_order(document: dict[str, Any]) -> str:
@@ -381,6 +417,26 @@ def sql_for_delivery(record: dict[str, Any]) -> str:
     )
 
 
+def quarantine_delivery(record: dict[str, Any], reason_code: str) -> None:
+    if reason_code not in {"event_contract_invalid"}:
+        raise AssertionError("unknown quarantine reason")
+    payload_hash = hashlib.sha256(
+        canonical_json(record["payload"]).encode("ascii")
+    ).hexdigest()
+    event_id = record["key"]
+    outcome = postgres(
+        "INSERT INTO atlas.quarantine("
+        "source_partition,source_offset,event_id,raw_hash,reason_code,observed_at"
+        ") VALUES ("
+        f"{record['source_partition']},{record['source_offset']},'{event_id}',"
+        f"'{payload_hash}','{reason_code}',clock_timestamp()"
+        ") ON CONFLICT (source_partition,source_offset,raw_hash) DO NOTHING "
+        "RETURNING quarantine_id;"
+    )
+    if outcome and not outcome.isdigit():
+        raise RuntimeBoundaryError("quarantine receipt is invalid")
+
+
 def update_cache(event: dict[str, Any]) -> None:
     order_id = event.get("order_id")
     if not isinstance(order_id, str) or not ORDER_ID.fullmatch(order_id):
@@ -536,7 +592,14 @@ def command_consume() -> None:
     records = kafka_records()
     new_count = 0
     duplicate_count = 0
+    quarantine_count = 0
     for record in records:
+        try:
+            validate_event(record["payload"])
+        except ContractError:
+            quarantine_delivery(record, "event_contract_invalid")
+            quarantine_count += 1
+            continue
         raw = postgres(sql_for_delivery(record))
         outcome = json.loads(raw)
         if set(outcome) != {"duplicate", "event_id", "order_id"}:
@@ -552,8 +615,25 @@ def command_consume() -> None:
         update_cache(record["payload"])
     print(
         f"consume=pass records={len(records)} new={new_count} "
-        f"duplicates={duplicate_count} cache=converged"
+        f"duplicates={duplicate_count} quarantined={quarantine_count} "
+        "cache=converged"
     )
+
+
+def command_inject_poison() -> None:
+    inspect_runtime()
+    event_id = "evt-" + ("f" * 24)
+    payload = {
+        "schema_version": 99,
+        "event_id": event_id,
+        "event_type": "order.accepted.v99",
+        "order_id": "ord-poison001",
+        "customer_ref": "cust-poison001",
+        "amount_cents": 1,
+        "occurred_at": "synthetic",
+    }
+    kafka_produce(event_id, payload)
+    print(f"inject-poison=pass event_id={event_id} expected=quarantine")
 
 
 def command_status() -> None:
@@ -639,6 +719,7 @@ def parser() -> argparse.ArgumentParser:
     relay = commands.add_parser("relay")
     relay.add_argument("--stop-after-publish", action="store_true")
     commands.add_parser("consume")
+    commands.add_parser("inject-poison")
     commands.add_parser("status")
     commands.add_parser("cleanup")
     return result
@@ -659,6 +740,8 @@ def main() -> int:
             return command_relay(stop_after_publish=arguments.stop_after_publish)
         elif arguments.command == "consume":
             command_consume()
+        elif arguments.command == "inject-poison":
+            command_inject_poison()
         elif arguments.command == "status":
             command_status()
         elif arguments.command == "cleanup":

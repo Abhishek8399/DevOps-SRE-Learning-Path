@@ -79,6 +79,21 @@ class OrderContractTests(unittest.TestCase):
     def test_malformed_delivery_line_is_rejected_by_pattern(self):
         self.assertIsNone(datactl.DELIVERY_LINE.fullmatch("message consumed"))
 
+    def test_event_contract_accepts_only_versioned_known_shape(self):
+        event = {
+            "schema_version": 1,
+            "event_id": "evt-" + "a" * 24,
+            "event_type": "order.accepted.v1",
+            "order_id": "ord-00000001",
+            "customer_ref": "cust-00000001",
+            "amount_cents": 1,
+            "occurred_at": "2026-08-07T00:00:00Z",
+        }
+        self.assertEqual(datactl.validate_event(event), event)
+        event["schema_version"] = 99
+        with self.assertRaisesRegex(datactl.ContractError, "version"):
+            datactl.validate_event(event)
+
 
 if __name__ == "__main__":
     unittest.main()
