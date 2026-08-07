@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0251",
+  "lessonId": "LES-0089",
+  "type": "guided-transfer",
+  "difficulty": "expert",
+  "prompt": "Replace this platform launch plan: give every team a shared admin kubeconfig; accept arbitrary YAML through a portal; run kubectl apply from CI; call namespaces secure multi-tenancy; set no requests because autoscaling will fix capacity; disable fail-closed policy during incidents; upgrade the only cluster in place; and count green Pods as success. Produce a safer product, architecture, delivery, SLO, upgrade, recovery and evidence plan.",
+  "directAnswer": "Expose a narrow versioned self-service contract with ownership and safe defaults; use federated tenant-scoped identity, RBAC, Pod Security, admission, quota and an enforcing network/data boundary; reconcile protected committed state through a maintained pull controller; define field ownership and exceptions; reserve capacity from measured demand; separate platform, deployment and user SLIs; use candidate-cluster or staged upgrades with compatibility and rollback gates; protect Git, control-plane and application state with distinct recovery plans; and require policy negative tests, rollout evidence, user operations and independent developer testing before adoption claims.",
+  "foundation": "A platform is a product and a set of control loops. A portal does not create authorization or reliability. Namespaces provide scope, while isolation requires identity, policy, network, compute, storage and control-plane protections. GitOps needs automatic pull and continuous reconciliation. Autoscaling needs requests, metrics, capacity and stable behavior. Upgrade and restore are state transitions with compatibility and loss boundaries.",
+  "reasoningSteps": [
+    "Interview representative teams and define the repeated job, supported workload and explicit non-goals.",
+    "Version a small platform API and generate reviewable resources with secure, reliable defaults.",
+    "Use short-lived identity and namespace-scoped RBAC; deny secrets, role escalation and cross-tenant writes by default.",
+    "Layer Pod Security, CEL or a maintained policy engine, quota, limit defaults, network enforcement and storage isolation.",
+    "Protect source and reconcile immutable reviewed revisions with a controller whose health and field ownership are observable.",
+    "Build once, record provenance, scan/sign according to policy and promote the same artifact identity.",
+    "Define platform API, deployment and user-operation SLIs with eligibility, objectives and actionable alerts.",
+    "Model steady, peak, failure and rollout capacity; test tenant pressure and control-plane saturation.",
+    "Stage upgrades by component and failure domain; inspect skew/deprecation and keep rollback or roll-forward windows.",
+    "Separate Git reconstruction, etcd recovery, volume/database restore and external-resource reconciliation.",
+    "Test the golden path with independent users and measure safe completion, rejection comprehension and support demand.",
+    "Publish ownership, support tiers, exceptions, deprecation, incident command and truthful production gaps."
+  ],
+  "seniorAnswer": "I would launch a thin supported product rather than a portal-shaped cluster-admin proxy. Two representative teams would validate the first service contract. Requests become deterministic declarations with owner, lifecycle, image identity, resources, probes and recovery links. Federated identities receive namespace Roles, while admission, restricted Pod posture, quota, enforcing NetworkPolicy and storage rules protect independent dimensions. Protected Git is the source and a maintained pull controller reconciles it; controller credentials, source outage, prune and field ownership receive tests. Platform API success, deployment convergence and user success are separate SLIs. Requests come from measurements because scheduling and autoscaling both depend on them; the capacity model includes failover and surge. Upgrades begin with API/dependency inventory, target validation and a candidate slice or cluster, then bounded traffic and abort conditions. Git reconstructs declarations, etcd restores API state and application backups restore data; none substitutes for another. Adoption, task success, rollback time, rejection quality and support demand decide roadmap value. Shared admin credentials, arbitrary YAML and fail-open incident policy are rejected because they erase ownership exactly when risk is highest.",
+  "weakAnswer": "Install Backstage, let CI deploy Helm charts, add an HPA and monitor Pod status. Admin access will help teams move fast until policies are mature.",
+  "whyWeak": "It starts with tools instead of user and risk contracts, centralizes broad credentials, confuses push deployment with GitOps, ignores tenant and data boundaries, gives autoscaling no resource model, has no SLI or recovery semantics and makes emergency operation less safe.",
+  "evidence": [
+    {
+      "signal": "A tenant identity can create supported Deployments in its namespace but cannot read Secrets or create in another tenant.",
+      "proves": "Those three RBAC decisions implement the tested least-privilege boundary.",
+      "doesNotProve": "Network, storage, node or control-plane isolation."
+    },
+    {
+      "signal": "Unsafe Deployment, privileged Pod and over-quota Pod receive three mechanism-specific server denials.",
+      "proves": "CEL, Pod Security and ResourceQuota independently reject those fixtures.",
+      "doesNotProve": "Every policy bypass or runtime behavior is controlled."
+    },
+    {
+      "signal": "Replica drift is observed and the committed desired state restores two replicas.",
+      "proves": "The bounded reconciler owns and corrects that field from the recorded commit.",
+      "doesNotProve": "Remote-source pull, controller HA, prune safety or Flux/Argo equivalence."
+    },
+    {
+      "signal": "A bad image cannot become ready, rollback restores image 1.0.0 and the user probe passes.",
+      "proves": "That stateless workload rollback is viable in the tested compatibility window.",
+      "doesNotProve": "Stateful schema or cluster-component rollback."
+    },
+    {
+      "signal": "An independent developer completes the unchanged task with safe cleanup and explains rejection ownership.",
+      "proves": "That participant can use and reason about the current golden path.",
+      "doesNotProve": "Fleet-wide usability, adoption or mastery."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "When does a namespace become an adequate tenant boundary?",
+      "answer": "Only when combined with identity/RBAC, admission, network, compute quota, storage, secret and control-plane protections appropriate to the threat model. A namespace alone is scope, not strong isolation."
+    },
+    {
+      "prompt": "Why not let CI run kubectl apply?",
+      "answer": "It can deploy successfully, but it pushes only when CI runs and does not continuously observe/correct drift. GitOps also requires declarative, versioned, automatically pulled and continuously reconciled state."
+    },
+    {
+      "prompt": "Why are requests needed if limits exist?",
+      "answer": "The scheduler and many autoscaling/capacity decisions use requests. Limits bound use but do not tell the scheduler what capacity to reserve."
+    },
+    {
+      "prompt": "Should policy fail open during an incident?",
+      "answer": "Not as a default. Design recovery identities and pre-reviewed break-glass procedures. A fail-open switch can admit the exact unsafe change that makes an incident irreversible."
+    },
+    {
+      "prompt": "What would make you buy rather than build a portal?",
+      "answer": "Stable required capabilities, integration fit, security/support quality and lower lifecycle cost. A custom portal is justified only by differentiated user needs the maintained products cannot meet."
+    },
+    {
+      "prompt": "How do you prove the platform reduces cognitive load?",
+      "answer": "Use representative task studies, safe completion rate, time, errors, support contacts and comprehension before/after an unchanged workflow—not component count or subjective launch claims."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Product discovery and scope",
+      "points": 10,
+      "observableEvidence": "Defines users, jobs, non-goals, support tiers and measurable adoption outcomes."
+    },
+    {
+      "criterion": "Platform API and golden path",
+      "points": 10,
+      "observableEvidence": "Uses a versioned narrow contract, deterministic output, safe defaults and governed escape hatch."
+    },
+    {
+      "criterion": "Identity and tenancy",
+      "points": 10,
+      "observableEvidence": "Designs short-lived identity, scoped RBAC and multiple independent isolation layers."
+    },
+    {
+      "criterion": "Policy and supply chain",
+      "points": 10,
+      "observableEvidence": "Includes admission, negative tests, artifact identity, provenance and exception governance."
+    },
+    {
+      "criterion": "GitOps and ownership",
+      "points": 10,
+      "observableEvidence": "Meets four GitOps principles and defines controller health, field ownership, prune and source failure."
+    },
+    {
+      "criterion": "Reliability objectives",
+      "points": 10,
+      "observableEvidence": "Separates platform, deployment and user SLIs with eligibility, objectives and actions."
+    },
+    {
+      "criterion": "Capacity and performance",
+      "points": 10,
+      "observableEvidence": "Models requests, limits, peak, failure and rollout headroom and validates with user outcomes."
+    },
+    {
+      "criterion": "Upgrade and release",
+      "points": 10,
+      "observableEvidence": "Inventories compatibility, stages change, defines aborts and distinguishes rollback from roll forward."
+    },
+    {
+      "criterion": "State and disaster recovery",
+      "points": 10,
+      "observableEvidence": "Separates Git, etcd, application data and external resources with tested RPO/RTO boundaries."
+    },
+    {
+      "criterion": "Operations and truthful evidence",
+      "points": 10,
+      "observableEvidence": "Includes observability, incident ownership, independent user test, cost, gaps and no unsupported claims."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

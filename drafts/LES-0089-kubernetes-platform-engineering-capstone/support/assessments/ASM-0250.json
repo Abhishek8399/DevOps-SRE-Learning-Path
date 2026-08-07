@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0250",
+  "lessonId": "LES-0089",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A developer says the platform is down because a new team-a Deployment is rejected. The kind nodes are Ready, the existing payments-api still returns HTTP 200, kubectl auth can-i says the developer may create Deployments in team-a, the API response says platform.atlas.dev/owner is required, and a proposed fix is to grant cluster-admin and disable admission. Diagnose the boundary, define the safe correction and state what the evidence proves or does not prove.",
+  "directAnswer": "The platform and existing data path are not generally down. Authentication and RBAC allowed this request to reach native validating admission, where the CEL workload contract rejected missing ownership metadata. Preserve the rejection, compare the request with the versioned ServiceRequest/golden-path output, add the required owner and other controls at the source, render and review, then retry with the same scoped identity. Do not grant cluster-admin or disable policy: neither fixes the object contract, and both expand blast radius. Validate admission, rollout and a user operation separately.",
+  "foundation": "Kubernetes API requests pass through identity, authorization and admission before storage. Authorization answers whether the caller may ask; admission answers whether an allowed object satisfies policy. A rejected new object does not change an already running Deployment. Node Ready and an HTTP 200 are different scopes of evidence.",
+  "reasoningSteps": [
+    "Name the failed operation: create one team-a Deployment, not operate every platform service.",
+    "Preserve the full API status, caller identity, verb, resource, namespace and desired Git revision.",
+    "Use the RBAC yes decision to place the request after authorization, not to declare the whole request valid.",
+    "Map the owner message to atlas-workload-contract CEL validation.",
+    "Check the ServiceRequest and generated manifest rather than patching live state first.",
+    "Confirm owner, service labels, replicas, image version, resources and security context.",
+    "Regenerate deterministic desired state and review its semantic diff.",
+    "Commit the request and generated state together, then reconcile the full commit identity.",
+    "Require API acceptance, Deployment availability and a representative user probe as separate gates.",
+    "Retain least privilege and policy; document a time-bounded exception only for a legitimate unsupported need.",
+    "Check policy rejection metrics and message quality so safe denial does not become support toil.",
+    "State remaining uncertainty: other tenants, CNI enforcement, production identity and fleet capacity were not tested."
+  ],
+  "seniorAnswer": "I would classify this as a safe admission rejection for one change. The existing HTTP 200 shows the current service path works at that instant; Ready nodes show kubelet heartbeats, and the RBAC result shows the scoped identity is authorized for the verb. The explicit owner message localizes rejection to the CEL admission contract before persistence. I would keep the policy enabled, inspect the exact committed request and generator version, correct ownership at the ServiceRequest boundary, regenerate, review and reconcile a full commit. Then I would confirm the API accepted the object, the expected ReplicaSet became Available and the user operation works. Granting cluster-admin does not bypass validating admission and needlessly enables cluster-wide mutation. Disabling policy turns a clear contract error into unsafe fleet drift. I would also measure whether repeated owner rejections indicate poor template defaults or documentation, while preserving the security invariant.",
+  "weakAnswer": "The cluster is blocking deployments, so make the developer cluster-admin, remove the policy and restart the API server.",
+  "whyWeak": "It confuses authorization with admission, expands privilege, removes a working guardrail, risks existing workloads, destroys evidence, has no Git/source correction and never validates the user operation.",
+  "evidence": [
+    {
+      "signal": "kubectl auth can-i returns yes for create Deployments in team-a.",
+      "proves": "The authorizer permits that identity, verb, resource and namespace.",
+      "doesNotProve": "Admission will accept the object or the rollout will succeed."
+    },
+    {
+      "signal": "The API response names the missing owner label from atlas-workload-contract.",
+      "proves": "The request reached and failed that validation expression.",
+      "doesNotProve": "Every other policy expression or external policy system is healthy."
+    },
+    {
+      "signal": "Existing payments-api returns 200 through loopback NodePort.",
+      "proves": "That bounded request path served successfully at that time.",
+      "doesNotProve": "New deployment admission, every operation or a time-window SLO."
+    },
+    {
+      "signal": "Regenerated committed state is admitted and reaches Available.",
+      "proves": "The corrected revision satisfied API policy and Deployment availability in this cluster.",
+      "doesNotProve": "Production capacity, CNI isolation or long-term reliability."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why does cluster-admin not fix this?",
+      "answer": "Cluster-admin changes authorization. A validating admission policy can still deny an authorized request, while the broader role creates unrelated cluster-wide risk."
+    },
+    {
+      "prompt": "What if the owner requirement is wrong for a legitimate service?",
+      "answer": "Use the documented exception/product process with owner, risk, expiry and review, or version the contract. Do not bypass live policy through an undocumented edit."
+    },
+    {
+      "prompt": "Why check the generated manifest instead of editing it directly?",
+      "answer": "The request and generator own desired state. A live or generated-file-only edit creates drift and will be lost or overwritten at the next reconciliation."
+    },
+    {
+      "prompt": "Which result demonstrates least privilege?",
+      "answer": "The same identity can create supported workload resources in team-a while secret access and team-b deployment creation remain denied."
+    },
+    {
+      "prompt": "When is a policy rejection an availability incident?",
+      "answer": "When valid supported operations are broadly blocked, the policy/controller path is unhealthy or the rejection prevents urgent recovery. One correct unsafe-request denial is control success."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Scope and boundary localization",
+      "points": 10,
+      "observableEvidence": "Names the single failed create and places it after RBAC at CEL admission."
+    },
+    {
+      "criterion": "Safe correction",
+      "points": 10,
+      "observableEvidence": "Corrects source intent, regenerates and reviews instead of disabling controls."
+    },
+    {
+      "criterion": "Least privilege",
+      "points": 10,
+      "observableEvidence": "Rejects cluster-admin and preserves tested tenant and secret denials."
+    },
+    {
+      "criterion": "Validation ladder",
+      "points": 10,
+      "observableEvidence": "Separates admission, rollout, endpoints and user-operation evidence."
+    },
+    {
+      "criterion": "Truthful conclusions",
+      "points": 10,
+      "observableEvidence": "States what Ready, RBAC, policy message and HTTP 200 do and do not prove."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

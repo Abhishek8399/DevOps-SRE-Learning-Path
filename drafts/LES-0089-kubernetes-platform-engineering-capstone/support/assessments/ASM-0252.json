@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0252",
+  "lessonId": "LES-0089",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "From a fresh clone, independently design, build, operate and defend a local Kubernetes developer platform for a reviewer-selected second service and tenant scenario. The reviewer changes at least one requirement and injects at least two unfamiliar failures across request validation, identity, admission, quota, scheduling, reconciliation, rollout, networking or recovery. Produce a time-stamped evidence packet. Do not use the example service name or memorize the guided answer; explain each boundary, preserve evidence, make reversible decisions and state all proof limits.",
+  "deliverables": [
+    "A product brief naming target users, their job, non-goals, support tiers, success measures and the reviewer-selected change.",
+    "A source and environment receipt with full Git revision, generator identity, tool versions, kind checksum, node-image digest, workload image identity and project kubeconfig boundary.",
+    "A new versioned ServiceRequest plus deterministic generated desired state and catalog record for the reviewer-selected service.",
+    "An architecture map from developer input through Git, reconciliation, API access, admission, controllers, nodes, Service and user operation.",
+    "A tenant threat model covering identity, RBAC, admission, network, compute, storage, secrets, supply chain, cleanup and residual host risk.",
+    "A fresh-clone transcript proving static checks, tests, cluster creation, policy bootstrap, image loading, reconciliation and exact cleanup.",
+    "At least four independent allow/deny decisions including same-tenant work, cross-tenant denial, secret denial and unsafe-workload denial.",
+    "A field-ownership and drift receipt containing immutable source identity, actual mutation, reconciliation result and conflict analysis.",
+    "A bounded failed release with compatibility decision, rollback or roll-forward action, user validation and observation window.",
+    "An SLI packet defining eligible events, objective, exclusions, availability, latency percentile, error-budget interpretation and local claim boundary.",
+    "A recovery exercise selected by the reviewer, separating declared-state reconstruction, control-plane restore and application-data restore.",
+    "A production-readiness review, cost/capacity model, upgrade plan, usability-test result and ten-minute staff-level design defense."
+  ],
+  "evidenceRequirements": [
+    "The reviewer chooses the altered requirement and hidden failures after the learner starts; no answer key or guided service copy is provided.",
+    "Every command records timestamp, target kubeconfig/context, exit status and relevant immutable identities.",
+    "All cluster commands use the project kubeconfig explicitly; touching a default cloud or production context is a critical safety failure.",
+    "Each causal claim has reinforcing evidence or is labeled a hypothesis; at least one plausible hypothesis must be falsified.",
+    "Policy proof includes mechanism-specific negative responses, not merely the presence of policy objects.",
+    "GitOps proof identifies the commit, source path, desired hash, reconciliation owner and observed drift; a CI push alone is insufficient.",
+    "Every mutation states expected effect, blast radius, abort and recovery before execution.",
+    "The load window is bounded and loopback-only; measured latency or throughput is not represented as production capacity.",
+    "Recovery distinguishes Git reconstruction, etcd/API state and application data; no in-place data overwrite is permitted.",
+    "Upgrade claims include version skew, deprecated APIs, add-on compatibility, state, staged exposure and a rollback or roll-forward boundary.",
+    "The usability result comes from an independent participant or is explicitly marked planned rather than fabricated.",
+    "Cleanup proves the named cluster, project state and project workload image are absent without broad prune or unrelated deletion.",
+    "No token, client key, password, private key, real customer data or unredacted sensitive value appears in evidence.",
+    "The reviewer signs each rubric criterion with artifact references; self-report or generated narrative alone is insufficient."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Product judgment",
+      "points": 10,
+      "observableEvidence": "Uses representative user evidence to scope a coherent supported path, non-goals and measurable outcomes."
+    },
+    {
+      "criterion": "Reproducibility and identity",
+      "points": 10,
+      "observableEvidence": "Fresh clone reproduces the candidate from recorded source, tool and artifact identities without hidden state."
+    },
+    {
+      "criterion": "Platform API and developer experience",
+      "points": 10,
+      "observableEvidence": "Produces a safe versioned contract, understandable failures, deterministic output, catalog and governed exception path."
+    },
+    {
+      "criterion": "Kubernetes systems reasoning",
+      "points": 10,
+      "observableEvidence": "Correctly traces API, admission, controller, scheduler, kubelet, network and readiness ownership for unfamiliar faults."
+    },
+    {
+      "criterion": "Security and multi-tenancy",
+      "points": 10,
+      "observableEvidence": "Proves least privilege and independent policy denials, explains unproven boundaries and avoids secret exposure."
+    },
+    {
+      "criterion": "GitOps and delivery",
+      "points": 10,
+      "observableEvidence": "Reconciles immutable source, handles field conflicts, releases progressively and recovers a failed candidate safely."
+    },
+    {
+      "criterion": "SRE and capacity",
+      "points": 10,
+      "observableEvidence": "Defines correct SLIs/error budget, interprets bounded measurements and models steady, surge and failure capacity."
+    },
+    {
+      "criterion": "Upgrade and recovery",
+      "points": 10,
+      "observableEvidence": "Handles version compatibility and separates executable rollback, declarative reconstruction, control-plane and data recovery."
+    },
+    {
+      "criterion": "Incident leadership",
+      "points": 10,
+      "observableEvidence": "Scopes impact, preserves evidence, falsifies a hypothesis, communicates risk and validates the user path."
+    },
+    {
+      "criterion": "Defense and truthful limits",
+      "points": 10,
+      "observableEvidence": "Defends trade-offs, cost, residual risks and production blockers without converting local evidence into mastery or production claims."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}
