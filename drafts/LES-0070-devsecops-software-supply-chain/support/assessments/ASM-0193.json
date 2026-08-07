@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0193",
+  "lessonId": "LES-0070",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A release pipeline builds registry.example/payments:2026.08.07, scans that tag, generates an SBOM from package-lock.json, signs the image, and deploys the same tag. Cosign says the signature is valid. Two hours later the tag points to another digest, provenance subject names the original digest, and the cluster runs both digests. Explain whether the release is trustworthy, the first safe action, the failed boundaries, the evidence you need, and the durable redesign.",
+  "directAnswer": "The release is not trustworthy as one coherent object because a mutable tag was used across scan, evidence and deployment; the cluster contains at least two content identities, and only one matches provenance. Freeze promotion and further rollout, resolve and record every artifact/runtime digest, deny the unexpected digest, preserve tag mutation, registry, signature, provenance, admission and workload evidence, then scope which digest runs where. Restore only by verifying authenticated SBOM/provenance/signature and policy for one immutable digest, promoting and admitting that digest, validating the user path and proving the unexpected digest absent.",
+  "foundation": "A tag is a mutable pointer. A digest identifies content in the artifact scheme. A valid signature proves authentication for the signed object under the verifier's trust model; it does not prove the tag still selects that object or that every running object has matching provenance. Every evidence statement must name the candidate digest, and the consumer must authorize the signer, builder and source.",
+  "reasoningSteps": [
+    "Stop new promotion and rollout so mutable state does not expand the blast radius.",
+    "Resolve the current tag, original build output, signature payload, provenance subject, SBOM subject, promotion record, workload declarations and runtime imageIDs into explicit repository/digest identities.",
+    "Classify the known-good candidate only after authentication and subject matching; quarantine or deny the unexplained digest even if the tag is business-approved.",
+    "Preserve registry tag history, push/delete events, workflow run, builder identity, evidence descriptors, verifier output, admission records, Kubernetes audit and workload/node status.",
+    "Determine whether the second digest came from legitimate concurrent rollout, tag mutation, compromised publication, registry substitution, admission bypass or stale runtime.",
+    "Check the signature's exact signed subject plus certificate/key identity and issuer, then evaluate whether that identity is authorized for payments release.",
+    "Check authenticated provenance subject, source repository/commit, builder/build type, parameters and materials against consumer expectations.",
+    "Validate an artifact-level SBOM for the selected digest; package-lock inventory alone does not include the final base image or prove artifact content.",
+    "Rebuild on trusted infrastructure if any production boundary is uncertain; issue a new digest and new evidence rather than editing signed records.",
+    "Promote and deploy by digest, verify admission decision and runtime imageID, run the user SLI, and query inventory for absence of the rejected digest.",
+    "Prevent recurrence with digest-only promotion, subject verification, protected registry mutation, independent consumer policy, admission enforcement, runtime inventory and revocation exercises."
+  ],
+  "seniorAnswer": "I would declare an artifact-identity and evidence-binding incident. I would freeze promotion, preserve registry and pipeline state, enumerate all candidate and runtime digests, and immediately prevent additional use of the unexplained digest. The green scan and valid signature are bounded facts: the scan used a mutable selector, the SBOM reflects source intent rather than final content, and signature validity says nothing about the second digest unless its signed subject and signer authorization match. I would authenticate and subject-match provenance and SBOM for each digest, verify source/builder/material expectations, establish how the tag moved and which admission path allowed both versions, then rebuild from trusted roots if uncertainty remains. Recovery is one accepted digest with authenticated evidence, recorded policy decision, digest-pinned deployment, matching runtime imageID, healthy user journey and proof that the denied digest is absent. The design changes to build once, publish by digest, store subject-bound evidence, verify independently at promotion/admission, protect registry mutation and maintain digest-to-workload inventory.",
+  "weakAnswer": "The image is signed, so redeploy the tag and rerun the scanner. Kubernetes will pull the latest safe image.",
+  "whyWeak": "It treats a mutable pointer as identity, assumes a signature applies to whatever the tag selects, expands the blast radius, ignores the mismatched provenance and two runtime digests, preserves no evidence and offers no revocation or absence proof.",
+  "evidence": [
+    {"signal": "Registry manifest descriptors and tag mutation audit", "proves": "Which digest the tag selected at observed times and which identities mutated it", "doesNotProve": "That either artifact is safe"},
+    {"signal": "Signature payload, certificate/key identity, issuer and verification result", "proves": "Which object or statement authenticated under selected trust roots", "doesNotProve": "Signer authorization or artifact correctness"},
+    {"signal": "Authenticated provenance subject, source, builder and materials", "proves": "Declared trusted production history for the matching subject", "doesNotProve": "Unknown-vulnerability absence"},
+    {"signal": "Validated artifact-level SBOM and scan coverage/data time", "proves": "Observed inventory and known matches for that digest at that time", "doesNotProve": "Completeness, reachability or future safety"},
+    {"signal": "Admission receipt, workload spec and runtime imageID", "proves": "Policy decision, declared reference and reported runtime content", "doesNotProve": "User success or every historical instance"},
+    {"signal": "Synthetic transaction plus old-digest inventory query", "proves": "Tested recovery of the user path and observed absence in inventory scope", "doesNotProve": "Uninstrumented copies do not exist"}
+  ],
+  "followUps": [
+    {"prompt": "Why is a source-generated SBOM insufficient?", "answer": "It describes dependency intent or source resolution but can miss base-image packages, vendored files, generated output, copied binaries and build-stage changes. Preserve it, but catalog the final immutable artifact and document blind spots."},
+    {"prompt": "Could both digests be legitimate?", "answer": "Yes, for a controlled rollout, but legitimacy requires an explicit release set, matching evidence and policy for each digest, rollout ownership and runtime observation. A shared mutable tag alone cannot establish that."},
+    {"prompt": "What if admission is down during recovery?", "answer": "Use the predesigned risk-tier failure policy and narrow audited break-glass authority. Prefer an authenticated cached decision for an already accepted digest; never globally disable verification or deploy an unknown tag."}
+  ],
+  "rubric": [
+    {"criterion": "Containment and immutable identity", "points": 10, "observableEvidence": "Freezes rollout, enumerates digests and denies unexplained content"},
+    {"criterion": "Claim separation", "points": 10, "observableEvidence": "Separates tag, SBOM, scan, provenance, signature and policy meanings"},
+    {"criterion": "Evidence and root-cause path", "points": 10, "observableEvidence": "Preserves producer, registry, verifier, admission and runtime evidence"},
+    {"criterion": "Recovery proof", "points": 10, "observableEvidence": "Uses trusted rebuild, digest deployment, user verification and absence proof"},
+    {"criterion": "Prevention design", "points": 10, "observableEvidence": "Adds subject-bound evidence, consumer verification, admission, inventory and revocation"}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

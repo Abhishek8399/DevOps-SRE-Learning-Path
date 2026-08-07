@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0194",
+  "lessonId": "LES-0070",
+  "type": "production",
+  "difficulty": "expert",
+  "prompt": "At 09:20 a critical advisory reports credential theft in an install script for transitive package telemetry-helper 3.7.4. Your organization has 420 repositories, persistent self-hosted runners, a shared package cache, long-lived cloud credentials in release jobs, partial SBOM coverage, and six Kubernetes clusters. Some builds used 3.7.4 during the last 12 days. Design and lead containment, evidence preservation, scoping, service continuity, recovery, communication and prevention. State uncertainties and what would justify restoring releases.",
+  "directAnswer": "Treat it as potential build-environment credential compromise and artifact-integrity incident, not merely a runtime CVE. Freeze affected resolution and privileged release jobs, block the version at controlled mirrors, isolate runner pools/cache, revoke or rotate exposed long-lived credentials, preserve dependency, process, egress, runner, cache, build, registry and deployment evidence, and deny artifacts produced within the scoped exposure until verified. Join manifest/lock/cache/download/build records and SBOMs to artifact digests, then runtime inventory to clusters/workloads/owners. Restore critical services with previously accepted unaffected digests where safe; rebuild reviewed commits with an approved dependency on clean ephemeral builders using new short-lived identities; generate subject-bound SBOM/provenance/signatures, enforce policy, deploy new digests, verify user SLIs and prove affected digests absent. Reopen releases in stages only after containment, credential, builder, dependency-source, evidence, admission and recovery tests pass.",
+  "foundation": "Install scripts execute in developer or CI context and can access runner files, environment variables, caches, credentials and network. The first risk is not whether the application calls the package at runtime; it is what the package installer could do during the build. Persistent runners and shared caches extend compromise across jobs, and long-lived credentials increase impact.",
+  "reasoningSteps": [
+    "Declare incident roles and a shared timeline; assign security/build-platform, package-mirror, identity, registry, cluster, application and communication owners.",
+    "Freeze new fetches of 3.7.4 and affected privileged release jobs; avoid destroying runners or caches before forensic capture.",
+    "Block the exact package/version/hash at approved mirrors while preventing uncontrolled public fallback or dependency confusion.",
+    "Quarantine exposed runner pools and shared cache; stop scheduling and snapshot/preserve under the incident evidence policy.",
+    "Identify credentials available to affected install steps and revoke/rotate by exposure priority, including cloud, registry, signing, source and package tokens.",
+    "Preserve manifests/locks, resolver/version/config, mirror/download hashes, cache keys/content, lifecycle logs, processes, filesystem changes, egress/DNS, workflow/run and runner identity.",
+    "Enumerate every job that resolved or installed 3.7.4, including transitive and platform-specific resolution; distinguish fetched, installed, script-executed and merely declared.",
+    "Map affected jobs to artifact digests and evidence; distrust self-reported green results from compromised runners.",
+    "Join artifact digests to promotion/admission records and runtime inventory across six clusters; identify user journeys and critical assets.",
+    "Maintain service using previously accepted unaffected digests or controlled isolation where possible; do not rebuild on quarantined infrastructure.",
+    "Establish trusted roots: reviewed source commits, approved dependency replacement, clean pinned runner image, isolated ephemeral execution, constrained egress and fresh short-lived identities.",
+    "Rebuild, then generate artifact-level SBOM and trusted build provenance; authenticate signatures and match every subject/source/builder/material against policy.",
+    "Canary replacement digests, observe admission and runtime imageIDs, run synthetics and service SLIs, then expand while monitoring credential misuse and egress.",
+    "Query inventory for affected digests/package identities, explain justified exceptions, and preserve residual uncertainty rather than declaring universal absence.",
+    "Restore releases by risk tier after independent containment and evidence gates pass; keep enhanced monitoring and a rollback path.",
+    "Prevent recurrence using ephemeral runners, trust-separated caches, no package scripts where unnecessary, short-lived identity, egress policy, frozen resolution, mirror/source controls, complete evidence and revocation rehearsals."
+  ],
+  "seniorAnswer": "I would lead this as a possible CI execution and credential-compromise incident. At 09:20 I would freeze the affected resolver path and privileged releases, block telemetry-helper 3.7.4 at controlled mirrors, stop scheduling on persistent runners, preserve rather than wipe their state, and begin credential revocation based on which jobs exposed which authority. I would maintain two parallel graphs: the exposure graph from repository/lock/resolver through download/cache/install/run/credential/egress, and the artifact graph from build run through digest/evidence/promotion to current workload. Partial SBOM coverage means I cannot use SBOM absence as clearance, so I would combine lock history, cache/mirror logs, build telemetry and artifact inspection. Compromised-runner results are untrusted. Critical services may remain on previously accepted unaffected digests, but no affected commit is rebuilt until fresh ephemeral builders, restricted egress, approved dependency material and new short-lived identities exist. Each replacement gets artifact SBOM, platform-issued provenance, constrained signer verification, policy decision, digest admission, runtime identity and user-SLI proof. I would communicate known facts, uncertainty, decisions and next update time. Release restoration is staged by risk only after version blocking, runner containment, credential rotation, affected-artifact denylisting, clean-build evidence, admission and rollback tests pass. Long term I would eliminate persistent privileged runners and long-lived release secrets, separate cache trust, enforce frozen sources, improve artifact-to-runtime inventory and rehearse signer/builder revocation.",
+  "weakAnswer": "Upgrade telemetry-helper in every repository, clear the shared cache, restart the runners, rotate the main cloud password and resume after the vulnerability scanner is green.",
+  "whyWeak": "It destroys evidence, may execute the malicious installer again, cannot scope transitive/platform resolution or artifact descendants, rotates an arbitrary credential rather than exposed authority, trusts compromised-runner output, ignores runtime digests and restores releases without containment or recovery proof.",
+  "evidence": [
+    {"signal": "Manifest/lock/resolver/mirror/download records", "proves": "Which repositories and jobs selected or fetched the component under observed coverage", "doesNotProve": "Install script execution or credential theft"},
+    {"signal": "Runner process, filesystem, cache, environment-access and egress evidence", "proves": "Observed build-environment behavior and potential authority paths", "doesNotProve": "Activity outside retention or instrumentation"},
+    {"signal": "Identity-provider, cloud, registry, source and signing audit", "proves": "Observed use of credentials and identities", "doesNotProve": "No offline copied secret exists"},
+    {"signal": "Build run to artifact digest and evidence mapping", "proves": "Which outputs descend from scoped runs", "doesNotProve": "Outputs from missing/untrusted build records"},
+    {"signal": "Admission and runtime digest inventory across clusters", "proves": "Observed deployed content identities and owners", "doesNotProve": "Disconnected/uninventoried environments"},
+    {"signal": "Clean-builder provenance, SBOM, signature and policy receipts", "proves": "Replacement artifact met declared build/evidence policy", "doesNotProve": "Absence of every malicious behavior"},
+    {"signal": "Canary user SLI and old-digest query", "proves": "Tested service recovery and observed replacement scope", "doesNotProve": "Future reliability or universal absence"}
+  ],
+  "followUps": [
+    {"prompt": "Why not clear the cache immediately?", "answer": "It may contain the malicious bytes, timestamps and cross-job evidence needed to scope impact. Quarantine it first. After evidence capture, rebuild a new cache from approved sources rather than returning unknown content to service."},
+    {"prompt": "How do you prioritize credential rotation?", "answer": "Map credentials actually accessible to affected jobs, their lifetime, permissions, downstream use and observed misuse. Immediately revoke high-impact release/signing/cloud authority, then broaden based on uncertainty; do not wait for proof of theft."},
+    {"prompt": "What if a service cannot rebuild quickly?", "answer": "Prefer a previously accepted unaffected digest or isolate/limit the affected path. A time-bound risk exception requires owner, exact digest/environment, compensating controls, telemetry and expiry; it cannot be a global scanner suppression."},
+    {"prompt": "When is the incident resolved?", "answer": "When affected authority and artifacts are contained, trusted release capability is restored, replacement digests serve correctly, affected deployed identities are absent or explicitly owned, monitoring is stable, stakeholders agree on residual risk, and prevention actions have owners and verification plans."}
+  ],
+  "rubric": [
+    {"criterion": "Incident command and safety", "points": 10, "observableEvidence": "Creates roles, freezes unsafe activity and avoids evidence destruction"},
+    {"criterion": "Dependency/build mental model", "points": 10, "observableEvidence": "Recognizes install-time execution, persistence, cache and credential risks"},
+    {"criterion": "Evidence preservation", "points": 10, "observableEvidence": "Captures resolver, mirror, runner, identity, build and egress evidence"},
+    {"criterion": "Scoping graph", "points": 10, "observableEvidence": "Maps repositories to jobs, artifacts, deployments, owners and user paths"},
+    {"criterion": "Credential and trust containment", "points": 10, "observableEvidence": "Revokes exposed authority, blocks versions/digests and isolates infrastructure"},
+    {"criterion": "Service continuity", "points": 10, "observableEvidence": "Uses known unaffected artifacts and explicit risk-tier decisions"},
+    {"criterion": "Trusted rebuild and verification", "points": 10, "observableEvidence": "Uses clean builders/materials, subject-bound evidence and consumer policy"},
+    {"criterion": "Runtime recovery proof", "points": 10, "observableEvidence": "Canaries, checks image identity/user SLI and proves old-digest absence"},
+    {"criterion": "Communication and uncertainty", "points": 10, "observableEvidence": "Separates known, inferred and unknown with decisions and update cadence"},
+    {"criterion": "Prevention and verification", "points": 10, "observableEvidence": "Addresses runner, cache, identity, egress, source, evidence and exercises"}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}
