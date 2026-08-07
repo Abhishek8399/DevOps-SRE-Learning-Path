@@ -24,6 +24,30 @@ class OrderContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "must be positive"):
             datactl.kafka_partition("evt-" + ("a" * 24), 0)
 
+    def test_reconciliation_requires_every_control(self) -> None:
+        passing = {
+            "source_rows": 2,
+            "fact_rows": 2,
+            "source_amount_cents": 300,
+            "fact_amount_cents": 300,
+            "missing_facts": 0,
+            "orphan_facts": 0,
+            "value_mismatches": 0,
+            "unpublished": 0,
+            "quarantined": 0,
+        }
+        self.assertTrue(datactl.reconciliation_passes(passing))
+        for control in (
+            "missing_facts",
+            "orphan_facts",
+            "value_mismatches",
+            "unpublished",
+            "quarantined",
+        ):
+            failing = dict(passing)
+            failing[control] = 1
+            self.assertFalse(datactl.reconciliation_passes(failing))
+
     def test_valid_order_has_stable_hash(self):
         first = datactl.validate_order(order())
         second = datactl.validate_order(dict(reversed(list(order().items()))))

@@ -42,3 +42,4 @@ Thumbs.db
 # Local-only or sensitive evidence
 evidence/private/
 evidence/raw/
+.runtime/

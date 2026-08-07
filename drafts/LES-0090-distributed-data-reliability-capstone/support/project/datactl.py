@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import argparse
 import base64
+import datetime
 import hashlib
 import json
 import re
 import subprocess
 import sys
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Sequence
@@ -17,6 +19,12 @@ from typing import Any, Sequence
 PROJECT_ROOT = Path(__file__).resolve().parent
 SCHEMA_PATH = PROJECT_ROOT / "sql" / "schema.sql"
 TOPIC = "orders.v1"
+RESTORE_DATABASE = "atlas_restore"
+RUNTIME_DIRECTORY = PROJECT_ROOT / ".runtime"
+BACKUP_PATH = RUNTIME_DIRECTORY / "atlas.sql"
+MANIFEST_PATH = RUNTIME_DIRECTORY / "manifest.json"
+RESTORE_RECEIPT_PATH = RUNTIME_DIRECTORY / "restore.json"
+RECOVERY_RTO_SECONDS = 60.0
 
 EXPECTED_CONTAINERS = {
     "atlas-data-postgres": (
@@ -225,6 +233,22 @@ def run(
     )
 
 
+def run_bytes(
+    arguments: Sequence[str],
+    *,
+    input_bytes: bytes | None = None,
+    timeout: int = 60,
+) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        list(arguments),
+        input=input_bytes,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=timeout,
+        check=False,
+    )
+
+
 def require_success(
     result: subprocess.CompletedProcess[str], operation: str
 ) -> subprocess.CompletedProcess[str]:
@@ -311,7 +335,9 @@ def inspect_cleanup_boundary() -> None:
             raise RuntimeBoundaryError(f"volume logical-name mismatch: {name}")
 
 
-def postgres(sql: str, *, timeout: int = 60) -> str:
+def postgres(sql: str, *, database: str = "atlas", timeout: int = 60) -> str:
+    if database not in {"atlas", "atlas_restore", "postgres"}:
+        raise AssertionError("database is outside the fixed recovery boundary")
     result = require_success(
         run(
             [
@@ -326,7 +352,7 @@ def postgres(sql: str, *, timeout: int = 60) -> str:
                 "-U",
                 "atlas",
                 "-d",
-                "atlas",
+                database,
                 "-At",
                 "-q",
             ],
@@ -336,6 +362,60 @@ def postgres(sql: str, *, timeout: int = 60) -> str:
         "PostgreSQL operation",
     )
     return result.stdout.strip()
+
+
+def postgres_dump() -> bytes:
+    result = run_bytes(
+        [
+            "docker",
+            "exec",
+            "atlas-data-postgres",
+            "pg_dump",
+            "-U",
+            "atlas",
+            "-d",
+            "atlas",
+            "--schema=atlas",
+            "--no-owner",
+            "--no-privileges",
+            "--format=plain",
+        ],
+        timeout=120,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeBoundaryError(
+            f"PostgreSQL logical backup failed ({result.returncode}): {detail}"
+        )
+    if not result.stdout.startswith(b"--\n-- PostgreSQL database dump"):
+        raise RuntimeBoundaryError("PostgreSQL logical backup header is invalid")
+    return result.stdout
+
+
+def postgres_restore(dump: bytes) -> None:
+    result = run_bytes(
+        [
+            "docker",
+            "exec",
+            "-i",
+            "atlas-data-postgres",
+            "psql",
+            "-X",
+            "-v",
+            "ON_ERROR_STOP=1",
+            "-U",
+            "atlas",
+            "-d",
+            RESTORE_DATABASE,
+        ],
+        input_bytes=dump,
+        timeout=120,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeBoundaryError(
+            f"PostgreSQL isolated restore failed ({result.returncode}): {detail}"
+        )
 
 
 def kafka(arguments: Sequence[str], *, timeout: int = 60) -> str:
@@ -803,8 +883,7 @@ def command_backlog() -> None:
     print(f"backlog=pass report={canonical_json(report)}")
 
 
-def command_reconcile() -> int:
-    inspect_runtime()
+def reconciliation_metrics(*, database: str = "atlas") -> dict[str, Any]:
     raw = postgres(
         "SELECT jsonb_build_object("
         "'source_rows',(SELECT count(*) FROM atlas.orders),"
@@ -820,10 +899,27 @@ def command_reconcile() -> int:
         "WHERE o.customer_ref<>f.customer_ref OR o.amount_cents<>f.amount_cents),"
         "'unpublished',(SELECT count(*) FROM atlas.outbox WHERE NOT published),"
         "'quarantined',(SELECT count(*) FROM atlas.quarantine)"
-        ");"
+        ");",
+        database=database,
     )
-    metrics = json.loads(raw)
-    passed = (
+    return json.loads(raw)
+
+
+def reconciliation_passes(metrics: dict[str, Any]) -> bool:
+    required = {
+        "source_rows",
+        "fact_rows",
+        "source_amount_cents",
+        "fact_amount_cents",
+        "missing_facts",
+        "orphan_facts",
+        "value_mismatches",
+        "unpublished",
+        "quarantined",
+    }
+    if set(metrics) != required:
+        raise RuntimeBoundaryError("reconciliation metric set differs")
+    return (
         metrics["source_rows"] == metrics["fact_rows"]
         and metrics["source_amount_cents"] == metrics["fact_amount_cents"]
         and all(
@@ -837,6 +933,30 @@ def command_reconcile() -> int:
             )
         )
     )
+
+
+def recovery_counts(*, database: str = "atlas") -> dict[str, Any]:
+    raw = postgres(
+        "SELECT jsonb_build_object("
+        "'orders',(SELECT count(*) FROM atlas.orders),"
+        "'outbox',(SELECT count(*) FROM atlas.outbox),"
+        "'inbox',(SELECT count(*) FROM atlas.consumer_inbox),"
+        "'facts',(SELECT count(*) FROM atlas.order_facts),"
+        "'deliveries',(SELECT count(*) FROM atlas.delivery_attempts),"
+        "'quarantine',(SELECT count(*) FROM atlas.quarantine),"
+        "'pipeline_runs',(SELECT count(*) FROM atlas.pipeline_runs),"
+        "'order_amount_cents',(SELECT coalesce(sum(amount_cents),0) FROM atlas.orders),"
+        "'fact_amount_cents',(SELECT coalesce(sum(amount_cents),0) FROM atlas.order_facts)"
+        ");",
+        database=database,
+    )
+    return json.loads(raw)
+
+
+def command_reconcile() -> int:
+    inspect_runtime()
+    metrics = reconciliation_metrics()
+    passed = reconciliation_passes(metrics)
     run_id = f"run-{uuid.uuid4().hex}"
     encoded = base64.b64encode(canonical_json(metrics).encode("ascii")).decode("ascii")
     status = "pass" if passed else "fail"
@@ -857,6 +977,192 @@ def command_reconcile() -> int:
         f"reconcile={status} run_id={run_id} metrics={canonical_json(metrics)}"
     )
     return 0 if passed else 4
+
+
+def command_backup() -> None:
+    inspect_runtime()
+    if RUNTIME_DIRECTORY.exists():
+        raise RuntimeBoundaryError(
+            "recovery artifact directory already exists; finish with cleanup first"
+        )
+    dump = postgres_dump()
+    counts = recovery_counts()
+    offsets = kafka_end_offsets()
+    RUNTIME_DIRECTORY.mkdir(mode=0o700)
+    if RUNTIME_DIRECTORY.is_symlink():
+        raise RuntimeBoundaryError("runtime artifact directory must not be a symlink")
+    BACKUP_PATH.write_bytes(dump)
+    manifest = {
+        "schema_version": 1,
+        "created_at": datetime.datetime.now(datetime.UTC).isoformat(),
+        "backup_sha256": hashlib.sha256(dump).hexdigest(),
+        "backup_bytes": len(dump),
+        "source_database": "atlas",
+        "restore_database": RESTORE_DATABASE,
+        "source_counts": counts,
+        "kafka_end_offsets": {str(key): value for key, value in offsets.items()},
+        "recovery_objective": {
+            "snapshot_rpo_rows": 0,
+            "local_restore_rto_seconds": RECOVERY_RTO_SECONDS,
+        },
+    }
+    MANIFEST_PATH.write_text(
+        canonical_json(manifest) + "\n", encoding="utf-8", newline="\n"
+    )
+    print(
+        "backup=pass "
+        f"bytes={len(dump)} sha256={manifest['backup_sha256']} "
+        f"source_counts={canonical_json(counts)}"
+    )
+
+
+def load_recovery_artifacts() -> tuple[bytes, dict[str, Any]]:
+    expected = {BACKUP_PATH.name, MANIFEST_PATH.name}
+    if RESTORE_RECEIPT_PATH.exists():
+        expected.add(RESTORE_RECEIPT_PATH.name)
+    if not RUNTIME_DIRECTORY.is_dir() or RUNTIME_DIRECTORY.is_symlink():
+        raise RuntimeBoundaryError("runtime recovery directory is missing or unsafe")
+    observed = {path.name for path in RUNTIME_DIRECTORY.iterdir()}
+    if observed != expected:
+        raise RuntimeBoundaryError(
+            f"recovery artifact set mismatch: observed={sorted(observed)}"
+        )
+    for path in (BACKUP_PATH, MANIFEST_PATH):
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeBoundaryError(f"recovery artifact is unsafe: {path.name}")
+    dump = BACKUP_PATH.read_bytes()
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    required = {
+        "schema_version",
+        "created_at",
+        "backup_sha256",
+        "backup_bytes",
+        "source_database",
+        "restore_database",
+        "source_counts",
+        "kafka_end_offsets",
+        "recovery_objective",
+    }
+    if set(manifest) != required or manifest["schema_version"] != 1:
+        raise RuntimeBoundaryError("recovery manifest contract differs")
+    if (
+        manifest["source_database"] != "atlas"
+        or manifest["restore_database"] != RESTORE_DATABASE
+        or manifest["backup_bytes"] != len(dump)
+        or manifest["backup_sha256"] != hashlib.sha256(dump).hexdigest()
+    ):
+        raise RuntimeBoundaryError("recovery artifact integrity check failed")
+    return dump, manifest
+
+
+def command_restore() -> None:
+    inspect_runtime()
+    started = time.monotonic()
+    dump, manifest = load_recovery_artifacts()
+    exists = postgres(
+        "SELECT count(*) FROM pg_database "
+        f"WHERE datname='{RESTORE_DATABASE}';",
+        database="postgres",
+    )
+    if exists != "0":
+        raise RuntimeBoundaryError("isolated restore database already exists")
+    postgres(f"CREATE DATABASE {RESTORE_DATABASE};", database="postgres")
+    postgres_restore(dump)
+    restored_counts = recovery_counts(database=RESTORE_DATABASE)
+    if restored_counts != manifest["source_counts"]:
+        raise RuntimeBoundaryError(
+            "isolated restore counts differ from the signed manifest"
+        )
+    elapsed = round(time.monotonic() - started, 3)
+    target = manifest["recovery_objective"]["local_restore_rto_seconds"]
+    passed = elapsed <= target
+    receipt = {
+        "schema_version": 1,
+        "restore_database": RESTORE_DATABASE,
+        "backup_sha256": manifest["backup_sha256"],
+        "restored_counts": restored_counts,
+        "snapshot_rpo_rows": 0,
+        "elapsed_seconds": elapsed,
+        "rto_target_seconds": target,
+        "rto_met": passed,
+    }
+    RESTORE_RECEIPT_PATH.write_text(
+        canonical_json(receipt) + "\n", encoding="utf-8", newline="\n"
+    )
+    if not passed:
+        raise RuntimeBoundaryError(
+            f"isolated restore exceeded the local RTO target: {elapsed}s > {target}s"
+        )
+    print(
+        "restore=pass target=isolated_database "
+        f"snapshot_rpo_rows=0 elapsed_seconds={elapsed} "
+        f"rto_target_seconds={target} counts={canonical_json(restored_counts)}"
+    )
+
+
+def command_replay_restore() -> None:
+    inspect_runtime()
+    _, manifest = load_recovery_artifacts()
+    exists = postgres(
+        "SELECT count(*) FROM pg_database "
+        f"WHERE datname='{RESTORE_DATABASE}';",
+        database="postgres",
+    )
+    if exists != "1":
+        raise RuntimeBoundaryError("isolated restore database is absent")
+    cache_flush = require_success(
+        run(
+            [
+                "docker",
+                "exec",
+                "atlas-data-redis",
+                "redis-cli",
+                "-h",
+                "127.0.0.1",
+                "FLUSHDB",
+            ],
+            timeout=30,
+        ),
+        "Redis disposable-cache reset",
+    )
+    if cache_flush.stdout.strip() != "OK":
+        raise RuntimeBoundaryError("Redis cache reset returned an unexpected receipt")
+    applied = 0
+    duplicates = 0
+    skipped = 0
+    for record in kafka_records():
+        try:
+            event = validate_event(record["payload"])
+        except ContractError:
+            skipped += 1
+            continue
+        outcome = json.loads(
+            postgres(sql_for_delivery(record), database=RESTORE_DATABASE)
+        )
+        if outcome["duplicate"]:
+            duplicates += 1
+        else:
+            applied += 1
+        update_cache(event)
+    metrics = reconciliation_metrics(database=RESTORE_DATABASE)
+    if not reconciliation_passes(metrics):
+        raise RuntimeBoundaryError(
+            f"restored database failed reconciliation: {canonical_json(metrics)}"
+        )
+    restored_offsets = kafka_end_offsets()
+    snapshot_offsets = {
+        int(key): int(value) for key, value in manifest["kafka_end_offsets"].items()
+    }
+    if any(
+        restored_offsets[partition] < snapshot_offsets[partition]
+        for partition in snapshot_offsets
+    ):
+        raise RuntimeBoundaryError("broker retention no longer covers backup watermarks")
+    print(
+        "replay-restore=pass "
+        f"applied={applied} duplicates={duplicates} skipped={skipped} "
+        f"metrics={canonical_json(metrics)} cache=reconstructed"
+    )
 
 
 def command_status() -> None:
@@ -880,8 +1186,31 @@ def command_status() -> None:
     print(topic)
 
 
+def inspect_runtime_artifact_cleanup_boundary() -> list[Path]:
+    if not RUNTIME_DIRECTORY.exists():
+        return []
+    if not RUNTIME_DIRECTORY.is_dir() or RUNTIME_DIRECTORY.is_symlink():
+        raise RuntimeBoundaryError("runtime artifact directory is unsafe")
+    allowed = {
+        BACKUP_PATH.name,
+        MANIFEST_PATH.name,
+        RESTORE_RECEIPT_PATH.name,
+    }
+    artifacts = list(RUNTIME_DIRECTORY.iterdir())
+    unexpected = {path.name for path in artifacts} - allowed
+    if unexpected:
+        raise RuntimeBoundaryError(
+            f"refusing unknown runtime artifacts: {sorted(unexpected)}"
+        )
+    for path in artifacts:
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeBoundaryError(f"runtime artifact is unsafe: {path.name}")
+    return artifacts
+
+
 def command_cleanup() -> None:
     inspect_cleanup_boundary()
+    runtime_artifacts = inspect_runtime_artifact_cleanup_boundary()
     result = require_success(
         run(
             [
@@ -926,9 +1255,13 @@ def command_cleanup() -> None:
             "cleanup incomplete: "
             f"containers={sorted(remaining_containers)} volumes={sorted(remaining_volumes)}"
         )
+    for path in runtime_artifacts:
+        path.unlink()
+    if RUNTIME_DIRECTORY.exists():
+        RUNTIME_DIRECTORY.rmdir()
     if result.stderr.strip():
         print(result.stderr.strip(), file=sys.stderr)
-    print("cleanup=pass containers=absent volumes=absent")
+    print("cleanup=pass containers=absent volumes=absent runtime_artifacts=absent")
 
 
 def parser() -> argparse.ArgumentParser:
@@ -949,6 +1282,9 @@ def parser() -> argparse.ArgumentParser:
     seed_backlog.add_argument("--partition", type=int, default=0)
     commands.add_parser("backlog")
     commands.add_parser("reconcile")
+    commands.add_parser("backup")
+    commands.add_parser("restore")
+    commands.add_parser("replay-restore")
     commands.add_parser("status")
     commands.add_parser("cleanup")
     return result
@@ -977,6 +1313,12 @@ def main() -> int:
             command_backlog()
         elif arguments.command == "reconcile":
             return command_reconcile()
+        elif arguments.command == "backup":
+            command_backup()
+        elif arguments.command == "restore":
+            command_restore()
+        elif arguments.command == "replay-restore":
+            command_replay_restore()
         elif arguments.command == "status":
             command_status()
         elif arguments.command == "cleanup":

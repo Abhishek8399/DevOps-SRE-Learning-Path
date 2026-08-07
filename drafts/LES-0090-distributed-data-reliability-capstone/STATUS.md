@@ -1,6 +1,6 @@
 # LES-0090 draft status
 
-Status: **source-locked implementation-active quarantined capstone; recovery, assessments, manuscript, review and publication pending**
+Status: **source-locked implementation-active quarantined capstone; full verifier, assessments, manuscript, review and publication pending**
 
 This quarantined directory reserves `LES-0090` / `V11-L03` / `CAP-003` for the distributed data reliability capstone. Its working route is `/book/capstones/distributed-data-reliability-capstone`, volume `11-capstones`, order 3 and domain `capstone-engineering`.
 
@@ -18,8 +18,10 @@ One deliberately incompatible event was then published beside the duplicate vali
 
 The bounded backlog scenario generated nine valid source transactions whose stable Kafka keys were selected for partition 0 using Kafka's murmur2 partition rule. Observed broker end offsets were `{0:9,1:0,2:0}`: total lag was nine and one partition held 100% of records. Before consumption, the reconciliation gate exited 4 with nine missing facts and a source control total of 9,160 cents versus zero. After one consumer pass, per-partition next offsets converged to the broker ends, total lag became zero and the same gate passed with nine rows and 9,160 cents on both sides.
 
-Both reconciliation attempts persisted lineage receipts naming `atlas.orders` as input and `atlas.order_facts` as output. The first receipt retained `status=fail` and `missing_facts=9`; the second retained `status=pass` and `missing_facts=0`. This proves a healthy broker is not equivalent to current or trustworthy analytical data, and that skew remains visible even after lag drains. Twelve Python tests, Compose parsing and the live scenario pass. Exact cleanup again proved zero owned containers and volumes.
+Both reconciliation attempts persisted lineage receipts naming `atlas.orders` as input and `atlas.order_facts` as output. The first receipt retained `status=fail` and `missing_facts=9`; the second retained `status=pass` and `missing_facts=0`. This proves a healthy broker is not equivalent to current or trustworthy analytical data, and that skew remains visible even after lag drains. Exact cleanup again proved zero owned containers and volumes.
 
-Backup/restore/replay, full verifier, assessments and manuscript remain unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
+The recovery rehearsal captured six authoritative orders and outbox rows before derived consumption. Its ignored 19,266-byte logical dump matched SHA-256 `212af13b55d8f6c499654424528db39e99676c1e198a83f531f0969da4f535e2`. Restore created a separate `atlas_restore` database in 0.829 seconds against a declared 60-second local target, matched every manifest count and retained zero facts at the snapshot boundary. Retained Kafka replay then created six facts totaling 6,067 cents, reconciled them to six source rows totaling 6,067 cents and reconstructed six disposable cache keys. The active database still had zero facts while the isolated database had six, and a second restore refused to overwrite the recovery target.
+
+Thirteen Python tests, Compose parsing and the live recovery scenario pass. Exact cleanup removed the three containers, two volumes and three known runtime artifacts; an independent path check found no `.runtime` directory. These measurements prove only this small local rehearsal, not a production RPO/RTO. Full verifier, assessments and manuscript remain unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
 
 Publication remains blocked by the complete source lock, guarded project, three assessments, exact-structure manuscript, direct and canonical gates, representative local failure/recovery evidence, formal multidisciplinary review and reviewer-owned independent transfer.
