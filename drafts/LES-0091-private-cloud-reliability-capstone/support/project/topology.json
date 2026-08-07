@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "private-cloud-topology",
+  "id": "atlas-private-cloud-lab",
+  "release": "2026.1",
+  "racks": [
+    {"id": "rack-a", "powerDomain": "pdu-a", "networkDomain": "leaf-a"},
+    {"id": "rack-b", "powerDomain": "pdu-b", "networkDomain": "leaf-b"},
+    {"id": "rack-c", "powerDomain": "pdu-c", "networkDomain": "leaf-c"}
+  ],
+  "controllers": [
+    {"id": "controller-a", "rack": "rack-a", "services": ["api", "database", "message", "ovn-nb", "ovn-sb", "ceph-mon"], "version": "2026.1"},
+    {"id": "controller-b", "rack": "rack-b", "services": ["api", "database", "message", "ovn-nb", "ovn-sb", "ceph-mon"], "version": "2026.1"},
+    {"id": "controller-c", "rack": "rack-c", "services": ["api", "database", "message", "ovn-nb", "ovn-sb", "ceph-mon"], "version": "2026.1"}
+  ],
+  "computes": [
+    {"id": "compute-a", "rack": "rack-a", "vcpus": 64, "memoryGiB": 256, "diskGiB": 800, "cpuModel": "x86-64-v3", "machineType": "pc-q35-9.2", "traits": ["trusted-compute"], "generation": 7},
+    {"id": "compute-b", "rack": "rack-b", "vcpus": 64, "memoryGiB": 256, "diskGiB": 800, "cpuModel": "x86-64-v3", "machineType": "pc-q35-9.2", "traits": ["trusted-compute"], "generation": 11},
+    {"id": "compute-c", "rack": "rack-c", "vcpus": 48, "memoryGiB": 192, "diskGiB": 600, "cpuModel": "x86-64-v2", "machineType": "pc-q35-8.2", "traits": ["trusted-compute"], "generation": 4}
+  ],
+  "gateways": [
+    {"id": "gateway-a", "rack": "rack-a", "priority": 30},
+    {"id": "gateway-b", "rack": "rack-b", "priority": 20},
+    {"id": "gateway-c", "rack": "rack-c", "priority": 10}
+  ],
+  "network": {
+    "overlay": "geneve",
+    "tenantMtu": 1500,
+    "underlayMtu": 1600,
+    "encapsulationOverhead": 50,
+    "externalGatewayCount": 3,
+    "defaultDeny": true
+  },
+  "storage": {
+    "pool": "volumes",
+    "size": 3,
+    "minSize": 2,
+    "failureDomain": "rack",
+    "nearFullRatio": 0.85,
+    "fullRatio": 0.95,
+    "osds": [
+      {"id": "osd-a1", "rack": "rack-a", "capacityGiB": 2000, "usedGiB": 900},
+      {"id": "osd-a2", "rack": "rack-a", "capacityGiB": 2000, "usedGiB": 900},
+      {"id": "osd-b1", "rack": "rack-b", "capacityGiB": 2000, "usedGiB": 900},
+      {"id": "osd-b2", "rack": "rack-b", "capacityGiB": 2000, "usedGiB": 900},
+      {"id": "osd-c1", "rack": "rack-c", "capacityGiB": 2000, "usedGiB": 900},
+      {"id": "osd-c2", "rack": "rack-c", "capacityGiB": 2000, "usedGiB": 900}
+    ]
+  },
+  "policy": {
+    "quotaVcpus": 48,
+    "quotaMemoryGiB": 192,
+    "quotaVolumesGiB": 1000,
+    "requiredImageTrust": "signed",
+    "requiredComputeTrait": "trusted-compute",
+    "reserveComputeRatio": 0.25,
+    "reserveStorageRatio": 0.20
+  }
+}

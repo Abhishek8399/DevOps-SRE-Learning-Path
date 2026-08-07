@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "private-cloud-workloads",
+  "topologyId": "atlas-private-cloud-lab",
+  "workloads": [
+    {
+      "id": "checkout-api",
+      "replicas": 2,
+      "vcpusEach": 8,
+      "memoryGiBEach": 32,
+      "rootDiskGiBEach": 60,
+      "dataVolumeGiB": 200,
+      "persistentData": true,
+      "imageTrust": "signed",
+      "requiredTrait": "trusted-compute",
+      "antiAffinity": "rack",
+      "cpuModel": "x86-64-v3",
+      "machineType": "pc-q35-9.2",
+      "serviceTier": "protected",
+      "userOperation": "submit-checkout",
+      "requiresExternalPath": true
+    },
+    {
+      "id": "build-worker",
+      "replicas": 1,
+      "vcpusEach": 12,
+      "memoryGiBEach": 24,
+      "rootDiskGiBEach": 120,
+      "dataVolumeGiB": 0,
+      "persistentData": false,
+      "imageTrust": "signed",
+      "requiredTrait": "trusted-compute",
+      "antiAffinity": "none",
+      "cpuModel": "x86-64-v2",
+      "machineType": "pc-q35-8.2",
+      "serviceTier": "rebuildable",
+      "userOperation": "run-build",
+      "requiresExternalPath": false
+    }
+  ]
+}
