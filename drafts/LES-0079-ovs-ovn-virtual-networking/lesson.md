@@ -18,8 +18,8 @@
   "prerequisiteCurriculumIds": ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006", "NET-007", "PRV-002"],
   "testedEnvironments": [
     {"platform":"Official documentation","version":"Open vSwitch 3.7.1 stable and OVN development distribution manuals reviewed 2026-08-07","support":"concept-only","notes":"The source set establishes architecture and tool semantics but does not prove any deployed release."},
-    {"platform":"Ubuntu","version":"24.04 WSL guarded lifecycle planned","support":"unsupported","notes":"The offline model is not implemented; it must refuse host-network and control-plane authority and make zero OVS/OVN calls."},
-    {"platform":"Python","version":"3 standard library model planned","support":"unsupported","notes":"The deterministic intent-to-packet evidence model is not implemented."},
+    {"platform":"Ubuntu","version":"24.04 WSL UID-1000 guarded lifecycle","support":"required","notes":"All 58 cases, exported runtime-authority refusal, root refusal, unknown-artifact refusal and exact cleanup pass with zero runtime calls."},
+    {"platform":"Python","version":"3 standard library","support":"required","notes":"Deterministic 58-case, 57-gate intent, realization, transport, delivery and recovery evidence model."},
     {"platform":"OVS/OVN runtime","version":"not present in the tested boundary","support":"unsupported","notes":"No package, daemon, database, bridge, port, flow, tunnel, logical topology, ACL or packet mutation is authorized."}
   ],
   "targetRoles": ["site-reliability-engineer", "devops-engineer", "platform-engineer", "private-cloud-engineer", "network-engineer", "openstack-engineer", "infrastructure-engineer", "cloud-engineer", "security-engineer", "technical-lead", "architect"],
@@ -97,7 +97,7 @@
   "lastReviewed": "2026-08-07",
   "reviewAfter": "2027-02-07",
   "limitations": [
-    "The guarded offline lab and assessment files are not implemented yet; the current body is a schema-ready teaching scaffold rather than a completed lesson.",
+    "The guarded offline lab passes within its declared model boundary, but assessment files and the substantive manuscript are not complete.",
     "No OVS/OVN package, daemon, database, bridge, port, namespace, interface, route, flow, tunnel, logical topology, ACL, packet or gateway change is authorized.",
     "Current OVN distribution manuals describe a development line; exact deployed schema, protocol, package and compatibility remain unproved.",
     "Behavior depends on release, Linux kernel and datapath, CMS integration, topology, underlay, MTU, hardware offload, policy and workload.",
