@@ -1,0 +1,13 @@
+{
+  "packet_id":"fictional-checkout-incident-docs",
+  "claims":{"total":24,"observed":12,"calculated":5,"decided":4,"declared":2,"unknown":1,"attributable":21},
+  "timeline":{
+    "detected":"2026-08-07T10:00:00+05:30",
+    "impact_start":"2026-08-07T04:32:00Z",
+    "mitigation_start":"2026-08-07T00:41:00-04:00",
+    "recovered":"2026-08-07T05:05:00Z"
+  },
+  "runbook":{"steps":14,"verifiable_steps":12,"validated_steps":12,"mutating_steps":5,"protected_mutations":5,"failure_branches":5},
+  "freshness":{"artifacts":10,"active":7,"active_current":7,"review_due":2,"superseded_expired":1,"critical_expired":0},
+  "audiences":{"canonical_facts":18,"views":5,"required_links":43,"present_links":43,"conflicts":0}
+}

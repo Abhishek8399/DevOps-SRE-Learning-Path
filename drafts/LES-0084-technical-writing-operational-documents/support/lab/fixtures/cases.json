@@ -1,0 +1,20 @@
+{
+  "lesson_id":"LES-0084",
+  "baseline":"defensible-document-set",
+  "gate_groups":[
+    {"boundary":"audience","cases":["audience-unbound","reader-task-unbound","decision-unbound","urgency-unbound","success-unbound"]},
+    {"boundary":"evidence","cases":["material-claim-unsourced","observation-window-missing","calculation-input-missing","inference-presented-as-fact","unknown-hidden","source-version-unbound"]},
+    {"boundary":"content-type","cases":["tutorial-howto-mixed","reference-explanation-mixed","procedure-buried-in-background","prerequisite-after-action","summary-does-not-match-body"]},
+    {"boundary":"requirement","cases":["must-without-authority","should-without-tradeoff","may-without-scope","normative-keyword-lowercase-ambiguous"]},
+    {"boundary":"semantics","cases":["term-undefined","acronym-unexpanded","unit-missing","timezone-missing","identity-alias-conflict"]},
+    {"boundary":"diagram","cases":["diagram-scope-unbound","mixed-abstraction","edge-unlabelled","trust-boundary-hidden","diagram-text-alternative-missing","diagram-body-drift"]},
+    {"boundary":"procedure","cases":["outcome-unbound","operator-prerequisite-missing","authority-prerequisite-missing","target-identity-missing","mutation-not-labelled","expected-result-missing","failure-branch-missing","cleanup-or-recovery-missing"]},
+    {"boundary":"safety","cases":["secret-in-example","customer-data-in-example","destructive-command-unbounded","broad-target-expression","log-redaction-missing","external-link-exec-unreviewed"]},
+    {"boundary":"interface","cases":["command-flag-unexplained","configuration-version-missing","example-output-missing","example-claims-production-proof"]},
+    {"boundary":"decision-record","cases":["decision-context-missing","alternative-missing","tradeoff-hidden","decision-owner-missing","status-missing","supersession-rewrites-history"]},
+    {"boundary":"incident-communication","cases":["impact-not-user-centered","status-fact-and-hypothesis-mixed","next-update-missing","timestamp-order-ambiguous","role-handoff-unacknowledged","internal-detail-leaked-externally"]},
+    {"boundary":"post-incident","cases":["timeline-evidence-missing","individual-blame-substitutes-cause","contributing-condition-hidden","action-owner-missing","action-verification-missing","learning-not-shared"]},
+    {"boundary":"lifecycle","cases":["document-owner-missing","review-trigger-missing","expired-critical-runbook","duplicate-source-of-truth","archive-not-marked"]},
+    {"boundary":"baseline","cases":["defensible-document-set"]}
+  ]
+}
