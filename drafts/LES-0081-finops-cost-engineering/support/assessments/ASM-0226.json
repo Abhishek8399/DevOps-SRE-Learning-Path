@@ -1,0 +1,58 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0226",
+  "lessonId":"LES-0081",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"A payments platform receives a 42 percent cost alert on day two of a new month. The dashboard mixes list cost from one provider, billed cost from another and effective cost from a third. One export is incomplete, tags were activated last week, a late credit appeared, shared Kubernetes and observability cost moved to payments using request count, and a retry storm doubled requests without increasing successful payments. Finance says the team is over budget; Engineering wants to rightsize immediately; Security reports an unusual API principal; Procurement proposes a three-year commitment based on the two high-cost days. Diagnose, contain, calculate and define recovery and prevention evidence.",
+  "directAnswer":"Declare a cost-and-usage integrity incident with a possible security component, not a generic overspend. Freeze automated rightsizing, shutdown and commitment purchase. Bind decision owner, period, currency, export identity, schema/query version, last update and completeness. Reconcile late corrections and credits and compare the same cost measure—normally effective cost for economic trend, billed or invoice cost for payment reconciliation—across equivalent scopes. Keep list cost only for a list-rate question. Split usage quantity from effective rate and find the dimensions driving each. Treat recent tag activation as non-retroactive and measure allocation coverage. Reverse or quarantine the shared-cost move until the request-count driver is reviewed: retries are activity but not business value, so successful payments, reserved capacity, benefit or a hybrid driver may be fairer. Recalculate fully loaded cost per successful payment using a stable denominator. Compare actual, forecast and budget separately; a delayed budget alert is not a real-time breaker. Correlate the unusual principal with audit and usage evidence and revoke or contain only through the security owner. Do not rightsize until demand percentiles, latency, saturation, SLO, error-budget and largest-failure reserve support a canary with stop and rollback. Do not commit from two anomalous days; model stable eligible baseline, seasonality, roadmap, migration, flexibility, coverage, utilization, vacancy, concentration, term scenarios and break-even. Close only after corrected data reconciles, the original service SLO is healthy, the anomaly owner is known, allocation conserves cost, forecast and budget are updated through owners, and any saving is later reconciled to effective or invoice cost.",
+  "foundation":"Cost is delayed, corrected, scoped state. Usage, price, cost meaning, allocation, funding and user value have different owners. A high number can come from real demand, a rate or contract change, data lateness, allocation movement, retries, waste or abuse. Cost optimization is a production change and must preserve reliability and security.",
+  "reasoningSteps":[
+    "Name the decision, accountable owner, time window, currency, affected product and immediate refusal conditions.",
+    "Freeze autonomous shutdown, rightsizing, commitment purchase and public savings claims until source integrity is proven.",
+    "Bind provider, billing account, export ID, schema, query revision, load timestamp, completeness and known corrections.",
+    "Align billing and charge periods and compare identical scopes and currencies.",
+    "Select the cost measure for the question; never sum or trend list, contracted, billed and effective cost as if interchangeable.",
+    "Reconcile credits, refunds, taxes, support, marketplace, late charges and invoice state.",
+    "Decompose total change into usage quantity, effective rate, product/service, account, region, resource and owner dimensions.",
+    "Measure tag and allocation coverage and account for activation, inheritance and historical gaps.",
+    "Identify direct, shared, idle, platform and adjustment pools and test that allocation conserves source cost.",
+    "Challenge request-count allocation because retry traffic can reward failure; choose a stable value or benefit driver.",
+    "Calculate fully loaded cost per successful payment with numerator and denominator versions and exclusions.",
+    "Keep estimate, forecast, budget, actual, anomaly and invoice separate; update each through its owner.",
+    "Investigate the unusual principal as potential abuse using audit, resource, usage and network evidence.",
+    "Require utilization percentiles, saturation, latency, error budget and failure reserve before rightsizing.",
+    "Canary one bounded optimization with SLO stop thresholds and tested rollback.",
+    "Model commitment eligibility, coverage, utilization, vacancy, flexibility, concentration, term and scenario risk.",
+    "Prove realized outcome after corrections and invoice reconciliation; label cost avoidance separately.",
+    "Record causal timeline, assumptions, uncertainty, residual risk, owners and recurrence controls."
+  ],
+  "seniorAnswer":"I would stop irreversible financial and production actions, validate one versioned billing dataset and normalize the cost question before optimizing. I would decompose quantity from rate, isolate incomplete and corrected data, remeasure allocation, reject retry count as an unreviewed shared-cost driver, and compute fully loaded cost per successful payment. The unusual principal makes security correlation mandatory. Rightsizing needs workload percentiles, SLO and failure reserve plus a reversible canary. A long commitment needs stable eligible demand and term-risk analysis; two anomalous days are not a baseline. Recovery is proven by reconciled cost data, healthy user outcomes, conserved allocation and later actual savings—not by a lower dashboard tile.",
+  "weakAnswer":"The bill is high, so delete idle resources, lower instance sizes, enforce tags, move shared costs to the busiest team and buy a commitment to reduce the rate.",
+  "whyWeak":"It acts on incomplete and semantically mixed data, ignores corrections and security abuse, rewards retry failure, risks SLO and failover capacity, purchases long-term exposure from an anomalous sample and calls estimates realized savings.",
+  "evidence":[
+    {"signal":"Export ID, schema/query version, load time, completeness, correction and invoice reconciliation","proves":"which bounded cost dataset is being analyzed and whether it reconciles","doesNotProve":"business ownership or future price"},
+    {"signal":"Consumed quantity, unit, effective rate, effective cost and dimensional deltas","proves":"how much of the observed change is usage versus rate within the dataset","doesNotProve":"why demand changed"},
+    {"signal":"Tag activation, direct coverage, shared pools, driver weights and conservation","proves":"how source cost was assigned and whether arithmetic closes","doesNotProve":"allocation fairness"},
+    {"signal":"Successful payments, latency, saturation, SLO, error budget and failure reserve","proves":"observed value and reliability constraints for the candidate workload","doesNotProve":"an untested smaller configuration is safe"},
+    {"signal":"Eligible baseline, coverage, utilization, vacancy, term, flexibility and scenario range","proves":"bounded commitment portfolio economics under declared assumptions","doesNotProve":"future demand or purchase authority"}
+  ],
+  "followUps":[
+    {"prompt":"Why is effective cost often better for trend analysis?","answer":"It attributes applicable negotiated and commitment economics to the covered usage, making periods more comparable than a large prepaid purchase line. The exact provider and FOCUS semantics still need validation."},
+    {"prompt":"Why can request count be a bad shared-cost driver?","answer":"Retries and failed work can increase requests without increasing value, so a failing tenant can receive more cost or distort incentives. Use stable successful/value units, reserved capacity, measured benefit or a reviewed hybrid."},
+    {"prompt":"Is a budget alert a circuit breaker?","answer":"No. Billing ingestion and evaluation are delayed and corrected. A budget alert is governance evidence; real-time protection needs service-specific quota, policy and safety controls with separate ownership."},
+    {"prompt":"What proves realized savings?","answer":"A versioned normalized baseline, the implemented change and its cost, comparable post-change effective or invoice cost after corrections, preserved demand and SLOs, and explicit separation from cost avoidance."}
+  ],
+  "rubric":[
+    {"criterion":"Data and cost semantics","points":10,"observableEvidence":"Binds source version completeness periods currency corrections reconciliation and comparable cost measure"},
+    {"criterion":"Allocation and units","points":10,"observableEvidence":"Separates pools challenges retry driver conserves cost and calculates stable fully loaded unit cost"},
+    {"criterion":"Incident and security","points":10,"observableEvidence":"Contains unsafe actions decomposes anomaly and investigates unusual principal with owners"},
+    {"criterion":"Reliable optimization","points":10,"observableEvidence":"Requires utilization SLO reserve canary stop rollback and post-change user proof"},
+    {"criterion":"Commitment communication prevention","points":10,"observableEvidence":"Models term risk refuses anomalous baseline distinguishes budget forecast actual savings and records controls"}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
