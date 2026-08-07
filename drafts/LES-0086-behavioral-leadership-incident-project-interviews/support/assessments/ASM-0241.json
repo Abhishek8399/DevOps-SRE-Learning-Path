@@ -1,0 +1,46 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0241",
+  "lessonId":"LES-0086",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"Review this fictional interview answer: 'Our platform was unreliable, so I led the team, moved everything to Kubernetes, improved uptime by 40%, reduced cost by 60%, and made developers much happier.' Diagnose what an interviewer can and cannot evaluate. Rewrite the answer without inventing context, authority, actions, metrics, causality or sentiment.",
+  "directAnswer":"The answer contains labels rather than evidence. It does not bound the user operation, system, time, baseline, task, actual authority, personal actions, alternatives, trade-offs, team contribution, measurement method, guardrails or learning. 'Everything,' 'led,' 'uptime,' 'cost' and 'happier' are undefined; the percentages have no source or denominator; migration correlation is presented as causality. A truthful rewrite must narrow to facts actually available, label unknowns, distinguish personal from team action, identify the decision owner, state measured outputs or outcomes with source/window where supported, and remove unsupported metrics and sentiment.",
+  "foundation":"A behavioral answer is an evidence packet, not a marketing claim. STAR or STAR(R) provides sequence but does not make a story true. An interviewer needs role-relevant constraints, actual authority, visible reasoning, personal contribution, team context, outcome evidence, limitations and reflection. A smaller defensible story is stronger than an impressive fabricated one.",
+  "reasoningSteps":[
+    "Identify the competency the question is likely testing instead of telling a generic success story.",
+    "Separate situation from interpretation and bound service, operation, population, time and stakes.",
+    "Name the assigned task, actual decision authority, constraints and what belonged to other roles.",
+    "Replace 'we' at key decision points with personal actions while retaining team credit.",
+    "Explain the evidence, alternatives, trade-offs, controlled action and validation rather than listing tools.",
+    "Audit every metric for baseline, numerator, denominator, source, window, exclusions and causal limit.",
+    "Remove claims about happiness or business impact unless direct authorized evidence exists.",
+    "End with result, guardrail, limitation, learning and later transfer."
+  ],
+  "seniorAnswer":"In the fictional example, the only safe conclusion is that a platform change occurred; even that needs scope and evidence. A defensible answer would sound like: 'One service team reported repeated deployment rollback failures during three reviewed releases. I was the platform engineer responsible for diagnosing the delivery path and recommending an option; the product owner retained migration priority and the service owner retained production approval. I compared repair of the existing path with a bounded Kubernetes pilot, documented operational and migration costs, and built the disposable pilot with rollback and telemetry. The team selected the pilot after review. In the two recorded test releases, rollback completed inside the declared target and the old path remained available. I cannot support the claimed uptime, cost or developer-sentiment percentages from the information given, so I would not use them. The pilot exposed missing workload ownership, which I added to the next readiness review.' This answer is narrower but reveals judgment, authority, contribution, proof limits and learning.",
+  "weakAnswer":"I would add that the project was global, involved twenty engineers, saved millions, and had zero downtime so the story sounds senior.",
+  "whyWeak":"It fabricates scale, authority, cost and reliability evidence, erases team contribution and turns interview preparation into misrepresentation.",
+  "evidence":[
+    {"signal":"A versioned release record and rollback timestamps for two fictional pilot releases","proves":"Those releases and rollback durations occurred under the declared fixture.","doesNotProve":"Long-term uptime, zero downtime, causality or production-wide reliability."},
+    {"signal":"An approved decision record naming recommendation and production authorities","proves":"Which role recommended and which role authorized the fictional pilot.","doesNotProve":"That the recommendation was correct or that one person led every contributor."},
+    {"signal":"A cost worksheet with baseline, units, exclusions and review date","proves":"The declared estimate method and inputs.","doesNotProve":"Realized savings, current prices or a sixty-percent reduction."}
+  ],
+  "followUps":[
+    {"prompt":"What if you remember the result but cannot retrieve the source?","answer":"Use a qualitative bounded result you can defend, label the number as an unverified recollection only if appropriate, or omit it. Never convert memory into precision."},
+    {"prompt":"How do you explain team work without disappearing into 'we'?","answer":"Name the team outcome and collaborators, then identify your own decisions, artifacts, actions and escalations. Return to team credit for the result and avoid claiming work performed by others."},
+    {"prompt":"Can you use a sanitized employer incident?","answer":"Only when organizational policy permits and the sanitization removes confidential systems, customers, vulnerabilities, people and business facts. A fictional or portfolio scenario is safer when permission is unclear."},
+    {"prompt":"What does a failure answer need?","answer":"The real adverse result or mistaken assumption, your role, impact, repair, system mechanism and later evidence that behavior changed. Do not turn every failure into a hidden success."}
+  ],
+  "rubric":[
+    {"criterion":"Question and competency diagnosis","points":10,"observableEvidence":"Identifies what evidence the prompt should reveal instead of merely editing prose."},
+    {"criterion":"Truth and authority","points":10,"observableEvidence":"Removes unsupported scale, metric, causality, sentiment and leadership authority."},
+    {"criterion":"Personal and team contribution","points":10,"observableEvidence":"Names personal decisions/actions and preserves collaborators and decision owners."},
+    {"criterion":"Evidence and outcome","points":10,"observableEvidence":"Binds supported result to source, window, units, guardrails and limitations."},
+    {"criterion":"Usable rewrite and learning","points":10,"observableEvidence":"Produces a concise defensible story with actual reasoning, reflection and later transfer."}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

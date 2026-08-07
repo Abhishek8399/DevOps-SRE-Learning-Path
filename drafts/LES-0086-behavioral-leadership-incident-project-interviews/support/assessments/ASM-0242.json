@@ -1,0 +1,55 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0242",
+  "lessonId":"LES-0086",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Using only learner-owned, policy-safe evidence, build and defend a role-specific interview system for one SRE, DevOps, platform or infrastructure role. Map the job requirements, create a truthful story and project-evidence bank, produce 30-second, 2-minute, 5-minute and 15-minute variants, answer changing follow-ups, defend one incident and one architecture decision, and audit confidentiality, AI-use and proof boundaries.",
+  "directAnswer":"Start with the actual job description and convert every material requirement into a competency, expected level, evidence type and gap. Inventory learner-owned projects and experiences without writing polished stories first. For each story retain situation, task, actual authority, constraints, personal actions, reasoning, team roles, result source/window/guardrails, limitation, learning and later transfer. Build variants by preserving the same canonical facts while changing depth: direct claim and evidence at 30 seconds; one compact STAR-L at two minutes; alternatives and trade-offs at five minutes; architecture, operations and follow-up defense at fifteen minutes. Map stories to competencies, identify gaps honestly, rehearse unseen follow-ups, and never use confidential material or unauthorized live AI assistance.",
+  "foundation":"Interview readiness is retrieval and transfer under time, ambiguity and challenge. Memorizing polished paragraphs makes answers brittle. A canonical evidence bank plus question-intent classification supports concise openings, deeper reasoning and consistent follow-ups. Scoring practice quality does not predict hiring because employer processes, interviewers and applicant pools vary.",
+  "reasoningSteps":[
+    "Freeze the role and current job-description version; distinguish required, preferred and contextual technologies.",
+    "Translate requirements into observable competencies and level signals rather than keyword counts.",
+    "Inventory only experiences and projects the learner may disclose and can defend.",
+    "Build canonical claim records with sources, windows, authority, contribution and limitations.",
+    "Select several stories with different outcomes, failures, conflicts, incidents and scales rather than one universal story.",
+    "Create duration variants from the same claims and test spoken timing without changing facts.",
+    "Practice direct openings, clarifying questions, technical reasoning and conclusion before detail.",
+    "Apply changing follow-ups that test authority, alternatives, failure, metrics, trade-offs and transfer.",
+    "Score observable evidence and critical safety failures; do not infer personality or hiring probability.",
+    "Revise the evidence bank after review while preserving truthful history."
+  ],
+  "seniorAnswer":"I would create a versioned role matrix first. Each requirement receives a competency, target level, acceptable evidence and current gap. My story bank would contain stable claim IDs, not scripts: context and stakes; task and decision authority; constraints; my actions and reasoning; collaborators; sourced result with timeframe and guardrails; limitations; learning; later transfer. I would include at least ownership, conflict, influence, failure, incident, automation, security, cost/capacity, mentoring and architecture stories. The 30-second form answers directly with one result and boundary. The two-minute form supplies compact STAR-L. Five minutes adds evidence, alternatives, trade-offs and team interface. Fifteen minutes becomes a project or architecture defense with request/state path, failures, operations and evolution. A reviewer would change one constraint and ask adversarial follow-ups; all variants must remain fact-consistent. I would remove unsupported metrics, sanitize or exclude employer-confidential facts, retain team credit and state when I recommended rather than decided. AI may help classify public requirements or challenge learner-authored material during preparation only with safe data and human verification; it must not invent experience or assist a live assessment unless explicitly permitted. Rubric scores describe observed practice, never hiring probability.",
+  "weakAnswer":"Generate fifty STAR answers with AI, memorize them, add strong percentages, and use the same success story for every company.",
+  "whyWeak":"It optimizes fluent recall instead of truth and transfer, invites fabrication and contradiction, ignores role evidence and confidentiality, and becomes fragile under follow-up.",
+  "evidence":[
+    {"signal":"Every material story claim links to a learner-owned artifact, permitted record or explicitly qualified recollection","proves":"Provenance and qualification of the prepared bank.","doesNotProve":"That an employer accepts the evidence or that the story caused the outcome."},
+    {"signal":"All four duration variants use the same claim identities with no conflicts","proves":"Fact consistency across the practice variants.","doesNotProve":"Spoken clarity, timing under stress or interviewer interpretation."},
+    {"signal":"Unseen follow-ups produce no invented claim and every limitation remains stable","proves":"Consistency in the reviewed practice session.","doesNotProve":"General performance in a real interview."},
+    {"signal":"A reviewer scores a role-specific mock against observable anchors","proves":"Performance against that rubric in that session.","doesNotProve":"Hiring probability, job level or readiness across companies."}
+  ],
+  "followUps":[
+    {"prompt":"How many stories should be prepared?","answer":"Enough to cover the role's competency map with different contexts and genuine evidence; there is no universal number. Prefer a smaller versatile bank whose claims you can defend over dozens of generated scripts."},
+    {"prompt":"How should a junior candidate answer leadership questions?","answer":"Use leadership without title: clarifying an outcome, surfacing risk, coordinating peers, improving a process, mentoring in a bounded area or taking accountable action. Do not invent management authority."},
+    {"prompt":"What if the requested technology is new to you?","answer":"State the gap, map adjacent mechanisms you genuinely know, explain how you would validate transfer, and provide a safe learning example. Do not claim production experience from a tutorial."},
+    {"prompt":"How do you defend a project with no business metric?","answer":"Use technical and operational evidence you own: tests, failure recovery, latency under a declared fixture, reproducibility, reduced manual steps, review outcomes or learned limitations. Label local simulations clearly."},
+    {"prompt":"What if a follow-up exposes a mistake in the first answer?","answer":"Correct it directly, state why the earlier claim was too strong, narrow the conclusion and continue from the corrected fact set. Defending a known error is worse than transparent revision."}
+  ],
+  "rubric":[
+    {"criterion":"Role and level mapping","points":10,"observableEvidence":"Requirements become explicit competencies, evidence types, expected levels and honest gaps."},
+    {"criterion":"Story provenance","points":10,"observableEvidence":"Claims retain sources, windows, authority, contribution, confidentiality and limitations."},
+    {"criterion":"Behavioral reasoning","points":10,"observableEvidence":"Stories reveal constraints, decisions, alternatives, trade-offs, actions, team roles and learning."},
+    {"criterion":"Duration variants","points":10,"observableEvidence":"30-second, 2-minute, 5-minute and 15-minute forms preserve facts while changing depth."},
+    {"criterion":"Incident defense","points":10,"observableEvidence":"Impact, role, evidence, hypotheses, controlled action, communication, recovery and learning are distinct."},
+    {"criterion":"Architecture defense","points":10,"observableEvidence":"Requirements, scale/units, state, failure, security, operations, alternatives and evolution are defended."},
+    {"criterion":"Follow-up resilience","points":10,"observableEvidence":"Changing constraints and challenges produce transparent adaptation without contradiction or invention."},
+    {"criterion":"Communication","points":10,"observableEvidence":"Answers open directly, use ordered evidence, manage time and answer the question asked."},
+    {"criterion":"Ethics and AI boundary","points":10,"observableEvidence":"No confidential material, fabricated claim, unauthorized assistance or hiring prediction appears."},
+    {"criterion":"Reflection and transfer","points":10,"observableEvidence":"Failure and learning include later behavior in another context plus proof limits."}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
