@@ -18,8 +18,8 @@
   "prerequisiteCurriculumIds": ["LNX-006", "NET-007", "DST-005", "PRV-002"],
   "testedEnvironments": [
     {"platform":"Official documentation","version":"Ceph latest development documentation reviewed 2026-08-07","support":"concept-only","notes":"Latest pages explicitly describe a development branch and do not prove a deployed release."},
-    {"platform":"Ubuntu","version":"24.04 WSL normal-user guarded lifecycle","support":"unsupported","notes":"The planned model is pending; no lifecycle evidence exists yet."},
-    {"platform":"Python","version":"3 standard library","support":"unsupported","notes":"A deterministic placement and recovery evidence model is pending."},
+    {"platform":"Ubuntu","version":"24.04 WSL UID-1000 guarded lifecycle","support":"required","notes":"All 56 cases, exported-authority refusal, root refusal, unknown-artifact refusal and exact cleanup pass with zero cluster calls."},
+    {"platform":"Python","version":"3 standard library","support":"required","notes":"Deterministic 56-case, 55-gate request, placement, durability and recovery evidence model."},
     {"platform":"Ceph runtime","version":"not present in the tested boundary","support":"unsupported","notes":"No package, daemon, cluster, keyring, pool, object, PG, OSD, RBD image, I/O, fault, recovery or upgrade is authorized."}
   ],
   "targetRoles": ["site-reliability-engineer", "devops-engineer", "platform-engineer", "private-cloud-engineer", "storage-engineer", "openstack-engineer", "infrastructure-engineer", "cloud-engineer", "security-engineer", "technical-lead", "architect"],
@@ -97,7 +97,7 @@
   "lastReviewed": "2026-08-07",
   "reviewAfter": "2027-02-07",
   "limitations": [
-    "The guarded model, assessments and manuscript are pending.",
+    "The offline lab is a deterministic evidence model, not a Ceph deployment; assessments and manuscript remain pending.",
     "No Ceph package, daemon, cluster, keyring, pool, object, PG, CRUSH change, OSD, RBD image, I/O, fault, recovery or upgrade is authorized.",
     "Latest Ceph documentation explicitly describes a development branch; exact deployed release and compatibility remain unproved.",
     "Ceph behavior depends on release, deployment tooling, hardware, network, CRUSH topology, pool policy, clients and workload.",
