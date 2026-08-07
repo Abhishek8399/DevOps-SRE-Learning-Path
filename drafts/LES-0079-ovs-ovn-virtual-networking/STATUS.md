@@ -1,6 +1,6 @@
 # LES-0079 draft status
 
-Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regression, hygiene and production build pass; feature checkpoint and tracker packaging pending**
+Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regression, hygiene, production build, feature checkpoint and tracker packaging pass**
 
 This quarantined directory is reserved for `LES-0079` / `V09-L04` / `PRV-004`: Open vSwitch and OVN architecture; Linux interfaces, bridges, ports, VLANs and tunnels; OVSDB desired state, OpenFlow policy and datapath caches; OVN northbound intent, northd compilation, southbound bindings, chassis-local realization, logical switching/routing, ACLs, connection tracking, NAT, gateways and packet tracing.
 
@@ -16,4 +16,4 @@ Direct lesson, assessment and reference schemas report zero issues. Relationship
 
 Canonical content validation reports `schemas=3/3 lessons=21 assessments=63 references=172` and the generated registry matches. The schema suite passes 38 tests with one expected Windows symlink-capability skip, all 21 reader tests pass, and lint, type checking and the production build pass. Pre-tracker content counts are 259 Markdown files, 51 local links and 8,069 heading anchors. Diff hygiene, prohibited-content and reparse-point scans pass.
 
-No package, daemon, database, bridge, port, namespace, interface, route, flow, tunnel, logical topology, ACL, connection, packet, privilege, external request, production action, formal review, learner evidence or mastery evidence exists. All representative OVS/OVN operation remains unproved.
+No package, daemon, database, bridge, port, namespace, interface, route, flow, tunnel, logical topology, ACL, connection, packet, privilege, external request, production action, formal review, learner evidence or mastery evidence exists. The packaged manuscript remains quarantined outside the canonical registry and website until its separate review, representative-runtime, learner-transfer and publication gates pass.
