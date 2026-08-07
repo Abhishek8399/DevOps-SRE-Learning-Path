@@ -1,0 +1,58 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0229",
+  "lessonId":"LES-0082",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"A team proposes a globally active-active checkout made of twelve microservices, two databases, a queue and three cloud regions. The request says only 'must be scalable and highly available.' The diagram mixes systems, pods and tables, arrows say 'uses,' peak traffic is unknown, provider SLA percentages were averaged, both regions can write the same order, retries have no idempotency key, queue age is not measured, card data crosses an unlabeled boundary, rollback means restoring an old container image, and the selected alternative won a weighted score despite violating a residency rule. Review the design and define the first safe path to a decision.",
+  "directAnswer":"Stop technology selection and turn the request into an owned decision contract. Define actors, checkout success, scope, non-goals, current state, demand distributions, data classes and hard constraints. Write measurable quality scenarios for latency, availability, domain loss, duplicate delivery, recovery and security. Redraw consistent context, container, dynamic and deployment views with labeled directional relationships, protocols, state owners, trust boundaries and text alternatives. Establish one order-writer authority or an explicit conflict protocol, idempotent operation identity and reconciliation. Model failure-aware capacity, serial/parallel dependency availability without averaging SLAs, latency budget, queue backlog age/drain and RPO exposure. Treat residency as a veto constraint, not a weighted preference. Compare feasible options, expose assumptions and sensitivity, record the decision and consequences in an ADR, then validate with representative load/fault/security/recovery tests and a bounded migration, canary and rollback plan.",
+  "foundation":"Architecture is not a collection of products. It is the consequential structure and decisions that connect user outcomes to interfaces, state, deployment and operations under declared conditions. Quality words become useful only when a source produces a stimulus in an environment, the system responds and a measurable threshold determines success.",
+  "reasoningSteps":[
+    "Name the decision owner, affected stakeholders, user operation and business consequence.",
+    "Separate scope, non-goals, assumptions, hard constraints and preferences.",
+    "Quantify steady, peak, burst, growth, size, concurrency and geographic workload.",
+    "Write measurable latency, availability, recovery, security and operability scenarios.",
+    "Map current state and observed limitations before proposing a target state.",
+    "Create consistent C4 context/container views plus dynamic and deployment views.",
+    "Label every relationship with direction, intent, protocol and material contract.",
+    "Identify authoritative state, derived state, writer authority, revisions and reconciliation.",
+    "Define idempotency and ambiguous-outcome behavior before retrying.",
+    "Map failure domains, correlated dependencies, detection and recovery.",
+    "Calculate capacity after the declared failure, not only in healthy averages.",
+    "Calculate queue production, service, oldest age, drain rate and expiry.",
+    "Map identity, card-data flow, trust boundaries, authorization and audit.",
+    "Reject alternatives that violate residency or another hard constraint.",
+    "Compare feasible alternatives and test sensitivity to disputed inputs.",
+    "Record context, options, decision, consequences, owners and supersession.",
+    "Define representative validation, migration, canary, stop, rollback and reconciliation.",
+    "Communicate evidence, unknowns, residual risks and next review by audience."
+  ],
+  "seniorAnswer":"I would reframe the review from 'which boxes are missing' to 'which evidence makes this decision defensible.' The current proposal lacks measurable requirements, workload and authority semantics, so its complexity and availability claim are unsupported. Residency eliminates any option that violates it before weighting. I would establish one order authority and idempotent operation identity, map the checkout and async fulfillment paths at consistent abstraction levels, quantify capacity after a region/domain loss, model correlated dependencies and queue drain, and make card-data trust crossings explicit. The ADR would retain alternatives, assumptions, sensitivity and migration consequences. Approval would remain conditional on representative load, fault, recovery and security evidence; a diagram and spreadsheet score cannot authorize production.",
+  "weakAnswer":"Use Kubernetes in three regions, Kafka for scale, two active databases for availability, retries for resilience and the option with the highest score.",
+  "whyWeak":"It selects products before requirements, invents scale and availability, creates dual-writer ambiguity and retry duplication, ignores queue recovery and card-data authority, and averages away a hard residency constraint.",
+  "evidence":[
+    {"signal":"Owned quality scenarios with workload and response measures","proves":"what the architecture must achieve under named conditions","doesNotProve":"the proposed implementation achieves it"},
+    {"signal":"Context, container, dynamic, deployment, state and trust views","proves":"declared responsibilities, relationships, authority and topology","doesNotProve":"runtime behavior or completeness"},
+    {"signal":"Capacity, availability, latency, queue and RPO calculations","proves":"results under declared mathematical inputs","doesNotProve":"input accuracy, independence or benchmarks"},
+    {"signal":"Representative load, fault, security, restore and user tests","proves":"observed behavior in the tested version and environment","doesNotProve":"all production demand and failures"},
+    {"signal":"ADR with alternatives, vetoes, sensitivity, consequences and owners","proves":"why a decision was made and what remains accepted","doesNotProve":"implementation conformance"}
+  ],
+  "followUps":[
+    {"prompt":"Why not average provider SLAs?","answer":"Availability composes through the actual required/optional topology and often correlated failures. Serial required dependencies multiply under strong independence assumptions; redundant paths need a model of failover, common dependencies, detection and recovery."},
+    {"prompt":"Why is a queue not automatically resilient?","answer":"It durably moves waiting and ownership. If arrival exceeds service, backlog age grows; retries, poison messages, retention, consumer checkpoints and downstream capacity determine whether it protects or delays failure."},
+    {"prompt":"What is wrong with two writers?","answer":"Nothing if the conflict, ordering, uniqueness and reconciliation contract is explicit and tested. It is unsafe when both can accept the same business identity without a deterministic authority or merge rule."},
+    {"prompt":"Why can a weighted matrix mislead?","answer":"Scores depend on assumptions and weights and can average away veto constraints. Use it to expose discussion and sensitivity, then make an accountable decision."}
+  ],
+  "rubric":[
+    {"criterion":"Decision requirements and workload","points":10,"observableEvidence":"Binds owner outcome scope constraints measurable scenarios and demand envelope"},
+    {"criterion":"Views flows and contracts","points":10,"observableEvidence":"Uses consistent views with responsibilities directions protocols state and trust"},
+    {"criterion":"Quantitative reasoning","points":10,"observableEvidence":"Models capacity availability latency queue and recovery assumptions correctly"},
+    {"criterion":"Alternatives risk and decision","points":10,"observableEvidence":"Rejects infeasible options exposes sensitivity risks consequences and ADR state"},
+    {"criterion":"Validation migration and communication","points":10,"observableEvidence":"Defines representative tests safe transition rollback reconciliation and audience-fit narrative"}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

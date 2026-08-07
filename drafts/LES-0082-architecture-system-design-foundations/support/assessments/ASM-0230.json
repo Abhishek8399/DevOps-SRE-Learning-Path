@@ -1,0 +1,63 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0230",
+  "lessonId":"LES-0082",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Using the published fictional checkout packet, produce a complete SCALE architecture review. Explain every calculation and diagram boundary, challenge the durable-queue recommendation, and show which evidence would be required before implementation and production readiness.",
+  "directAnswer":"Create an owned decision contract, measurable quality scenarios and current-state/workload envelope. Produce context, container, dynamic and deployment views plus state and trust flows. Decode the five local calculations without converting their assumptions into facts. Compare synchronous and durable-queue alternatives, identify veto constraints and sensitivity, record a proposed ADR and define a validation/migration/readiness plan. The durable queue scores 3.60 versus 3.20 only under the fictional weights; it changes acknowledgement, freshness, backlog, duplicate, consumer, recovery and operating obligations and therefore remains a human-reviewed hypothesis.",
+  "foundation":"SCALE means Scope, Calculate, Architect, Locate risks and Explain trade-offs. Each stage produces evidence for the next, and validation returns observations that can change the decision.",
+  "reasoningSteps":[
+    "State decision, owner, stakeholders, user success, scope, non-goals, assumptions and hard constraints.",
+    "Turn availability, latency, recovery, security and operability into complete scenarios.",
+    "Record steady, peak, burst, headroom, growth, size and failure demand.",
+    "Draw C4 context and container views with titles, scope, legend and text alternatives.",
+    "Draw one dynamic checkout path and one deployment/failure-domain view.",
+    "Map authoritative order state, idempotency identity, queue record, checkpoints and reconciliation.",
+    "Map human/workload identity, card-data trust crossings, least privilege and audit.",
+    "Explain why 21 healthy instances become 33 across three domains when one loss must retain the target.",
+    "Explain why 99.8001 percent is only serial independent-component arithmetic.",
+    "Explain 24,000 queued items, 48-second peak age and 96-second drain from rates and duration.",
+    "Label 75,000 writes as RPO exposure, not proven data loss.",
+    "Show that the 300 ms component budget closes with zero unallocated margin.",
+    "Recalculate alternative scores and vary reliability/operability weights.",
+    "Identify hard vetoes, risks, sensitivity points, unknowns and owners.",
+    "Write an ADR with proposed state, options, decision, consequences and supersession rule.",
+    "Define load, fault, duplicate, security, restore, migration and user validation.",
+    "Set canary, stop, rollback/forward-recovery and business reconciliation.",
+    "Tailor an executive recommendation and engineering/operations evidence packet."
+  ],
+  "seniorAnswer":"The model recommends a durable queue only inside its declared scoring model. I would not turn that into a product choice until the user acknowledgement contract, fulfillment deadline, duplicate semantics, queue retention, consumer capacity, poison handling, replay and operations ownership are accepted. The capacity result assumes a measured 750 sustainable RPS per instance at the SLO and even placement; the availability result assumes serial required and independent components. Those are validation hypotheses. I would present feasible alternatives, veto constraints and sensitivity in the ADR, then require a representative environment to prove load, one-domain loss, queue recovery, idempotency, restore, security and rollback before readiness.",
+  "weakAnswer":"The durable queue wins 3.60, so choose it and deploy 33 instances.",
+  "whyWeak":"It mistakes fictional inputs and an advisory score for benchmarks and authority, ignores sensitivity and vetoes, and skips interface, state, recovery, migration and validation obligations.",
+  "evidence":[
+    {"signal":"Completed decision contract and quality scenarios","proves":"the intended decision and measurable obligations","doesNotProve":"solution fitness"},
+    {"signal":"C4/dynamic/deployment/state/trust views","proves":"declared design from complementary perspectives","doesNotProve":"implementation matches"},
+    {"signal":"Reproducible local calculation outputs and decoded formulas","proves":"fictional arithmetic and assumptions","doesNotProve":"production demand or performance"},
+    {"signal":"Alternative sensitivity and veto table","proves":"how assumptions affect recommendation and which options are infeasible","doesNotProve":"stakeholder approval"},
+    {"signal":"ADR and validation/readiness plan","proves":"proposed rationale and required evidence","doesNotProve":"tests passed"}
+  ],
+  "followUps":[
+    {"prompt":"Why provision 33 rather than 21 instances?","answer":"Twenty-one cover demand plus headroom while healthy. With three equal domains and one-domain loss tolerated, each surviving pair must retain at least 21 instances, so each domain receives ceil(21/2)=11 and total provisioned is 33."},
+    {"prompt":"What does zero unallocated latency margin mean?","answer":"Every millisecond of the 300 ms target is assigned. Normal variance, unmodeled hops or telemetry overhead can breach it, so the design likely needs margin or changed component budgets and measured percentiles."},
+    {"prompt":"What changes if queue consumers recover at only 500 per second?","answer":"With normal arrival 400, net drain is 100 rather than 250 items per second, so 24,000 items take 240 seconds to drain. Recovery capacity is an architecture requirement."},
+    {"prompt":"When should the ADR be superseded?","answer":"When requirements, constraints, evidence or available options materially change the accepted rationale. Preserve the old accepted record and link a new decision rather than rewriting history."}
+  ],
+  "rubric":[
+    {"criterion":"Scope and requirements","points":10,"observableEvidence":"Complete owned decision contract and measurable quality scenarios"},
+    {"criterion":"Workload and quantitative model","points":10,"observableEvidence":"Correct units formulas assumptions calculations and sensitivity"},
+    {"criterion":"Architecture views","points":10,"observableEvidence":"Consistent context container dynamic deployment state and trust views"},
+    {"criterion":"Interfaces and state","points":10,"observableEvidence":"Explicit protocols acknowledgements authority idempotency consistency and reconciliation"},
+    {"criterion":"Reliability and capacity","points":10,"observableEvidence":"Failure domains dependencies overload latency reserve queue recovery and RPO/RTO"},
+    {"criterion":"Security privacy observability","points":10,"observableEvidence":"Identity trust data lifecycle telemetry missing-data and audit controls"},
+    {"criterion":"Alternatives and risk","points":10,"observableEvidence":"Feasible options vetoes tradeoffs sensitivities unknowns residual risks and owners"},
+    {"criterion":"Decision record","points":10,"observableEvidence":"ADR context options decision consequences status ownership and supersession"},
+    {"criterion":"Validation and transition","points":10,"observableEvidence":"Representative tests migration compatibility canary stop rollback recovery and reconciliation"},
+    {"criterion":"Communication and cleanup","points":10,"observableEvidence":"Audience-fit recommendations uncertainty evidence limits and exact local cleanup"}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
