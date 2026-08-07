@@ -16,7 +16,13 @@ The first order submission also falsified an API-memory assumption: PostgreSQL h
 
 The local PostgreSQL instance uses trust authentication only because it has no network namespace connectivity and no host port. Reusing that setting in any reachable environment is unsafe.
 
-Implemented commands are `check`, `init`, `submit`, `status` and `cleanup`. Relay, consume, batch, reconcile, fault, backup and restore remain planned and must not be represented as complete until their verifier passes.
+Implemented commands are `check`, `up`, `init`, `submit`, `relay`, `consume`, `status` and `cleanup`. Batch, reconcile, fault, backup and restore remain planned and must not be represented as complete until their verifier passes.
+
+`relay --stop-after-publish` deliberately exits 75 after Kafka acknowledges the event but before PostgreSQL marks the outbox row published. Retrying `relay` publishes the same stable event identity again. This models the unavoidable dual-write ambiguity and creates input for the idempotent-consumer stage; it does not claim Kafka transaction or exactly-once effect semantics.
+
+The first retry did commit the outbox acknowledgement, but `psql` appended the `UPDATE 1` command tag to the returned event ID. The client correctly refused the unexpected two-line ownership receipt. Machine-facing PostgreSQL calls now use quiet tuples-only output so the receipt contains only the requested value.
+
+`consume` performs a bounded read from the beginning of the local topic. Every record must expose partition, offset, key and a matching payload event ID. PostgreSQL records every first-seen delivery position but creates the inbox/business effect once per event ID and payload hash. Redis is updated only after that transaction and can be rebuilt by replay. This fixture deliberately avoids the phrase “exactly-once delivery”: Kafka contains duplicates while the effect is idempotent.
 
 Cleanup will remove only these fixed containers and volumes:
 

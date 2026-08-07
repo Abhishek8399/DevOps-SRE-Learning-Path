@@ -12,6 +12,8 @@ Five Python contract tests pass. One synthetic order created one PostgreSQL orde
 
 Two corrected failures are retained: Redis initially exited because a root entrypoint could not change tmpfs ownership after capabilities were dropped, so the verified image UID/GID is now explicit; the first PostgreSQL function called a nonexistent `jsonb_object_length`, so it now counts `jsonb_object_keys` and the failed statement is known to have created no order/outbox state.
 
-Relay publication, crash-window duplication, idempotent consumption, offset/effect ownership, Redis cache convergence, poison quarantine, backlog/skew, analytical quality/lineage, backup/restore/replay, full verifier, assessments and manuscript remain unimplemented. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
+The relay now has an explicit publish-before-outbox-ack interruption. One interrupted attempt plus one retry produced two Kafka records at distinct offsets with one stable event ID. The consumer recorded both delivery positions, created one inbox/effect, classified one delivery as duplicate and converged Redis after the database transaction. A full replay remains harmless and can rebuild the disposable cache.
+
+Poison quarantine, backlog/skew, analytical quality/lineage, backup/restore/replay, full verifier, assessments and manuscript remain unimplemented. Kafka and PostgreSQL each run as one local process and no replication/failure-domain guarantee is proved. No production environment, cloud account, real credential/data, accepted SLO/RPO/RTO, learner result or mastery is claimed.
 
 Publication remains blocked by the complete source lock, guarded project, three assessments, exact-structure manuscript, direct and canonical gates, representative local failure/recovery evidence, formal multidisciplinary review and reviewer-owned independent transfer.

@@ -36,6 +36,16 @@ CREATE TABLE IF NOT EXISTS atlas.consumer_inbox (
     UNIQUE (source_partition, source_offset)
 );
 
+CREATE TABLE IF NOT EXISTS atlas.delivery_attempts (
+    source_partition integer NOT NULL CHECK (source_partition >= 0),
+    source_offset bigint NOT NULL CHECK (source_offset >= 0),
+    event_id text NOT NULL,
+    payload_hash text NOT NULL CHECK (payload_hash ~ '^[0-9a-f]{64}$'),
+    duplicate boolean NOT NULL,
+    observed_at timestamptz NOT NULL,
+    PRIMARY KEY (source_partition, source_offset)
+);
+
 CREATE TABLE IF NOT EXISTS atlas.order_facts (
     order_id text PRIMARY KEY,
     customer_ref text NOT NULL,
@@ -145,6 +155,104 @@ BEGIN
         'order_id', document->>'order_id',
         'event_id', event_identity,
         'replayed', false
+    );
+END;
+$function$;
+
+CREATE OR REPLACE FUNCTION atlas.process_event(document jsonb)
+RETURNS jsonb
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+    event_document jsonb;
+    existing atlas.consumer_inbox%ROWTYPE;
+    observed_at timestamptz := clock_timestamp();
+    duplicate_delivery boolean := false;
+    attempt_inserted integer := 0;
+BEGIN
+    IF document IS NULL OR jsonb_typeof(document) <> 'object' THEN
+        RAISE EXCEPTION 'delivery_document_must_be_object';
+    END IF;
+    IF NOT (
+        document ? 'source_partition'
+        AND document ? 'source_offset'
+        AND document ? 'payload_hash'
+        AND document ? 'event'
+    ) OR (SELECT count(*) FROM jsonb_object_keys(document)) <> 4 THEN
+        RAISE EXCEPTION 'delivery_document_fields_invalid';
+    END IF;
+
+    event_document := document->'event';
+    IF jsonb_typeof(event_document) <> 'object'
+       OR NOT (
+           event_document ? 'schema_version'
+           AND event_document ? 'event_id'
+           AND event_document ? 'event_type'
+           AND event_document ? 'order_id'
+           AND event_document ? 'customer_ref'
+           AND event_document ? 'amount_cents'
+           AND event_document ? 'occurred_at'
+       )
+       OR (SELECT count(*) FROM jsonb_object_keys(event_document)) <> 7
+       OR event_document->>'schema_version' <> '1'
+       OR event_document->>'event_type' <> 'order.accepted.v1' THEN
+        RAISE EXCEPTION 'event_contract_invalid';
+    END IF;
+
+    INSERT INTO atlas.delivery_attempts (
+        source_partition, source_offset, event_id, payload_hash, duplicate, observed_at
+    ) VALUES (
+        (document->>'source_partition')::integer,
+        (document->>'source_offset')::bigint,
+        event_document->>'event_id',
+        document->>'payload_hash',
+        false,
+        observed_at
+    ) ON CONFLICT (source_partition, source_offset) DO NOTHING;
+    GET DIAGNOSTICS attempt_inserted = ROW_COUNT;
+
+    SELECT * INTO existing
+    FROM atlas.consumer_inbox
+    WHERE event_id = event_document->>'event_id'
+    FOR UPDATE;
+
+    IF FOUND THEN
+        IF existing.payload_hash <> document->>'payload_hash' THEN
+            RAISE EXCEPTION 'event_identity_conflict';
+        END IF;
+        duplicate_delivery := true;
+        IF attempt_inserted = 1 THEN
+            UPDATE atlas.delivery_attempts
+            SET duplicate = true
+            WHERE source_partition = (document->>'source_partition')::integer
+              AND source_offset = (document->>'source_offset')::bigint;
+        END IF;
+    ELSE
+        INSERT INTO atlas.consumer_inbox (
+            event_id, payload_hash, source_partition, source_offset, processed_at
+        ) VALUES (
+            event_document->>'event_id',
+            document->>'payload_hash',
+            (document->>'source_partition')::integer,
+            (document->>'source_offset')::bigint,
+            observed_at
+        );
+
+        INSERT INTO atlas.order_facts (
+            order_id, customer_ref, amount_cents, source_event_id, materialized_at
+        ) VALUES (
+            event_document->>'order_id',
+            event_document->>'customer_ref',
+            (event_document->>'amount_cents')::integer,
+            event_document->>'event_id',
+            observed_at
+        );
+    END IF;
+
+    RETURN jsonb_build_object(
+        'event_id', event_document->>'event_id',
+        'order_id', event_document->>'order_id',
+        'duplicate', duplicate_delivery
     );
 END;
 $function$;

@@ -62,6 +62,23 @@ class OrderContractTests(unittest.TestCase):
         with self.assertRaisesRegex(datactl.ContractError, "under project requests"):
             datactl.load_request(datactl.PROJECT_ROOT / "toolchain.env")
 
+    def test_event_identity_is_narrow(self):
+        self.assertIsNotNone(datactl.EVENT_ID.fullmatch("evt-" + "a" * 24))
+        self.assertIsNone(datactl.EVENT_ID.fullmatch("evt-../../unexpected"))
+
+    def test_delivery_line_exposes_partition_offset_key_and_payload(self):
+        line = (
+            'Partition:2|Offset:17|evt-' + 'a' * 24
+            + '|{"event_id":"evt-' + 'a' * 24 + '"}'
+        )
+        match = datactl.DELIVERY_LINE.fullmatch(line)
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group("partition"), "2")
+        self.assertEqual(match.group("offset"), "17")
+
+    def test_malformed_delivery_line_is_rejected_by_pattern(self):
+        self.assertIsNone(datactl.DELIVERY_LINE.fullmatch("message consumed"))
+
 
 if __name__ == "__main__":
     unittest.main()

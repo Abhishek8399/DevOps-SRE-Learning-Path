@@ -47,6 +47,12 @@ ORDER_FIELDS = {
 ORDER_ID = re.compile(r"^ord-[a-z0-9]{8,32}$")
 IDEMPOTENCY_KEY = re.compile(r"^idem-[a-z0-9]{8,48}$")
 CUSTOMER_REF = re.compile(r"^cust-[a-z0-9]{8,32}$")
+EVENT_ID = re.compile(r"^evt-[a-f0-9]{24}$")
+DELIVERY_LINE = re.compile(
+    r"^Partition:(?P<partition>[0-9]+)\|"
+    r"Offset:(?P<offset>[0-9]+)\|"
+    r"(?P<key>evt-[a-f0-9]{24})\|(?P<payload>\{.*\})$"
+)
 
 
 class ContractError(ValueError):
@@ -150,7 +156,7 @@ def require_success(
     return result
 
 
-def inspect_runtime() -> list[dict[str, Any]]:
+def inspect_runtime(*, require_healthy: bool = True) -> list[dict[str, Any]]:
     result = require_success(
         run(["docker", "inspect", *EXPECTED_CONTAINERS], timeout=30),
         "docker inspect",
@@ -165,11 +171,15 @@ def inspect_runtime() -> list[dict[str, Any]]:
             raise RuntimeBoundaryError(f"image mismatch for {name}")
         if record["HostConfig"]["NetworkMode"] != "none":
             raise RuntimeBoundaryError(f"network boundary mismatch for {name}")
-        if not record["State"]["Running"]:
-            raise RuntimeBoundaryError(f"container is not running: {name}")
-        health = record["State"].get("Health", {}).get("Status")
-        if health != "healthy":
-            raise RuntimeBoundaryError(f"container is not healthy: {name} ({health})")
+        labels = record["Config"].get("Labels") or {}
+        if labels.get("com.docker.compose.project") != COMPOSE_PROJECT:
+            raise RuntimeBoundaryError(f"project ownership mismatch for {name}")
+        if require_healthy:
+            if not record["State"]["Running"]:
+                raise RuntimeBoundaryError(f"container is not running: {name}")
+            health = record["State"].get("Health", {}).get("Status")
+            if health != "healthy":
+                raise RuntimeBoundaryError(f"container is not healthy: {name} ({health})")
     return records
 
 
@@ -209,7 +219,7 @@ def inspect_cleanup_boundary() -> None:
         raise RuntimeBoundaryError(
             f"project volume set mismatch: observed={sorted(volumes)}"
         )
-    inspect_runtime()
+    inspect_runtime(require_healthy=False)
     volume_result = require_success(
         run(["docker", "volume", "inspect", *EXPECTED_VOLUMES], timeout=30),
         "Docker volume inspection",
@@ -240,6 +250,7 @@ def postgres(sql: str, *, timeout: int = 60) -> str:
                 "-d",
                 "atlas",
                 "-At",
+                "-q",
             ],
             input_text=sql,
             timeout=timeout,
@@ -268,6 +279,135 @@ def kafka(arguments: Sequence[str], *, timeout: int = 60) -> str:
     return result.stdout.strip()
 
 
+def kafka_produce(event_id: str, payload: dict[str, Any]) -> None:
+    if not EVENT_ID.fullmatch(event_id):
+        raise RuntimeBoundaryError("database returned an invalid event identity")
+    line = f"{event_id}|{canonical_json(payload)}\n"
+    require_success(
+        run(
+            [
+                "docker",
+                "exec",
+                "-i",
+                "atlas-data-kafka",
+                "/opt/kafka/bin/kafka-console-producer.sh",
+                "--bootstrap-server",
+                "127.0.0.1:9092",
+                "--topic",
+                TOPIC,
+                "--producer-property",
+                "acks=all",
+                "--property",
+                "parse.key=true",
+                "--property",
+                "key.separator=|",
+            ],
+            input_text=line,
+            timeout=60,
+        ),
+        "Kafka publish",
+    )
+
+
+def kafka_records() -> list[dict[str, Any]]:
+    result = require_success(
+        run(
+            [
+                "docker",
+                "exec",
+                "atlas-data-kafka",
+                "/opt/kafka/bin/kafka-console-consumer.sh",
+                "--bootstrap-server",
+                "127.0.0.1:9092",
+                "--topic",
+                TOPIC,
+                "--from-beginning",
+                "--timeout-ms",
+                "5000",
+                "--formatter-property",
+                "print.partition=true",
+                "--formatter-property",
+                "print.offset=true",
+                "--formatter-property",
+                "print.key=true",
+                "--formatter-property",
+                "print.value=true",
+                "--formatter-property",
+                "key.separator=|",
+                "--max-messages",
+                "1000",
+            ],
+            timeout=60,
+        ),
+        "Kafka bounded read",
+    )
+    records = []
+    for line in result.stdout.splitlines():
+        match = DELIVERY_LINE.fullmatch(line.strip())
+        if not match:
+            raise RuntimeBoundaryError(f"unrecognized Kafka record: {line!r}")
+        payload = json.loads(match.group("payload"))
+        if not isinstance(payload, dict):
+            raise RuntimeBoundaryError("Kafka event payload must be an object")
+        key = match.group("key")
+        if payload.get("event_id") != key:
+            raise RuntimeBoundaryError("Kafka key and payload event identity differ")
+        records.append(
+            {
+                "source_partition": int(match.group("partition")),
+                "source_offset": int(match.group("offset")),
+                "key": key,
+                "payload": payload,
+            }
+        )
+    return records
+
+
+def sql_for_delivery(record: dict[str, Any]) -> str:
+    payload = record["payload"]
+    document = {
+        "source_partition": record["source_partition"],
+        "source_offset": record["source_offset"],
+        "payload_hash": hashlib.sha256(
+            canonical_json(payload).encode("ascii")
+        ).hexdigest(),
+        "event": payload,
+    }
+    encoded = base64.b64encode(canonical_json(document).encode("ascii")).decode("ascii")
+    return (
+        "SELECT atlas.process_event("
+        f"convert_from(decode('{encoded}','base64'),'UTF8')::jsonb"
+        ");"
+    )
+
+
+def update_cache(event: dict[str, Any]) -> None:
+    order_id = event.get("order_id")
+    if not isinstance(order_id, str) or not ORDER_ID.fullmatch(order_id):
+        raise RuntimeBoundaryError("event order identity is invalid")
+    result = require_success(
+        run(
+            [
+                "docker",
+                "exec",
+                "atlas-data-redis",
+                "redis-cli",
+                "-h",
+                "127.0.0.1",
+                "SET",
+                f"order:{order_id}",
+                canonical_json(event),
+                "EX",
+                "300",
+            ],
+            timeout=30,
+        ),
+        "Redis cache update",
+    )
+    if result.stdout.strip() != "OK":
+        raise RuntimeBoundaryError("Redis cache update returned an unexpected receipt")
+
+
 def command_check(path: Path) -> None:
     document = load_request(path)
     normalized = validate_order(document)
@@ -275,6 +415,62 @@ def command_check(path: Path) -> None:
         f"request=valid order_id={normalized['order_id']} "
         f"payload_sha256={normalized['payload_hash']}"
     )
+
+
+def command_up() -> None:
+    fixed_containers = listed_resources(
+        ["docker", "ps", "-a", "--format", "{{.Names}}"]
+    ) & set(EXPECTED_CONTAINERS)
+    fixed_volumes = listed_resources(
+        ["docker", "volume", "ls", "--format", "{{.Name}}"]
+    ) & set(EXPECTED_VOLUMES)
+    project_containers = listed_resources(
+        [
+            "docker",
+            "ps",
+            "-a",
+            "--filter",
+            f"label=com.docker.compose.project={COMPOSE_PROJECT}",
+            "--format",
+            "{{.Names}}",
+        ]
+    )
+    project_volumes = listed_resources(
+        [
+            "docker",
+            "volume",
+            "ls",
+            "--filter",
+            f"label=com.docker.compose.project={COMPOSE_PROJECT}",
+            "--format",
+            "{{.Name}}",
+        ]
+    )
+    if fixed_containers or fixed_volumes or project_containers or project_volumes:
+        raise RuntimeBoundaryError(
+            "fresh runtime required: "
+            f"containers={sorted(fixed_containers | project_containers)} "
+            f"volumes={sorted(fixed_volumes | project_volumes)}"
+        )
+    require_success(
+        run(
+            [
+                "docker",
+                "compose",
+                "--env-file",
+                str(PROJECT_ROOT / "toolchain.env"),
+                "-f",
+                str(PROJECT_ROOT / "compose.yaml"),
+                "up",
+                "-d",
+                "--wait",
+            ],
+            timeout=180,
+        ),
+        "Compose startup",
+    )
+    inspect_runtime()
+    print("up=pass containers=3 network=none images=pinned health=healthy")
 
 
 def command_init() -> None:
@@ -303,6 +499,63 @@ def command_submit(path: Path) -> None:
     print(f"submit=pass outcome={outcome}")
 
 
+def command_relay(*, stop_after_publish: bool) -> int:
+    inspect_runtime()
+    raw = postgres(
+        "SELECT jsonb_build_object("
+        "'event_id', event_id, 'payload', event_payload"
+        ") FROM atlas.outbox WHERE NOT published "
+        "ORDER BY created_at, event_id LIMIT 1;"
+    )
+    if not raw:
+        print("relay=idle unpublished=0")
+        return 0
+    envelope = json.loads(raw)
+    if set(envelope) != {"event_id", "payload"}:
+        raise RuntimeBoundaryError("outbox envelope fields are invalid")
+    event_id = envelope["event_id"]
+    payload = envelope["payload"]
+    if not isinstance(event_id, str) or not isinstance(payload, dict):
+        raise RuntimeBoundaryError("outbox envelope types are invalid")
+    kafka_produce(event_id, payload)
+    if stop_after_publish:
+        print(f"relay=interrupted event_id={event_id} outbox_ack=false")
+        return 75
+    acknowledged = postgres(
+        "UPDATE atlas.outbox SET published=true, published_at=clock_timestamp() "
+        f"WHERE event_id='{event_id}' AND NOT published RETURNING event_id;"
+    )
+    if acknowledged != event_id:
+        raise RuntimeBoundaryError("outbox acknowledgement lost ownership")
+    print(f"relay=pass event_id={event_id} outbox_ack=true")
+    return 0
+
+
+def command_consume() -> None:
+    inspect_runtime()
+    records = kafka_records()
+    new_count = 0
+    duplicate_count = 0
+    for record in records:
+        raw = postgres(sql_for_delivery(record))
+        outcome = json.loads(raw)
+        if set(outcome) != {"duplicate", "event_id", "order_id"}:
+            raise RuntimeBoundaryError("consumer receipt fields are invalid")
+        if outcome["event_id"] != record["key"]:
+            raise RuntimeBoundaryError("consumer receipt event identity differs")
+        if outcome["duplicate"] is True:
+            duplicate_count += 1
+        elif outcome["duplicate"] is False:
+            new_count += 1
+        else:
+            raise RuntimeBoundaryError("consumer duplicate receipt is not boolean")
+        update_cache(record["payload"])
+    print(
+        f"consume=pass records={len(records)} new={new_count} "
+        f"duplicates={duplicate_count} cache=converged"
+    )
+
+
 def command_status() -> None:
     inspect_runtime()
     counts = postgres(
@@ -310,6 +563,9 @@ def command_status() -> None:
         "'orders', (SELECT count(*) FROM atlas.orders),"
         "'outbox', (SELECT count(*) FROM atlas.outbox),"
         "'unpublished', (SELECT count(*) FROM atlas.outbox WHERE NOT published),"
+        "'deliveries', (SELECT count(*) FROM atlas.delivery_attempts),"
+        "'duplicate_deliveries', (SELECT count(*) FROM atlas.delivery_attempts "
+        "WHERE duplicate),"
         "'inbox', (SELECT count(*) FROM atlas.consumer_inbox),"
         "'facts', (SELECT count(*) FROM atlas.order_facts),"
         "'quarantine', (SELECT count(*) FROM atlas.quarantine)"
@@ -376,9 +632,13 @@ def parser() -> argparse.ArgumentParser:
     commands = result.add_subparsers(dest="command", required=True)
     check = commands.add_parser("check")
     check.add_argument("request", type=Path)
+    commands.add_parser("up")
     commands.add_parser("init")
     submit = commands.add_parser("submit")
     submit.add_argument("request", type=Path)
+    relay = commands.add_parser("relay")
+    relay.add_argument("--stop-after-publish", action="store_true")
+    commands.add_parser("consume")
     commands.add_parser("status")
     commands.add_parser("cleanup")
     return result
@@ -389,10 +649,16 @@ def main() -> int:
     try:
         if arguments.command == "check":
             command_check(arguments.request)
+        elif arguments.command == "up":
+            command_up()
         elif arguments.command == "init":
             command_init()
         elif arguments.command == "submit":
             command_submit(arguments.request)
+        elif arguments.command == "relay":
+            return command_relay(stop_after_publish=arguments.stop_after_publish)
+        elif arguments.command == "consume":
+            command_consume()
         elif arguments.command == "status":
             command_status()
         elif arguments.command == "cleanup":
