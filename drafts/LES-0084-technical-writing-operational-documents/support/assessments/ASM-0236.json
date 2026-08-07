@@ -1,0 +1,54 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0236",
+  "lessonId":"LES-0084",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Using only the fictional LES-0084 packet, create a documentation set for a checkout incident: purpose/audience contract, claim ledger, one architecture or incident-flow diagram with text alternative, a safe runbook excerpt, an append-only ADR, a live incident update, a post-incident learning record, and executive/engineering/operations views. Explain how each artifact is reviewed, rehearsed, refreshed, superseded and archived.",
+  "directAnswer":"Build one canonical evidence packet and several purpose-specific views. Every material claim has a class, source, window, unit, owner and confidence. The diagram declares scope, abstraction, identities, labelled relationships, trust/state boundaries and a text alternative. The runbook gives outcome, prerequisites, authority, exact target, risk, prediction, action, expected output, validation, abort, recovery and escalation. The ADR records context, options, decision, owner, status, evidence, consequences and a later superseding record. The incident update separates impact, facts, hypotheses, actions, unknowns and next update. The post-incident record preserves a normalized evidence timeline, causal/contributing mechanisms, recovery, what worked, verified actions and learning. Audience views link to the same facts and change emphasis without contradiction.",
+  "foundation":"Documents are operational interfaces between people, tools, time periods and authorities. Quality is not literary decoration: it is whether the intended reader can make the intended decision safely from current evidence. Different artifact types serve different decisions, so a runbook, ADR, incident update and post-incident review must not be collapsed into one unmaintainable page.",
+  "reasoningSteps":[
+    "Declare the user, task, decision, urgency, prerequisites, scope, non-goals, owner and review trigger for each artifact.",
+    "Create stable fact and object identities; classify claims as observed, calculated, decided, declared, inferred or unknown.",
+    "Normalize timeline displays to UTC while preserving original source timestamps and offsets.",
+    "Choose a diagram view that answers one question and make every node, relationship, boundary and text alternative meaningful.",
+    "Write procedure steps as prediction-action-observation branches and protect every mutation with target, authority, abort and recovery.",
+    "Keep the accepted ADR immutable and supersede it with a new linked decision when evidence changes.",
+    "Separate live coordination from retrospective causal learning and separate actions from verified effectiveness.",
+    "Project the canonical facts into audience views and check for omissions, conflicts, unsafe detail and stale links.",
+    "Rehearse runbooks with an authorized disposable target; observe usage and review triggers; archive superseded truth visibly.",
+    "Ask an unfamiliar reviewer to execute or decide from the documents without author assistance."
+  ],
+  "seniorAnswer":"I would create a versioned packet rooted in a fact ledger rather than a set of independently edited narratives. The canonical facts would include stable IDs, RFC 3339 timestamps, source/window, claim class, confidence, sensitivity and owner. The live incident view would show current user impact, facts, hypotheses, controlled actions, unknowns, roles and next update; it would not claim the later causal analysis. A one-question flow diagram would trace checkout through admission, API, connection pool and database with labelled protocols/state and a complete text alternative. The runbook would start with authority, exact disposable target and abort conditions, then pair each action with predicted and observed evidence and a bounded recovery branch. The ADR would remain append-only; changed evidence creates a new superseding record. The post-incident record would reconstruct a source-linked UTC timeline, distinguish trigger, mechanism and contributing conditions, record recovery and coordination learning, and make actions testable with owners, dates and effectiveness checks. Executive, security, engineering and operations briefs would query the same fact IDs. CI can check structure, links, timestamps, prohibited secret patterns and required fields, but human review and rehearsal must judge truth, audience fitness and procedure safety. Owners review on system, policy, dependency, risk or incident change; superseded artifacts remain clearly archived and cannot appear as active truth.",
+  "weakAnswer":"Write a long incident document with a diagram, commands, root cause, action items and a summary, then publish it in the wiki.",
+  "whyWeak":"It has no audience or decision boundaries, treats one page as every content type, omits provenance, authority, validation, recovery, redaction, versioning, review and supersession, and assumes publication proves usefulness.",
+  "evidence":[
+    {"signal":"All 24 fictional claims conserve across declared classes and 21 have attributable sources","proves":"The packet's classification and attribution arithmetic.","doesNotProve":"That any claim describes a real incident or that the three non-attributable claims are acceptable."},
+    {"signal":"Four source timestamps normalize into an ordered UTC timeline with 33 minutes of impact","proves":"The parser's chronology under the declared timestamps.","doesNotProve":"Clock accuracy, event causality or complete incident history."},
+    {"signal":"All 12 verifiable steps have checks and all five mutations have protections","proves":"The fixture's declared procedural coverage.","doesNotProve":"That a human can safely execute the procedure on a representative target."},
+    {"signal":"Five audience views retain all 43 required links with zero fixture conflicts","proves":"The modeled projections agree with the canonical fact set.","doesNotProve":"Readability, stakeholder acceptance or absence of confidential information."}
+  ],
+  "followUps":[
+    {"prompt":"Why not put every artifact into one document?","answer":"The reader mode, urgency and maintenance cycle differ. A live update must be brief and current, a runbook must be executable, an ADR preserves one decision, and a post-incident record supports learning. Link them through stable facts rather than forcing incompatible purposes into one page."},
+    {"prompt":"What can automated documentation tests prove?","answer":"They can prove parseability, required fields, link resolution, timestamp shape, identity uniqueness, answer isolation and selected prohibited patterns. They cannot prove factual truth, safe authority, usable procedure, accessible meaning or organizational acceptance."},
+    {"prompt":"How do you prevent an archived runbook from being used?","answer":"Remove it from active navigation and automation, mark status and superseding identity prominently, preserve history under controlled retention, test that active links resolve only to current versions, and ensure operators know the canonical entry point."},
+    {"prompt":"How do you measure documentation value?","answer":"Use task success, time-to-decision, rehearsal defects, failed steps, search success, stale-link/owner rate, incident coordination gaps and action closure/effectiveness. Page views alone do not prove correct use."}
+  ],
+  "rubric":[
+    {"criterion":"Purpose and audience","points":10,"observableEvidence":"Each artifact binds reader, task, decision, urgency, scope, owner and success."},
+    {"criterion":"Claim provenance","points":10,"observableEvidence":"Material claims retain class, source, window, unit, confidence, sensitivity and unknowns."},
+    {"criterion":"Diagram communication","points":10,"observableEvidence":"One-question view has stable identities, labelled relationships/boundaries and complete text alternative."},
+    {"criterion":"Runbook safety","points":10,"observableEvidence":"Prerequisites, authority, target, risk, prediction, validation, abort, recovery and escalation are executable."},
+    {"criterion":"Decision history","points":10,"observableEvidence":"ADR captures context/options/trade-offs/owner/status/evidence and uses linked supersession."},
+    {"criterion":"Incident communication","points":10,"observableEvidence":"Impact, facts, hypotheses, actions, unknowns, roles and cadence remain distinct and safe."},
+    {"criterion":"Post-incident learning","points":10,"observableEvidence":"Evidence timeline, mechanisms, contributing conditions, recovery and verified actions avoid individual blame."},
+    {"criterion":"Audience consistency","points":10,"observableEvidence":"Several views change emphasis while preserving canonical facts and confidentiality boundaries."},
+    {"criterion":"Lifecycle and validation","points":10,"observableEvidence":"Review, rehearsal, triggers, freshness, supersession, archive and automated/human checks are explicit."},
+    {"criterion":"Defense and limitations","points":10,"observableEvidence":"Explains proof boundaries and adapts after a hidden evidence, audience or safety change."}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

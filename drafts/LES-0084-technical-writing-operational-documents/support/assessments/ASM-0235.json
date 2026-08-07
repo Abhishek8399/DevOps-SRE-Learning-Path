@@ -1,0 +1,43 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0235",
+  "lessonId":"LES-0084",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"Review this fictional update: 'Everything is down because the database is overloaded. The team is working hard. No ETA.' Explain what is unsafe or unusable, identify the minimum evidence needed, and produce an internal incident update without inventing facts.",
+  "directAnswer":"The update hides scope, user impact, observation time, evidence, confidence, actions, ownership and next update. 'Everything' and 'database' are unsupported conclusions; effort is not status; 'No ETA' gives stakeholders no communication contract. Publish only known impact and observed signals, label the database explanation as a hypothesis, name current mitigation or investigation, state what remains unknown, identify the incident owner or channel, and commit to the next update time.",
+  "foundation":"Operational writing is a control surface. A reader needs enough current, attributable information to choose an action without confusing observation, inference, decision or unknown. During an incident, concise structure reduces coordination load; unsupported certainty can send responders toward the wrong change and external detail can create security or privacy harm.",
+  "reasoningSteps":[
+    "Identify the reader and decision: responders need coordination; support and leaders need user impact and update cadence.",
+    "Replace universal language with a bounded service, operation, region or cohort and a timestamp with offset.",
+    "Separate observed user or service signals from the database hypothesis and state the evidence source/window.",
+    "Name the active containment or next diagnostic step without publishing credentials, sensitive queries or exploit detail.",
+    "State unknowns and a specific next update time even when restoration time is unknown.",
+    "Keep one canonical fact set so internal, executive and customer views change emphasis but not facts."
+  ],
+  "seniorAnswer":"At 2026-08-07T04:45:00Z, checkout attempts in the fictional west region are failing for an estimated 62 percent of sampled requests; browsing remains available. The API error-rate dashboard and synthetic checkout probe show impact beginning at 04:32Z. Elevated database connection wait is observed, but causality is not established. Operations has paused the latest rollout and is comparing API, pool and database timing while the incident commander controls changes. We do not yet have a restoration estimate. Next update by 05:00Z or sooner if impact changes. This structure binds time, scope, source, confidence, work, authority and cadence without disclosing sensitive implementation detail or claiming a cause.",
+  "weakAnswer":"The database is definitely broken. Engineers are fixing it ASAP and service should be back soon.",
+  "whyWeak":"It upgrades a hypothesis to a cause, gives no attributable observation, scope, user operation, owner or precise time, and replaces an update commitment with vague reassurance. It can misdirect changes and destroy stakeholder trust.",
+  "evidence":[
+    {"signal":"Timestamped synthetic checkout failures and service error rate","proves":"The measured operation and interval are impaired.","doesNotProve":"The database is causal or every user is affected."},
+    {"signal":"Database connection-wait telemetry during the same interval","proves":"A correlated database-facing symptom exists.","doesNotProve":"Whether it is cause, downstream effect or unrelated saturation."},
+    {"signal":"Change record showing a rollout pause under incident authority","proves":"A named containment action was requested or completed.","doesNotProve":"That user impact recovered until the user operation is remeasured."}
+  ],
+  "followUps":[
+    {"prompt":"What should an external update omit?","answer":"Credentials, internal endpoints, customer records, exploitable details, unverified blame and operational commands. It should retain honest user impact, scope, time, current action at an appropriate level, uncertainty and update cadence."},
+    {"prompt":"What if there is no restoration estimate?","answer":"Say that directly and provide the next communication time. Do not convert the absence of an ETA into silence or a fabricated promise."},
+    {"prompt":"When may the database be named as cause?","answer":"After evidence establishes the causal mechanism strongly enough for the document's purpose; the incident update can still say the team is investigating a correlated database signal. The post-incident record must preserve evidence and alternative contributors."}
+  ],
+  "rubric":[
+    {"criterion":"Audience and impact","points":10,"observableEvidence":"Names the reader decision, bounded user operation, scope and observation time."},
+    {"criterion":"Evidence discipline","points":10,"observableEvidence":"Separates observation, hypothesis, action and unknown with attributable evidence."},
+    {"criterion":"Coordination","points":10,"observableEvidence":"Names current work, decision authority or channel and next update cadence."},
+    {"criterion":"Safety","points":10,"observableEvidence":"Avoids secrets, sensitive data, exploit detail, blame and unsupported certainty."},
+    {"criterion":"Usable rewrite","points":10,"observableEvidence":"Produces a concise factual update that supports action without invented facts."}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
