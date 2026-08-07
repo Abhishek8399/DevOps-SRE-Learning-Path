@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: privileged-example
+  namespace: team-a
+spec:
+  containers:
+    - name: app
+      image: atlas-platform-demo:1.0.0
+      imagePullPolicy: Never
+      securityContext:
+        privileged: true

@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-example
+  namespace: team-a
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: unsafe-example
+  template:
+    metadata:
+      labels:
+        app: unsafe-example
+    spec:
+      containers:
+        - name: app
+          image: example.invalid/app:latest

@@ -1,0 +1,1 @@
+"""Local capstone workload package."""

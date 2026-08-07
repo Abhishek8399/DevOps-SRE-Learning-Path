@@ -1,0 +1,19 @@
+{
+  "apiVersion": "platform.atlas.dev/v1alpha1",
+  "kind": "ServiceRequest",
+  "metadata": {
+    "name": "payments-api",
+    "namespace": "team-a",
+    "owner": "payments-team"
+  },
+  "spec": {
+    "image": "atlas-platform-demo:1.0.0",
+    "replicas": 2,
+    "port": 8080,
+    "cpuRequest": "50m",
+    "cpuLimit": "200m",
+    "memoryRequest": "32Mi",
+    "memoryLimit": "128Mi",
+    "exposeLocal": true
+  }
+}

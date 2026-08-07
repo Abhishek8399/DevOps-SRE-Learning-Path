@@ -1,0 +1,43 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: atlas-workload-contract
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        resources: ["deployments"]
+  matchConditions:
+    - name: tenant-namespace
+      expression: "request.namespace.startsWith('team-')"
+  validations:
+    - expression: "has(object.metadata.labels) && 'platform.atlas.dev/owner' in object.metadata.labels"
+      message: "platform.atlas.dev/owner label is required"
+    - expression: "has(object.metadata.labels) && 'platform.atlas.dev/service' in object.metadata.labels"
+      message: "platform.atlas.dev/service label is required"
+    - expression: "object.spec.replicas <= 5"
+      message: "tenant deployments may request at most five replicas"
+    - expression: "object.spec.template.spec.containers.all(c, !c.image.endsWith(':latest'))"
+      message: "latest image tags are forbidden"
+    - expression: "object.spec.template.spec.containers.all(c, has(c.resources) && has(c.resources.requests) && has(c.resources.limits) && 'cpu' in c.resources.requests && 'memory' in c.resources.requests && 'cpu' in c.resources.limits && 'memory' in c.resources.limits)"
+      message: "every container requires CPU and memory requests and limits"
+    - expression: "object.spec.template.spec.containers.all(c, has(c.securityContext) && has(c.securityContext.runAsNonRoot) && c.securityContext.runAsNonRoot == true && has(c.securityContext.allowPrivilegeEscalation) && c.securityContext.allowPrivilegeEscalation == false && has(c.securityContext.readOnlyRootFilesystem) && c.securityContext.readOnlyRootFilesystem == true)"
+      message: "every container must run as non-root without privilege escalation on a read-only root filesystem"
+    - expression: "object.spec.template.spec.containers.all(c, has(c.securityContext.capabilities) && has(c.securityContext.capabilities.drop) && c.securityContext.capabilities.drop.exists(d, d == 'ALL'))"
+      message: "every container must drop ALL Linux capabilities"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: atlas-workload-contract
+spec:
+  policyName: atlas-workload-contract
+  validationActions: ["Deny", "Audit"]
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - key: platform.atlas.dev/owner
+          operator: Exists

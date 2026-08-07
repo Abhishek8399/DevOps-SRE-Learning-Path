@@ -1,0 +1,16 @@
+{
+  "apiVersion": "platform.atlas.dev/v1alpha1",
+  "kind": "CatalogEntry",
+  "metadata": {
+    "name": "payments-api",
+    "namespace": "team-a",
+    "owner": "payments-team"
+  },
+  "spec": {
+    "lifecycle": "experimental",
+    "runbook": "docs/runbooks/payments-api.md",
+    "slo": "99.0% successful readiness probes in the bounded lab window",
+    "source": "git-desired-state",
+    "system": "atlas-local-platform"
+  }
+}
