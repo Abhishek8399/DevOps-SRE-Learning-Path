@@ -1,6 +1,6 @@
 # LES-0092 draft status
 
-Status: **source-locked implementation-and-assessment-complete quarantined capstone; manuscript, review and publication pending**
+Status: **substantive quarantined capstone with source, implementation, assessments and manuscript complete; review and publication pending**
 
 This directory reserves `LES-0092` / `V11-L05` / `CAP-005` for `/book/capstones/secured-ai-incident-assistant`, volume `11-capstones`, order 5 and domain `capstone-engineering`.
 
@@ -14,6 +14,10 @@ Twenty-two contract/adversarial tests pass. The complete absent-to-absent verifi
 
 Twenty primary, official or original-research records (`REF-1180` through `REF-1199`) cover AI risk and secure development, injection, output handling, agency, threat/control taxonomies, retrieval and evaluation, GenAI/log telemetry, SRE monitoring and incident response, runbooks, policy decisions, provenance and signature verification.
 
-The exact eighteen-section manuscript, formal review, execution of the reviewer-owned transfer, optional separately evaluated local-model adapter and publication remain pending.
+The 17,007-word manuscript has one title, exact eighteen major sections and 171 explanatory subsections. It connects the evidence-to-effect architecture, fourteen state authorities, command decoders, decision gates, a complete normal-user Ubuntu lab, production transfer, reliability/security/observability/capacity/cost trade-offs, prevention guidance, retrieval practice, twenty detailed answers, twelve product-company scenarios, a 100-point independent-transfer rubric and twenty annotated sources.
+
+Direct lesson/assessment/reference schemas and exact 3/20 relationships pass. The bounded verifier, canonical content/registry checks, 38 schema tests plus one documented Windows capability skip, 21 reader tests, lint, typecheck, production build, patch-whitespace and tracked personal-name scans pass.
+
+Formal AI/security/SRE/privacy review, execution of the reviewer-owned transfer, optional separately evaluated local-model adapter and publication remain pending.
 
 No model, provider, production telemetry, real runbook, credential, customer data, external effect, learner result, readiness or mastery is claimed.
