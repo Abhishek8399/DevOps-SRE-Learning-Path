@@ -1,6 +1,6 @@
 # LES-0075 draft status
 
-Status: **primary-source lock, guarded offline model and assessment set complete; lesson not yet created**
+Status: **substantive lesson candidate, source lock, guarded offline model, and assessment set complete; quarantined and not published**
 
 This quarantined directory is reserved for `LES-0075` / `V04-L13` / `CHAOS-001`: hypothesis-driven chaos engineering, steady-state evidence, fault selection, blast-radius control, abort and rollback, experiment execution, game days, learning and regression.
 
@@ -10,4 +10,6 @@ A guarded offline model now evaluates a defensible baseline plus forty-six disti
 
 Diagnostic, guided-transfer and independent-transfer records now exist for direct schema review with intended 50/100/100 rubrics. The independent record contains reviewer-owned deliverables and evidence requirements but no answer fields.
 
-No lesson candidate, real experiment, fault, process signal, load, network change, container, Kubernetes action, cloud resource, production action, learner evidence or mastery evidence exists.
+The 15,506-word manuscript has one exact H1, eighteen canonical H2 sections, 161 H3 sections, six declared diagrams, twelve decoded local commands, two labs, five incidents, eighteen complete answers, eight product-company scenarios, an answer-isolated independent challenge and all fifteen locked source links. Direct lesson, assessment and reference schemas pass; relationships are exactly 3/15 and rubrics are 50/100/100. The guarded Ubuntu 24.04 UID-1000 lifecycle passes all forty-seven cases plus unknown-artifact refusal and exact cleanup. Canonical content/registry, schema and reader tests, lint, typecheck and production build pass.
+
+No real experiment, fault, process signal, load, network change, container, Kubernetes action, cloud resource, production action, formal review, learner evidence or mastery evidence exists. The draft remains outside the canonical route and registry until publication review.
