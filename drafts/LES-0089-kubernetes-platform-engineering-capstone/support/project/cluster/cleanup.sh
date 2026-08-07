@@ -20,4 +20,7 @@ if docker ps -a --format '{{.Names}}' | grep -Eq "^${CLUSTER_NAME}(-|$)"; then
   echo "cleanup=failed reason=cluster-container-remains" >&2
   exit 1
 fi
-echo "cleanup=pass cluster=absent state=absent"
+if docker image inspect atlas-platform-demo:1.0.0 >/dev/null 2>&1; then
+  docker image rm atlas-platform-demo:1.0.0 >/dev/null
+fi
+echo "cleanup=pass cluster=absent state=absent workload_image=absent tool_and_node_cache=retained"

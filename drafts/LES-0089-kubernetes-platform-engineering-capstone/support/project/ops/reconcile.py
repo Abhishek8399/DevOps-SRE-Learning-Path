@@ -83,7 +83,10 @@ def reconcile_once(
     digest = hashlib.sha256(desired.encode()).hexdigest()
     environment = {**os.environ, "KUBECONFIG": str(kubeconfig)}
     diff = subprocess.run(
-        ["kubectl", "diff", "--server-side", "--field-manager=atlas-reconciler", "-f", "-"],
+        [
+            "kubectl", "diff", "--server-side", "--field-manager=atlas-reconciler",
+            "--force-conflicts", "-f", "-",
+        ],
         cwd=root, input=desired, text=True, capture_output=True, check=False, env=environment,
     )
     if diff.returncode not in {0, 1}:
