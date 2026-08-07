@@ -1,0 +1,24 @@
+{
+  "lesson_id":"LES-0085",
+  "baseline":"defensible-leadership-system",
+  "gate_groups":[
+    {"boundary":"outcome","cases":["customer-outcome-unbound","success-signal-missing","time-horizon-mixed"]},
+    {"boundary":"evidence","cases":["status-without-source","anecdote-overrules-population","metric-without-denominator","confidence-hidden"]},
+    {"boundary":"ownership","cases":["no-accountable-owner","two-accountable-owners","owner-lacks-authority"]},
+    {"boundary":"decision-rights","cases":["decision-maker-unknown","consulted-treated-as-veto","veto-authority-hidden","reversible-treated-as-irreversible","irreversible-rushed"]},
+    {"boundary":"priority","cases":["everything-priority-one","capacity-not-conserved","reserve-consumed","cost-of-delay-unbound","work-started-without-stop"]},
+    {"boundary":"risk","cases":["risk-is-adjective","impact-population-missing","likelihood-presented-as-fact","risk-owner-missing","residual-risk-hidden"]},
+    {"boundary":"delegation","cases":["task-without-outcome","responsibility-without-authority","authority-without-boundary","information-withheld","resources-missing","checkback-micromanaged"]},
+    {"boundary":"feedback","cases":["feedback-without-observation","person-labelled-instead-of-behavior","impact-invented","expectation-unstated","feedback-publicly-humiliates"]},
+    {"boundary":"mentoring","cases":["mentor-takes-over","answer-before-question","growth-goal-unbound","challenge-without-support"]},
+    {"boundary":"psychological-safety","cases":["dissent-punished","mistake-hidden-by-incentive","question-treated-as-weakness","safety-confused-with-no-accountability"]},
+    {"boundary":"stakeholder","cases":["audience-decision-unbound","status-green-without-evidence","bad-news-delayed","executive-summary-changes-fact"]},
+    {"boundary":"async-communication","cases":["decision-only-in-meeting","channel-authority-unclear","timezone-deadline-unfair","acknowledgement-missing"]},
+    {"boundary":"meeting","cases":["meeting-without-decision","required-reader-absent","agenda-without-prework","action-without-owner"]},
+    {"boundary":"disagreement","cases":["vote-replaces-reasoning","minority-risk-unanswered","consensus-means-unanimity","disagree-and-commit-before-hearing"]},
+    {"boundary":"incident-leadership","cases":["commander-does-operations","freelance-mutation","handoff-unacknowledged","responder-fatigue-hidden","stakeholder-cadence-missing"]},
+    {"boundary":"ethics","cases":["customer-pressure-overrides-harm","confidentiality-broken-for-speed","conflict-of-interest-hidden","fabricated-career-metric"]},
+    {"boundary":"learning","cases":["action-closes-on-activity","retrospective-blames-person","repeat-failure-not-reviewed"]},
+    {"boundary":"baseline","cases":["defensible-leadership-system"]}
+  ]
+}

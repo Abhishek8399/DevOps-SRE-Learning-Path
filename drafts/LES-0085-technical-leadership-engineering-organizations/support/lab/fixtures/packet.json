@@ -1,0 +1,8 @@
+{
+  "packet_id":"fictional-checkout-platform-leadership",
+  "priorities":{"available_points":40,"committed_points":36,"reserve_points":4,"requested_points":58,"stopped_points":18,"selected_outcome_value":85},
+  "delegation":{"outcomes":10,"outcome_defined":10,"authority_bounded":10,"information_available":10,"resources_available":10,"checkback_defined":10,"escalation_defined":10},
+  "decisions":{"total":12,"within_deadline":9,"escalated_by_deadline":3,"unresolved":0,"material_objections_recorded":5},
+  "stakeholders":{"canonical_facts":18,"views":6,"required_links":52,"present_links":52,"conflicts":0},
+  "team_load":{"pages":40,"responders":5,"minimum":7,"maximum":9,"acknowledged_handoffs":8,"required_handoffs":8}
+}
