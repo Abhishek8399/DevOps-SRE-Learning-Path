@@ -1,6 +1,6 @@
 # LES-0085 draft status
 
-Status: **identity, authoritative-source lock, guarded local lab and assessment contract complete; manuscript pending**
+Status: **substantive quarantined candidate; representative organizational evidence, formal review, learner transfer and promotion remain pending**
 
 This quarantined directory reserves `LES-0085` / `V10-L03` / `LDR-001` for evidence-based technical leadership, ownership, prioritization, delegation, influence, disagreement, feedback, mentoring, stakeholder and risk communication. The working route is `/book/architecture/technical-leadership-engineering-organizations`, the volume is `10-architecture-leadership` and the domain is `leadership`.
 
@@ -10,4 +10,8 @@ The completed lab is a fictional, deterministic review system with 72 negative b
 
 The diagnostic and guided-transfer assessments contain complete reasoning, evidence limits and scoring guidance. The independent-transfer assessment intentionally contains no answer fields and requires reviewer-owned unfamiliar changes, follow-up observation and cleanup.
 
-No manuscript, accepted organizational decision, employee record, performance evaluation, stakeholder communication, learner experience evidence or mastery evidence exists yet. Organization-specific handbooks are examples of explicit operating systems, not universal policies.
+The 15,000-word-class manuscript supplies all eighteen required sections, six meaning-explained diagrams, 165 subsections, ten learning objectives, twelve command decoders, two labs, five incident drills, five worked calculations, an outcome/authority/capacity/delegation operating system, stakeholder and influence practice, psychological-safety and accountability boundaries, feedback and mentoring ladders, meeting/async/handoff design, incident command and fatigue relief, twenty fully answered retrieval questions, twelve detailed product-company interview scenarios and a one-hundred-point independent-transfer rubric.
+
+Canonical content and relationship validation passes with 277 Markdown files, 52 local links, 9,129 heading anchors, 108 curriculum identities and 46 of 46 requirements. Content schemas pass 38 tests with one Windows capability skip, reader behavior passes 21 tests, and lint, typecheck and production build pass. The guarded Ubuntu 24.04 lab again passes 73 cases and five calculations with authority, unknown-artifact and cleanup refusal controls.
+
+No accepted organizational decision, employee record, performance evaluation, external stakeholder communication, representative human outcome, learner evidence or mastery evidence exists yet. Organization-specific handbooks are examples of explicit operating systems, not universal policies. Formal technical, operational, security, privacy, accessibility, legal, human-resources and instructional review plus reviewer-scored practice and delayed transfer remain required.
