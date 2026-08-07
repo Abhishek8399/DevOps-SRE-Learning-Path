@@ -1,6 +1,6 @@
 # LES-0077 draft status
 
-Status: **identity, official-source lock, guarded offline lab and assessment set complete; lesson not yet created**
+Status: **identity, official-source lock, guarded offline lab, assessment set and validated manuscript metadata shell complete; substantive lesson sections pending**
 
 This quarantined directory is reserved for `LES-0077` / `V09-L02` / `PRV-002`: OpenStack identity, API, service-catalog, Nova, Placement, Neutron, Glance and Cinder request paths; cells, databases, queues and agents; instance build, scheduling, image, network and volume state; HA, upgrades, incidents and recovery.
 
@@ -10,4 +10,6 @@ A guarded no-service lab now evaluates a defensible baseline plus fifty ordered 
 
 Diagnostic, guided-transfer and independent-transfer records pass direct schemas with 50/100/100 rubrics. The independent record contains reviewer-owned deliverables, evidence requirements and scoring criteria but zero answer-bearing fields.
 
-No lesson, package, OpenStack service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, learner evidence or mastery evidence exists.
+The lesson metadata, six diagrams, twelve command contracts, two lab contracts, five incident cards, 3/15 relationships, limitations and exact H1 pass their schema-level checks. Full lesson validation intentionally reports the eighteen canonical H2 sections as missing until substantive writing is complete.
+
+No substantive lesson section, package, OpenStack service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, learner evidence or mastery evidence exists.
