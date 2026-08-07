@@ -1,0 +1,8 @@
+{
+  "packet_id":"fictional-platform-interview-evidence",
+  "stories":{"total":16,"complete":16,"source_confirmed":16,"confidential":0,"fabricated":0},
+  "claims":{"total":50,"observed":32,"calculated":8,"qualified":6,"unknown":4,"attributable":46},
+  "variants":{"speech_rate_wpm":130,"items":[{"seconds":30,"maximum_words":65,"actual_words":62},{"seconds":120,"maximum_words":260,"actual_words":248},{"seconds":300,"maximum_words":650,"actual_words":621},{"seconds":900,"maximum_words":1950,"actual_words":1810}]},
+  "coverage":{"competencies":12,"required_links":36,"present_links":36,"conflicts":0},
+  "followups":{"total":24,"evidence_consistent":24,"invented_claims":0}
+}

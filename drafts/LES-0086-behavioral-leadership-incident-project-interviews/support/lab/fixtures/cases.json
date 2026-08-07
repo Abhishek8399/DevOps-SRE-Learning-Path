@@ -1,0 +1,25 @@
+{
+  "lesson_id":"LES-0086",
+  "baseline":"truthful-transfer-ready-interview-system",
+  "gate_groups":[
+    {"boundary":"role-fit","cases":["job-description-not-read","must-have-not-mapped","role-level-assumed","company-process-invented"]},
+    {"boundary":"story-selection","cases":["one-story-for-every-question","story-does-not-match-competency","recent-story-overrides-relevant-story","hero-story-hides-team"]},
+    {"boundary":"situation","cases":["context-unbounded","stakes-invented","confidential-context-leaked","situation-consumes-answer"]},
+    {"boundary":"task-authority","cases":["task-unnamed","authority-inflated","team-task-claimed-personally","constraint-omitted"]},
+    {"boundary":"action","cases":["action-hidden-in-we","activity-without-decision","tool-list-replaces-reasoning","unsafe-action-celebrated"]},
+    {"boundary":"reasoning","cases":["assumption-hidden","alternative-omitted","tradeoff-denied","decision-owner-unclear"]},
+    {"boundary":"result","cases":["result-without-window","output-called-outcome","guardrail-omitted","causality-overclaimed"]},
+    {"boundary":"evidence","cases":["metric-without-source","baseline-missing","denominator-missing","estimate-presented-as-fact"]},
+    {"boundary":"contribution","cases":["team-credit-erased","other-person-work-claimed","scope-inflated","title-inflated"]},
+    {"boundary":"failure-learning","cases":["failure-reframed-as-secret-success","blame-replaces-mechanism","learning-without-later-transfer","mistake-consequence-hidden"]},
+    {"boundary":"incident","cases":["impact-unnamed","hypothesis-called-cause","role-and-authority-mixed","recovery-not-verified"]},
+    {"boundary":"ownership","cases":["ownership-means-did-everything","stopped-work-hidden","escalation-called-weakness","responsibility-without-authority"]},
+    {"boundary":"leadership","cases":["influence-called-order","dissent-erased","feedback-labels-person","mentoring-means-takeover"]},
+    {"boundary":"architecture-defense","cases":["requirements-not-clarified","capacity-unit-missing","failure-mode-ignored","tradeoff-collapses-to-best-practice"]},
+    {"boundary":"communication","cases":["answer-has-no-direct-opening","chronology-jumps","technical-detail-without-decision","time-budget-ignored"]},
+    {"boundary":"follow-up","cases":["follow-up-invents-new-fact","challenge-causes-contradiction","limitation-defended-away","changed-constraint-ignored"]},
+    {"boundary":"ethics-confidentiality","cases":["employer-secret-used","customer-data-used","interviewer-question-misrepresented","fabricated-career-metric"]},
+    {"boundary":"ai-boundary","cases":["ai-writes-false-experience","unauthorized-live-assistance","private-resume-uploaded","generated-answer-not-understood"]},
+    {"boundary":"baseline","cases":["truthful-transfer-ready-interview-system"]}
+  ]
+}
