@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0196",
+  "lessonId": "LES-0071",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A payments API uses strong MFA for employees, TLS on every documented connection, encryption at rest, a web application firewall and centralized logs. A support engineer changes an accountId field in an authenticated request and receives another customer's statement. The service account can read every tenant, the API logs only HTTP 200 and username, and the response team proposes rotating passwords and blocking the engineer's IP. Explain the incident, the first safe actions, which controls succeeded or failed, the evidence needed, the recovery proof and the durable redesign.",
+  "directAnswer": "Treat this as a suspected broken object-level authorization and cross-tenant confidentiality incident, not an authentication or password incident. Stop expansion with a narrow deny or feature restriction that preserves evidence and customer availability, protect affected objects, preserve gateway, identity, authorization, application, database and change records, then determine which identities accessed which tenant objects and whether logs can support that claim. Rotation and IP blocking do not repair missing resource authorization. Restore only after server-side subject-action-object-context authorization is enforced, service permissions are reduced, negative cross-tenant tests pass, historical exposure is scoped, the user journey works and monitoring detects future denied and anomalous access.",
+  "foundation": "Authentication establishes confidence in an identity; authorization decides whether that identity may perform this action on this object in this context. TLS protects a connection and encryption at rest protects stored representation under a key model. Neither prevents an authenticated principal or overprivileged service from reading an unauthorized record. A web application firewall may block known request patterns but cannot infer business ownership reliably. Logs support response only when they capture stable actor, action, object, decision, reason, correlation and outcome with protected integrity.",
+  "reasoningSteps": [
+    "Declare the observable fact precisely: an authenticated request for one account identifier returned data belonging to another tenant.",
+    "Do not assume the support engineer is malicious; preserve the actor identity, request path, object identifiers, authorization decision, service identity, database query and response classification.",
+    "Contain at the smallest trustworthy boundary: disable or restrict the vulnerable operation, add a server-side ownership check or temporarily require reviewed access, and avoid destroying sessions or logs unless evidence shows they are compromised.",
+    "Classify affected assets and obligations: statement confidentiality, tenant isolation, auditability, availability and any regulatory or contractual notification paths.",
+    "Trace subject to authenticator to session/token to gateway to API handler to policy decision to service account to query to returned object.",
+    "Separate control claims: MFA may have authenticated the engineer; TLS may have protected transport; encryption at rest may have protected disks; the resource authorization and least-privilege boundaries failed.",
+    "Scope exposure using trustworthy evidence, explicitly recording blind spots caused by sparse logs rather than interpreting missing records as absence.",
+    "Check whether every read path, batch path, export, cache and administrative interface applies the same object-level decision and whether the database can constrain tenant access.",
+    "Repair with deny-by-default policy using stable subject and tenant claims, resource ownership, allowed action and contextual restrictions; reject client-supplied ownership as authority.",
+    "Reduce the service account from all-tenant read to the smallest service and data scope practical, with separate break-glass access for exceptional support.",
+    "Add positive and negative tests, including same tenant, different tenant, missing tenant, altered object, stale role, disabled user and direct backend access.",
+    "Improve logs and detections so authorization allows and denies carry correlation, subject, service identity, normalized object reference, policy version and outcome without exposing statement content.",
+    "Recover by proving the fixed path rejects cross-tenant access, permitted access still works, compromised or excess credentials are handled based on evidence, historical access is assessed and residual uncertainty has an accountable owner."
+  ],
+  "seniorAnswer": "I would lead this as a tenant-isolation incident. The decisive signal is not that a user bypassed login; it is that an authenticated subject could cause the service to return an object outside the subject's authorized tenant. I would narrowly contain the read operation, preserve identity, gateway, application, authorization, datastore, deployment and administrative evidence, and establish a timeline without promising completeness the current logs cannot support. MFA, TLS, storage encryption and the WAF answer different questions and may all have worked. The failed path is object-level authorization, amplified by an all-tenant service identity and weak decision telemetry. I would enforce subject-action-object-context policy on every path, bind tenant context server-side, reduce data-plane permissions, separate audited support break-glass authority, add negative tests and produce decision-quality logs. Recovery requires cross-tenant rejection, valid-tenant success, deployed-policy identity, exposure scoping, user-journey health, alert routing and an owned residual-risk statement; password rotation is conditional on credential evidence, not the default fix.",
+  "weakAnswer": "The engineer got around security, so block the IP, rotate all passwords, add a stricter WAF rule and keep monitoring the 200 responses.",
+  "whyWeak": "It confuses authentication with authorization, treats IP as identity, may destroy useful sessions and expand disruption, does not close the data-access path, does not scope exposure, relies on a pattern filter for business policy and accepts logs that omit the object and decision.",
+  "evidence": [
+    {"signal": "Identity-provider authentication and session/token records", "proves": "Which credential ceremony and identity assertions were observed", "doesNotProve": "That the subject was entitled to the requested account"},
+    {"signal": "Gateway request ID, route, normalized subject and protected object reference", "proves": "Which observed request entered the service boundary", "doesNotProve": "The application's authorization decision or returned content"},
+    {"signal": "Authorization decision with subject, action, object, tenant, policy version and reason", "proves": "What policy decided for the exact operation", "doesNotProve": "That every data path enforced that decision"},
+    {"signal": "Database audit/query evidence and service-identity permissions", "proves": "Which identity reached which data objects within captured scope", "doesNotProve": "Unlogged historical reads did not occur"},
+    {"signal": "Deployment, configuration and policy history", "proves": "When vulnerable and corrected behavior could have existed", "doesNotProve": "Actual exploitation"},
+    {"signal": "Negative cross-tenant test, valid user journey and detection test", "proves": "Observed rejection, preserved intended function and operational visibility after repair", "doesNotProve": "All future variants are impossible"}
+  ],
+  "followUps": [
+    {"prompt": "Why not immediately revoke every user session?", "answer": "Do it if session or identity compromise is plausible, but missing object authorization remains exploitable by newly authenticated sessions. Broad revocation can increase outage scope and erase volatile context; containment must close the vulnerable operation first and preserve evidence."},
+    {"prompt": "Would database row-level security solve the problem?", "answer": "It can provide an important independent data boundary when tenant context is trustworthy and consistently set. It does not replace API action authorization, context validation, administrative paths, cache isolation, correct policy configuration or testing."},
+    {"prompt": "Why is an IP block weak containment?", "answer": "Addresses are shared, mutable and often hidden by proxies; the same actor can change addresses and legitimate users may share one. Block a confirmed source only as defense in depth while closing the subject-action-object path."},
+    {"prompt": "What should an authorization log avoid?", "answer": "Avoid credentials, tokens and sensitive statement content. Record stable pseudonymous or controlled identifiers, action, object class/reference, tenant, policy/version, decision, reason, correlation, service identity and time with integrity and retention controls."}
+  ],
+  "rubric": [
+    {"criterion": "Incident classification and containment", "points": 10, "observableEvidence": "Names object-level authorization and tenant confidentiality, then closes the narrow path safely"},
+    {"criterion": "Control separation", "points": 10, "observableEvidence": "Separates authentication, transport, storage, WAF, authorization and least privilege"},
+    {"criterion": "Evidence and scoping", "points": 10, "observableEvidence": "Traces subject to object and states logging blind spots"},
+    {"criterion": "Recovery proof", "points": 10, "observableEvidence": "Requires negative denial, intended success, exposure assessment and observable operation"},
+    {"criterion": "Durable redesign", "points": 10, "observableEvidence": "Adds server-side policy, bounded service identity, tests, telemetry and owned residual risk"}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

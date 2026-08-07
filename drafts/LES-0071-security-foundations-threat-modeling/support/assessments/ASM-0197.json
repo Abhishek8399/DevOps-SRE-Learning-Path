@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0197",
+  "lessonId": "LES-0071",
+  "type": "guided-transfer",
+  "difficulty": "advanced",
+  "prompt": "Design a security model and response plan for a local-first document service with browser, reverse proxy, API, worker, message queue, object store, metadata database, identity provider, CI/CD system, administrators and backups. Users upload private documents and share selected documents by link. Explain assets, actors, trust boundaries, threats, risk decisions, testable requirements, preventive/detective/response/recovery controls, evidence, residual risk and review triggers. Then handle a scenario where a worker credential is used to download documents outside its assigned jobs while the dashboard remains green.",
+  "directAnswer": "Start from the user operations and assets, not products: private upload, authorized retrieval, deliberate sharing, deletion and recovery; document content, metadata, identities, share capabilities, keys, logs, code and backups. Map every process, data store, flow and trust change, including browser-to-edge, edge-to-API, API-to-queue, worker-to-store, administrative and backup planes. Threat-model unauthorized disclosure, tampering, repudiation, denial, privilege escalation and link abuse, then rank concrete scenarios by plausible actor capability and business impact. Convert accepted priorities into subject-action-object-context requirements with ownership and evidence. A green dashboard during cross-job download is a detection failure, not evidence of safety: contain the worker identity and its independent control path, preserve token issuance, queue, object-store and workload evidence, scope objects, rotate or revoke based on evidence, restore with per-job capabilities and least privilege, test denied access and the intended journey, and own remaining uncertainty.",
+  "foundation": "A useful threat model is an operating model: scope and assumptions, assets and owners, architecture and trust boundaries, actors and capabilities, abuse paths, likelihood and impact, explicit decisions, testable requirements, control owners, observable evidence, incident paths and review triggers. STRIDE can prompt threat discovery; CIA describes security outcomes; neither replaces system-specific risk analysis. Zero trust removes implied trust from network location and requires explicit, least-privilege, continuously evaluated access. Defense in depth uses independent boundaries so one compromised worker credential does not become unrestricted document-store access.",
+  "reasoningSteps": [
+    "Define the in-scope operations and non-goals, including private upload, retrieval, sharing, revocation, deletion, backup and restore.",
+    "Create an asset register with owner, sensitivity, required confidentiality/integrity/availability, retention and recovery needs.",
+    "Map processes, stores, external entities and data flows; label protocol, identity, authorization, encryption, validation and logging at each crossing.",
+    "Mark trust boundaries where authority, ownership, execution, tenant, network, persistence or administrative control changes.",
+    "List actors by capability rather than moral label: anonymous internet user, authenticated owner, link holder, malicious tenant, compromised browser, compromised worker, developer, operator, identity administrator, CI principal and storage administrator.",
+    "Use STRIDE as prompts on each flow and component, then rewrite findings as concrete actor-action-asset-impact scenarios.",
+    "Assess likelihood with exposure, prerequisites, exploitability, control strength and evidence; assess impact across users, business, safety, legal, integrity, availability and recovery.",
+    "Choose avoid, mitigate, transfer or accept with one accountable risk owner, due date, review trigger and evidence requirement.",
+    "Write testable requirements such as: a worker may read only object capabilities for currently leased jobs, expires within minutes, cannot list the bucket and cannot mint another capability.",
+    "Layer controls: scoped workload identity, queue-bound job claims, short-lived object capability, object-store deny-by-default policy, network egress restriction, encryption with managed keys, immutable decision logs, anomaly detection and independent revocation.",
+    "Design logs from investigation questions: which workload identity received which job, requested which object, under which policy, from which workload, with what result and correlation?",
+    "For the incident, freeze new leases to the suspect worker class if safe, revoke the precise credential/capability using an independent plane, preserve volatile and durable evidence, and avoid deleting the worker before capturing state.",
+    "Scope issued tokens, object requests, job ownership, workload placement, image/config changes, administrative activity and log gaps. Do not infer no access from a green availability dashboard.",
+    "Recover by redeploying trusted worker identity, issuing per-job short-lived capability, verifying expected job success and out-of-job denial, checking object inventory and customer impact, and exercising alert routing.",
+    "Record residual uncertainty where logging cannot reconstruct the past, assign business ownership and trigger reassessment on new sharing features, storage-policy changes, identity changes, incidents and periodic review."
+  ],
+  "seniorAnswer": "I would model the service around five user promises: a private document stays private, approved content is retrievable, sharing grants only intended access, revocation takes effect within a stated bound, and recovery does not reintroduce deleted or unauthorized data. The architecture map must include the management, identity, delivery and backup planes—not just the browser path. The worker is a different trust domain from the API and each job is a smaller authorization context. Its identity should authenticate the workload, while a short-lived job-bound capability authorizes only specific object actions; it should not list all objects or use one standing storage credential. The dashboard being green proves availability signals, not confidentiality. During suspected cross-job access I would use an independent control plane to stop new authority and revoke the affected identity, preserve issuance, queue, workload, object-store, policy and change evidence, and scope actual and possible reads. Recovery requires clean workload identity, per-job authorization, intended processing success, explicit cross-job rejection, protected decision logs, working detection and response routing, plus a documented owner for historical blind spots. The threat model is then maintained through named change and incident triggers rather than filed as a one-time diagram.",
+  "weakAnswer": "Put the services on private subnets, enable TLS and storage encryption, add a WAF, rotate the worker password and alert on high CPU.",
+  "whyWeak": "Private networking is not object authorization, encryption does not stop an authorized-but-overbroad identity, a WAF does not govern worker-to-store business rights, password rotation may not revoke all issued authority, and CPU does not detect unauthorized document reads. It also omits assets, owners, evidence, recovery proof and residual risk.",
+  "evidence": [
+    {"signal": "Versioned architecture and data-flow map", "proves": "Declared components, flows, trust changes and assumptions at review time", "doesNotProve": "Deployment matches the model or controls work"},
+    {"signal": "Identity issuance, workload attestation and token/capability metadata", "proves": "Which authority was issued to which observed workload and for what lifetime/scope", "doesNotProve": "Every use was legitimate"},
+    {"signal": "Queue lease and job ownership records", "proves": "Which worker was assigned which job under captured state", "doesNotProve": "Object-store enforcement"},
+    {"signal": "Object-store authorization and data-access records", "proves": "Observed object action, identity, policy result and time within logging scope", "doesNotProve": "Missing or tampered logs represent no access"},
+    {"signal": "Policy tests and deployment identity", "proves": "Expected allow/deny behavior for represented cases and which version was deployed", "doesNotProve": "Complete threat coverage"},
+    {"signal": "Synthetic valid job and cross-job denial", "proves": "Observed availability and isolation after repair", "doesNotProve": "Historical confidentiality"},
+    {"signal": "Revocation and incident exercise timestamps", "proves": "Observed containment path and time under exercise conditions", "doesNotProve": "Every future compromise will behave identically"}
+  ],
+  "followUps": [
+    {"prompt": "Is a pre-signed object URL authentication or authorization?", "answer": "It is normally a bearer capability: possession authorizes bounded actions until expiry under the signer and storage policy. It does not establish the human holder's identity. Scope method, object, lifetime and redistribution assumptions accordingly."},
+    {"prompt": "Where are the most commonly missed trust boundaries?", "answer": "Management APIs, CI/CD and deployment identity, backup/restore, observability pipelines, support tooling, caches, asynchronous queues, third-party callbacks and egress paths are often absent from the main request diagram."},
+    {"prompt": "How should risk be scored?", "answer": "Use a consistent method that exposes assumptions; avoid pretending an ordinal multiplication is physical measurement. Record scenario, actor, prerequisites, exposure, existing control evidence, impact dimensions, uncertainty, decision, owner and trigger."},
+    {"prompt": "What makes containment independent?", "answer": "The team can revoke or restrict the compromised data-plane identity through a separately protected authority with tested access, audit, narrow scope and no dependency on the suspected workload."}
+  ],
+  "rubric": [
+    {"criterion": "Scope and user promises", "points": 10, "observableEvidence": "Defines operations, non-goals and confidentiality/integrity/availability promises"},
+    {"criterion": "Assets and ownership", "points": 10, "observableEvidence": "Classifies data, identity, keys, code, logs and backups with accountable owners"},
+    {"criterion": "Architecture and boundaries", "points": 10, "observableEvidence": "Maps data, management, identity, delivery and recovery paths"},
+    {"criterion": "Actor and threat reasoning", "points": 10, "observableEvidence": "Uses capabilities and concrete abuse scenarios rather than labels"},
+    {"criterion": "Risk decisions", "points": 10, "observableEvidence": "States likelihood, impact, uncertainty, treatment, owner and expiry/trigger"},
+    {"criterion": "Testable requirements", "points": 10, "observableEvidence": "Writes measurable subject-action-object-context and lifecycle requirements"},
+    {"criterion": "Layered controls", "points": 10, "observableEvidence": "Combines identity, authorization, secrets, encryption, segmentation and secure defaults"},
+    {"criterion": "Detection and evidence", "points": 10, "observableEvidence": "Designs decision-quality protected telemetry from investigation questions"},
+    {"criterion": "Incident and recovery", "points": 10, "observableEvidence": "Contains independently, preserves evidence, scopes impact and proves safe restoration"},
+    {"criterion": "Continuous ownership", "points": 10, "observableEvidence": "Records residual risk, blind spots, review triggers and accountable owners"}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}
