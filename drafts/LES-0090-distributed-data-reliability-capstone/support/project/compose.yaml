@@ -1,0 +1,98 @@
+name: atlas-data-capstone
+
+services:
+  postgres:
+    image: postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382
+    container_name: atlas-data-postgres
+    network_mode: none
+    environment:
+      POSTGRES_DB: atlas
+      POSTGRES_USER: atlas
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+      - /var/run/postgresql:size=8m,mode=0775,uid=999,gid=999
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 384m
+    cpus: 1.0
+    restart: "no"
+
+  redis:
+    image: redis:8.6.5-alpine3.23@sha256:cd218f4b106a332c5c992e38a9480bfb9d7e9f8f7b0ec9a0023bfa36d9a408f9
+    container_name: atlas-data-redis
+    network_mode: none
+    user: "999:1000"
+    command:
+      - redis-server
+      - --bind
+      - 127.0.0.1
+      - --protected-mode
+      - "yes"
+      - --save
+      - ""
+      - --appendonly
+      - "no"
+      - --maxmemory
+      - 32mb
+      - --maxmemory-policy
+      - allkeys-lru
+    tmpfs:
+      - /data:size=40m,mode=0770,uid=999,gid=1000
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "127.0.0.1", "PING"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 96m
+    cpus: 0.5
+    restart: "no"
+
+  kafka:
+    image: apache/kafka:4.3.1@sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837
+    container_name: atlas-data-kafka
+    network_mode: none
+    environment:
+      KAFKA_NODE_ID: "1"
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://127.0.0.1:9092,CONTROLLER://127.0.0.1:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@127.0.0.1:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list >/dev/null"]
+      interval: 5s
+      timeout: 15s
+      retries: 20
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 768m
+    cpus: 1.0
+    restart: "no"
+
+volumes:
+  postgres-data:
+    name: atlas-data-postgres-data
+  kafka-data:
+    name: atlas-data-kafka-data

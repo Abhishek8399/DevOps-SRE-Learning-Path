@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "order_id": "ord-00000001",
+  "idempotency_key": "idem-00000001",
+  "customer_ref": "cust-00000001",
+  "amount_cents": 2600
+}
