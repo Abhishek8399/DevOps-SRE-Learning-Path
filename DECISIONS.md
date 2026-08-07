@@ -710,3 +710,11 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Rationale:** Physical actions can be destructive and difficult to reverse. Asset, controller, BMC, firmware, agent, OS and workload identities can drift. Asynchronous actions can complete after client timeout. Enumeration names can select the wrong disk. Corrected errors can trend toward failure. Firmware updates can partially progress. Sanitization completion can be inadequate for the media, data or disposition.
 
 **Consequences:** `LES-0080` remains quarantined despite direct schemas, a guarded 63-case/62-gate no-hardware model, complete Ubuntu 24.04 UID-1000 authority/root/device/unknown-artifact refusal and cleanup lifecycle and canonical regressions passing. The model invokes no hardware/provisioning tool and performs no BMC, server, switch, PXE, disk, firmware, power, burn-in or sanitization action. Representative reviewer-owned disposable lifecycle/recovery/sanitization evidence, technical/security/instructional review, delayed recall and learner evidence remain required.
+
+### DEC-079 - FinOps foundations precede architecture strategy
+
+**Decision:** `FIN-001` depends on `CLD-001`, `OBS-001` and `PERF-001`. `ARC-002` continues to depend on `FIN-001` and uses its cost model inside broader migration, governance, vendor-evaluation and technical-strategy decisions.
+
+**Rationale:** The previous matrix made `FIN-001` depend on `ARC-002` while `ARC-002` already depended on `FIN-001`. That cycle made dependency-order teaching impossible. Learners need cloud billing boundaries, observable usage and performance/capacity reasoning before cost allocation, unit economics, forecasting and reliability-preserving optimization. They do not need the later architecture-strategy synthesis first.
+
+**Consequences:** The scope and acceptance gates of both requirements remain unchanged. The correction only removes the impossible prerequisite cycle and makes `FIN-001` the dependency-ready foundation for `ARC-002`.
