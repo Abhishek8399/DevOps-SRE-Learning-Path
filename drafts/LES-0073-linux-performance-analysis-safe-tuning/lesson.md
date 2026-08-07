@@ -932,3 +932,547 @@ Use it to select source or wait hypotheses. Do not call a function wasteful beca
 TuneD may be absent, inactive or managed elsewhere. An active profile can include many plugins and settings; inspect its exact installed version and content. The sysctl command reads selected VM values only.
 
 Do not mutate from this output. Kernel documentation warns that settings such as cache dropping, dirty thresholds, compaction and reserves can create latency, I/O, OOM or recovery effects. The next artifact is a reviewed experiment plan.
+
+## Decision path
+
+Performance work is controlled investigation, not a hunt for an impressive command. Begin with the user-visible outcome, prove where time or capacity is being lost, and change one owned mechanism only after defining rollback.
+
+### The six-question gate
+
+Ask these questions in order:
+
+1. **What became worse?** Name the operation, percentile, error or throughput change. "The server is slow" is not a measurable symptom.
+2. **When and for whom?** Bound the time window, affected users, traffic class, host, process, container and cgroup.
+3. **Which resource is constrained?** Apply USE: utilization, saturation and errors for CPU, memory, storage and network.
+4. **Where is work spending time?** Separate running, runnable, sleeping, blocked, throttled, reclaiming and remote-wait states.
+5. **What single hypothesis explains the evidence?** A useful hypothesis predicts another observable result.
+6. **What is the smallest reversible experiment?** State success, guardrails, duration, owner and rollback before changing anything.
+
+If question 1 is unanswered, improve measurement. If question 2 is unanswered, fix scope. If question 3 is unanswered, collect broad evidence. If question 4 is unanswered, profile. If question 5 is unanswered, do not tune. If question 6 is unanswered, the change is not production-ready.
+
+### CPU branch
+
+Use this branch when latency rises with CPU demand:
+
+1. Compare application demand, runnable pressure, cgroup throttling and CPU errors.
+2. If CPUs are busy and runnable work is sustained, identify the process and thread consuming time.
+3. If host CPUs appear idle but the service is slow, check quota, affinity, cpuset placement, steal time and namespace scope.
+4. If the process is on-CPU, use bounded on-CPU profiling and find which code path owns samples.
+5. If it is runnable but rarely scheduled, inspect contention, priority, quota, CPU count and co-tenancy.
+6. If it sleeps, CPU tuning is probably the wrong branch; identify the wait.
+
+Do not conclude "add CPU" merely from high utilization. A healthy batch worker may use every assigned cycle. The incident is unmet service demand, saturation or errors, not a large percentage by itself.
+
+### Memory branch
+
+Use this branch when latency, reclaim, faults, OOM events or working-set growth align:
+
+1. Separate application resident memory from page cache, reclaimable kernel memory and swap.
+2. Read `memory.current`, `memory.events`, `memory.stat` and applicable limits at the service cgroup and ancestors.
+3. Compare memory PSI and major-fault/reclaim motion over the incident interval.
+4. Decide whether the problem is a leak, intentional cache, burst above a hard limit, global contention or poor locality.
+5. Prove ownership with process/cgroup data and, when needed, a runtime-specific heap or allocation profile.
+6. Fix retention, bound concurrency, change cache policy, revise an evidenced limit or add capacity.
+
+Small `free` memory is not itself failure. Linux uses otherwise idle memory as cache. Stronger evidence is inability to satisfy demand without sustained reclaim, stalls, swap churn or OOM activity.
+
+### Storage branch
+
+1. Map the application path to mount, filesystem, logical volume and physical or virtual device.
+2. Check filesystem blocks, inodes and errors before device performance.
+3. Correlate application latency with process I/O, device queue/latency and I/O PSI in the same interval.
+4. Distinguish buffered writes from durable completion. A quick write call can be followed by dirty-page throttling or flush latency.
+5. Check remote storage, hypervisor and provider limits when the local device is virtual.
+6. Reduce unnecessary I/O or contention before changing writeback or scheduler policy.
+
+High device utilization is not universal proof of saturation. Modern devices execute requests in parallel. Queueing, latency, achieved throughput, request mix, errors and device service model must agree.
+
+### Network and dependency branch
+
+Network time is distributed across client code, name resolution, connect, TLS, queues, load balancers, service processing and response transfer:
+
+1. Split timings by phase.
+2. Compare retransmission, drop, error and socket-queue deltas in the correct namespace.
+3. Check listener/backlog and connection-pool pressure.
+4. Correlate the same request at load balancer, service and dependency.
+5. Separate network loss from a remote application that accepts quickly but responds slowly.
+6. Test from a comparable path; a laptop probe is not evidence for a pod-to-database route.
+
+Changing TCP buffers before locating the delayed phase can increase memory use while leaving the actual dependency bottleneck untouched.
+
+### Choosing the profiling instrument
+
+Choose the least invasive instrument that answers the current question:
+
+| Question | First instrument | Escalation | Main risk |
+|---|---|---|---|
+| Is work running or waiting? | scheduler/process counters and PSI | off-CPU analysis | wrong PID or cgroup |
+| Which code consumes CPU? | bounded `perf record` | language profiler or eBPF | overhead, symbols, sensitive stacks |
+| Where is wall time lost? | application tracing | off-CPU stack collection | incomplete propagation |
+| Which syscalls dominate? | existing metrics or bounded tracing | filtered `strace` or eBPF | overhead and sensitive arguments |
+| Is memory retained? | cgroup/process trend | runtime heap profiler | pause/overhead and private data |
+| Is storage queueing? | path mapping plus `iostat` and PSI | block tracing | device ambiguity and event volume |
+
+Permission failure is a decision point, not an invitation to bypass controls. Use an approved observability path, staging reproduction or narrowly delegated capability.
+
+### The tuning authorization gate
+
+A tuning change is eligible only when all are true:
+
+- service objective and baseline are recorded;
+- bottleneck and ownership boundary are evidenced;
+- setting semantics match the running kernel/tool version;
+- competing causes have been tested;
+- a representative canary exists;
+- success and abort thresholds are numerical;
+- rollback restores exact prior configuration;
+- configuration ownership and persistence are known;
+- security, capacity and neighbor effects are reviewed;
+- observation and soak have an owner.
+
+If any item is missing, continue diagnosis or improve the experiment plan. Urgency can shorten an experiment, but it does not turn an unexplained change into engineering.
+
+## Guided Ubuntu lab
+
+This lab teaches the investigation contract without stressing your workstation. Its incident is synthetic, deterministic and confined to a temporary directory owned by the current user. It does not change sysctls, cgroups, TuneD profiles, services or package state.
+
+### What the lab proves
+
+The scenario contains misleading snapshots and interval evidence. You must distinguish host capacity from service entitlement, CPU utilization from pressure, memory occupancy from memory stalls, storage activity from confirmed saturation, and correlation from a safe change decision.
+
+The verifier checks 43 behaviors, including lifecycle, refusal boundaries, evidence interpretation, rollback planning and cleanup. Passing proves that the submitted artifact matches this bounded scenario; it does not award production mastery.
+
+### Start from the lesson directory
+
+From WSL Ubuntu:
+
+```bash
+cd /home/your-user/work/DevOps-SRE-Learning-Path/drafts/LES-0073-linux-performance-analysis-safe-tuning
+pwd
+bash lab.sh help
+```
+
+If the clone lives elsewhere, change only the `cd` path. `pwd` prevents running a familiar script from the wrong repository. Read help first so authority and cleanup commands are known.
+
+### Create and inspect the bounded incident
+
+```bash
+bash lab.sh setup
+bash lab.sh status
+bash lab.sh inspect
+```
+
+Setup creates the model under the lab-owned workspace. If it refuses, read the message: unsafe ownership, a symbolic link, unexpected artifact or authority-bearing environment variable must stop the lab. Refusal is a feature; a performance exercise must never inherit credentials or mistake an external path for disposable state.
+
+Build this table from the generated evidence:
+
+| Layer | Baseline | Incident | Interpretation |
+|---|---:|---:|---|
+| User outcome | record value | record value | what failed |
+| Service CPU entitlement | record value | record value | local capacity boundary |
+| CPU pressure/throttling | record delta | record delta | scheduling loss |
+| Memory pressure/events | record delta | record delta | reclaim/OOM evidence |
+| Device latency/queue | record value | record value | storage hypothesis |
+
+The conclusion must connect outcome, scope and mechanism. A host-wide average cannot clear a constrained child cgroup.
+
+### Submit and verify
+
+Follow the schema printed by `inspect`. Record the affected operation and interval; constrained resource and scope; supporting and rejecting evidence; one reversible remediation; success and abort conditions; exact rollback; and post-change observation.
+
+Then run:
+
+```bash
+bash lab.sh verify
+```
+
+Expected final line:
+
+```text
+verify=pass cases=43 refusal=true cleanup=true
+```
+
+Fix the reasoning artifact rather than the verifier. Each failure identifies a contract you missed.
+
+### Cleanup and prove cleanup
+
+```bash
+bash lab.sh cleanup
+bash lab.sh status
+```
+
+Status should report no active incident. Cleanup is part of the lab, just as production experiments require ownership of artifacts, configuration and recovery.
+
+### Optional read-only host observation
+
+```bash
+uptime
+vmstat -w 1 5
+for f in /proc/pressure/cpu /proc/pressure/memory /proc/pressure/io; do
+  printf '\n%s\n' "$f"
+  cat "$f"
+done
+```
+
+These commands are read-only and generate no intentional load. Write down scope and interval before interpreting. WSL and virtualized Ubuntu expose host-mediated behavior, so do not generalize one quiet sample to production.
+
+### Independent lab boundary
+
+The independent assessment has no model answers and must be completed without copying this guided scenario. It requires a new evidence set, explicit uncertainty and a rollback-ready experiment. Publication records availability; only reviewed evidence can support mastery.
+
+## Production transfer
+
+The production version begins before an incident. Define good behavior, preserve comparisons and make every tuning layer reviewable.
+
+### Workload contract and baseline
+
+For each important operation record request identity, user class, latency/error objective, normal and peak rate, concurrency, payload distribution, dependencies, resource entitlement, scaling behavior, and durability/consistency constraints.
+
+A baseline also needs workload and application versions, configuration identity, image/packages, kernel, machine shape, topology, warm-up, duration and raw distributions. A benchmark can look faster by doing less useful work, dropping durability or shifting cost. Compare like with like and label differences.
+
+### Canary, rollout and rollback
+
+1. Capture the effective value and ownership source.
+2. Apply to the smallest representative canary.
+3. Verify the value reached the intended namespace or cgroup.
+4. Observe primary success metric, guardrails and neighbors.
+5. Abort at predefined thresholds.
+6. Restore and verify the prior value if aborted.
+7. Expand gradually only after the observation window.
+8. Soak across representative workload cycles.
+
+Rollback is not "change it back if needed." It is an exact command or configuration revision, permissions, verification query and owner.
+
+### Configuration ownership layers
+
+A value may come from kernel defaults, boot parameters, sysctl fragments, image setup, cloud-init, configuration management, systemd units, TuneD profiles, container runtime policy, Kubernetes manifests or an operator.
+
+Writing `/proc/sys` may be temporary and later overwritten. Editing a managed file may be reverted. Changing the host may not alter a pod quota. The effective value at the actual resource owner is what matters.
+
+### TuneD, sysctl, systemd and cgroups
+
+- **TuneD** coordinates settings through profiles. Review exact installed definitions; a profile name is insufficient.
+- **sysctl** changes kernel policy. Confirm namespace behavior, versioned semantics and persistence owner.
+- **systemd resource control** maps unit policy into cgroups. Inspect unit and ancestor slices.
+- **cgroup v2** provides hierarchical distribution, accounting and events. A child cannot reason about capacity without parents.
+
+Prefer declarative reviewed configuration after an experiment. Record emergency runtime changes in the incident log and reconcile them immediately.
+
+### Kubernetes mapping
+
+| Linux concept | Kubernetes surface | Important caution |
+|---|---|---|
+| cgroup CPU quota | container CPU limit | throttling can occur while node CPU is idle |
+| CPU weight/share | CPU request under contention | request is not a hard runtime reservation in every condition |
+| memory limit/events | container limit and OOM state | pod, container and node scopes differ |
+| process identity | container PID namespace | host and container PIDs differ |
+| filesystem/device | volume, overlay and node device | visible mount may hide remote/shared backend |
+| network namespace | pod interfaces and service path | load balancer and overlay add boundaries |
+
+Correlate pod, workload, node and dependency telemetry. Restarts can erase local evidence, so automate durable collection where policy allows.
+
+### Evidence package
+
+A production review should contain symptom and impact; exact time/scope; baseline and incident evidence; hypothesis and rejected alternatives; proposed single change and ownership layer; security/blast-radius review; canary; success/abort thresholds; rollback; soak; preserved artifacts; final decision and follow-up.
+
+This package turns tuning from personal intuition into an auditable reliability practice.
+
+## Reliability, security, observability, capacity, and cost
+
+Performance choices move risk. A useful improvement raises the required service outcome without silently weakening another property.
+
+### Reliability
+
+Larger queues absorb bursts but can increase tail latency and lost work. More retries improve isolated success yet amplify overload. Higher concurrency raises throughput until a dependency or lock saturates. Evaluate failure behavior, not only steady-state speed.
+
+### Security
+
+Profiles and traces can expose stack names, paths, query shapes, tenant identifiers or arguments. `perf_event_paranoid`, capability and ptrace restrictions exist for good reasons. Use least privilege, bounded retention and approved access. Do not grant broad root or privileged-container access merely to obtain a profile.
+
+### Observability
+
+Instrumentation consumes CPU, memory, storage and network. High-cardinality labels and unbounded traces can become bottlenecks. Measure collection overhead, sample intentionally, preserve timestamps and attach scope identity.
+
+An alert named "CPU high" without outcome, duration and scope encourages unsafe tuning.
+
+### Capacity
+
+Capacity planning links arrival rate, service time, concurrency, queueing and headroom. Plan for failure domains and recovery, not merely average utilization. Forecast CPU, memory working set, storage IOPS/throughput/capacity, network and dependency quotas separately. The first exhausted constraint controls the system.
+
+### Cost
+
+Adding capacity can be the safest mitigation but may hide inefficient code. Tuning engineer time can also cost more than right-sizing a small service. Compare incident/user cost, engineering time, infrastructure delta, operational complexity, risk and expected lifetime. Optimize total service value, not one benchmark or bill.
+
+## Traps and prevention
+
+### High CPU means failure
+
+Utilization shows consumed entitlement, not whether demand waits or objectives fail. Connect outcome, run queue/PSI, throttling and on-CPU ownership.
+
+### Load average is CPU percentage
+
+Linux load includes runnable and certain uninterruptible tasks; it is not normalized. Compare it with entitlement, scheduler evidence and blocked work.
+
+### Low free memory means leak
+
+Useful page cache occupies memory. Inspect working-set trend, reclaim, faults, PSI, swap and OOM events.
+
+### Drop caches to fix the graph
+
+Dropping caches destroys useful state, creates I/O and does not fix retention. Prove the mechanism and use controlled documented experiments.
+
+### Iowait or device utilization is a verdict
+
+Iowait is CPU accounting, and parallel-device utilization is not a universal capacity percentage. Correlate process wait, I/O PSI, mapped-device latency/queue/throughput and errors.
+
+### A wide flame-graph frame is the bug
+
+Width represents samples under collection rules and may include useful work or ancestors. Confirm event, symbols, self/children rules and workload.
+
+### Copy an internet sysctl
+
+Kernel, workload, memory and topology assumptions differ. Require primary documentation, hypothesis, canary and exact rollback.
+
+### Change many values together
+
+Attribution becomes impossible. Change one causal mechanism per experiment whenever feasible.
+
+### Benchmark a different workload
+
+Warm caches, smaller payloads or removed durability manufacture improvement. Version workload, data, warm-up, duration and criteria.
+
+### Bypass profiler controls or skip soak
+
+Elevated observation can expose other processes; short tests miss leaks, fragmentation, periodic work and rare tails. Use approved scoped access and observe representative cycles.
+
+## Memory card and retrieval
+
+### Remember O-SCOPE
+
+- **O - Outcome:** What user operation became worse?
+- **S - Scope:** Which time, host, process, container and cgroup?
+- **C - Constraint:** Which resource shows utilization, saturation or errors?
+- **O - Ownership:** Which code, dependency or policy owns lost time?
+- **P - Prove:** Which observation confirms or rejects the hypothesis?
+- **E - Experiment:** One reversible change with success, abort, rollback and soak.
+
+If every command disappears from memory, keep O-SCOPE. It attaches diagnosis to the user and prevents random tuning.
+
+### Thirty-second retrieval
+
+When somebody says "CPU is high," think:
+
+> Is the user objective failing? Is the service using its entitlement, waiting for it, or throttled? Which code owns on-CPU time? What reversible evidence-backed action changes that mechanism?
+
+When somebody says "memory is full," ask:
+
+> Is useful work stalling, reclaiming, swapping or being killed? Is memory application-owned, cache or kernel-owned? Which cgroup and ancestor define the limit?
+
+When somebody says "disk is slow," ask:
+
+> Which path maps to which device or remote backend? Do application latency, I/O pressure, queue/latency and errors move together?
+
+### Daily practice
+
+For one real dashboard each day, write four sentences:
+
+1. The graph's exact scope and unit are...
+2. It can prove...
+3. It cannot prove...
+4. The next discriminating evidence is...
+
+This small habit builds judgment that tool memorization cannot.
+
+## Complete answers
+
+### 1. What does load average actually tell me?
+
+Linux load average is a smoothed count of runnable tasks plus tasks in certain uninterruptible states. The three values represent approximately 1-, 5- and 15-minute windows. It is not CPU percentage and is not automatically bad.
+
+Interpret it against available and entitled CPUs plus task state. Load 8 on a system entitled to 16 CPUs may be comfortable; load 8 in a container limited to 1 CPU may indicate serious contention. Storage-blocked tasks can also raise load, so check scheduler, PSI, throttling and I/O evidence.
+
+### 2. How can a service be CPU-starved while the host is idle?
+
+The service may have a cgroup quota, cpuset restriction or affinity mask smaller than host capacity. It can consume its assigned runtime, be throttled until the next period and experience latency while other host CPUs remain idle. Inspect the service cgroup and ancestors, not only host `top`.
+
+### 3. When is high CPU healthy?
+
+High CPU is healthy when useful work consumes planned entitlement, objectives remain satisfied, saturation is controlled and failure headroom exists. It is unhealthy when queues or pressure grow, throttling harms latency, errors rise or unexpected code consumes cycles.
+
+### 4. Why is low free memory often normal?
+
+Linux uses otherwise idle memory for page cache and reclaimable data, improving I/O. `MemAvailable`, reclaim/fault behavior, PSI, swap and OOM events are more useful than `MemFree` alone. A leak requires unexplained retained working-set growth over comparable workload, not one low-free snapshot.
+
+### 5. What does PSI add?
+
+Pressure Stall Information measures time tasks are delayed because CPU, memory or I/O resources are unavailable. It connects contention to lost productive time. Read averages and cumulative totals over a defined interval at host and, where available, cgroup scope. PSI identifies pressure, not owning code or final cause.
+
+### 6. Is high iowait proof that storage is slow?
+
+No. Iowait is CPU accounting and has documented limitations, especially with multiple CPUs and tasks. Treat it as a clue. Prove the storage branch using application latency, process I/O, I/O PSI, mapped-device queue/latency/throughput and errors in the same interval.
+
+### 7. Is device percent utilization a capacity percentage?
+
+Not universally. On simple serial devices, near-continuous busy time may align with saturation. Parallel SSD, virtual and remote devices can service multiple operations, and tool semantics vary. Interpret utilization with achieved throughput, queue depth, latency, request sizes, errors and published limits.
+
+### 8. When do I use on-CPU versus off-CPU analysis?
+
+Use on-CPU profiling when the process is running and consuming cycles; it shows sampled execution paths. Use off-CPU analysis when wall time is lost while threads sleep, block, wait on locks or await I/O. First classify the state so you do not profile CPU code while the request waits elsewhere.
+
+### 9. What does a flame graph prove?
+
+A flame graph visualizes aggregated sampled stacks. Width represents sample frequency under selected event, scope and collection method. It shows where samples accumulated, not what is automatically wasteful. Validate symbols, event type, self/children meaning, workload phase, lost samples and profiling overhead.
+
+### 10. Why might perf refuse access?
+
+Kernel policy, capabilities, ownership and container restrictions protect system and process data. Read the error and applicable `perf_event_paranoid` and capability policy. Do not weaken the host casually. Use approved scoped access, existing profiling services or staging reproduction, and protect output artifacts.
+
+### 11. What makes a sysctl change safe?
+
+A safe sysctl change has version-matched documentation, causal hypothesis, current/effective value, configuration owner, representative canary, numerical success and abort thresholds, exact rollback, security/blast-radius review and soak. Applying a popular value without these controls experiments on users.
+
+### 12. How do I compare before and after?
+
+Keep workload, versions, topology, duration and warm-up comparable. Preserve distributions and raw observations, not only averages. Change one mechanism. Use repeated samples and quantify normal variability so random improvement is not mistaken for causation. Monitor guardrails and neighbors with the target metric.
+
+### 13. When should I use TuneD?
+
+Use TuneD when a reviewed profile is the chosen owner for coordinated host tuning. Inspect exact installed profile, included profiles and effective settings. A profile name is not evidence of content. Avoid conflict with other configuration management.
+
+### 14. Why do rollback and soak matter after a fast canary?
+
+A canary can miss slow leaks, periodic contention, fragmentation, rare tail events and dependency effects. Rollback limits damage when those appear. Soak keeps ownership active across representative cycles and turns a short benchmark result into stronger operational evidence.
+
+## Product-company interview
+
+Strong answers reveal a repeatable operating system: clarify outcome, map scope, collect discriminating evidence, protect production, communicate uncertainty and prevent recurrence.
+
+### Framework for an ambiguous incident
+
+Say:
+
+1. "I will define the affected user operation and time window."
+2. "I will compare objectives with deployment, traffic and dependency changes."
+3. "I will apply USE at correct host, cgroup, device and namespace scopes."
+4. "I will classify time as running, runnable, throttled, reclaiming, blocked or remote wait."
+5. "I will test one hypothesis with the least invasive instrument."
+6. "Any change will have a canary, abort threshold, rollback and soak."
+
+This communicates depth without dumping commands.
+
+### P99 doubled but average CPU is 35 percent. What next?
+
+**Model answer:** I would not clear CPU from a host average. I would identify affected endpoint and instances, compare P50/P95/P99, traffic and errors, then inspect per-container quota/throttling, run-queue/PSI and per-thread CPU. I would split traces into queue, application and dependency time. A hot shard, constrained cgroup or lock can damage P99 while fleet average CPU stays low. The time owner determines the next action; a mitigation must be canaried and reversible.
+
+### A team wants to set vm.swappiness to 1 everywhere. How do you respond?
+
+**Model answer:** I would ask what failure it solves and inspect running-kernel documentation, current memory/swap/reclaim evidence and workload. A fleet-wide setting crosses different memory sizes and services. I would build a representative canary with success/abort metrics, OOM and latency guardrails, exact rollback and a declarative owner. If evidence does not show swap policy as causal, I reject the change.
+
+### A container is throttled while its node has idle CPUs. Explain and fix it.
+
+**Model answer:** The container's cgroup quota or cpuset is an independent entitlement boundary. I confirm its cgroup and ancestors, measure `cpu.stat` deltas and pressure aligned to latency, and establish useful on-CPU work rather than spin. A mitigation may revise limit or replicas; durable work may reduce CPU cost, correct requests/limits or scaling. I canary it, watch neighbor capacity and preserve rollback.
+
+### How do you investigate intermittent storage latency?
+
+**Model answer:** I map the request pathname through mount, filesystem, device or remote backend; correlate traces with process I/O, I/O PSI, device latency/queue/throughput and errors; and check dirty writeback or backend throttling. Interval data around the spike matters because averages erase bursts. I do not infer saturation from percent utilization alone. Evidence decides whether to reduce I/O, fix concurrency, change capacity or escalate the backend.
+
+### How do you profile production safely?
+
+**Model answer:** I choose an instrument for a specific on-CPU, off-CPU, allocation or I/O question. I scope PID/cgroup and verify identity, bound duration/frequency, measure overhead, obtain approved permissions, protect artifacts and define abort. I prefer existing continuous profiling or staging when sufficient. I record lost samples and symbol quality so results are not overstated.
+
+### Throughput improves 20 percent but P99 and memory worsen. Do you ship?
+
+**Model answer:** Not automatically. I compare against workload contract and objectives. If tail latency and memory are guardrails, the experiment failed despite throughput. I rollback, identify whether batching, queueing or concurrency shifted cost, then redesign. A valid optimization improves the required outcome within reliability, capacity, security and cost boundaries.
+
+### What interviewers are testing
+
+They test whether you begin from user impact, understand Linux scope and ownership, distinguish evidence from inference, operate safely under pressure, communicate uncertainty and leave the system easier to operate. Memorized flags help only after this judgment is visible.
+
+## Independent transfer and rubric
+
+Complete ASM0204 without using the answers above as a template. It is answer-isolated so reasoning, not recognition, is assessed.
+
+### Scenario contract
+
+You receive an unfamiliar service with a latency regression and evidence from application, cgroup, host, storage and dependency layers. Produce an investigation and experiment packet. State what evidence proves, what remains uncertain and which observation discriminates between remaining hypotheses.
+
+### Required submission
+
+Include:
+
+1. user operation, impact, interval and scope;
+2. architecture and resource-ownership map;
+3. baseline versus incident evidence table;
+4. at least two plausible hypotheses;
+5. evidence rejecting or weakening one hypothesis;
+6. selected profiling method and safety boundary;
+7. one causal remediation experiment;
+8. numerical success and abort thresholds;
+9. exact rollback and verification;
+10. security, reliability, capacity and cost review;
+11. observation and soak plan;
+12. residual uncertainty and next evidence.
+
+### One-hundred-point rubric
+
+| Dimension | Points | Full-credit evidence |
+|---|---:|---|
+| Outcome and scope | 10 | operation, impact, interval and scopes are precise |
+| Architecture and ownership | 10 | process, cgroup, device and dependency boundaries are mapped |
+| Evidence quality | 15 | interval, units, provenance and baseline comparison are correct |
+| Resource reasoning | 15 | USE and task-state reasoning distinguish utilization from saturation/errors |
+| Hypothesis discipline | 10 | alternatives exist and at least one is tested or rejected |
+| Profiling safety | 10 | instrument answers the question with bounded overhead, access and artifacts |
+| Experiment quality | 10 | one causal reversible change with comparable workload |
+| Rollback and guardrails | 10 | numerical abort/success plus restoration verification |
+| Trade-offs and soak | 5 | reliability, security, capacity, cost and observation are addressed |
+| Communication | 5 | decision, uncertainty and next action are reviewable |
+
+Scores: 90-100 shows strong independent production reasoning; 75-89 shows good reasoning with remediable gaps; 60-74 needs guided practice; below 60 requires rebuilding scope, evidence and safety fundamentals before tuning.
+
+Reading this lesson or passing the guided verifier does not create a score. A reviewer evaluates independent evidence against the rubric.
+
+## References and review
+
+### Primary and authoritative sources
+
+- **REF0853 - Canonical Ubuntu performance documentation:** https://ubuntu.com/server/docs/explanation/performance/
+- **REF0854 - Brendan Gregg USE Method:** https://www.brendangregg.com/usemethod.html
+- **REF0855 - Linux kernel Pressure Stall Information:** https://docs.kernel.org/accounting/psi.html
+- **REF0856 - Linux kernel CPU load accounting:** https://docs.kernel.org/admin-guide/cpu-load.html
+- **REF0857 - Linux kernel proc filesystem documentation:** https://docs.kernel.org/filesystems/proc.html
+- **REF0858 - Linux kernel cgroup v2 administration:** https://docs.kernel.org/admin-guide/cgroup-v2.html
+- **REF0859 - Linux kernel perf security:** https://docs.kernel.org/admin-guide/perf-security.html
+- **REF0860 - perf_event_open manual:** https://man7.org/linux/man-pages/man2/perf_event_open.2.html
+- **REF0861 - perf-record manual:** https://man7.org/linux/man-pages/man1/perf-record.1.html
+- **REF0862 - Linux kernel ftrace documentation:** https://docs.kernel.org/trace/ftrace.html
+- **REF0863 - Linux kernel BPF documentation:** https://docs.kernel.org/bpf/index.html
+- **REF0864 - Linux kernel VM sysctl documentation:** https://docs.kernel.org/admin-guide/sysctl/vm.html
+- **REF0865 - Ubuntu TuneD documentation:** https://ubuntu.com/server/docs/explanation/performance/perf-tune-tuned/
+- **REF0866 - systemd resource-control source manual:** https://github.com/systemd/systemd/blob/main/man/systemd.resource-control.xml
+- **REF0867 - Brendan Gregg Flame Graphs:** https://www.brendangregg.com/flamegraphs.html
+
+### Review notes and limitations
+
+This lesson teaches stable reasoning before tool-version details. Kernel, systemd, sysstat, perf, TuneD, runtime and orchestration behavior differ by version and configuration. Verify installed documentation for the target environment before production action.
+
+Commands use placeholders and bounded examples. They do not grant authority to observe other tenants, change production policy or create load. Performance artifacts can contain sensitive operational information and need controlled handling.
+
+The lesson does not replace workload-specific expertise in runtimes, databases, storage arrays, networks, accelerators or cloud-provider limits. Use the same outcome, scope, evidence and experiment method when escalating.
+
+### Final review checklist
+
+Before claiming a conclusion, confirm:
+
+- user outcome and interval are explicit;
+- host and workload scopes are not confused;
+- utilization, saturation and errors were considered;
+- time ownership is evidenced;
+- counters are deltas with units and provenance;
+- profiling is bounded and authorized;
+- the change targets the proven mechanism;
+- canary, abort, rollback and soak are executable;
+- security, neighbors and cost were reviewed;
+- uncertainty and next evidence remain visible.
+
+That is the difference between changing a number and engineering performance.
