@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0254",
+  "lessonId": "LES-0090",
+  "type": "guided-transfer",
+  "difficulty": "expert",
+  "prompt": "Replace this proposed payment-data platform: write the order database and Kafka separately; retry every timeout with a new event ID; call Kafka exactly once; accept any JSON and repair it later; use Redis as the read authority; alert only on broker health and host CPU; scale consumers without inspecting partitions; let failed data-quality checks continue publishing; back up the database without restoring it; and claim zero RPO/RTO from a successful local demo. Produce a safer transactional, streaming, analytical, observability, capacity, security and recovery design with executable evidence gates.",
+  "directAnswer": "Keep the order and atomic outbox in one database transaction, relay with stable event identity and expect duplicate publication. Validate a versioned event contract at ingress, contain incompatible records without logging sensitive payloads and process valid events with an atomic inbox/effect transaction. Treat Kafka as retained transport, PostgreSQL as source/effect authority and Redis as disposable. Partition by an explicit ordering and distribution requirement, measure per-partition lag plus age and model throughput/headroom. Reconcile source and fact identities, counts and monetary totals; fail publication on material quality errors and retain lineage receipts. Trace one operation with low-cardinality identifiers and privacy controls. Encrypt and authorize each boundary in reachable deployments. Define state-class backup and replay procedures, verify signed backup integrity, restore into an isolated target, reconcile and measure declared RPO/RTO. Do not convert local evidence into production guarantees.",
+  "foundation": "Distributed reliability comes from explicit ownership and recovery contracts, not from a product name. A database transaction cannot atomically commit to an unrelated broker without a protocol. Delivery can repeat, ordering is partition-scoped, schemas evolve, derived stores drift and backups are only useful when restorable. SLOs and recovery objectives are promises with eligibility and measured evidence.",
+  "reasoningSteps": [
+    "Define the business operation, source of truth, acceptable duplicate behavior, ordering scope, freshness objective and loss boundary.",
+    "Commit order, idempotency key, request hash and outbox event atomically in PostgreSQL.",
+    "Return the same result for an identical idempotency retry and reject key reuse with changed intent.",
+    "Relay the stable outbox identity to Kafka and acknowledge publication separately, accepting the publish-before-ack duplicate window.",
+    "Version the event envelope and payload; test backward/forward compatibility before producer rollout.",
+    "Validate keys and payload identity before business processing; quarantine only minimal metadata for incompatible records.",
+    "Commit consumer inbox and business effect in one transaction; reject same event identity with changed payload hash.",
+    "Update or rebuild Redis only after the durable effect, with TTL, memory bound and explicit stale/miss behavior.",
+    "Choose partition keys from ordering and cardinality needs; measure end offsets, processed offsets, age, skew and per-partition rate.",
+    "Set capacity from arrival rate, service rate, failure headroom and recovery time rather than aggregate CPU.",
+    "Build facts from governed inputs and block publication when identity, count, control-total, null, duplicate or freshness gates fail.",
+    "Persist lineage receipts with run identity, code/config identity, input/output datasets, watermarks, metrics and status.",
+    "Instrument the user journey across API, transaction, relay, broker, consumer, database and analytical job without high-cardinality metric labels.",
+    "Protect reachable endpoints with authenticated identities, least privilege, encryption, secret rotation and audit logging that excludes sensitive payloads.",
+    "Separate database authority, retained log, derived facts and cache in the recovery inventory.",
+    "Hash and inventory backups, restore into an isolated target, replay from compatible retained watermarks and reconcile before promotion.",
+    "Declare RPO/RTO and SLO measurement windows before tests; publish observed local results with hardware and topology limits.",
+    "Exercise dependency loss, duplicate delivery, poison input, skew, stale cache, quality failure and restore refusal in bounded tests.",
+    "Define incident roles, stop conditions, rollback/roll-forward decisions and evidence preservation.",
+    "Require an independent reviewer to inject unfamiliar faults and sign observable rubric evidence before any capability claim."
+  ],
+  "seniorAnswer": "I would begin with one traceable payment operation and explicit state ownership. PostgreSQL atomically stores the order, idempotency decision and outbox. A relay publishes a stable event ID and may repeat after a publish-before-ack crash; Kafka retention is not described as exactly-once business processing. The consumer validates a versioned contract and atomically stores inbox identity plus effect, making replay harmless while detecting identity conflicts. Redis is a bounded projection rebuilt after durable commits. Partitioning follows ordering and distribution requirements, and capacity uses per-partition arrival/service rates, lag age and failure headroom. The analytical pipeline reconciles identities, rows and money, records lineage and blocks release on material failures or unresolved quarantine. Metrics remain low cardinality; traces/logs carry sampled correlation under privacy controls. Recovery inventory distinguishes source database, event retention, facts and cache. Every backup is hashed, restored to a separate target, replayed from recorded watermarks and reconciled before any switch. The local test can report its measured snapshot equality and restore duration, but not zero production RPO/RTO, HA or capacity. An independent transfer review and ongoing restore drills are required.",
+  "weakAnswer": "Enable Kafka idempotence, add more consumers, store everything in Redis for speed, send bad messages to a dead-letter topic and take daily snapshots. Grafana green means the platform is reliable.",
+  "whyWeak": "It substitutes features for end-to-end guarantees, ignores source/broker dual writes, stable identities, effect idempotency, schema governance, partition limits, quality blocking, privacy, restore validation and truthful objective scope.",
+  "evidence": [
+    {
+      "signal": "A forced crash after broker acknowledgement and before outbox acknowledgement produces two offsets with one event ID and one effect.",
+      "proves": "The tested relay can duplicate delivery while the tested inbox/effect path remains idempotent.",
+      "doesNotProve": "Every producer/consumer implementation or external side effect is exactly once."
+    },
+    {
+      "signal": "Nine records map to one partition, lag rises to nine and returns to zero after processing.",
+      "proves": "The key hash, per-partition telemetry and bounded consumer drain behave as observed.",
+      "doesNotProve": "Production throughput, balanced real keys or unlimited catch-up capacity."
+    },
+    {
+      "signal": "A quality run fails with nine missing facts, then passes with equal counts and monetary totals.",
+      "proves": "The declared reconciliation gate detects and later clears that controlled gap.",
+      "doesNotProve": "Semantic correctness of every field or every downstream dataset."
+    },
+    {
+      "signal": "An incompatible event records only ID, offset, hash and reason while processing continues.",
+      "proves": "The implemented consumer contains that schema failure without copying raw payload into quarantine.",
+      "doesNotProve": "The event has been resolved, retention is safe or all sensitive data is absent from every other log."
+    },
+    {
+      "signal": "A hashed dump restores into an isolated database, replay reconciles and the second restore refuses overwrite.",
+      "proves": "That snapshot and retained log recover the bounded fixture within the observed local time.",
+      "doesNotProve": "Production RPO/RTO, failover, cross-region durability or recovery of events outside recorded retention."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is producer idempotence insufficient?",
+      "answer": "It can reduce broker duplicates for a producer session, but it does not atomically commit a business database and Kafka, nor make a consumer's database or external side effect exactly once."
+    },
+    {
+      "prompt": "Should quarantine automatically retry forever?",
+      "answer": "No. Unsupported schemas need ownership, classification, compatibility correction and governed replay. Blind retry creates hot loops, cost and alert noise without changing the invalid input."
+    },
+    {
+      "prompt": "How should partition count be changed?",
+      "answer": "Through a compatibility plan covering key-to-partition changes, ordering expectations, consumer state, replay, downstream assumptions, staged exposure and rollback or roll-forward. Adding partitions can change key placement."
+    },
+    {
+      "prompt": "What makes a data-quality gate operationally safe?",
+      "answer": "Clear ownership, severity, bounded checks, reproducible metrics, fail/hold behavior, exception governance, lineage receipts and a recovery path that does not edit evidence to make the gate green."
+    },
+    {
+      "prompt": "When can Redis be used during database recovery?",
+      "answer": "As supporting evidence or a disposable acceleration layer if its staleness is understood. It should not silently become the authoritative source unless the architecture explicitly provides equivalent durability and correctness guarantees."
+    },
+    {
+      "prompt": "What is the honest recovery claim after one local restore?",
+      "answer": "The named synthetic snapshot restored and reconciled within the observed time on that topology. Production objectives remain unproved until representative scale, failure domains, people, dependencies and repeated drills are tested."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Transactional correctness",
+      "points": 10,
+      "observableEvidence": "Uses idempotency plus atomic source/outbox and explains the relay ambiguity."
+    },
+    {
+      "criterion": "Streaming correctness",
+      "points": 10,
+      "observableEvidence": "Uses stable identity, versioned contracts, inbox/effect atomicity and conflict detection."
+    },
+    {
+      "criterion": "Partitioning and capacity",
+      "points": 10,
+      "observableEvidence": "Connects ordering, key distribution, lag age, throughput and failure headroom."
+    },
+    {
+      "criterion": "Analytical reliability",
+      "points": 10,
+      "observableEvidence": "Defines blocking identity/count/control-total/freshness gates and lineage receipts."
+    },
+    {
+      "criterion": "State ownership",
+      "points": 10,
+      "observableEvidence": "Separates source, retained log, facts and disposable cache semantics."
+    },
+    {
+      "criterion": "Observability and SLOs",
+      "points": 10,
+      "observableEvidence": "Traces the journey, avoids cardinality traps and defines eligible freshness/correctness objectives."
+    },
+    {
+      "criterion": "Security and privacy",
+      "points": 10,
+      "observableEvidence": "Applies least privilege, encryption, secret hygiene and payload-safe logs/quarantine."
+    },
+    {
+      "criterion": "Recovery engineering",
+      "points": 10,
+      "observableEvidence": "Uses signed backup, isolated restore, retained replay, reconciliation and overwrite refusal."
+    },
+    {
+      "criterion": "Incident and change safety",
+      "points": 10,
+      "observableEvidence": "Defines evidence preservation, bounded faults, stop conditions and reversible recovery."
+    },
+    {
+      "criterion": "Truthful validation",
+      "points": 10,
+      "observableEvidence": "Distinguishes local receipts from HA, capacity, production and mastery claims."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

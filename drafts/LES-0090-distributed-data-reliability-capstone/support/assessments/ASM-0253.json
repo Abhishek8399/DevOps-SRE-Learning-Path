@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0253",
+  "lessonId": "LES-0090",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "Checkout acceptance is healthy and Kafka reports a healthy broker. The source database contains 120 orders and 120 published outbox rows. Kafka end offsets are partition 0=110, partition 1=5 and partition 2=5; the consumer next offsets are 84, 5 and 5. The fact table contains 94 rows, its monetary total is below the source total, Redis contains 94 order keys, quarantine is empty and host CPU is 18%. A manager says data was lost and asks you to add consumer replicas and flush Kafka. Diagnose the system, define the safest restoration path and explain what each signal does and does not prove.",
+  "directAnswer": "The evidence shows 26 retained but unprocessed records, all on partition 0: end offset 110 minus next offset 84. Source and outbox counts match and every outbox row is published, so the demonstrated gap is downstream backlog, not proven source loss. Kafka's healthy status says the single broker answers its health check; it does not say consumers are current or facts are correct. Adding replicas cannot parallelize one partition beyond one active consumer, and flushing Kafka would destroy the retained recovery source. Freeze destructive action, preserve offsets and reconciliation output, verify consumer errors and processing rate, restore the partition-0 consumer safely, watch lag and event-time age converge, replay idempotently, rebuild Redis from durable state, then require source/fact row and monetary control totals to match. Investigate the skewed key strategy and capacity after service restoration.",
+  "foundation": "A retained log has a write position and a read position. Lag is the difference between the broker's next write offset and the consumer's next processed offset for each partition. Partition ordering means only one member of a consumer group actively reads a given partition. A healthy component is not the same as a complete user journey, and a cache is not an authoritative ledger.",
+  "reasoningSteps": [
+    "Scope the affected operation: order acceptance works while analytical materialization and cache freshness lag.",
+    "Preserve source counts, outbox publication state, topic identity, per-partition end offsets, consumer positions, quarantine and time bounds.",
+    "Calculate lag per partition: 26, 0 and 0; do not average away the hot partition.",
+    "Use 120 source rows versus 94 facts to quantify the same 26-row reconciliation gap.",
+    "Treat the lower fact monetary total as a correctness failure even if dashboards and broker health are green.",
+    "Reject the data-loss conclusion until retention coverage, missing identities and restore/replay evidence are checked.",
+    "Reject Kafka flush because the retained records are the safest available input for idempotent recovery.",
+    "Inspect consumer logs, processing errors, group assignment, throttling, downstream database latency and poison handling for partition 0.",
+    "Restore or restart only the failed consumer path with bounded concurrency and an abort condition.",
+    "Replay using stable event identities and an inbox/effect transaction so duplicates do not create duplicate business effects.",
+    "Track both record lag and oldest-event age; record count alone hides time impact under variable traffic.",
+    "Require lag zero, source/fact count and monetary equality, no orphan or mismatch, and representative read validation before closure.",
+    "Rebuild Redis only after the durable effect commits; cache key count is supporting evidence, not the source of truth.",
+    "After restoration, correct the partition-key distribution or increase partitions through a reviewed compatibility migration.",
+    "State residual uncertainty: one local broker health result proves neither replication, retention safety nor production capacity."
+  ],
+  "seniorAnswer": "I would declare a downstream freshness and correctness incident, not proven data loss. Partition 0 has 26 records of lag while partitions 1 and 2 are current. That exactly explains 120 accepted source rows versus 94 materialized facts. Published outbox rows show the relay marked its work complete, and retained broker offsets suggest the missing work is still recoverable. The healthy broker and low host CPU do not establish consumer progress; the bottleneck may be assignment, an exception loop, database latency or one hot key domain. I would preserve the offsets and reconciliation receipt, inspect the partition-0 consumer and downstream commit path, and restore bounded processing without deleting the log. Stable event IDs plus inbox/effect idempotency make replay safe even if the previous consumer committed effects before its offset or acknowledgement. I would monitor lag and oldest-event age, then require exact row counts, control totals, zero mismatches and a representative read. More replicas alone will not help one partition because only one group member owns it. After recovery I would redesign or version the partition key, model per-partition throughput and alert on age and skew before the correctness gap reaches users.",
+  "weakAnswer": "Kafka is healthy, so the database must have lost 26 rows. Flush the topic, add ten consumers and repopulate Redis from whatever facts remain.",
+  "whyWeak": "It ignores the exact per-partition lag, destroys retained recovery data, assumes replicas can parallelize one partition, treats a cache as authority, lacks idempotency and reconciliation and converts a hypothesis into a destructive action.",
+  "evidence": [
+    {
+      "signal": "Partition 0 end offset is 110 and next processed offset is 84.",
+      "proves": "Twenty-six records in that partition are not represented by the recorded next consumer position.",
+      "doesNotProve": "Why processing stopped, whether an unrecorded side effect occurred or whether retention will last indefinitely."
+    },
+    {
+      "signal": "Source and published outbox counts are both 120.",
+      "proves": "The tested source transaction and relay accounting contain one published event per source row.",
+      "doesNotProve": "Every broker publish is unique, every event is valid or every downstream effect exists."
+    },
+    {
+      "signal": "Facts and Redis each contain 94 identities.",
+      "proves": "Those two observed projections have the same cardinality at measurement time.",
+      "doesNotProve": "Their values are correct, the identities match or Redis is authoritative."
+    },
+    {
+      "signal": "Quarantine is empty.",
+      "proves": "No record was recorded by the implemented quarantine path.",
+      "doesNotProve": "Schemas are compatible, because the consumer may not have reached the waiting records."
+    },
+    {
+      "signal": "Broker health passes and host CPU is 18%.",
+      "proves": "The health command answered and aggregate CPU was low during that observation.",
+      "doesNotProve": "Consumer progress, per-partition balance, downstream latency, data correctness or spare capacity at every dependency."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why can ten consumers still leave partition 0 with one active reader?",
+      "answer": "Within one consumer group a partition is assigned to at most one active member at a time to preserve ordering. Extra members remain idle for that partition unless the topic is repartitioned or work is parallelized safely after consumption."
+    },
+    {
+      "prompt": "Why measure oldest-event age as well as record lag?",
+      "answer": "Twenty-six records could represent milliseconds or hours depending on traffic. Age maps backlog to user freshness and an SLO, while count supports throughput and capacity diagnosis."
+    },
+    {
+      "prompt": "When could this become true data loss?",
+      "answer": "If required source events are absent from every authoritative source, backup and retained log beyond the recovery boundary. That conclusion needs identity-level comparison and retention or restore evidence, not count mismatch alone."
+    },
+    {
+      "prompt": "What duplicate window should replay assume?",
+      "answer": "A consumer may commit its database effect and fail before acknowledging position, so the same record can return. The durable inbox and business effect must commit atomically under a stable event identity."
+    },
+    {
+      "prompt": "What closes the incident?",
+      "answer": "Lag and age converge within objective, source and fact identities/counts/control totals reconcile, mismatch and orphan checks pass, cache is rebuilt from durable state and a user-facing read is validated."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Incident scope and arithmetic",
+      "points": 10,
+      "observableEvidence": "Calculates partition lag as 26,0,0 and calls this a downstream freshness/correctness incident."
+    },
+    {
+      "criterion": "Evidence interpretation",
+      "points": 10,
+      "observableEvidence": "Separates source, outbox, broker, consumer, fact, cache and host signals with proof limits."
+    },
+    {
+      "criterion": "Safe recovery",
+      "points": 10,
+      "observableEvidence": "Preserves the log, restores bounded consumption and uses idempotent replay."
+    },
+    {
+      "criterion": "Validation and closure",
+      "points": 10,
+      "observableEvidence": "Requires lag/age convergence, identity and control-total reconciliation and user validation."
+    },
+    {
+      "criterion": "Prevention and capacity",
+      "points": 10,
+      "observableEvidence": "Explains the one-consumer-per-partition limit and proposes reviewed key/partition and alert improvements."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

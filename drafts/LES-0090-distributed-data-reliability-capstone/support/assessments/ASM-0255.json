@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0255",
+  "lessonId": "LES-0090",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "From a fresh clone, independently design, build, operate and defend a local distributed-data reliability system for a reviewer-selected business operation that is not the guided order example. The reviewer changes at least one contract or recovery requirement and injects at least three unfamiliar failures across transaction boundaries, schema evolution, partitioning, consumer effects, analytical quality, cache behavior, observability or restore/replay. Produce a time-stamped evidence packet. Do not copy the guided identifiers or receive a model answer; explain ownership, preserve evidence, make bounded reversible decisions and state every proof limit.",
+  "deliverables": [
+    "A business and reliability brief naming the user operation, authoritative state, ordering scope, duplicate semantics, freshness/correctness SLO, data classification, RPO/RTO and explicit non-goals.",
+    "A source/environment receipt with full Git revision, operating system, Docker and language versions, pinned image names and digests, resource ceilings and proof that no cloud or production target is selected.",
+    "A request and event contract with version policy, compatibility matrix, idempotency behavior, identity-conflict behavior and privacy-safe examples using synthetic data.",
+    "An architecture map from caller through transaction, outbox relay, retained log, partition assignment, consumer inbox/effect, cache, analytical output, quality gate and recovery stores.",
+    "A state-ownership table that names authority, retention, encryption/access assumptions, backup, replay source, loss boundary and validation for every state class.",
+    "A fresh-state transcript proving static checks, unit tests, runtime creation, schema/topic initialization, exact cleanup and no unrelated Docker mutation.",
+    "A forced source/broker ambiguity that creates duplicate delivery while producing one durable business effect under a stable identity.",
+    "A schema incompatibility exercise with minimal-metadata containment, continued valid processing, named ownership and governed replay decision.",
+    "A reviewer-selected skew/backlog exercise with per-partition offsets, record lag, oldest-event age, processing rate, capacity interpretation and safe convergence.",
+    "An analytical evidence packet with source/fact identity comparison, row and domain-specific control totals, duplicate/orphan/mismatch/freshness checks, fail/pass receipts and lineage.",
+    "An observability design covering service, pipeline and user-journey SLIs; metric cardinality; trace/log correlation; privacy; alert routing; dashboards and runbook actions.",
+    "A signed backup manifest, isolated restore, retained-log replay, restored reconciliation, measured local recovery time, overwrite refusal and state promotion decision.",
+    "A production-readiness review covering HA/failure domains, scaling, retention, security, cost, migrations, upgrades, incident command, residual risks and unproved claims.",
+    "A ten-minute staff-level defense in which the reviewer challenges exactly-once language, partition scaling, quality exceptions, cache authority and recovery objectives."
+  ],
+  "evidenceRequirements": [
+    "The reviewer selects the new business operation, altered requirement and hidden failures after work begins; guided request IDs, event IDs and answer text are prohibited.",
+    "Every mutation records timestamp, target, expected effect, blast radius, abort, recovery and exit status before its interpretation.",
+    "The runtime remains local, synthetic and resource-bounded; any real credential, customer record, production endpoint or cloud mutation is a critical safety failure.",
+    "Every image and material tool has an immutable identity or a documented unresolved supply-chain gap.",
+    "Idempotency evidence distinguishes identical retry from same-key changed intent and proves one atomic source/outbox result.",
+    "Duplicate evidence shows distinct transport positions, one stable event identity, one durable effect and a replay that does not change the effect.",
+    "Contract evidence identifies producer/consumer versions and proves an incompatible event does not silently alter business state.",
+    "Quarantine and logs exclude raw sensitive payloads; hashes or identifiers alone are not falsely described as anonymous.",
+    "Backlog evidence is per partition and includes age or event-time impact; aggregate CPU and total records alone are insufficient.",
+    "Capacity claims show arrival rate, service rate, partition parallelism, steady-state headroom and catch-up time after the injected outage.",
+    "Quality evidence blocks publication on a material failure and preserves the failed receipt; editing thresholds after seeing the result requires reviewer approval.",
+    "Lineage links run identity, code/config identity, input/output datasets, watermarks, quality status and immutable evidence.",
+    "The backup is integrity-checked before restore, the target is isolated, the only active copy is never overwritten and promotion requires reconciliation.",
+    "RPO/RTO conclusions use declared boundaries and observed measurements; local results are never generalized to production topology.",
+    "At least one plausible hypothesis is falsified with evidence and at least one initially chosen action is changed safely when new evidence appears.",
+    "Cleanup selects only descriptor-owned resources and proves containers, volumes and temporary recovery artifacts absent without global prune.",
+    "The reviewer owns hidden faults, answer isolation and rubric scoring; generated narrative or self-attestation cannot establish mastery."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Business and reliability contract",
+      "points": 10,
+      "observableEvidence": "Defines authority, semantics, ordering, SLO, RPO/RTO, classification and non-goals for the new operation."
+    },
+    {
+      "criterion": "Reproducibility and safety",
+      "points": 10,
+      "observableEvidence": "A fresh clone reproduces pinned bounded local state and returns to exact absence without external mutation."
+    },
+    {
+      "criterion": "Transactional and event correctness",
+      "points": 10,
+      "observableEvidence": "Proves idempotency, atomic outbox, stable identity, duplicate-safe effect and identity-conflict rejection."
+    },
+    {
+      "criterion": "Schema and privacy governance",
+      "points": 10,
+      "observableEvidence": "Handles version compatibility and containment without leaking payloads or silently corrupting state."
+    },
+    {
+      "criterion": "Partition and capacity reasoning",
+      "points": 10,
+      "observableEvidence": "Explains per-partition ordering, skew, lag age, rate, parallelism and recovery headroom from measured evidence."
+    },
+    {
+      "criterion": "Analytical quality and lineage",
+      "points": 10,
+      "observableEvidence": "Blocks a bad output, reconciles domain controls and links fail/pass runs to immutable inputs and code."
+    },
+    {
+      "criterion": "Observability and incident leadership",
+      "points": 10,
+      "observableEvidence": "Scopes user impact, preserves evidence, falsifies a hypothesis and uses actionable low-cardinality signals."
+    },
+    {
+      "criterion": "Recovery engineering",
+      "points": 10,
+      "observableEvidence": "Verifies backup integrity, isolated restore, replay, reconciliation, overwrite refusal and measured objective boundary."
+    },
+    {
+      "criterion": "Production and security judgment",
+      "points": 10,
+      "observableEvidence": "Identifies HA, access, encryption, retention, migration, cost and operational blockers without unsafe shortcuts."
+    },
+    {
+      "criterion": "Independent defense and truthfulness",
+      "points": 10,
+      "observableEvidence": "Defends trade-offs and proof limits under reviewer challenge without copying the guided solution or claiming unreviewed mastery."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}
