@@ -16,6 +16,6 @@ The 15,298-word manuscript reserves `LES-0081` / `V05-L20` at `/book/infrastruct
 
 The assessment set contains a detailed fifty-point anomaly diagnosis, a hundred-point guided operating-model design and a hundred-point reviewer-only independent transfer. Rubrics total 50/100/100 and the independent record has zero answer-bearing fields.
 
-Repository-wide validation passes at 265 Markdown files, 51 local links, 8,430 heading anchors, requirements 46/46 and canonical registry 21/63/172. Schema tests report 38 passes and one Windows symlink-capability skip; reader tests report 21/21; lint, typecheck and production build pass.
+Repository-wide validation after the tracker update passes at 265 Markdown files, 51 local links, 8,431 heading anchors, requirements 46/46 and canonical registry 21/63/172. Schema tests report 38 passes and one Windows symlink-capability skip; reader tests report 21/21; lint, typecheck and production build pass.
 
 No provider bill, current price, purchase, budget action, cloud credential, Kubernetes cost runtime, production optimization, realized saving, formal review, learner evidence or mastery evidence exists. The synthetic prices and decisions are not provider or production evidence.
