@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -62,6 +63,9 @@ DELIVERY_LINE = re.compile(
     r"Offset:(?P<offset>[0-9]+)\|"
     r"(?P<key>evt-[a-f0-9]{24})\|(?P<payload>\{.*\})$"
 )
+END_OFFSET_LINE = re.compile(
+    r"^orders\.v1:(?P<partition>[0-9]+):(?P<end_offset>[0-9]+)$"
+)
 
 
 class ContractError(ValueError):
@@ -74,6 +78,44 @@ class RuntimeBoundaryError(RuntimeError):
 
 def canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+
+
+def kafka_murmur2(data: bytes) -> int:
+    """Return Kafka's unsigned murmur2 key hash."""
+    length = len(data)
+    value = 0x9747B28C ^ length
+    index = 0
+    while length >= 4:
+        chunk = (
+            data[index]
+            | (data[index + 1] << 8)
+            | (data[index + 2] << 16)
+            | (data[index + 3] << 24)
+        )
+        chunk = (chunk * 0x5BD1E995) & 0xFFFFFFFF
+        chunk ^= chunk >> 24
+        chunk = (chunk * 0x5BD1E995) & 0xFFFFFFFF
+        value = (value * 0x5BD1E995) & 0xFFFFFFFF
+        value ^= chunk
+        index += 4
+        length -= 4
+    if length == 3:
+        value ^= data[index + 2] << 16
+    if length >= 2:
+        value ^= data[index + 1] << 8
+    if length >= 1:
+        value ^= data[index]
+        value = (value * 0x5BD1E995) & 0xFFFFFFFF
+    value ^= value >> 13
+    value = (value * 0x5BD1E995) & 0xFFFFFFFF
+    value ^= value >> 15
+    return value & 0xFFFFFFFF
+
+
+def kafka_partition(key: str, partition_count: int = 3) -> int:
+    if partition_count <= 0:
+        raise ValueError("partition_count must be positive")
+    return (kafka_murmur2(key.encode("utf-8")) & 0x7FFFFFFF) % partition_count
 
 
 def validate_order(document: Any) -> dict[str, Any]:
@@ -343,6 +385,36 @@ def kafka_produce(event_id: str, payload: dict[str, Any]) -> None:
         ),
         "Kafka publish",
     )
+
+
+def kafka_end_offsets() -> dict[int, int]:
+    result = require_success(
+        run(
+            [
+                "docker",
+                "exec",
+                "atlas-data-kafka",
+                "/opt/kafka/bin/kafka-get-offsets.sh",
+                "--bootstrap-server",
+                "127.0.0.1:9092",
+                "--topic",
+                TOPIC,
+            ],
+            timeout=60,
+        ),
+        "Kafka end-offset read",
+    )
+    offsets: dict[int, int] = {}
+    for line in result.stdout.splitlines():
+        match = END_OFFSET_LINE.fullmatch(line.strip())
+        if not match:
+            raise RuntimeBoundaryError(f"unrecognized Kafka end offset: {line!r}")
+        offsets[int(match.group("partition"))] = int(match.group("end_offset"))
+    if set(offsets) != {0, 1, 2}:
+        raise RuntimeBoundaryError(
+            f"Kafka partition set mismatch: observed={sorted(offsets)}"
+        )
+    return offsets
 
 
 def kafka_records() -> list[dict[str, Any]]:
@@ -636,6 +708,157 @@ def command_inject_poison() -> None:
     print(f"inject-poison=pass event_id={event_id} expected=quarantine")
 
 
+def command_seed_backlog(*, count: int, partition: int) -> None:
+    inspect_runtime()
+    if not 1 <= count <= 30:
+        raise ContractError("count must be between 1 and 30")
+    if partition not in {0, 1, 2}:
+        raise ContractError("partition must be 0, 1 or 2")
+    selected: list[str] = []
+    candidate = 1
+    while len(selected) < count and candidate <= 10_000:
+        suffix = f"seed{candidate:08d}"
+        document = {
+            "schema_version": 1,
+            "order_id": f"ord-{suffix}",
+            "idempotency_key": f"idem-{suffix}",
+            "customer_ref": f"cust-{suffix}",
+            "amount_cents": 1000 + candidate,
+        }
+        normalized = validate_order(document)
+        event_id = "evt-" + hashlib.md5(
+            f"{document['order_id']}:{normalized['payload_hash']}".encode("ascii"),
+            usedforsecurity=False,
+        ).hexdigest()[:24]
+        candidate += 1
+        if kafka_partition(event_id) != partition:
+            continue
+        outcome = json.loads(postgres(sql_for_order(normalized)))
+        if outcome != {
+            "event_id": event_id,
+            "order_id": document["order_id"],
+            "replayed": False,
+        }:
+            raise RuntimeBoundaryError("seed submission receipt differs")
+        kafka_produce(event_id, json.loads(postgres(
+            "SELECT event_payload FROM atlas.outbox "
+            f"WHERE event_id='{event_id}' AND NOT published;"
+        )))
+        acknowledged = postgres(
+            "UPDATE atlas.outbox SET published=true, published_at=clock_timestamp() "
+            f"WHERE event_id='{event_id}' AND NOT published RETURNING event_id;"
+        )
+        if acknowledged != event_id:
+            raise RuntimeBoundaryError("seed outbox acknowledgement differs")
+        selected.append(event_id)
+    if len(selected) != count:
+        raise RuntimeBoundaryError("could not construct the requested partition backlog")
+    observed = kafka_end_offsets()
+    print(
+        "seed-backlog=pass "
+        f"published={count} target_partition={partition} "
+        f"end_offsets={canonical_json(observed)}"
+    )
+
+
+def command_backlog() -> None:
+    inspect_runtime()
+    end_offsets = kafka_end_offsets()
+    raw = postgres(
+        "WITH observed AS ("
+        "SELECT source_partition,source_offset FROM atlas.delivery_attempts "
+        "UNION ALL "
+        "SELECT source_partition,source_offset FROM atlas.quarantine "
+        "WHERE source_partition IS NOT NULL AND source_offset IS NOT NULL"
+        "), watermarks AS ("
+        "SELECT source_partition,max(source_offset) AS max_offset "
+        "FROM observed GROUP BY source_partition"
+        ") SELECT coalesce(jsonb_object_agg(source_partition,max_offset),'{}'::jsonb) "
+        "FROM watermarks;"
+    )
+    watermarks = {int(key): int(value) for key, value in json.loads(raw).items()}
+    partitions: dict[str, dict[str, int]] = {}
+    total_lag = 0
+    for partition in sorted(end_offsets):
+        next_offset = watermarks.get(partition, -1) + 1
+        lag = max(0, end_offsets[partition] - next_offset)
+        total_lag += lag
+        partitions[str(partition)] = {
+            "end_offset": end_offsets[partition],
+            "next_offset": next_offset,
+            "lag": lag,
+        }
+    total_records = sum(end_offsets.values())
+    dominant_share = (
+        round(100 * max(end_offsets.values()) / total_records, 1)
+        if total_records
+        else 0.0
+    )
+    report = {
+        "total_lag": total_lag,
+        "total_records": total_records,
+        "dominant_partition_share_pct": dominant_share,
+        "partitions": partitions,
+    }
+    print(f"backlog=pass report={canonical_json(report)}")
+
+
+def command_reconcile() -> int:
+    inspect_runtime()
+    raw = postgres(
+        "SELECT jsonb_build_object("
+        "'source_rows',(SELECT count(*) FROM atlas.orders),"
+        "'fact_rows',(SELECT count(*) FROM atlas.order_facts),"
+        "'source_amount_cents',(SELECT coalesce(sum(amount_cents),0) FROM atlas.orders),"
+        "'fact_amount_cents',(SELECT coalesce(sum(amount_cents),0) FROM atlas.order_facts),"
+        "'missing_facts',(SELECT count(*) FROM atlas.orders o "
+        "LEFT JOIN atlas.order_facts f USING(order_id) WHERE f.order_id IS NULL),"
+        "'orphan_facts',(SELECT count(*) FROM atlas.order_facts f "
+        "LEFT JOIN atlas.orders o USING(order_id) WHERE o.order_id IS NULL),"
+        "'value_mismatches',(SELECT count(*) FROM atlas.orders o "
+        "JOIN atlas.order_facts f USING(order_id) "
+        "WHERE o.customer_ref<>f.customer_ref OR o.amount_cents<>f.amount_cents),"
+        "'unpublished',(SELECT count(*) FROM atlas.outbox WHERE NOT published),"
+        "'quarantined',(SELECT count(*) FROM atlas.quarantine)"
+        ");"
+    )
+    metrics = json.loads(raw)
+    passed = (
+        metrics["source_rows"] == metrics["fact_rows"]
+        and metrics["source_amount_cents"] == metrics["fact_amount_cents"]
+        and all(
+            metrics[name] == 0
+            for name in (
+                "missing_facts",
+                "orphan_facts",
+                "value_mismatches",
+                "unpublished",
+                "quarantined",
+            )
+        )
+    )
+    run_id = f"run-{uuid.uuid4().hex}"
+    encoded = base64.b64encode(canonical_json(metrics).encode("ascii")).decode("ascii")
+    status = "pass" if passed else "fail"
+    receipt = postgres(
+        "INSERT INTO atlas.pipeline_runs("
+        "run_id,job_name,input_dataset,output_dataset,status,metrics,"
+        "started_at,completed_at"
+        ") VALUES ("
+        f"'{run_id}','order_fact_reconciliation','atlas.orders',"
+        f"'atlas.order_facts','{status}',"
+        f"convert_from(decode('{encoded}','base64'),'UTF8')::jsonb,"
+        "clock_timestamp(),clock_timestamp()"
+        ") RETURNING run_id;"
+    )
+    if receipt != run_id:
+        raise RuntimeBoundaryError("lineage receipt identity differs")
+    print(
+        f"reconcile={status} run_id={run_id} metrics={canonical_json(metrics)}"
+    )
+    return 0 if passed else 4
+
+
 def command_status() -> None:
     inspect_runtime()
     counts = postgres(
@@ -648,7 +871,8 @@ def command_status() -> None:
         "WHERE duplicate),"
         "'inbox', (SELECT count(*) FROM atlas.consumer_inbox),"
         "'facts', (SELECT count(*) FROM atlas.order_facts),"
-        "'quarantine', (SELECT count(*) FROM atlas.quarantine)"
+        "'quarantine', (SELECT count(*) FROM atlas.quarantine),"
+        "'pipeline_runs', (SELECT count(*) FROM atlas.pipeline_runs)"
         ");"
     )
     topic = kafka(["--describe", "--topic", TOPIC])
@@ -720,6 +944,11 @@ def parser() -> argparse.ArgumentParser:
     relay.add_argument("--stop-after-publish", action="store_true")
     commands.add_parser("consume")
     commands.add_parser("inject-poison")
+    seed_backlog = commands.add_parser("seed-backlog")
+    seed_backlog.add_argument("--count", type=int, default=9)
+    seed_backlog.add_argument("--partition", type=int, default=0)
+    commands.add_parser("backlog")
+    commands.add_parser("reconcile")
     commands.add_parser("status")
     commands.add_parser("cleanup")
     return result
@@ -742,6 +971,12 @@ def main() -> int:
             command_consume()
         elif arguments.command == "inject-poison":
             command_inject_poison()
+        elif arguments.command == "seed-backlog":
+            command_seed_backlog(count=arguments.count, partition=arguments.partition)
+        elif arguments.command == "backlog":
+            command_backlog()
+        elif arguments.command == "reconcile":
+            return command_reconcile()
         elif arguments.command == "status":
             command_status()
         elif arguments.command == "cleanup":

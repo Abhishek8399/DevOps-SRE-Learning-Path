@@ -67,6 +67,17 @@ CREATE TABLE IF NOT EXISTS atlas.quarantine (
 
 ALTER TABLE atlas.quarantine ADD COLUMN IF NOT EXISTS event_id text;
 
+CREATE TABLE IF NOT EXISTS atlas.pipeline_runs (
+    run_id text PRIMARY KEY CHECK (run_id ~ '^run-[0-9a-f]{32}$'),
+    job_name text NOT NULL CHECK (job_name = 'order_fact_reconciliation'),
+    input_dataset text NOT NULL CHECK (input_dataset = 'atlas.orders'),
+    output_dataset text NOT NULL CHECK (output_dataset = 'atlas.order_facts'),
+    status text NOT NULL CHECK (status IN ('pass', 'fail')),
+    metrics jsonb NOT NULL,
+    started_at timestamptz NOT NULL,
+    completed_at timestamptz NOT NULL CHECK (completed_at >= started_at)
+);
+
 CREATE OR REPLACE FUNCTION atlas.submit_order(document jsonb)
 RETURNS jsonb
 LANGUAGE plpgsql

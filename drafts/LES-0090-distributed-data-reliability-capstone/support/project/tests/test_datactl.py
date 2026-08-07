@@ -16,6 +16,14 @@ def order():
 
 
 class OrderContractTests(unittest.TestCase):
+    def test_kafka_murmur2_matches_stable_vectors(self) -> None:
+        self.assertEqual(datactl.kafka_murmur2(b""), 275646681)
+        self.assertEqual(datactl.kafka_murmur2(b"abc"), 479470107)
+
+    def test_kafka_partition_rejects_invalid_partition_count(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must be positive"):
+            datactl.kafka_partition("evt-" + ("a" * 24), 0)
+
     def test_valid_order_has_stable_hash(self):
         first = datactl.validate_order(order())
         second = datactl.validate_order(dict(reversed(list(order().items()))))

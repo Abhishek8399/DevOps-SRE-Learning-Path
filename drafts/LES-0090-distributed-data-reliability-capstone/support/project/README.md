@@ -26,6 +26,10 @@ The first retry did commit the outbox acknowledgement, but `psql` appended the `
 
 `inject-poison` publishes one synthetic JSON object with an unsupported event schema/type. `consume` records only its partition, offset, stable event ID, payload hash and reason code in quarantine, then continues. The raw payload is not copied into the quarantine table or logs. Quarantine is containment, not resolution: review, compatibility decision, corrected producer and governed replay still need an operator.
 
+`seed-backlog --count 9 --partition 0` constructs valid source orders whose Kafka keys map to one selected partition, commits their outbox rows and deliberately leaves them unconsumed. `backlog` reports each partition's log end offset, next processed offset and lag, plus total lag and the dominant partition's share. This makes the difference between queue depth and skew visible: adding consumers cannot parallelize one Kafka partition.
+
+`reconcile` compares source and fact row counts, monetary control totals, missing/orphan rows, value mismatches, unpublished outbox rows and quarantine. Every run writes a small lineage receipt to `atlas.pipeline_runs` with named input/output datasets, metrics and pass/fail status. A failed gate exits 4; it is evidence that data is not yet trustworthy, not permission to edit the metric.
+
 Cleanup will remove only these fixed containers and volumes:
 
 ```text
