@@ -1,6 +1,6 @@
 # LES-0080 draft status
 
-Status: **substantive lesson, canonical requirement, official-source lock, guarded offline lab and assessment set complete; direct schemas and declared Ubuntu lifecycle pass; canonical regressions, feature checkpoint and tracker packaging pending**
+Status: **substantive lesson, canonical requirement, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regressions, hygiene, production build, feature checkpoint and tracker packaging pass**
 
 This quarantined directory is reserved for `LES-0080` / `V09-L05` / `PRV-005`: physical-server identity and ownership; rack, power, cooling, management, provisioning and tenant-network boundaries; BMC and Redfish control; UEFI, Secure Boot and boot order; DHCP, PXE/iPXE, ephemeral agents, image identity and first boot; inspection, RAID, firmware, burn-in and hardware health; allocation, deployment, maintenance, rebuild, retirement, media sanitization, capacity and failure domains.
 
@@ -18,4 +18,6 @@ Direct lesson, assessment and reference schemas report zero issues and relations
 
 The assessment set contains a detailed fifty-point diagnosis, a hundred-point guided production design and a hundred-point reviewer-only independent transfer. Rubrics total 50/100/100 and the independent record has zero answer-bearing fields.
 
-No production command output, representative BMC, physical server, switch port, PXE transaction, ephemeral agent, disk write, firmware action, burn-in, power operation, sanitization result, production evidence, formal review, learner evidence or mastery evidence exists. The manuscript and model authorize no hardware action.
+Canonical content validation reports `schemas=3/3 lessons=21 assessments=63 references=172` and the generated registry matches. The schema suite passes 38 tests with one expected Windows symlink-capability skip, all 21 reader tests pass, and lint, type checking and production build pass. Pre-tracker content counts are 262 Markdown files, 51 local links and 8,255 heading anchors. Diff hygiene, prohibited-content and reparse-point scans pass.
+
+No production command output, representative BMC, physical server, switch port, PXE transaction, ephemeral agent, disk write, firmware action, burn-in, power operation, sanitization result, production evidence, formal review, learner evidence or mastery evidence exists. The packaged manuscript remains quarantined outside the canonical registry and website until separate review, representative-runtime, learner-transfer and publication gates pass.
