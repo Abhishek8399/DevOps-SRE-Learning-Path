@@ -1,0 +1,9 @@
+backups/
+certs/
+evidence/
+var/
+*.db
+*.db-*
+*.log
+__pycache__/
+*.py[cod]

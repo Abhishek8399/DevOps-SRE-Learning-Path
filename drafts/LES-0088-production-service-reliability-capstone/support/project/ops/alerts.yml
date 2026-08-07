@@ -1,0 +1,33 @@
+groups:
+  - name: atlas-capstone-slo
+    rules:
+      - record: job:http_requests:rate5m
+        expr: sum by (job) (rate(atlas_http_requests_total[5m]))
+      - record: job:http_errors:ratio_rate5m
+        expr: sum by (job) (rate(atlas_http_requests_total{status_class=~"5.."}[5m])) / clamp_min(job:http_requests:rate5m, 0.001)
+      - record: job:http_request_duration_seconds:p95_rate5m
+        expr: histogram_quantile(0.95, sum by (job, le) (rate(atlas_http_request_duration_seconds_bucket[5m])))
+      - alert: AtlasNotReady
+        expr: atlas_ready == 0
+        for: 2m
+        labels:
+          severity: ticket
+        annotations:
+          summary: Atlas durable-state readiness has failed
+          runbook: docs/RUNBOOK.md#service-is-alive-but-not-ready
+      - alert: AtlasAvailabilityBudgetBurnFast
+        expr: job:http_errors:ratio_rate5m > (14.4 * 0.01)
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: Atlas is consuming its 99 percent availability budget too quickly
+          runbook: docs/RUNBOOK.md#user-visible-5xx-rate
+      - alert: AtlasLatencySloAtRisk
+        expr: job:http_request_duration_seconds:p95_rate5m > 0.25
+        for: 5m
+        labels:
+          severity: ticket
+        annotations:
+          summary: Atlas p95 request latency exceeds the local objective
+          runbook: docs/RUNBOOK.md#latency-objective-at-risk

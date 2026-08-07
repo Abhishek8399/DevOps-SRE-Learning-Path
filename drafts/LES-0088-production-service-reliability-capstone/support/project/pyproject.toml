@@ -1,0 +1,9 @@
+[project]
+name = "atlas-capstone-service"
+version = "0.1.0"
+description = "Local-only production-shaped reliability capstone service"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.atlas]
+runtime-boundary = "local-training-fixture-not-production"

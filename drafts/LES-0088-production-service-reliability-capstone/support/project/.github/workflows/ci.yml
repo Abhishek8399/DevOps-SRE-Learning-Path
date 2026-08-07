@@ -1,0 +1,39 @@
+name: capstone-service-candidate
+
+on:
+  pull_request:
+    paths:
+      - "drafts/LES-0088-production-service-reliability-capstone/support/project/**"
+  push:
+    branches: ["main"]
+    paths:
+      - "drafts/LES-0088-production-service-reliability-capstone/support/project/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: capstone-service-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  service:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout immutable workflow dependency
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Select Python 3.12
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.12"
+          cache: "false"
+      - name: Verify service, recovery, faults and cleanup
+        working-directory: drafts/LES-0088-production-service-reliability-capstone/support/project
+        run: bash verify.sh
+      - name: Validate and build pinned container
+        working-directory: drafts/LES-0088-production-service-reliability-capstone/support/project
+        run: |
+          docker build --check .
+          docker compose config --quiet
+          docker build --tag atlas-capstone/service:${{ github.sha }} .

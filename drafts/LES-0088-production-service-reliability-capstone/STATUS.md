@@ -1,6 +1,6 @@
 # LES-0088 draft status
 
-Status: **source-locked capstone candidate; implementation, assessment, manuscript, review and publication pending**
+Status: **substantive implementation candidate; assessment, manuscript, independent transfer, formal review and publication pending**
 
 This quarantined directory reserves `LES-0088` / `V11-L01` / `CAP-001` for the production-service reliability capstone. The working route is `/book/capstones/production-service-reliability-capstone`, the volume is `11-capstones` and the domain is `capstone-engineering`.
 
@@ -8,4 +8,8 @@ The project contract is one evolving, production-shaped local service that conne
 
 The source lock uses primary or official material for HTTP/TLS, Python and SQLite behavior, Docker build and Compose readiness, reverse proxying, GitHub Actions, OpenTelemetry, Prometheus, SLO alerting, incident learning, secure development and continuous delivery. Versioned documentation describes contracts and trade-offs; it does not certify this fixture for Internet exposure or production use.
 
-No cloud, production, credential, external notification, public deployment, learner evaluation or mastery evidence exists. Python `http.server` is explicitly a local teaching fixture and is not represented as a production server. Publication requires implementation evidence, guarded fault and recovery receipts, formal technical/security/reliability/accessibility/instructional/assessment review, reviewer-owned unfamiliar transfer and delayed learner evidence.
+The implemented project has a dependency-free Python/SQLite API, exact input and idempotency contracts, liveness/readiness separation, structured correlation logs, bounded Prometheus-compatible metrics, an online-backup manifest and staged restore utility, bounded load/SLO arithmetic, three deterministic fault families, seven listener/state tests, a guarded verifier, a digest-pinned non-root read-only Docker image, isolated edge/backend Compose networks, disposable TLS proxy, Prometheus scrape plus six validated rules, a pinned least-privilege CI template and operator architecture/runbook/SLO/threat/ADR/release/capacity/postmortem artifacts.
+
+Ubuntu 24.04 passes Bash syntax, ShellCheck, Python compile/tests and the absent-to-absent verifier: `verify=pass tests=7 modes=4 api=true idempotency=true trace=true metrics=true backup=true restore=true slo_calculations=2 faults=3 external_calls=none production_actions=none`. Docker 29.6.2 passes BuildKit checks, Compose rendering, image build `sha256:cd2840720a4308deed1cb5a539e16539b504bd55a00930d2a8e5720350b5d1dc`, UID/GID 10001, read-only root, health, loopback API, TLS proxy, external metrics denial, Prometheus readiness/internal `up=1` and exact container/volume/network/certificate cleanup. Promtool validates one config and six rules.
+
+No cloud, production, credential, external notification, public deployment, accepted load benchmark, production RPO/RTO, learner evaluation or mastery evidence exists. Python `http.server` is explicitly a local teaching fixture and is not represented as a production server. Publication requires complete assessments and manuscript, formal technical/security/reliability/accessibility/instructional/assessment review, reviewer-owned unfamiliar transfer, delayed learner evidence, representative framework/database/runtime work and a security update review of pinned images.
