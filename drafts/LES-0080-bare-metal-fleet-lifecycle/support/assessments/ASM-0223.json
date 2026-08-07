@@ -1,0 +1,54 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0223",
+  "lessonId":"LES-0080",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"A deployment request for one physical server never reaches workload readiness. The asset record and controller name disagree on chassis serial; the BMC URL is reachable with an expired certificate and an overprivileged shared account. A reset task was accepted, but its terminal state was not checked and controller power is stale. Firmware inventory changed after an interrupted update. The node receives DHCP, repeatedly chainloads iPXE, downloads an image whose mutable tag changed, and the agent callback reaches the wrong controller. Inspection is six months old, RAID target and current layout differ, two disks have similar model names, the switch VLAN is wrong, cloud-init reused an old instance ID, corrected memory errors are accelerating, and the retirement workflow records erase complete without serial-bound verification. Diagnose, contain, recover and define acceptance evidence.",
+  "directAnswer":"Freeze deployment, firmware expansion, repeated power actions and pool eligibility. Bind the physical asset using chassis serial, system UUID, board identity, BMC System/Chassis/Manager resources, rack slot, switch edge and owner; resolve the conflicting record before touching anything. Treat BMC reachability as untrusted until TLS identity, least-privilege authorization, session and exact resource paths are proven. Reconcile the accepted task to a terminal result and refresh observed power. Preserve the interrupted firmware timeline and inventory; do not resume until component compatibility, recovery instructions and a canary plan are reviewed. Trace one NIC MAC through DHCP architecture code, first-stage filename, iPXE user class and script to stop the chainload loop. Bind immutable kernel, initrd and image digests. Correct the agent callback authority and repeat bounded inspection to refresh CPU, DIMM, disk, NIC and firmware identities. Reconcile target/current RAID, select the root disk by serial or WWN rather than model or kernel name, and correct the owned switch edge. Use a new intended instance ID and prove cloud-init stages, OS identity, host network, workload readiness and the original user transaction. The rising corrected-error rate is disqualifying until correlated with DIMM, BMC and environmental evidence and reviewed against policy. Sanitization needs a risk-appropriate method, device-serial receipt, verification, validation, disposition and inventory/credential cleanup. Resume only after one reviewer-owned canary passes every gate.",
+  "foundation":"Bare metal joins physical identity, out-of-band control, firmware, network boot, ephemeral inspection, destructive storage writes, installed-host state and a real user outcome. These planes are asynchronous and can disagree. An accepted API request, DHCP lease, completed download, successful disk command or green BMC summary is only an owner-local claim.",
+  "reasoningSteps":[
+    "Name the original deployment or user operation, time, request, expected result and stop conditions.",
+    "Bind asset tag, chassis serial, system UUID, BMC resources, rack position, switch edge and owner before mutation.",
+    "Stop on certificate, authorization or conflicting-identity evidence; rotate shared authority outside the incident only through its owner.",
+    "Separate requested BMC task, terminal task result, current observed power and firmware state.",
+    "Preserve partial firmware progress and prove per-component compatibility before any continuation or recovery.",
+    "Trace one MAC through DHCP, architecture selection, first-stage boot, iPXE script and immutable artifacts.",
+    "Bind callback destination and boot ID so the correct controller owns the ephemeral agent.",
+    "Refresh in-band inspection and reconcile it with out-of-band inventory and physical records.",
+    "Bind physical disk serials or WWNs, desired/current RAID and root-device selection before writing.",
+    "Prove switch port, VLAN, bond, MTU and both management/provisioning return paths.",
+    "Bind image digest, bytes written, boot artifacts, instance ID, cloud-init stages, OS identity and workload.",
+    "Treat rising corrected errors as trend evidence; correlate DIMM, RAS, BMC sensors and facility state.",
+    "Select and validate sanitization from data risk and media capability, not a generic erase label.",
+    "Accept recovery only after the original user transaction, stable health, exact ownership and cleanup proof."
+  ],
+  "seniorAnswer":"I would declare an identity and lifecycle-integrity incident, not a generic PXE failure. I would freeze retries and pool eligibility, resolve the chassis/BMC/rack/switch identity conflict, restore trusted least-privilege control, reconcile tasks and observed state, preserve partial firmware evidence, then trace one immutable boot and image chain. I would refresh and reconcile inspection, select storage by persistent identity, correct the exact VLAN, give first boot a fresh intended instance identity, and prove the workload transaction. Rising corrected errors require policy-based drain and component correlation. Retirement remains failed until sanitization is serial-bound, verified, validated and reconciled across inventory and credentials.",
+  "weakAnswer":"The BMC responds and DHCP works, so restart the server, disable certificate checking and Secure Boot, wipe all disks, rerun cloud-init and replace RAM if errors continue.",
+  "whyWeak":"It acts on an unproved machine with untrusted authority, destroys firmware and disk evidence, weakens fleet security, risks the wrong storage, confuses retries with recovery, and does not prove user service or sanitization.",
+  "evidence":[
+    {"signal":"Asset, chassis, system, manager, rack, switch and controller identifiers","proves":"whether records refer to one intended physical server and owner","doesNotProve":"power, boot or workload state"},
+    {"signal":"Redfish certificate, role, task, event, power and firmware inventory with timestamps","proves":"bounded out-of-band trust, operation and observed-state claims","doesNotProve":"network boot, installed OS or user success"},
+    {"signal":"DHCP/PXE/iPXE transactions, artifact digests, agent boot ID and callback","proves":"the observed provisioning chain for one attempt","doesNotProve":"correct target disk or installed workload"},
+    {"signal":"Disk serials, RAID target/current state, write receipt, boot artifacts, instance ID and cloud-init result","proves":"bounded storage and first-boot realization claims","doesNotProve":"long-term hardware health"},
+    {"signal":"RAS trend, BMC events, sensors, workload SLI and serial-bound sanitization record","proves":"observed health impact and retirement evidence for the named node","doesNotProve":"all fleet nodes or untested media"}
+  ],
+  "followUps":[
+    {"prompt":"Why is an accepted Redfish task not success?","answer":"Acceptance can return before asynchronous work finishes. Bind task identity, terminal state, messages, component state and a fresh independent observation."},
+    {"prompt":"Why not select the disk by /dev/sda?","answer":"Kernel names can change with discovery order. Use persistent serial, WWN, controller and slot identity, then prove the realized root device."},
+    {"prompt":"When do corrected memory errors become operationally important?","answer":"When rate, concentration, workload impact, policy or environmental correlation indicates deteriorating margin; corrected does not mean irrelevant."},
+    {"prompt":"What is missing from erase complete?","answer":"Risk-appropriate method selection, exact media identity, execution result, verification, validation, disposition, ownership removal and audit review."}
+  ],
+  "rubric":[
+    {"criterion":"Physical identity and authority","points":10,"observableEvidence":"Binds asset chassis BMC rack switch owner certificate role and request before action"},
+    {"criterion":"Provisioning and storage path","points":10,"observableEvidence":"Traces task power boot artifacts callback inspection RAID root disk image and first boot"},
+    {"criterion":"Health and failure reasoning","points":10,"observableEvidence":"Correlates RAS trends component BMC facility and user evidence without overclaiming"},
+    {"criterion":"Safe recovery","points":10,"observableEvidence":"Freezes unsafe work uses owner-scoped corrections canary stop gates and rollback or rebuild"},
+    {"criterion":"Outcome retirement and prevention","points":10,"observableEvidence":"Proves workload recovery sanitization validation cleanup and durable controls"}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

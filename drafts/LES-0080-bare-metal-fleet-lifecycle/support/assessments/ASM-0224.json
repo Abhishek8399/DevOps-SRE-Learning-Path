@@ -1,0 +1,56 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0224",
+  "lessonId":"LES-0080",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Design a production operating model for a multi-rack bare-metal fleet that hosts private-cloud control, storage, Kubernetes, databases and GPU workloads. Include inventory, Redfish/BMC, trusted boot, provisioning networks, images, inspection, RAID, firmware, health, capacity, maintenance, incident response, recovery, sanitization and governance.",
+  "directAnswer":"Create one immutable identity graph joining asset tag, chassis serial, system UUID, BMC resources, rack/slot, power feeds, switch ports, storage serials, controller node UUID, installed OS and workload owner. Separate management, provisioning and tenant networks with least-privilege identities, TLS, egress controls and audited sessions. Treat controller intent, BMC tasks, observed power, firmware, ephemeral-agent inspection, installed OS and user outcome as separate state machines. Version UEFI/Secure Boot policy, architecture-specific PXE/iPXE artifacts, kernel/initrd, image digests, metadata schema, agents and drivers. Commission with reconciled out-of-band and in-band inventory, bounded burn-in and policy-based quarantine. Schedule against resource class, traits and failure domains. Capacity-plan controller throughput, DHCP/TFTP/HTTP, image bandwidth, rack power/cooling, ports, spare nodes, maintenance concurrency and largest-failure reserve. Correlate user SLI with agent, OS RAS, BMC events, sensors and facility telemetry. Drain, fence and canary every firmware or hardware change; rediscover inventory, verify health and run representative workloads before bounded expansion. Prefer rebuild over ambiguous rollback when firmware or storage state cannot be safely reversed. For retirement, classify data and media, choose clear, purge or destroy as appropriate, verify execution, validate risk closure, revoke credentials and allocations, reconcile CMDB/DNS/DHCP/IPAM/switch records and retain an auditable disposition record.",
+  "foundation":"Physical fleets have slower, destructive and sometimes irreversible state transitions. Automation must make identity and authority stronger, not merely make power, firmware and disk operations faster. Availability depends on facility and spare capacity as well as controller HA.",
+  "reasoningSteps":[
+    "Define workloads, user journeys, availability objectives, data classes, hardware classes and recovery objectives.",
+    "Build the immutable physical-to-logical identity graph and ownership model.",
+    "Map rack, power feed, cooling zone, management switch, provisioning service, tenant edge, storage and controller failure domains.",
+    "Design BMC TLS, RBAC, session, credential rotation, event, task and break-glass controls.",
+    "Standardize UEFI, Secure Boot keys, boot order, NIC firmware and approved component baselines.",
+    "Design redundant DHCP, PXE/iPXE, HTTP image, time and agent-callback paths with immutable artifacts.",
+    "Define inspection freshness, reconciliation, burn-in, quarantine and admission policy.",
+    "Model storage controllers, disks, RAID, persistent root selection, image writes, bootloader and first boot.",
+    "Define allocation leases, resource classes, traits, anti-affinity and ownership cleanup.",
+    "Instrument user outcome, controller progress, BMC tasks, boot stages, agent heartbeats, OS RAS, sensors and facilities.",
+    "Budget throughput, power, cooling, ports, spares, repair time, update waves and survivor reserve.",
+    "Drain and fence before maintenance; canary by hardware and failure domain with abort thresholds.",
+    "Define rollback, rebuild, parts replacement, data recovery and return-to-service acceptance.",
+    "Build a NIST-aligned sanitization and disposition program with verification, validation and audit."
+  ],
+  "seniorAnswer":"I would operate the fleet as correlated state machines anchored by immutable physical identity. Management, provisioning and workload planes get separate failure domains and least-privilege control. Admission requires fresh reconciled inventory and bounded health tests. Capacity includes rack power/cooling, network services, spares and maintenance overlap. Every firmware or image change is immutable, canaried by hardware class and validated with rediscovery plus representative workloads. Fatal or accelerating hardware evidence triggers drain and quarantine. Retirement is complete only when media treatment is risk-appropriate, verified, validated and every logical owner and credential is removed.",
+  "weakAnswer":"Use redundant MAAS or Ironic controllers, PXE boot Ubuntu, monitor temperature, keep spare servers and wipe disks when finished.",
+  "whyWeak":"It omits immutable identity, BMC security, task and state semantics, artifact trust, failure domains, inspection freshness, storage selection, RAS evidence, capacity math, safe maintenance, recovery acceptance and sanitization validation.",
+  "evidence":[
+    {"signal":"Physical/logical identity graph and lifecycle ownership matrix","proves":"declared identity, authority and reconciliation design","doesNotProve":"runtime correctness"},
+    {"signal":"Failure-domain and capacity model with measured demand and largest-failure reserve","proves":"design arithmetic and assumptions","doesNotProve":"actual survival until exercised"},
+    {"signal":"Canary maintenance, representative workload and sanitization review records","proves":"reviewed behavior for exercised hardware, changes and media","doesNotProve":"unseen models or failures"}
+  ],
+  "followUps":[
+    {"prompt":"What is the most dangerous automation bug?","answer":"A wrong-identity or stale-ownership bug that performs a valid destructive action on the wrong physical server or disk."},
+    {"prompt":"When is rebuild safer than rollback?","answer":"When firmware, RAID, disk or first-boot state has crossed an irreversible or ambiguous boundary and a known-good immutable rebuild has clearer authority and validation."},
+    {"prompt":"How do you budget spares?","answer":"By hardware class, repair lead time, concurrent maintenance, expected and largest credible failures, placement constraints, growth and service objectives—not one fleet-wide percentage."}
+  ],
+  "rubric":[
+    {"criterion":"Identity and ownership","points":10,"observableEvidence":"Defines immutable physical logical workload and audit correlations"},
+    {"criterion":"Architecture and failure domains","points":10,"observableEvidence":"Separates facility management provisioning tenant storage and controller risks"},
+    {"criterion":"BMC and boot security","points":10,"observableEvidence":"Covers TLS RBAC credentials tasks firmware UEFI Secure Boot and artifacts"},
+    {"criterion":"Provisioning lifecycle","points":10,"observableEvidence":"Covers DHCP PXE iPXE agents inspection storage image first boot and ownership"},
+    {"criterion":"Hardware health","points":10,"observableEvidence":"Defines RAS sensor media trend quarantine and replacement policy"},
+    {"criterion":"Observability incidents","points":10,"observableEvidence":"Correlates user controller BMC boot agent OS component and facility signals"},
+    {"criterion":"Capacity performance cost","points":10,"observableEvidence":"Quantifies services ports power cooling bandwidth spares repair and survivor reserve"},
+    {"criterion":"Maintenance change recovery","points":10,"observableEvidence":"Uses drain fence canary abort rollback or rebuild and return-to-service proof"},
+    {"criterion":"Sanitization governance","points":10,"observableEvidence":"Maps data and media risk to method verification validation disposition and audit"},
+    {"criterion":"Communication and review","points":10,"observableEvidence":"States assumptions proof limits residual risk owners and retest schedule"}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
