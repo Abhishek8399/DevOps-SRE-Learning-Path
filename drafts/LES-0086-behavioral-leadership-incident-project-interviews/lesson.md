@@ -2029,9 +2029,9 @@ If confidentiality fails, remove the material and review the entire evidence flo
 
 ## References and review
 
-The source lock for this candidate chapter is:
+The schema-backed source lock for this candidate chapter is the set of eighteen `REF-1064` through `REF-1081` records under:
 
-`drafts/LES-0086-behavioral-leadership-incident-project-interviews/sources/SOURCES.md`.
+`drafts/LES-0086-behavioral-leadership-incident-project-interviews/support/references/`.
 
 ### Source map
 
