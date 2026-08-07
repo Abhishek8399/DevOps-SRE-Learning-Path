@@ -1,0 +1,48 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0244",
+  "lessonId":"LES-0087",
+  "type":"diagnostic",
+  "difficulty":"advanced",
+  "prompt":"Review this fictional career plan: 'Finish Linux, AWS, Docker, Kubernetes, Terraform, Python and three certifications in ninety days, then apply only for senior SRE and platform architect roles because ten completed courses prove readiness.' Diagnose its unsafe assumptions and replace it with an evidence-based plan without evaluating a real learner.",
+  "directAnswer":"The plan confuses content exposure, tool breadth, credentials, title and elapsed time with demonstrated responsibility. It has no versioned target role, baseline evidence, prerequisite graph, practice environment, failure work, reviewer, transfer test, capacity budget, sustainability boundary or gap policy. A safe replacement selects one current role family and adjacent entry level, maps requirements to observable capabilities, preserves unknowns, sequences prerequisites, assigns small production-shaped artifacts and failure exercises, requires independent review and delayed transfer, and revises scope from evidence. Completion never auto-promotes level.",
+  "foundation":"A roadmap is a decision system: target work, current evidence, gaps, dependencies, safe practice, observable acceptance, review and revision. Titles vary by company. A course can provide knowledge; a certification can sample a published domain; neither independently proves that a person can own an unfamiliar production outcome.",
+  "reasoningSteps":[
+    "Freeze the target role source and separate required work from preferred tools and organizational context.",
+    "Translate each requirement into tasks, knowledge, skills, responsibility dimensions and acceptable evidence.",
+    "Inventory learner-owned evidence without awarding proficiency from self-report or repository completion.",
+    "Mark missing, stale, adjacent and prohibited evidence explicitly.",
+    "Build a dependency graph from systems and networking through automation, delivery, reliability, platform and specialization.",
+    "Limit simultaneous work using a declared weekly capacity and leave recovery reserve.",
+    "Define an artifact, failure injection, explanation and reviewer receipt for each milestone.",
+    "Require unfamiliar transfer before increasing claimed responsibility.",
+    "Treat certifications as optional bounded signals and keep their current exam versions explicit.",
+    "Review the roadmap periodically as role sources, constraints and evidence change."
+  ],
+  "seniorAnswer":"I would first replace 'senior SRE' with a versioned role hypothesis and an adjacent-role option. For every material requirement I would record the work operation, expected responsibility, current evidence, confidence, gap, dependency and review date. The first milestone would not be seven tools; it would be one observable local service path: Linux process/filesystem/network diagnosis, tested automation, container build, safe delivery, telemetry, an SLO, a controlled incident, recovery and a short defense. Each extension would add one new responsibility such as IaC state, Kubernetes scheduling/network/storage, or provider-specific design while preserving rollback and evidence. Weekly work would fit a capacity budget with explicit stopped work. A reviewer would control unfamiliar failures and score observable behavior. Certifications could validate a stated syllabus but would not replace the project, incident or transfer receipts. Applications would target roles whose essential requirements have evidence while gaps remain truthful.",
+  "weakAnswer":"Add more certifications and copy every tool from all nine job descriptions so the roadmap looks complete.",
+  "whyWeak":"It optimizes keyword count, creates impossible parallel work, ignores dependency and evidence quality, and encourages unsupported level claims.",
+  "evidence":[
+    {"signal":"A versioned requirement-to-evidence matrix","proves":"The roadmap covers the selected role version and records gaps.","doesNotProve":"The learner possesses the capabilities or the role remains open."},
+    {"signal":"An independently reviewed unfamiliar incident and recovery receipt","proves":"Observed performance under that bounded exercise.","doesNotProve":"Production capability across organizations."},
+    {"signal":"A current certification result","proves":"Performance under that certification's published assessment contract.","doesNotProve":"Production ownership, broader role level or hiring outcome."}
+  ],
+  "followUps":[
+    {"prompt":"Why not learn all popular tools first?","answer":"Tools are learned more durably inside dependency-aware operations and failures. Broad simultaneous exposure creates shallow recall and hides the mechanisms that transfer across products."},
+    {"prompt":"Can years of experience set the level?","answer":"Years provide context but do not determine responsibility. Evaluate observable autonomy, scope, complexity, influence and impact against the actual organization's framework."},
+    {"prompt":"Should a beginner avoid advanced architecture?","answer":"A beginner can learn architecture vocabulary and reason about small systems, but should label scope honestly and build prerequisites before claiming ownership of complex production design."},
+    {"prompt":"When should the roadmap change?","answer":"When the target role version, learner constraints, evidence, review result or dependency assumption changes. Preserve the old decision and explain the revision."}
+  ],
+  "rubric":[
+    {"criterion":"Assumption diagnosis","points":10,"observableEvidence":"Separates course, tool, credential, time and title from demonstrated responsibility."},
+    {"criterion":"Role and evidence mapping","points":10,"observableEvidence":"Creates a versioned requirement, evidence, confidence and gap model."},
+    {"criterion":"Dependency and capacity","points":10,"observableEvidence":"Sequences mechanisms and limits work to a sustainable budget with reserve."},
+    {"criterion":"Practice and transfer","points":10,"observableEvidence":"Requires artifacts, failures, reviewers and delayed unfamiliar work."},
+    {"criterion":"Truth and revision","points":10,"observableEvidence":"Keeps level, gaps, uncertainty and changing role inputs explicit."}
+  ],
+  "maximumScore":50,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}

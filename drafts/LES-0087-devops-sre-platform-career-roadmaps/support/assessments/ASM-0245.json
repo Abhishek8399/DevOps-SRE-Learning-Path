@@ -1,0 +1,55 @@
+{
+  "schemaVersion":1,
+  "kind":"assessment",
+  "id":"ASM-0245",
+  "lessonId":"LES-0087",
+  "type":"guided-transfer",
+  "difficulty":"expert",
+  "prompt":"Build two evidence-based twelve-month roadmap variants from current authorized role descriptions: one for an operations-focused SRE/cloud role and one for an on-premises platform/private-cloud role. Use the canonical curriculum dependency graph, a bounded weekly capacity, learner-owned evidence, explicit gaps, production-shaped local projects, independent reviews and quarterly revision. Do not infer the learner's present level or hiring readiness.",
+  "directAnswer":"Version both role inputs, translate requirements into durable capabilities and responsibility signals, and create one shared foundation plus role-specific branches. Inventory only authorized learner evidence and mark unknowns. Sequence milestones by dependency and risk, budget hours and reserve, define one useful artifact and failure/recovery exercise per milestone, and attach observable acceptance and reviewer ownership. Review monthly signals and make quarterly scope decisions. Keep role suitability, promotion and hiring outcomes outside the roadmap.",
+  "foundation":"The strongest roadmap is not the longest. It minimizes dependency violations and produces evidence that can survive unfamiliar change. A shared Linux/networking/software/delivery/reliability foundation supports both paths; public cloud, private cloud, platform, data and architecture branches deepen only after their prerequisites have receipts.",
+  "reasoningSteps":[
+    "Preserve each role source, date, stated level, operating context and unknowns.",
+    "Normalize title-specific wording into durable capabilities without erasing required vendor or environment knowledge.",
+    "Map capabilities to canonical curriculum IDs and prerequisite edges.",
+    "Record learner-owned observed, calculated, qualified, stale, prohibited and missing evidence.",
+    "Choose a shared foundation project that evolves rather than unrelated tutorial fragments.",
+    "Create branch milestones for AWS operations and for KVM/OpenStack/Ceph/OVS or equivalent private-cloud mechanisms.",
+    "Budget weekly focus, review, failure practice and recovery reserve; expose stopped work.",
+    "Define acceptance as artifact plus explanation plus changed-constraint recovery plus reviewer receipt.",
+    "Add interview and documentation practice only from truthful project evidence.",
+    "At each quarter, compare evidence to the role map and revise without auto-awarding a level."
+  ],
+  "seniorAnswer":"I would use one versioned matrix with rows for role requirement, operation, state/failure mechanism, responsibility signal, curriculum prerequisite, current evidence, gap, milestone, artifact, fault, acceptance, reviewer and expiry. Months one through three would establish Linux, networking, Git, Bash/Python, tests and one observable service. Months four through six would add containers, CI/CD, IaC, telemetry, SLOs, incidents and recovery. The cloud branch would then model VPC/IAM/compute/storage/database/Kubernetes decisions locally and use current AWS task domains without creating resources. The private-cloud branch would deepen virtualization, image/network/storage control planes, Ceph-style failure, capacity and lifecycle using bounded local simulations. Both branches would include security, cost, documentation and leadership throughout. A maximum weekly budget would reserve time for review and recovery. Quarterly gates would require an unfamiliar reviewer-controlled failure and a concise architecture defense. Missing real production evidence would remain a gap, not be converted from the lab.",
+  "weakAnswer":"Use the same roadmap for both roles, study one tool every week, and mark each skill complete after watching a course.",
+  "whyWeak":"It ignores different operating contexts, dependencies, evidence strength, failure practice and sustainable capacity.",
+  "evidence":[
+    {"signal":"Every milestone resolves to a canonical prerequisite and target-role requirement","proves":"Roadmap traceability for the selected versions.","doesNotProve":"The sequence is optimal for every learner or organization."},
+    {"signal":"Artifact, fault, recovery and reviewer receipt close a milestone","proves":"Bounded observed practice and review occurred.","doesNotProve":"Equivalent production responsibility."},
+    {"signal":"Quarterly capacity ledger shows planned, completed, deferred and reserve hours","proves":"Plan arithmetic and explicit trade-offs.","doesNotProve":"Health, motivation or future availability."},
+    {"signal":"A changed target role produces a reviewed roadmap diff","proves":"The plan adapts without erasing history.","doesNotProve":"Future labor-market demand."}
+  ],
+  "followUps":[
+    {"prompt":"How much weekly time should be planned?","answer":"Use the learner's actual sustainable capacity, not a universal number. Reserve review and recovery time, then reduce scope when demand exceeds capacity."},
+    {"prompt":"Can one project cover many skills?","answer":"Yes when each capability has distinct observable evidence and failure work. Do not double-count one successful deployment as proof of every surrounding domain."},
+    {"prompt":"Where do certifications fit?","answer":"After relevant foundation and practice, as optional versioned syllabus evidence. They may support screening but do not close production or responsibility gaps."},
+    {"prompt":"How should cloud learning remain local?","answer":"Model APIs, state, IAM, networking, deployment and failure semantics with local fixtures and design exercises; label provider-runtime behavior unverified until authorized evidence exists."},
+    {"prompt":"When is a milestone complete?","answer":"When its declared artifact, explanation, independent changed-constraint exercise, cleanup and review receipt pass. Reading completion alone is not acceptance."}
+  ],
+  "rubric":[
+    {"criterion":"Role-source fidelity","points":10,"observableEvidence":"Two versioned roles retain their different context, requirements and unknowns."},
+    {"criterion":"Capability normalization","points":10,"observableEvidence":"Tool wording becomes durable operations and mechanisms without dropping explicit requirements."},
+    {"criterion":"Evidence and gaps","points":10,"observableEvidence":"Learner-owned evidence classes, confidence, staleness, prohibitions and missing areas remain visible."},
+    {"criterion":"Dependency graph","points":10,"observableEvidence":"Shared foundation and specialist branches respect canonical prerequisites."},
+    {"criterion":"Milestone design","points":10,"observableEvidence":"Each milestone has artifact, failure, recovery, explanation and observable acceptance."},
+    {"criterion":"Capacity and sustainability","points":10,"observableEvidence":"Weekly limits, reserve, stopped work and revision rules are explicit."},
+    {"criterion":"Cloud branch","points":10,"observableEvidence":"Cloud-operations domains are covered locally without claiming provider-runtime evidence."},
+    {"criterion":"Private-cloud branch","points":10,"observableEvidence":"Virtualization, networking, storage, lifecycle and failure responsibilities receive distinct evidence."},
+    {"criterion":"Review and transfer","points":10,"observableEvidence":"Independent unfamiliar gates and delayed quarterly review control progression."},
+    {"criterion":"Truth boundary","points":10,"observableEvidence":"No inferred level, hiring prediction, fabricated evidence or course-equals-competence rule appears."}
+  ],
+  "maximumScore":100,
+  "masteryBoundary":"requires-reviewed-learner-evidence",
+  "lastReviewed":"2026-08-07",
+  "reviewAfter":"2027-02-07"
+}
