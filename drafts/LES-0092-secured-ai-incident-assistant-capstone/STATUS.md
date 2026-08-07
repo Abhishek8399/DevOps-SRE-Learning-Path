@@ -1,13 +1,17 @@
 # LES-0092 draft status
 
-Status: **source-locked quarantined capstone; implementation, assessments, manuscript, review and publication pending**
+Status: **source-locked implementation-complete quarantined capstone; assessments, manuscript, review and publication pending**
 
 This directory reserves `LES-0092` / `V11-L05` / `CAP-005` for `/book/capstones/secured-ai-incident-assistant`, volume `11-capstones`, order 5 and domain `capstone-engineering`.
 
-The capstone connects sanitized synthetic telemetry, versioned runbooks, retrieval, untrusted generation, claim verification, narrow tools, deterministic authorization, independent approval, effect reconciliation, privacy-aware audit, evaluation, kill/fallback behavior, capacity and cost. The default implementation will use a deterministic untrusted fixture and invoke no model provider, network, shell, subprocess, cloud, Kubernetes, ticketing, messaging, observability or production API.
+The capstone connects sanitized synthetic telemetry, versioned runbooks, retrieval, untrusted generation, claim verification, narrow tools, deterministic authorization, independent approval, effect reconciliation, privacy-aware audit, evaluation, kill/fallback behavior, capacity and cost. The default implementation uses a deterministic untrusted fixture and invokes no model provider, network, shell, subprocess, cloud, Kubernetes, ticketing, messaging, observability or production API.
+
+Six strict project inputs define one synthetic incident, four telemetry events, three runbook documents, one admitted release, one least-authority policy and sixteen evaluation cases. The control plane rejects duplicate/unknown fields, sensitive-shaped values, cross-tenant or retired retrieval, unsupported claims, mismatched citations, stale corpus/release identity, unknown/open-ended tools, unauthorized scope, missing/expired/reused approval, answer leakage, audit tampering and unsafe cleanup.
+
+Twenty-two contract/adversarial tests pass. The complete absent-to-absent verifier records twelve `blocked`, three `fallback` and one `ambiguous` outcome, verifies four grounded baseline claims and two abstentions, builds the eight-section dossier, verifies nineteen audit records and leaves `.runtime` absent.
 
 Twenty primary, official or original-research records (`REF-1180` through `REF-1199`) cover AI risk and secure development, injection, output handling, agency, threat/control taxonomies, retrieval and evaluation, GenAI/log telemetry, SRE monitoring and incident response, runbooks, policy decisions, provenance and signature verification.
 
-Implementation, adversarial evaluation corpus, three assessments, exact eighteen-section manuscript, formal review, reviewer-owned transfer and publication remain pending.
+Three assessments, exact eighteen-section manuscript, formal review, reviewer-owned transfer, optional separately evaluated local-model adapter and publication remain pending.
 
 No model, provider, production telemetry, real runbook, credential, customer data, external effect, learner result, readiness or mastery is claimed.

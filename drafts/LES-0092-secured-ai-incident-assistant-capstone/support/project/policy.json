@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "incident-assistant-policy",
+  "id": "incident-policy-v1",
+  "subjects": [
+    {"id": "operator-a", "tenants": ["tenant-a"], "services": ["checkout"], "environments": ["lab"], "roles": ["incident-commander"]}
+  ],
+  "tools": [
+    {"id": "inspect-synthetic-evidence", "risk": "read-only", "approvalRequired": false, "allowedArguments": ["incidentId", "service", "window"]},
+    {"id": "set-synthetic-traffic-shape", "risk": "reversible-synthetic-mutation", "approvalRequired": true, "allowedArguments": ["incidentId", "service", "percentage"]}
+  ],
+  "approvalTtlTicks": 20,
+  "maxRetrievalDocuments": 3,
+  "maxClaims": 6,
+  "maxWorkUnits": 120
+}

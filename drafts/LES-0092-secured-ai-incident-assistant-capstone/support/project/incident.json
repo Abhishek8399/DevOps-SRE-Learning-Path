@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-incident",
+  "id": "inc-checkout-latency",
+  "tenant": "tenant-a",
+  "service": "checkout",
+  "environment": "lab",
+  "severity": "se2",
+  "commander": "operator-a",
+  "window": {"startTick": 100, "endTick": 160},
+  "dataClassification": "synthetic"
+}

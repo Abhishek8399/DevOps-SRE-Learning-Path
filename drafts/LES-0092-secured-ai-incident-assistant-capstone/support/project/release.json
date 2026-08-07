@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "assistant-release",
+  "id": "assistant-release-v1",
+  "generator": "deterministic-untrusted-fixture-v1",
+  "prompt": "incident-brief-v1",
+  "retriever": "bounded-term-retriever-v1",
+  "verifier": "evidence-claim-verifier-v1",
+  "policy": "incident-policy-v1",
+  "corpus": "corpus-incident-v1",
+  "admitted": true,
+  "dataClassification": "synthetic"
+}

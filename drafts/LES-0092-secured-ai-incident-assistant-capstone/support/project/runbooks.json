@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "kind": "reviewed-runbook-corpus",
+  "id": "corpus-incident-v1",
+  "documents": [
+    {
+      "id": "rb-checkout-errors",
+      "tenant": "tenant-a",
+      "service": "checkout",
+      "version": "v3",
+      "reviewState": "approved",
+      "reviewDay": 200,
+      "expiresDay": 380,
+      "fragments": [
+        {"id": "frag-check-signals", "text": "Compare request error ratio and latency with the incident window. Treat a recent release as correlation until rollback or controlled comparison changes the symptom."},
+        {"id": "frag-check-dependency", "text": "Inspect the payment timeout ratio and preserve user-impact evidence before changing checkout or dependency capacity."},
+        {"id": "frag-rollback-gate", "text": "A rollback proposal must name the exact release, expected user signal, abort condition, approver and post-action verification."}
+      ]
+    },
+    {
+      "id": "rb-tenant-b-private",
+      "tenant": "tenant-b",
+      "service": "checkout",
+      "version": "v1",
+      "reviewState": "approved",
+      "reviewDay": 210,
+      "expiresDay": 390,
+      "fragments": [
+        {"id": "frag-tenant-b-only", "text": "This synthetic tenant-b fragment must never be retrieved for tenant-a."}
+      ]
+    },
+    {
+      "id": "rb-checkout-stale",
+      "tenant": "tenant-a",
+      "service": "checkout",
+      "version": "v1",
+      "reviewState": "retired",
+      "reviewDay": 20,
+      "expiresDay": 80,
+      "fragments": [
+        {"id": "frag-stale", "text": "This retired fragment is a distractor and cannot authorize current action."}
+      ]
+    }
+  ]
+}

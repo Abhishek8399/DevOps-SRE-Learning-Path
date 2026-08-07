@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-telemetry",
+  "incidentId": "inc-checkout-latency",
+  "events": [
+    {"id": "evt-error-ratio", "tenant": "tenant-a", "service": "checkout", "tick": 121, "signal": "request-error-ratio", "value": 0.12, "unit": "ratio", "source": "service-metric", "dataClassification": "synthetic"},
+    {"id": "evt-latency", "tenant": "tenant-a", "service": "checkout", "tick": 123, "signal": "request-p99-ms", "value": 1800, "unit": "milliseconds", "source": "service-metric", "dataClassification": "synthetic"},
+    {"id": "evt-release", "tenant": "tenant-a", "service": "checkout", "tick": 110, "signal": "release-revision", "value": "rev-b", "unit": "identity", "source": "change-event", "dataClassification": "synthetic"},
+    {"id": "evt-dependency", "tenant": "tenant-a", "service": "checkout", "tick": 125, "signal": "payment-timeout-ratio", "value": 0.09, "unit": "ratio", "source": "dependency-metric", "dataClassification": "synthetic"}
+  ]
+}
