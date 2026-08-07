@@ -59,3 +59,5 @@ python datactl.py cleanup
 ```
 
 Read every receipt. A command returning zero is necessary but the counts, hashes, offsets, reconciliation controls and cleanup proof explain what actually succeeded.
+
+Run `python verify.py` from this directory for the complete three-cycle matrix. It starts every scenario from an absent runtime, asserts the expected failure exits as well as success receipts, and returns to an absent runtime. Its failure trap invokes only descriptor-gated `datactl.py cleanup` for a runtime the verifier successfully started; if ownership cannot be proved, cleanup refuses.
