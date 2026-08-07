@@ -1,11 +1,11 @@
 # LES-0069 draft status
 
-Status: **substantive authorship in progress and quarantined - not canonical, accepted, or mastery evidence**
+Status: **substantive candidate and quarantined - not canonical, accepted, or mastery evidence**
 
-This directory contains the developing LES-0069 AI-security trust-boundary candidate. It is intentionally outside the canonical publication registry and cannot change learner progress or mastery.
+This directory contains the LES-0069 AI-security trust-boundary candidate: an 11,178-word, exact-18-section lesson with 103 subsections, six declared diagrams, twelve command decoders, two labs, five incidents, three assessment tiers, fifteen audited primary or official references and a guarded 31-case offline model. It is intentionally outside the canonical publication registry and cannot change learner progress or mastery.
 
 The source packet uses current primary or official material from NIST, OWASP, MITRE, Google SAIF, SLSA, Sigstore, TUF, Kubernetes, Open Policy Agent and CycloneDX. The local lab is a deterministic policy-boundary teaching model only. It is not an AI model, prompt-injection detector, sandbox, authorization service, signature verifier, policy engine, Kubernetes cluster, red-team platform, audit store or production control.
 
-The 25-file scaffold has the exact 18-section lesson order, three assessment tiers, fifteen audited references and a 31-case model. Direct lesson, assessment and reference schemas, JSON parsing, all modeled decisions, Bash syntax, the Git Bash lifecycle, unknown-artifact refusal, cleanup and ShellCheck pass.
+The 25-file candidate passes direct lesson, assessment and reference schemas; exact lesson-to-assessment and lesson-to-reference relationships; 50/100/100 rubric totals; independent-answer isolation; all nineteen JSON records; all 31 modeled decisions; Bash syntax; Git Bash and Ubuntu 24.04 normal-user lifecycles; unknown-artifact refusal; cleanup; ShellCheck; and hygiene review. Full repository validation passes across 229 Markdown files, 51 local links and 6,287 heading anchors while canonical publication remains 21 lessons, 63 assessments and 172 references. All 38 executable schema tests and 21 reader tests pass; one Windows-only symlink-policy test is skipped because file links are unavailable with EPERM. Lint, TypeScript and the production build pass.
 
-The first ten ordered sections now contain 6,182 body words across the mental model, terminology, architecture, request path, attack classes, state ownership, evidence matrix, command decoders, decision ladder and guided lab. Direct lesson validation still passes. The final eight sections, final depth review, full repository regression, formal review, representative runtime evidence, independent transfer, delayed recall, publication and learner evidence remain required.
+Formal review, representative AI/model/detector/sandbox/authorization/signature/policy/audit runtime evidence, independent transfer, delayed recall, publication and learner evidence remain required. The deterministic lab proves only its local decision order and bounded lifecycle.

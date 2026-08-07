@@ -18,7 +18,7 @@
   "prerequisiteCurriculumIds": ["AIO-001", "SEC-001"],
   "testedEnvironments": [
     {"platform": "Primary and official sources", "version": "NIST, OWASP, MITRE, Google SAIF, SLSA, Sigstore, TUF, Kubernetes, OPA and CycloneDX sources reviewed 2026-08-05", "support": "concept-only", "notes": "Source review does not establish control effectiveness in any deployed AI system."},
-    {"platform": "Ubuntu", "version": "24.04 normal-user offline model", "support": "required", "notes": "Guarded deterministic trust-boundary model only; runtime verification pending."},
+    {"platform": "Ubuntu", "version": "24.04 normal-user offline model", "support": "required", "notes": "Guarded deterministic trust-boundary lifecycle verified as UID 1000 on 2026-08-07; no external system or AI behavior."},
     {"platform": "Python", "version": "3 standard library", "support": "required", "notes": "Local JSON decisions only; no model, socket, credential, cluster, policy service or external action."}
   ],
   "targetRoles": ["site-reliability-engineer", "platform-engineer", "devops-engineer", "machine-learning-engineer", "ml-platform-engineer", "security-engineer", "solutions-architect", "technical-lead"],
@@ -93,7 +93,7 @@
   ],
   "assessmentIds": ["ASM-0190", "ASM-0191", "ASM-0192"],
   "referenceIds": ["REF-0793", "REF-0794", "REF-0795", "REF-0796", "REF-0797", "REF-0798", "REF-0799", "REF-0800", "REF-0801", "REF-0802", "REF-0803", "REF-0804", "REF-0805", "REF-0806", "REF-0807"],
-  "contentStatus": "seeded",
+  "contentStatus": "substantive-draft",
   "masteryBoundary": "publication-does-not-award-mastery",
   "lastReviewed": "2026-08-05",
   "reviewAfter": "2027-02-05",
@@ -961,32 +961,571 @@ The exercise is complete only when you can explain why a stronger prompt is insu
 
 ## Production transfer
 
-The local model will be translated into evidence required from real identity, policy, artifact, runtime, data, observability and incident systems.
+The local lab teaches decision order. Production transfer means replacing every boolean with owned evidence from a real component. Never say “the lab proves our agent is secure.” Say which production boundary now supplies the corresponding evidence.
+
+### Translate each synthetic boundary
+
+| Lab boundary | Production owner | Representative evidence |
+|---|---|---|
+| `operation-contract` | Product and service owner | Operation catalog, prohibited effects, SLO, fallback and risk classification |
+| `threat-model` | Security plus system owners | Data-flow diagram, actors, assets, entry points, invariants and reviewed abuse cases |
+| `content-origin` | Ingestion and retrieval platform | Source ID, ACL decision, tenant, digest, transformation, timestamps and classification |
+| `content-authority` | Context assembler and broker | Separation design plus tests proving content cannot alter deterministic policy |
+| `output-schema` | Application parser | Pinned schema, parser configuration, rejection tests and size limits |
+| `output-validation` | Sink adapter | Semantic constraints, safe API use, contextual encoding and negative tests |
+| `tool-functionality` | Tool-platform owner | Reviewed catalog showing only operation-specific capabilities |
+| `tool-authorization` | Policy owner and broker | Subject/action/target decision with policy revision and deny tests |
+| `downstream-authorization` | Target-system owner | IAM/RBAC policy, effective-permission test and effect receipt |
+| `identity-propagation` | Identity platform | Authenticated subject and tenant bound through request, broker and target |
+| `secret-scope` | Identity/secrets platform | Audience, scopes, resource limits, TTL, rotation and revocation evidence |
+| `sandbox-isolation` | Runtime platform | Workload configuration and escape/egress/resource tests |
+| `approval-binding` | Approval and commit service | Preview digest, approver, expiry, nonce, fresh revalidation and committed digest |
+| `data-provenance` | Data platform | Authorized source, snapshot, transformation run, reviewer and digest |
+| `model-provenance` | ML platform | Model digest, source/build/train lineage, evaluation and admission receipt |
+| `signer-policy` | Supply-chain platform | Expected identity, issuer, trusted roots, verified claims and policy version |
+| `artifact-format` | Runtime and security owner | Admitted format, loader behavior, isolation and malicious-fixture tests |
+| `audit-privacy` | Observability and privacy owners | Structured schema, masking tests, access, retention and deletion proof |
+| `adversarial-evaluation` | Security evaluation owner | Versioned threats, invariants, denominators, escapes and downstream outcomes |
+| `kill-path` | Incident-control owner | Out-of-band invocation, propagation, denial, revocation and acknowledgement |
+| `kill-accounting` | Queue and target owners | Every queued action reconciled by stable action/idempotency identity |
+| `recovery-proof` | Service owner and incident command | Known-good release, rotated authority, repaired boundary and verified postconditions |
+| `risk-ownership` | Accountable business/security authority | Residual-risk statement, evidence, expiry, conditions and signed decision |
+
+### Example: Kubernetes-hosted remediation assistant
+
+Suppose the assistant runs in Kubernetes and restarts only test Deployments.
+
+The platform should not mount a human administrator's `KUBECONFIG`. A broker workload gets a narrowly scoped service identity. The model-facing process does not receive that credential. The broker accepts a typed request such as namespace, Deployment name and operation enum. Policy verifies the authenticated subject and inventory ownership. Kubernetes RBAC limits the broker identity to a dedicated API or a tightly bounded set of verbs and namespaces.
+
+Container isolation adds defense:
+
+- non-root process and immutable image digest;
+- read-only root filesystem where compatible;
+- no privilege escalation and dropped capabilities;
+- default-deny network policy with explicit destinations;
+- no host namespace, host path or container-runtime socket;
+- CPU, memory and ephemeral-storage limits;
+- separate identities for retrieval, proposal and commit services;
+- Pod Security Admission aligned to the workload's needs.
+
+These controls reduce blast radius. They do not make arbitrary model-generated shell safe. A generic `kubectl` or shell tool remains unnecessarily broad when a narrow restart API can express the operation.
+
+### Example: document assistant with no mutation
+
+A read-only assistant can still leak data. Retrieval authorization must occur before content enters context, using the same user and tenant boundary. Cache keys include tenant, user or entitlement boundary, immutable index and policy identity. Output rendering uses contextual encoding; outbound links and image fetches do not automatically carry private context.
+
+The safer fallback is often “return source links the user already may open” rather than copy every private document into a long-lived transcript. If the model service is unavailable or policy evidence is stale, return an explicit unavailable result instead of querying through a privileged shared account.
+
+### Example: code assistant and CI
+
+Generated code is output entering compilers, package managers, tests, shells and deployment pipelines. Keep it on an untrusted contribution path:
+
+1. create a branch or patch, not a direct protected-branch mutation;
+2. identify generated changes and the model release;
+3. run formatting, tests, static analysis, secret detection and dependency policy;
+4. resolve every suggested package through the normal approved registry and lockfile process;
+5. require human review for material changes;
+6. build in an isolated, ephemeral worker with minimal secrets and egress;
+7. generate provenance and sign the resulting artifact through the trusted pipeline;
+8. deploy with normal progressive delivery and rollback controls.
+
+The model's statement that a package exists is not registry evidence. The model's successful unit test is not a CI result. Never execute an unreviewed generated install command with broad developer credentials.
+
+### Production incident: harmful tool proposal
+
+At 14:02 an indirect instruction in a ticket causes an assistant to propose sending a diagnostic bundle to an unfamiliar host. The broker denies the host because it is not allowlisted. At 14:05 responders learn that an older worker bypassed the broker and holds a broad egress-capable credential.
+
+The incident commander should:
+
+1. disable both current and legacy tool routes outside the model;
+2. revoke the relevant workload credentials and block egress at the network boundary;
+3. preserve request, ticket-source, release, worker, credential, policy and network identities;
+4. enumerate proposed, authorized, attempted and committed actions from broker and downstream evidence;
+5. investigate whether other content reached the legacy path;
+6. remove the bypass, rotate affected authority, reconcile partial effects and notify owners;
+7. add the legacy path to inventory, red-team cases and kill fan-out;
+8. restore a known release in read-only mode, then stage bounded tool capability only after independent evidence.
+
+Do not close the incident because the current broker logged `deny`. The bypass makes the system boundary larger than the dashboard.
 
 ## Reliability, security, observability, capacity, and cost
 
-Controls will be evaluated as a system: enforcement availability, logging privacy, review capacity, false decisions, recovery time and cost all matter.
+Security controls are production services. They can fail open, fail closed, overload, drift, create noisy alerts or become too expensive to operate. Design their service contracts explicitly.
+
+### Reliability
+
+For each operation, decide what happens when identity, policy, approval, signature verification, audit or the target system is unavailable.
+
+- High-impact mutations usually fail closed.
+- Low-risk read-only answers may degrade to cached public content or a non-AI path.
+- Cached authorization needs a short TTL, policy identity and revocation semantics.
+- Audit buffering needs bounded disk/memory and visible drops.
+- Queue consumers must check kill and authorization state at commit time, not only enqueue time.
+- Credential revocation needs measured propagation and a plan for cached tokens.
+
+Define control SLOs around decisions that matter: policy decision availability and latency, approval completion, audit delivery, kill propagation and queue reconciliation. A policy engine with 99.9% availability may still be unacceptable if the missing 0.1% fails open for production deletion.
+
+### Security
+
+Layer controls by independent failure mode:
+
+```text
+detector signal
+    -> strict parse and semantic validation
+    -> minimal tool catalog
+    -> per-subject policy
+    -> downstream least privilege
+    -> bound approval for high impact
+    -> rate/concurrency limits
+    -> independent kill and recovery
+```
+
+Independence matters. If one model decides that input is safe, selects the tool, authorizes it, approves it and declares success, the layers are names around one failure.
+
+Protect the security system itself:
+
+- limit who can change prompts, tool definitions, policy and trusted signers;
+- require reviewed, versioned releases;
+- separate development, evaluation and production authority;
+- monitor emergency overrides;
+- rotate signing and workload keys;
+- secure red-team datasets because they can contain sensitive attack knowledge;
+- restrict audit access and record access to the audit system.
+
+### Observability
+
+Observe both decisions and effects without storing uncontrolled content.
+
+Useful counters and distributions include:
+
+- requests and actions by operation, risk, release and decision;
+- detector blocks by technique and version;
+- schema/semantic rejection reasons;
+- policy allows/denies and stale-policy decisions;
+- approval requests, expiry, rejection and time-to-decision;
+- downstream attempts, commits, failures, uncertain states and reconciliation age;
+- cross-tenant denial attempts;
+- kill invocation-to-acknowledgement and remaining queued work;
+- audit buffer depth, export failures and dropped events;
+- redaction/masking failures;
+- artifact admissions and rejection reasons;
+- credential age, scope and revocation latency.
+
+Avoid unbounded labels such as raw prompt, document ID, URL, user email or tool arguments in metrics. Keep high-cardinality identity in sampled or structured stores with access control, and use stable low-cardinality dimensions in metrics.
+
+Alert on user-impacting or boundary failures, not every odd prompt. One blocked injection is evidence the boundary worked. A surge may indicate attack or bad content and deserves investigation, but paging every block teaches operators to disable the control.
+
+### Capacity
+
+Security adds work:
+
+- input and output scanning;
+- schema and policy evaluation;
+- approval queues;
+- signature and provenance verification;
+- sandbox startup;
+- audit serialization and export;
+- red-team suites in delivery pipelines;
+- kill fan-out and reconciliation.
+
+Capacity-plan peak incident conditions. A mass kill may create the highest decision and queue-reconciliation load of the year. Audit pipelines may receive larger events exactly during attack. If the policy service saturates, retries can amplify the outage. Use deadlines, bounded retries, bulkheads, admission control and load tests with safe synthetic data.
+
+Human review is also capacity. If 10,000 daily actions require approval, reviewers will rubber-stamp or the service will stall. Reduce approval volume by removing unnecessary autonomy, keeping risky operations rare and enabling low-risk deterministic automation with clear limits. Approval is not a substitute for good authorization.
+
+### Performance
+
+Budget latency per stage:
+
+```text
+total = authentication
+      + retrieval and ACL
+      + model generation
+      + parse/validation
+      + policy
+      + approval wait (when required)
+      + downstream commit
+      + outcome confirmation
+```
+
+Do not bypass a boundary to save milliseconds without an explicit risk decision. Optimize with local policy evaluation, narrow schemas, preverified immutable artifacts, connection reuse and asynchronous workflows where the user contract permits. Preserve one end-to-end deadline so retries do not outlive user intent or approval.
+
+### Cost
+
+Track cost per useful, authorized outcome rather than cost per model request. Include:
+
+- model tokens or accelerator time;
+- retrieval and storage;
+- policy and scanning services;
+- sandbox workers;
+- human approval and investigation time;
+- audit storage and egress;
+- red-team and release-validation compute;
+- incident harm and recovery.
+
+Security controls can reduce cost by preventing runaway tool loops, unbounded output, data exfiltration response and unsafe releases. Cost pressure must not silently widen permissions, retain less evidence than required or replace independent review with a self-scoring model. Document accepted trade-offs and review them against observed false positives, escaped attacks and operational toil.
 
 ## Traps and prevention
 
-The lesson will reject security theater such as secret prompts, one classifier, broad tool credentials, unsigned mutable tags and model-controlled kill switches.
+### Trap: “The system prompt is secret”
+
+**Why it fails:** prompts can leak, behavior can be inferred, and the prompt is interpreted beside attacker-influenced text.
+
+**Prevention:** keep secrets out of prompts; use prompts for behavior guidance and deterministic systems for identity, authorization and enforcement.
+
+### Trap: “Our injection classifier passed”
+
+**Why it fails:** tests cover a finite distribution, attackers adapt, indirect and multimodal paths differ, and false positives create bypass pressure.
+
+**Prevention:** measure the detector by technique and benign slice, then observe whether escaped proposals can create effects. Keep least privilege and mediation primary.
+
+### Trap: “Valid JSON is safe”
+
+**Why it fails:** JSON can contain an internal URL, traversal path, dangerous query or unauthorized target.
+
+**Prevention:** strict schema plus semantic and sink-specific validation, trusted inventory resolution, safe APIs and downstream authorization.
+
+### Trap: “The tool is read-only”
+
+**Why it fails:** reads can disclose secrets, trigger side effects, consume resources or reach other tenants. Some HTTP GET endpoints mutate.
+
+**Prevention:** define exact operation semantics, target scope, identity and data classification; test the downstream implementation.
+
+### Trap: “The service account needs admin so the agent can help everyone”
+
+**Why it fails:** it turns the application into a confused deputy and destroys user/tenant boundaries.
+
+**Prevention:** propagate subject and tenant, use delegated or resource-scoped capability, split tools and enforce again downstream.
+
+### Trap: “A human clicked approve”
+
+**Why it fails:** the preview may be vague, mutable, expired or different from committed bytes; reviewers may lack authority.
+
+**Prevention:** immutable precise preview, digest, target, effect, expiry, nonce, approver authorization, separation of duties and pre-commit revalidation.
+
+### Trap: “Signed means safe”
+
+**Why it fails:** the signer may be wrong or compromised, the artifact format may execute code, dependencies may be vulnerable and behavior may be harmful.
+
+**Prevention:** constrain identity and issuer; verify provenance, inventory, format and evaluation as separate gates.
+
+### Trap: “Run the untrusted model in our scanner”
+
+**Why it fails:** loading may execute code before scanning, using the scanner's filesystem, network or credentials.
+
+**Prevention:** do not deserialize merely to inspect. Prefer safe formats and metadata inspection; isolate necessary conversion in a disposable credential-free environment.
+
+### Trap: “Log every prompt for forensics”
+
+**Why it fails:** logs become a high-value copy of secrets and private content with broad access and long retention.
+
+**Prevention:** structured events, minimization, masking before export, protected content references, retention classes and access auditing.
+
+### Trap: “Tell the agent to stop”
+
+**Why it fails:** queued workers and credentials continue; the compromised loop controls its own stop.
+
+**Prevention:** out-of-band route deny, credential revocation, egress control, queue quarantine and complete action reconciliation.
+
+### Trap: “Delete the evidence immediately”
+
+**Why it fails:** responders lose scope, effect and disclosure evidence and may violate preservation duties.
+
+**Prevention:** restrict access and unsafe capture, coordinate legal/privacy/incident requirements, preserve the minimum protected evidence, then remediate lifecycle safely.
+
+### Trap: “No alert means no attack”
+
+**Why it fails:** telemetry coverage, masking, drops, clock errors or detector blind spots may hide activity.
+
+**Prevention:** monitor coverage and drops, reconcile downstream state, test negative controls and state evidence limits explicitly.
 
 ## Memory card and retrieval
 
-A compact recall model will preserve the core rule: text proposes; deterministic code authorizes; downstream systems enforce; independent controls stop.
+Use **T-P-A-E-S-R** under pressure:
+
+```text
+T  Text is untrusted: user, document, tool result, model output
+P  Proposal is typed: parse, normalize, validate for the exact sink
+A  Authority is deterministic: subject, tenant, action, target, policy
+E  Effect is downstream: idempotency key, commit receipt, postcondition
+S  Stop is independent: deny, revoke, block, quarantine, account
+R  Recover with evidence: scope, rotate, reconcile, restore, retest, own risk
+```
+
+### Sixty-second incident recall
+
+If an agent appears unsafe:
+
+1. **Contain:** disable effect paths outside the model and revoke authority.
+2. **Preserve:** request, release, content source, policy, credential, action and effect identities.
+3. **Reconcile:** proposed is not authorized; authorized is not committed; committed is not a good outcome.
+4. **Scope:** users, tenants, tools, destinations, releases, time and telemetry gaps.
+5. **Eradicate:** remove bypasses, poison, unsafe artifacts and leaked credentials.
+6. **Recover:** known release, repaired boundaries, clean state, staged exposure.
+7. **Learn:** add threat cases, metrics, runbooks, ownership and residual-risk review.
+
+### Five questions for any AI architecture
+
+- Where does untrusted text enter?
+- Where is authenticated identity preserved?
+- Which deterministic component authorizes each effect?
+- What evidence proves downstream state?
+- How can responders stop it without model cooperation?
+
+If a diagram cannot answer those questions, it is not yet an operational security architecture.
+
+### Flash cards
+
+**Prompt injection versus poisoning?** Injection manipulates runtime context or behavior through input; poisoning changes training, evaluation, embedding or retrieval sources/artifacts. They can combine.
+
+**Signature versus provenance?** A signature verifies a statement under a key/identity policy; provenance describes production history. Neither alone proves safe behavior.
+
+**Approval versus authorization?** Authorization determines whether the subject may act; approval is an additional decision for a particular proposed effect. Both may be required.
+
+**Detector versus invariant?** A detector predicts whether input resembles an attack; an invariant defines a system condition that must hold, such as no unauthorized commit.
+
+**Kill versus recovery?** Kill stops or bounds new effects. Recovery establishes known state, reconciles existing effects and safely resumes.
 
 ## Complete answers
 
-Detailed worked answers will explain the security reasoning, not merely name the expected control.
+### 1. Why can prompt injection not be solved only by a better system prompt?
+
+**Direct answer:** The system prompt and attacker-influenced content are interpreted by the same probabilistic model. Prompt hierarchy can improve behavior, but it does not authenticate identity, enforce permission or guarantee that a downstream effect is denied.
+
+**Reasoning:** A direct attacker can vary wording and encoding. An indirect attacker can place instructions in a file, image or tool result. A future model or prompt version may react differently. Even a perfect refusal in the current turn cannot stop a previously queued action. Therefore, design for proposal compromise: the model has no direct credential, tools are minimal and typed, deterministic policy checks subject/action/target, downstream systems enforce least privilege, approvals bind high-impact effects and an out-of-band path can stop work.
+
+**Weak answer:** “Prompt injection is impossible to prevent, so AI agents cannot be used.” This jumps from imperfect detection to no useful control. We routinely build secure systems around untrusted input by constraining authority and effects.
+
+### 2. A model emits valid JSON for a tool. Is it safe to execute?
+
+**Direct answer:** No. Syntax is only the first boundary.
+
+Assume the output is:
+
+```json
+{"operation":"fetch_url","url":"http://internal-service/admin"}
+```
+
+The JSON may match types while violating the operation contract. The application must reject unknown fields and excessive input, normalize values, constrain schemes/hosts/ports/redirects, prevent DNS or address rebinding where relevant, enforce egress at the network layer and authorize the exact destination. Better, replace open-ended fetch with an operation that resolves an approved source ID through trusted inventory.
+
+For SQL, use a narrow query API and parameterization; for files, resolve beneath an owned root with safe APIs; for HTML, encode for the rendering context; for shell, avoid free-form commands. The target system must enforce permissions independently.
+
+### 3. What does a valid artifact signature prove?
+
+**Direct answer:** It proves that a signature over particular data verifies under a key or certificate. Under a correctly constrained policy, it can bind artifact bytes and claims to an expected signer identity and issuer.
+
+It does **not** alone prove:
+
+- the signer was authorized by your organization;
+- the signing key was uncompromised;
+- the source and builder were trusted;
+- the dataset was clean;
+- dependencies were acceptable;
+- the format is safe to load;
+- the model behaves safely;
+- the version is not an old vulnerable rollback.
+
+Use digest, identity-constrained signature verification, provenance, inventories, update/rollback controls, safe-format admission, vulnerability evidence and behavioral evaluation as separate gates. Preserve the verification receipt with the admitted release.
+
+### 4. How do you design human approval that actually controls an effect?
+
+**Direct answer:** Bind an authenticated, authorized approver to one immutable preview and revalidate immediately before commit.
+
+The preview includes exact operation, target, environment, arguments, expected state change, important side effects, evidence, rollback, requester, policy decision, digest and expiry. Approval records the preview digest, approver identity, scope, time, expiry and nonce. Separation of duties applies where required.
+
+Before commit, the service checks that:
+
+- the proposal bytes and target still match;
+- approval remains valid and unused;
+- the approver and requester still have authority;
+- current target state satisfies preconditions;
+- policy/tool/release identity is acceptable;
+- the kill state, deadline and budgets permit work.
+
+The commit uses an idempotency key and returns an effect receipt. A general “yes” in a chat is not enough because later model output can change recipients, targets or arguments.
+
+### 5. How should prompt-injection evaluation be measured?
+
+Start from a threat model, not a bag of clever prompts. Represent direct, indirect, retrieval, encoded, split, multilingual and tool-result paths relevant to the actual system. Label benign cases too.
+
+For each case record:
+
+- technique and entry point;
+- actor capability and content origin;
+- protected asset and invariant;
+- release, detector, policy and tool versions;
+- expected decision;
+- actual detector result;
+- authorization/approval result;
+- attempted and committed downstream effect;
+- cleanup and reviewer judgment.
+
+Report detector recall per attack slice, benign false-positive rate and precision when meaningful. Separately report escaped attacks contained by authorization/approval and the system attack-to-effect rate. Include uncertainty and do not claim novel-attack coverage. A model refusal is supporting evidence; the pass criterion is the protected invariant and downstream state.
+
+### 6. What is the correct response when a kill switch leaves unknown queued actions?
+
+**Direct answer:** Containment is unproven. Keep the route disabled and reconcile every stable action identity.
+
+Identify waiting, leased, in-flight, completed, failed and uncertain actions. Deny waiting work, revoke credentials, block egress as needed and query authoritative target state or idempotency records for uncertain calls. Preserve timestamps from kill invocation through controller and worker acknowledgement. Undo reversible unauthorized effects safely; do not blindly retry or delete queue records.
+
+Repair the propagation or inventory gap, add the missed worker to kill fan-out, test under load and prove all dispositions before recovery. Report the limitation honestly: “new broker calls were denied” is narrower than “the system was contained.”
+
+### 7. Should raw prompts be retained for security investigations?
+
+Only when a documented purpose, legal basis, access model and retention period justify the exposure. Raw prompts can contain credentials, private documents, regulated data and attacker material. Default to structured records with stable content references, digests, classifications, model/prompt/policy/tool versions, decisions and effect receipts.
+
+If protected content capture is necessary, separate it from general logs, encrypt it, restrict and audit access, mask before export, define deletion and legal hold, test redaction and monitor drops. During an incident, stop unsafe new capture and restrict exposure while coordinating evidence preservation. Do not destroy required evidence reflexively.
+
+### 8. How do reliability and security interact when policy is unavailable?
+
+The answer depends on the operation's harm contract. A production mutation should fail closed or enter a previously reviewed safe queue state. A public-document summary might degrade to a non-personalized cache. The decision must be explicit and tested.
+
+Avoid unbounded retries: they can overload the policy service and outlive user intent. Use one deadline, bulkheads, local verified policy bundles where appropriate, health and staleness signals, and clear degraded modes. Measure decision latency, availability, stale use and fail-open/fail-closed counts. Reliability is what keeps the security boundary present during failure.
 
 ## Product-company interview
 
-Interview prompts will test system boundaries, trade-offs, incident leadership, residual risk and recovery rather than tool-name recall.
+### Interview 1 — Design a secure incident-remediation agent
+
+**Level:** Senior / Staff
+
+**Evaluates:** threat modeling, distributed authorization, operational safety and system design.
+
+**Strong answer:** Begin with a narrow operation and prohibited effects. Draw user, content, model, parser, broker, approval and target boundaries. Keep credentials out of the model. Expose typed read tools first, propagate user/tenant identity, authorize every subject/action/target in deterministic policy and enforce least privilege downstream. For mutations, use immutable preview, authorized approval, fresh revalidation, idempotency and effect receipts. Label and ACL retrieved content, validate output for each sink, isolate runtimes and allowlist egress. Release immutable model/prompt/policy/tool versions through provenance and evaluation gates. Observe decisions and outcomes with redacted audit. Provide route deny, credential revocation, queue quarantine and a safe non-AI fallback. Test direct/indirect injection against system invariants and rehearse recovery.
+
+**Weak signals:** starts with model vendor; says “use guardrails”; gives the agent cluster-admin; treats approval text as authorization; has no queue/kill design.
+
+**Follow-up:** “The policy service adds 80 ms. Remove it?”
+
+**Senior response:** First compare the operation SLO and risk. Optimize through local verified bundles or co-location, not by bypassing mediation. For high-risk mutations, an explicit latency trade-off is preferable to unauthorized action. Measure tails and staleness.
+
+### Interview 2 — A red-team suite blocks 98% of attacks. Can you launch?
+
+**Level:** Senior
+
+**Evaluates:** measurement literacy and risk judgment.
+
+**Strong answer:** Not from that number. Ask denominator, threat coverage, attack slices, benign false positives, release versions and confidence. Determine what the 2% escapes can do. If deterministic authorization blocks every unauthorized effect, residual risk differs from an agent with administrator credentials. Inspect downstream outcomes, critical invariants, independent review, kill/recovery evidence and harmed-user slices. Launch is a conjunctive risk decision, not one averaged score.
+
+**Follow-up:** “No escaped attack caused an effect in 1,000 cases.”
+
+**Senior response:** That is useful bounded evidence, not proof of impossibility. Report the observed upper uncertainty, coverage and environment; keep least privilege, staged exposure, monitoring and an owned residual-risk decision.
+
+### Interview 3 — Signed model, verified digest, still compromised
+
+**Level:** Staff / Architect
+
+**Evaluates:** supply-chain reasoning.
+
+**Strong answer:** Preserve artifact, signature, certificate, provenance and admission receipts; stop loading or serving the affected release; scope hosts and credentials. Determine whether expected signer/issuer policy was enforced, whether the signer or build path was compromised, and whether the model format executed code. A digest proves identity and integrity; a signature under policy proves signer/claims; provenance describes production. None alone proves behavior or safe loading. Rotate affected keys/credentials, rebuild from known source with a trusted isolated builder, choose safe format, reevaluate behavior, prevent replay and stage recovery.
+
+**Weak signals:** “Signature passed, so it cannot be supply chain”; loads the artifact in a privileged debugger; overwrites evidence.
+
+### Interview 4 — Human approval did not prevent an external email
+
+**Level:** Senior
+
+**Evaluates:** TOCTOU, identity and incident response.
+
+**Strong answer:** Stop send authority, preserve preview/approval/commit/effect identities and reconcile messages. Compare recipients, body and attachments by digest. Check approver authority, expiry, nonce and state revalidation. The likely flaw is that approval covered a draft while the agent could mutate it before send. Bind approval to exact bytes and recipients, require fresh authorization, use single-use idempotent commit and give the sender identity only the scoped capability. Rotate leaked credentials and notify affected owners.
+
+**Follow-up:** “Would two approvers fix it?”
+
+**Senior response:** Two people approving an unbound mutable preview repeat the same failure. Fix binding and authority first; use multiple approvers only when risk or regulation justifies it.
+
+### Interview 5 — Kill switch says success; six actions finish
+
+**Level:** Staff / Incident lead
+
+**Evaluates:** containment evidence and leadership.
+
+**Strong answer:** Declare containment incomplete, keep routes denied, revoke worker credentials and account for every queue/idempotency identity. Separate actions already committed before invocation from those committed during propagation. Query target systems, not only queue state. Measure acknowledgement and enforcement latency, find workers outside fan-out or holding cached credentials, reconcile/undo effects, and communicate known/unknown scope. Repair the control, test under load and recover through a known release and staged exposure.
+
+**Weak signals:** trusts the UI; clears the queue; asks the model to stop; resumes after broker health turns green.
+
+### Behavioral leadership prompt
+
+**Question:** “A product leader wants launch today and says security is blocking innovation. What do you do?”
+
+**Strong answer:** Translate findings into user and business effects, not abstract fear. State the exact failed invariant, evidence, likelihood limits, reversibility and exposure. Offer the smallest safe path: read-only mode, narrower cohort, no external tools, tighter identity, manual workflow or delayed risky capability. Name what must be true to expand and who owns residual-risk acceptance. Document the decision without exaggerating certainty. If an unauthorized high-impact effect remains credible and outside delegated risk authority, escalate through the defined governance path rather than silently accepting it.
 
 ## Independent transfer and rubric
 
-The independent assessment will require an unseen architecture review, a reviewer-injected incident, changed constraints and observable cleanup without exposing model answers.
+`ASM-0192` is deliberately answer-isolated. Do not read `ASM-0190` or `ASM-0191` while performing it if the goal is genuine transfer. A reviewer owns the unseen environment and fault.
+
+### Safe environment
+
+Use synthetic identities, content, policies, artifacts, tools, approvals, queues and effects in a disposable local simulator. No customer data, real credential, shared service, production namespace, unrestricted shell, external model endpoint or external effect is allowed. The reviewer records the initial inventory and owns reset.
+
+### Required phases
+
+1. **Map:** define operation, actors, assets, trust boundaries, prohibited effects and residual-risk owner.
+2. **Trace:** follow identity, content, proposal, policy, approval, commit, effect and audit.
+3. **Review supply chain:** connect source, data, model, prompt, policy, tools, dependencies, build, signature, inventories and admission.
+4. **Design evaluation:** choose credible threat paths, benign controls, slices, invariants, denominators and observable outcomes.
+5. **Respond:** contain one reviewer-injected injection, poisoning, leakage, unsafe-tool or artifact incident without model cooperation.
+6. **Recover:** reconcile all work, rotate synthetic authority, restore a known release and prove postconditions.
+7. **Change:** revise after one material constraint, such as strict data residency, no human approval latency, multi-tenant isolation, policy outage or cost limit.
+8. **Defend later:** explain decisions after a delay without the lesson open.
+9. **Clean:** prove every process, file, port, queue, cache and synthetic record is absent or restored.
+
+### Evidence standard
+
+Screenshots and transcripts support evidence but do not replace authoritative state. Each claim binds subject, tenant, content origin, immutable release, policy/tool version and event time. The model transcript never proves authorization or effect. Detector metrics remain separate from authorization and downstream outcome. Signature, provenance, safe format and behavior remain separate claims.
+
+### Scoring interpretation
+
+The rubric totals 100:
+
+- 90–100: strong expert candidate in the tested scenario; still not universal mastery.
+- 80–89: good design with material gaps to repair and retest.
+- 70–79: partial understanding; supervised practice required.
+- below 70: do not claim transfer; revisit the first failed rubric domains.
+
+Any real credential, external effect, hidden cleanup, fabricated evidence or bypassed safety guard invalidates the attempt regardless of score. Mastery requires reviewer-observed evidence, explanation, changed-constraint defense and delayed retrieval—not reading completion.
+
+### Further exploration
+
+- Build a policy-input schema for one real-looking but synthetic tool and enumerate every trusted versus untrusted field.
+- Create an attack-to-invariant matrix from MITRE ATLAS techniques relevant to that tool.
+- Compare one SBOM and ML-BOM representation and identify what each cannot say.
+- Design a kill exercise with queued, leased, in-flight, completed and uncertain actions.
+- Review a local Kubernetes manifest using the official security checklist; use `kubectl diff` only against a disposable, explicitly scoped cluster if one exists.
+- Model policy outage, audit backpressure and approval overload without weakening authorization.
 
 ## References and review
 
-Current primary and official sources will be tied to specific claims, with version-sensitive statements marked for future review.
+The reference records in `support/references` contain exact URLs, review dates and relevance. They are used as follows:
+
+1. **REF-0793 — NIST AI 600-1 GenAI Profile:** lifecycle governance, measurement and generative-AI risk framing.
+2. **REF-0794 — NIST AI 100-2 E2025:** adversarial-ML terminology and attack taxonomy. NIST records an identified erratum; consult the publication page for updates.
+3. **REF-0795 — OWASP Prompt Injection:** direct/indirect injection, mitigation limits, least privilege, approval and adversarial testing.
+4. **REF-0796 — OWASP Data and Model Poisoning:** training, fine-tuning, embedding, artifact and lineage risks.
+5. **REF-0797 — OWASP Improper Output Handling:** model output as untrusted downstream input and sink-specific consequences.
+6. **REF-0798 — OWASP Excessive Agency:** excessive functionality, permission and autonomy plus complete mediation.
+7. **REF-0799 — MITRE ATLAS:** living tactics, techniques, mitigations and case-study vocabulary. Review more frequently because it evolves.
+8. **REF-0800 — Google SAIF controls:** data, infrastructure, model, application, assurance and governance control map.
+9. **REF-0801 — SLSA v1.2 provenance:** verifiable artifact origin and production information.
+10. **REF-0802 — Sigstore Cosign verification:** identity/issuer-constrained signature and attestation verification. CLI details are version-sensitive.
+11. **REF-0803 — NIST SSDF 1.1:** secure development and supplier practices for the application/platform around the model.
+12. **REF-0804 — TUF specification:** update metadata and resilience to repository/key compromise and rollback-related threats. The latest listed version can change.
+13. **REF-0805 — Kubernetes Security Checklist:** workload, identity, admission, secret and network baseline; the checklist itself warns that security is not one-size-fits-all.
+14. **REF-0806 — OPA Decision Logs:** decision identity, policy/bundle context and sensitive-field masking.
+15. **REF-0807 — CycloneDX AI/ML-BOM:** machine-readable model, dataset, framework and dependency transparency.
+
+### Review boundary
+
+The sources were reviewed on 2026-08-05. Living documentation and specifications have shorter review windows in their JSON records. Before implementing version-specific commands or policy, pin the local product version and consult its official documentation.
+
+This lesson does not claim that any framework certifies a system, that one control prevents all prompt injection, or that the offline lab demonstrates production security. It synthesizes operational design principles from primary and official sources and makes limitations explicit.
+
+### Final lesson summary
+
+- Text is data, even when it looks like an instruction.
+- The model proposes; authenticated deterministic systems authorize.
+- Validate generated output for the exact downstream interpreter.
+- Minimize tool functionality, permission and autonomy.
+- Bind approvals to immutable effects and revalidate before commit.
+- Treat digest, signature, provenance, safe format and behavior as separate evidence.
+- Test attacks against system invariants and downstream state, not just refusals.
+- Build privacy-aware audit and observe its coverage.
+- Stop through an independent path; reconcile queues and effects.
+- Recover through known state, rotated authority, regression evidence and owned residual risk.
