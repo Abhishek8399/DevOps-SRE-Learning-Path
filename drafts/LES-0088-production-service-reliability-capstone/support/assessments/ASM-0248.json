@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0248",
+  "lessonId": "LES-0088",
+  "type": "guided-transfer",
+  "difficulty": "expert",
+  "prompt": "Review a proposed Atlas release plan that says: build latest Python and NGINX tags, deploy directly to every instance, consider /livez sufficient, page on CPU above 70 percent, copy the live SQLite file with cp, restore it in place if anything fails, and declare success when the pipeline is green. Replace it with a defensible end-to-end delivery and reliability plan, including calculations, failure evidence, security controls, recovery and stopping conditions.",
+  "directAnswer": "Replace mutable inputs and all-at-once deployment with an immutable source/config/schema/image identity, test and policy gates, a separately verified backup/restore receipt, a bounded candidate, liveness plus dependency-aware readiness, user-operation probes, SLI and correctness comparison, explicit abort thresholds, compatible digest rollback and an observation window. Use SQLite's online backup mechanism rather than copying an active database blindly; restore only to a new target and cut over after integrity, count and business reconciliation. Page on actionable user-visible budget consumption, use CPU as diagnostic/capacity evidence, and treat a green pipeline as evidence about declared checks rather than production success.",
+  "foundation": "A safe release is a controlled state transition. Build identity answers what will run. Tests and policy reduce known risk. Readiness prevents an alive but unusable instance from receiving traffic. SLOs and correctness show what users experience. Rollback reverses executable state; restore recovers data. Each stage needs a success condition, abort condition, owner and evidence receipt.",
+  "reasoningSteps": [
+    "Freeze source revision, dependency inputs, Python/NGINX/Prometheus OCI digests, configuration and database schema identity.",
+    "Define the user operations and candidate availability, latency and correctness objectives before choosing metrics.",
+    "Run compile, focused tests, CLI output-conservation checks, guarded verifier, Docker checks, Compose render and Prometheus rule validation.",
+    "Produce a content-addressed image and record its digest; do not infer security from immutability alone.",
+    "Create an online backup, manifest and separate restore; verify integrity, row conservation and representative reads.",
+    "Confirm previous and candidate artifacts can read the active schema and that rollback does not require destructive data reversal.",
+    "Start one bounded candidate with non-root identity, read-only root, dropped capabilities, loopback edge and internal telemetry networks.",
+    "Require liveness, readiness, version identity, one read, idempotent create/replay/conflict and telemetry checks before traffic.",
+    "Send bounded comparable traffic and calculate availability, p95 latency and error-budget burn while checking correctness.",
+    "Abort on readiness, correctness, storage, security or user-SLI thresholds; preserve evidence before stopping the candidate.",
+    "Promote gradually only while thresholds remain healthy and monitoring itself is working.",
+    "Observe after promotion, then record the decision, limitations, cost/capacity change and follow-up work."
+  ],
+  "seniorAnswer": "My release packet would bind the Git revision, config hash, schema version and three reviewed OCI index digests. CI would run the seven tests and normal-user verifier, assert load-record conservation, validate Dockerfile and Compose, run promtool, build the image and preserve its digest. Before traffic, an online SQLite snapshot would receive a manifest hash and separate restore drill; I would record measured exercise time without labeling it a production RTO. Compatibility testing would show both candidate and rollback versions against the schema. The candidate would run as UID 10001 with read-only root, no capabilities, no-new-privileges, a state volume, loopback edge and internal scrape network. Admission requires /livez, /readyz, /version, an idempotent write/replay/conflict, a read and telemetry correlation. A 99 percent request objective allows a 1 percent bad-event budget; 10,000 bad events per million are allowed, and a 14.4 burn rate sustained for one hour consumes about 2 percent of a 30-day budget. I would abort immediately on correctness or readiness failure and on the declared fast-burn threshold, roll back only to a schema-compatible digest, and reserve restore for proven data damage with approved loss. CPU above 70 percent would prompt saturation investigation, not an automatic page. Success requires user SLIs, correctness, monitoring health and an observation window—not a green build alone.",
+  "weakAnswer": "Use latest tags for patches, deploy faster, restart on errors, copy the database before the change, and add CPU and memory alerts so the team knows when something is wrong.",
+  "whyWeak": "It has mutable supply-chain inputs, no artifact or schema identity, no bounded rollout, no readiness or user correctness, unsafe live-file backup and in-place restore, noisy cause alerts, no error budget, no abort/rollback compatibility and no evidence that pipeline checks match runtime behavior.",
+  "evidence": [
+    {
+      "signal": "CI links a source revision to a locally reproduced image digest after tests, verifier, build checks and rule validation.",
+      "proves": "The declared code and configuration produced that tested artifact under the recorded pipeline.",
+      "doesNotProve": "The artifact is vulnerability-free or reliable in every environment."
+    },
+    {
+      "signal": "One canary passes readiness, idempotent write semantics, user SLI and correlated telemetry under bounded traffic.",
+      "proves": "The candidate satisfies those checks in that slice and interval.",
+      "doesNotProve": "Fleet-wide capacity, long-tail failure behavior or future reliability."
+    },
+    {
+      "signal": "The online snapshot restores separately with matching hash, integrity and item count.",
+      "proves": "A consistent bounded snapshot can be reconstructed locally.",
+      "doesNotProve": "Business reconciliation, remote-copy durability or accepted production recovery objectives."
+    },
+    {
+      "signal": "The previous digest reads the active schema and restores SLIs during a bounded rollback test.",
+      "proves": "Executable rollback is compatible in that tested state.",
+      "doesNotProve": "Rollback will be safe after every future migration."
+    },
+    {
+      "signal": "Prometheus reports the app target up and evaluates six rules while proxy /metrics remains inaccessible.",
+      "proves": "The tested internal scrape and external exposure boundary work.",
+      "doesNotProve": "Alert notification delivery or monitoring availability during a wider outage."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why pin a digest and still review updates?",
+      "answer": "A digest prevents silent replacement; it also freezes vulnerabilities. Update automation should propose a new reviewed digest with tests and a traceable change rather than silently moving the build."
+    },
+    {
+      "prompt": "Why is CPU not the primary page?",
+      "answer": "CPU is a cause/capacity signal. Page when users need action—availability, latency or correctness budget consumption—then use CPU and queues to diagnose."
+    },
+    {
+      "prompt": "How do you handle a schema migration?",
+      "answer": "Prefer expand, migrate, verify and contract stages. Test old and new binaries across intermediate schemas, make rollback compatibility explicit, and separate data reversal from executable rollback."
+    },
+    {
+      "prompt": "What if the canary is too low traffic to evaluate?",
+      "answer": "Use bounded synthetic user-operation probes and a longer observation window, state the confidence limit, and avoid pretending absent failures prove safety."
+    },
+    {
+      "prompt": "When should the team stop a rollout despite healthy latency?",
+      "answer": "On correctness failure, authorization/security breach, readiness failure, data divergence, monitoring blindness, unexpected blast radius or loss of rollback/recovery safety."
+    },
+    {
+      "prompt": "What cost evidence belongs in the release?",
+      "answer": "Changed compute, memory, storage/WAL, backup, telemetry series/retention, transfer and operational labor, tied to the user or reliability benefit and capacity reserve."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Immutable release identity",
+      "points": 10,
+      "observableEvidence": "Links source, config, schema and pinned artifacts without treating digest as a security verdict."
+    },
+    {
+      "criterion": "Pre-release gates",
+      "points": 10,
+      "observableEvidence": "Includes tests, verifier, output conservation, container/config/rule checks and reproducible evidence."
+    },
+    {
+      "criterion": "State and recovery",
+      "points": 10,
+      "observableEvidence": "Uses online backup, manifest, separate restore, reconciliation and honest RPO/RTO boundaries."
+    },
+    {
+      "criterion": "Compatibility and rollback",
+      "points": 10,
+      "observableEvidence": "Tests schema direction and separates executable rollback from destructive restore."
+    },
+    {
+      "criterion": "Runtime security",
+      "points": 10,
+      "observableEvidence": "Applies least privilege, read-only root, dropped capabilities and bounded network exposure."
+    },
+    {
+      "criterion": "Health and correctness",
+      "points": 10,
+      "observableEvidence": "Requires distinct liveness/readiness plus read and idempotent write semantics."
+    },
+    {
+      "criterion": "SLO and calculation",
+      "points": 10,
+      "observableEvidence": "Defines eligible events, error budget and a correct burn calculation tied to action."
+    },
+    {
+      "criterion": "Progressive delivery",
+      "points": 10,
+      "observableEvidence": "Uses bounded candidate, comparable traffic, abort thresholds and observation."
+    },
+    {
+      "criterion": "Observability and alerts",
+      "points": 10,
+      "observableEvidence": "Correlates signals, protects cardinality, pages on symptoms and checks monitoring health."
+    },
+    {
+      "criterion": "Truthful completion",
+      "points": 10,
+      "observableEvidence": "Separates pipeline, local and production evidence and records limitations, cost and follow-up."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

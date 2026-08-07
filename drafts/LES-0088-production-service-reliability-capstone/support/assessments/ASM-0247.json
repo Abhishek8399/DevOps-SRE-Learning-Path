@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0247",
+  "lessonId": "LES-0088",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "The Atlas service was released ten minutes ago. Users report that create-item requests sometimes time out and retries sometimes return 503. The process is live, readiness alternates between 200 and 503, the host still has free disk blocks, p95 latency rose from 40 ms to 900 ms, storage-error counters increased, and one operator proposes restarting every container and restoring last night's backup immediately. Diagnose the incident, define the first safe actions, and state what each action proves or does not prove.",
+  "directAnswer": "Treat this as a user-visible write-path and durable-state incident, not a generic container outage. Freeze further change, record impact and version, preserve request IDs/logs/metrics/database/WAL state, compare liveness with readiness, check the exact database mount including inodes, ownership, locks and I/O, correlate the release with storage transaction latency, and test one idempotent request without creating uncontrolled duplicates. Do not restore merely because a release is unhealthy: rollback executable state if compatibility and evidence support it; restore data only after writers are stopped, current evidence is preserved, RPO loss is accepted, a verified backup restores separately, reconciliation passes and cutover is authorized.",
+  "foundation": "A request crosses proxy, application and database boundaries. Liveness says the process can answer; readiness says its required state is usable. Free filesystem blocks do not rule out inode, permission, lock, latency or database-integrity problems. A timeout leaves write outcome ambiguous, so the same idempotency key is safer than inventing a new request. Rollback changes code/configuration; restore changes data and may discard valid writes.",
+  "reasoningSteps": [
+    "Name the affected user operation, start time, failure fraction, latency and correctness risk before touching infrastructure.",
+    "Freeze concurrent releases and record current source, image, configuration and schema identities.",
+    "Preserve correlated request examples, structured logs, metrics, container state, mount mapping, database file and WAL evidence.",
+    "Separate proxy-generated timeout/status from application-generated 503 using owner-specific logs and request IDs.",
+    "Compare liveness and readiness; an alive/not-ready service should leave traffic rather than be restarted blindly.",
+    "Inspect the exact database path for blocks, inodes, permissions, owner, read-only mounts, locks, I/O latency and recent schema change.",
+    "Use low-cardinality rates and latency distributions to quantify scope; do not infer causes from a single average.",
+    "Reconcile an ambiguous write with the original idempotency key and item state before retrying.",
+    "Choose rollback only if the previous artifact and schema are compatible and the release explains the evidence.",
+    "Choose restore only for damaged or lost data with explicit RPO/RTO, stopped writers, verified separate restore, reconciliation and cutover authority.",
+    "Validate user operations, correctness, readiness and telemetry after recovery, then observe for recurrence.",
+    "Write a postmortem with contributing mechanisms and owned preventive actions rather than a restart narrative."
+  ],
+  "seniorAnswer": "I would declare a write-path incident, pause the rollout and assign incident command, operations, communications and scribe roles. My first packet would include the affected create operation, failure/latency windows, request IDs, current and previous image digests, schema version, readiness changes and storage-error rate. I would trace one request from TLS proxy to app transaction and SQLite state, checking whether the proxy deadline is expiring while the database waits on locks or I/O. I would inspect both df -hT and df -i for the database mount, then owner/mode, mount flags, open descriptors, WAL presence and lock evidence. I would replay only with the same idempotency key and reconcile the item, because a timeout is not proof of failure. If the new artifact introduced incompatible transaction behavior but the schema is backward compatible, I would canary rollback and watch user SLIs. I would not restore last night's data unless corruption/loss is established and the business accepts the potential write loss. Any restore would go to a new path, pass manifest hash, integrity, item-count and sampled-read checks, then require authorized traffic cutover. Recovery ends only after create/read correctness, SLI recovery, monitoring health and an observation window pass.",
+  "weakAnswer": "Disk has space, so restart all containers and restore the newest backup; Kubernetes or Docker will recreate anything missing.",
+  "whyWeak": "It confuses free blocks with storage health, destroys volatile evidence, ignores ambiguous write outcomes and idempotency, treats restart as diagnosis, conflates rollback with destructive data restore, does not quantify user impact, and provides no compatibility, reconciliation, authority or post-recovery validation.",
+  "evidence": [
+    {
+      "signal": "A correlated request shows proxy duration, app status, transaction result and stable idempotency key.",
+      "proves": "Ownership and outcome for that bounded request can be reconciled across the path.",
+      "doesNotProve": "All requests or the entire incident share the same cause."
+    },
+    {
+      "signal": "The exact SQLite mount has free blocks and inodes, correct ownership and no read-only drift.",
+      "proves": "Those specific capacity and access mechanisms are not currently failing.",
+      "doesNotProve": "The database has no lock, integrity, latency, application or device problem."
+    },
+    {
+      "signal": "A separately restored snapshot passes manifest hash, integrity, count and sampled business reads.",
+      "proves": "That snapshot is internally readable and matches its recorded bounded evidence.",
+      "doesNotProve": "It meets production RPO/RTO or is safe to replace current state."
+    },
+    {
+      "signal": "A canary rollback restores user SLIs with compatible schema and no reconciliation drift.",
+      "proves": "The candidate release was materially associated with the bounded failure and rollback path.",
+      "doesNotProve": "One code defect was the only contributing condition."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why can readiness fail while liveness succeeds?",
+      "answer": "The process and listener can run while a required dependency or schema is unusable. Liveness should not hide dependency failure; readiness should remove the instance from serving until the required invariant returns."
+    },
+    {
+      "prompt": "Why is a new idempotency key unsafe after a timeout?",
+      "answer": "The original transaction may have committed after the client deadline. A new key describes a new operation and can create a duplicate; the original key lets the service reconcile the same intent."
+    },
+    {
+      "prompt": "Would restarting clear a SQLite lock?",
+      "answer": "It may clear a process-owned lock, but that is a recovery effect, not proof of cause. Restart can also remove timing, descriptor and in-memory evidence and may repeat the fault after traffic returns."
+    },
+    {
+      "prompt": "When is restore justified instead of rollback?",
+      "answer": "When data is lost or damaged and a verified snapshot plus accepted data-loss boundary is the safer recovery. An unhealthy binary alone is a rollback problem, not permission to rewind data."
+    },
+    {
+      "prompt": "What would you communicate at minute fifteen?",
+      "answer": "Current user impact, affected operation, start time, evidence-backed working hypothesis, actions completed, current state, explicit unknowns, risk of proposed rollback/restore, next decision and needed authority."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Impact and evidence preservation",
+      "points": 10,
+      "observableEvidence": "Defines the user operation and time window, freezes change and preserves correlated multi-layer evidence before mutation."
+    },
+    {
+      "criterion": "Cross-layer diagnosis",
+      "points": 10,
+      "observableEvidence": "Separates proxy, process, readiness, filesystem, SQLite transaction and device/latency mechanisms."
+    },
+    {
+      "criterion": "Ambiguous write safety",
+      "points": 10,
+      "observableEvidence": "Uses original idempotency identity and reconciliation instead of blind retry."
+    },
+    {
+      "criterion": "Recovery decision quality",
+      "points": 10,
+      "observableEvidence": "Distinguishes rollback from restore and states compatibility, RPO/RTO, authorization and abort conditions."
+    },
+    {
+      "criterion": "Validation and prevention",
+      "points": 10,
+      "observableEvidence": "Verifies user correctness and SLIs, observes recovery and defines mechanism-based follow-up."
+    }
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

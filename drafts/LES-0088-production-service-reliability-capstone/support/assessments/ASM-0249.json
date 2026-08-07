@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0249",
+  "lessonId": "LES-0088",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "From a fresh clone, independently build, release, operate, diagnose and recover the Atlas service during a reviewer-owned game day. The reviewer changes at least one service behavior and injects at least one unfamiliar failure across proxy, application, state or telemetry boundaries without disclosing the mechanism. Produce a time-stamped evidence packet and defend decisions at 5, 15 and 30 minutes. Do not reuse a memorized incident answer: identify the user operation, follow evidence across boundaries, preserve state, make reversible decisions and state what remains unknown.",
+  "deliverables": [
+    "A reproducible environment receipt containing source revision, configuration hash, schema identity, pinned base-image digests, built application-image digest and tool versions.",
+    "A release plan with entry, success, abort, rollback and recovery conditions, named decision owners and a stated blast-radius boundary.",
+    "A fresh-clone verification transcript covering unit tests, normal-user verifier, container checks, Compose rendering, Prometheus configuration/rules and exact cleanup.",
+    "A candidate deployment receipt showing runtime identity, least privilege, health semantics, network exposure, durable-state ownership and monitoring health.",
+    "A user-operation validation receipt covering read, create, idempotent replay, conflicting replay, request correlation and bounded load.",
+    "A calculated SLI, error budget and burn-rate interpretation with eligible-event definitions and explicit exclusions.",
+    "An incident timeline that separates observed facts, hypotheses, tests, decisions, reversibility and unresolved uncertainty.",
+    "A preserved pre-mutation evidence bundle for the hidden fault, including correlated request, proxy, application, state and telemetry evidence where applicable.",
+    "A recovery decision record that distinguishes restart, rollback, failover and data restore, including compatibility and data-loss boundaries.",
+    "A backup and separate-restore receipt with manifest verification, integrity check, count reconciliation and representative business reads.",
+    "A post-recovery validation and observation record proving user-operation correctness, SLI recovery and monitoring health for the declared interval.",
+    "A blameless postmortem with mechanism, contributing conditions, detection and response gaps, owned actions, verification methods and due dates.",
+    "A five-minute architecture explanation plus 5-, 15- and 30-minute incident communications suitable for technical and non-technical stakeholders."
+  ],
+  "evidenceRequirements": [
+    "All commands must be captured with timestamps, exit codes and the environment in which they ran.",
+    "Artifacts must be identified by immutable hash or digest; mutable tags alone are insufficient.",
+    "The reviewer must select the hidden failure and altered behavior after the candidate begins; the learner must not receive the answer key.",
+    "Every causal claim must cite at least two mutually reinforcing signals or be labeled a hypothesis.",
+    "The evidence packet must show at least one rejected hypothesis and explain the falsifying observation.",
+    "Any mutation must record its expected effect, blast radius, rollback path and result.",
+    "If a timeout creates an ambiguous write, reconciliation must reuse the original operation identity rather than create an uncontrolled duplicate.",
+    "A restore must target a separate path first; in-place overwrite of active state is a critical failure.",
+    "Measured local exercise times must not be represented as production RTO, and snapshot age must not be represented as an accepted production RPO.",
+    "Cleanup must remove only resources created by the exercise and must prove the expected containers, networks, volumes, certificates and temporary state are absent.",
+    "The reviewer must sign the rubric with observed evidence references. A learner checklist or model-generated narrative is not sufficient.",
+    "No credential, token, private key or unredacted sensitive value may appear in the submitted evidence."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {
+      "criterion": "Reproducibility and immutable identity",
+      "points": 10,
+      "observableEvidence": "Fresh clone reaches the same validated candidate with recorded source, config, schema, dependency and image identities."
+    },
+    {
+      "criterion": "Architecture and state ownership",
+      "points": 10,
+      "observableEvidence": "Explains the complete request/state/telemetry path, trust boundaries, durable owner and failure containment without diagram contradictions."
+    },
+    {
+      "criterion": "Release engineering",
+      "points": 10,
+      "observableEvidence": "Uses effective gates, bounded progressive exposure, explicit stop conditions, compatible rollback and a monitored observation window."
+    },
+    {
+      "criterion": "Reliability mathematics",
+      "points": 10,
+      "observableEvidence": "Correctly defines eligible events and calculates availability, latency, error budget and burn rate, then connects each result to a decision."
+    },
+    {
+      "criterion": "Incident investigation",
+      "points": 10,
+      "observableEvidence": "Scopes impact, preserves evidence, follows boundaries, distinguishes fact from hypothesis and falsifies at least one plausible explanation."
+    },
+    {
+      "criterion": "State safety and recovery",
+      "points": 10,
+      "observableEvidence": "Handles ambiguous writes safely, protects active state, distinguishes rollback from restore and proves a separate verified recovery."
+    },
+    {
+      "criterion": "Security and supply chain",
+      "points": 10,
+      "observableEvidence": "Demonstrates least privilege, secret hygiene, bounded exposure, pinned inputs and truthful limits of local security evidence."
+    },
+    {
+      "criterion": "Observability and monitoring health",
+      "points": 10,
+      "observableEvidence": "Correlates logs, metrics and traces without uncontrolled cardinality, detects the user symptom and verifies the monitoring path itself."
+    },
+    {
+      "criterion": "Communication and leadership",
+      "points": 10,
+      "observableEvidence": "Delivers precise 5-, 15- and 30-minute updates with impact, evidence, action, risk, uncertainty, ownership and next decision."
+    },
+    {
+      "criterion": "Learning and prevention",
+      "points": 10,
+      "observableEvidence": "Produces a mechanism-based postmortem with prioritized owned actions, verification methods, deadlines and residual risks."
+    }
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}
