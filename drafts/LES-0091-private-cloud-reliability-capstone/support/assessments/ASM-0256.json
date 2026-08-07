@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0256",
+  "lessonId": "LES-0091",
+  "type": "diagnostic",
+  "difficulty": "advanced",
+  "prompt": "A protected two-replica payment API is spread across rack-a and rack-b. Rack-a loses power. Three OpenStack controllers originally span racks a, b and c; two remain reachable. The API reports one server ACTIVE in rack-b and one server unreachable in rack-a. OVN northbound still contains the logical router, gateway-a is down, gateway-b is the next HA chassis, and small packets work after failover while 1500-byte tenant packets fail. A Ceph pool has size=3, min_size=2 and rack failure domain; replicas in racks b and c remain, 18% of PGs are degraded, client p99 is four times baseline and the cluster is 82% used with an 85% near-full threshold. Placement reports only compute-c as free, but it exposes x86-64-v2/pc-q35-8.2 while the failed VM requires x86-64-v3/pc-q35-9.2. A manager asks you to mark the incident resolved because the server is ACTIVE, force migration to compute-c and raise Ceph recovery speed to maximum. Diagnose the real user and infrastructure state, choose safe recovery actions and define closure evidence.",
+  "directAnswer": "The incident remains open. One application replica and controller quorum survive, and Ceph still meets min_size across two racks, but redundancy is degraded, the exact large-packet user path is broken, storage latency and recovery margin are unsafe, and the only visible compute spare is migration-incompatible. ACTIVE is Nova lifecycle state, not proof of packet delivery, volume correctness or application success. Do not force migration or maximize recovery blindly. Preserve the surviving path, validate gateway-b realization and repair the end-to-end MTU contract. Keep the rack-a host fenced until power and identity are certain. Add or free compatible x86-64-v3/pc-q35-9.2 capacity in a different rack, then rebuild the second replica and restore anti-affinity. Observe Ceph health, affected PGs, slow operations, client latency and time-to-near-full; balance recovery against foreground I/O and add capacity before further maintenance. Close only after the exact payment operation passes at representative payload sizes, two compatible replicas span racks, controller/gateway state is healthy, Ceph is clean or at an explicitly accepted residual state with restored reserve, Placement allocations reconcile and no hidden writer remains.",
+  "foundation": "A private cloud joins multiple state authorities. Nova ACTIVE describes a server lifecycle record. Placement owns resource inventory and allocations. OVN northbound describes logical intent while chassis flows and the underlay carry packets. Ceph size is the desired replica count; min_size is the minimum number of replicas required for writes under the pool policy. A CPU model and machine type are part of a VM migration compatibility contract. A failure domain is useful only when replicas and control members actually occupy different physical power and network domains.",
+  "reasoningSteps": [
+    "Name the exact user operation: submit a payment through the external path to an application replica with correct persistent state.",
+    "Separate the rack power loss from the observed service effects instead of treating one component status as the incident.",
+    "Confirm controller quorum arithmetic: two of three members remain, which preserves the modeled majority but not full redundancy.",
+    "Interpret one surviving application replica as degraded service, not restored high availability.",
+    "Separate OVN northbound intent from gateway-chassis binding, local flows, underlay reachability and application response.",
+    "Use the payload-size split to prioritize MTU and encapsulation-path evidence; small-packet success cannot prove the 1500-byte contract.",
+    "Interpret Ceph size=3/min_size=2 with two rack copies as write availability at reduced redundancy, not clean health or proven object integrity.",
+    "Treat 18% degraded PGs, four-times storage p99 and 82% utilization as coupled recovery, latency and headroom risk.",
+    "Reject maximum recovery speed because backfill and client I/O share devices and networks; define a user-latency abort threshold.",
+    "Compare source and target CPU model and machine type before migration; reject compute-c as incompatible for this VM.",
+    "Fence rack-a before evacuation or rebuild so a returning host cannot create a second writer or stale network attachment.",
+    "Restore the packet path through gateway-b and repeat representative MTU, TCP/TLS and application validation.",
+    "Create compatible capacity in a different rack, then rebuild or evacuate through the supported state/storage path.",
+    "Reconcile Nova server, Placement allocation, Neutron port, OVN binding, Cinder/Ceph volume and guest/application identities.",
+    "Close on user-path correctness plus restored redundancy and accepted storage margin, not on ACTIVE alone."
+  ],
+  "seniorAnswer": "I would keep this as a user-path and infrastructure-redundancy incident. The surviving two-controller majority and two Ceph rack copies mean the modeled control and write paths have not crossed their minimum quorum, but we have lost one application replica, one gateway candidate and one storage replica domain. The large-packet failure proves the external path is not restored even though Nova says ACTIVE and small probes pass. I would freeze force actions, fence the failed rack, preserve state and repair the exact MTU boundary from guest vNIC through OVS/Geneve, underlay and gateway-b. Compute-c is not a safe live-migration target because both CPU and machine baselines differ. I would obtain compatible capacity outside rack-b before rebuilding the second replica. On Ceph, I would inspect affected PGs, acting sets, slow operations, recovery rate, client p99 and time to near-full. I would tune recovery only inside a tested client-latency and capacity envelope, and add capacity before stacking another failure or maintenance event. Closure requires representative payment success at the required payload size, two compatible replicas in distinct racks, reconciled allocations/ports/volumes, healthy gateway realization, controller quorum, restored Ceph protection and reserve, and no unfenced writer in rack-a.",
+  "weakAnswer": "The VM is ACTIVE and Ceph still accepts writes, so force it onto compute-c, increase recovery to maximum and close the incident after a ping succeeds.",
+  "whyWeak": "It confuses lifecycle state with user success, ignores the reproducible large-packet failure, violates migration compatibility, risks client latency and storage fullness, omits fencing, treats min_size as clean durability and lacks cross-authority reconciliation.",
+  "evidence": [
+    {
+      "signal": "Two of three controllers remain reachable.",
+      "proves": "The modeled controller majority can still form.",
+      "doesNotProve": "Every API, database, message queue or cell operation is correct, fast or recoverable."
+    },
+    {
+      "signal": "Nova reports one surviving server ACTIVE.",
+      "proves": "Nova's lifecycle record for that server is ACTIVE at observation time.",
+      "doesNotProve": "The guest is reachable, its volume is correct, the application is ready or the payment operation succeeds."
+    },
+    {
+      "signal": "Small packets succeed and 1500-byte tenant packets fail after gateway failover.",
+      "proves": "Some connectivity exists and the path has a size-sensitive failure consistent with an MTU/encapsulation contract problem.",
+      "doesNotProve": "Which hop is wrong or that MTU is the only fault without path evidence."
+    },
+    {
+      "signal": "Ceph has two rack copies available with size=3 and min_size=2.",
+      "proves": "The modeled pool remains at its minimum write-replica boundary.",
+      "doesNotProve": "Clean redundancy, object integrity, acceptable latency, sufficient recovery space or survival of another rack loss."
+    },
+    {
+      "signal": "Compute-c exposes a different CPU model and machine type.",
+      "proves": "The requested migration target violates the declared compatibility baseline.",
+      "doesNotProve": "No recovery is possible; a compatible target, cold rebuild or different workload decision may exist."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Why is a ping insufficient after an OVN gateway failover?",
+      "answer": "A small ICMP packet can traverse a path that drops larger encapsulated frames, and it does not test DNS, TCP, TLS, load balancing, application readiness or persistent-state correctness. Validate the exact operation and required payload sizes."
+    },
+    {
+      "prompt": "Why not lower Ceph min_size to one to make recovery easier?",
+      "answer": "That trades availability for a much smaller durability margin exactly while failure and recovery are active. It can permit writes with one remaining copy and turn another loss into unrecoverable data. Change protection only through an explicit risk decision, not as reflexive incident repair."
+    },
+    {
+      "prompt": "What is the difference between evacuation and live migration here?",
+      "answer": "Live migration transfers a running guest from a reachable source and requires compatibility and convergence. Evacuation rebuilds a server after a failed source is fenced, using persistent storage or an image as applicable. Neither repairs lost local ephemeral data automatically."
+    },
+    {
+      "prompt": "Which metric controls Ceph recovery speed?",
+      "answer": "No single metric does. Use client latency/error SLOs, degraded/misplaced objects, recovery throughput, device/network saturation, queue latency and capacity headroom together, with an abort threshold and time-to-clean estimate."
+    },
+    {
+      "prompt": "What makes rack-a safe to reintroduce?",
+      "answer": "Power and network identity are verified, stale guests and ports cannot act as writers, storage daemons rejoin under controlled recovery, service versions are compatible, inventory reconciles and representative user paths pass after staged return."
+    }
+  ],
+  "rubric": [
+    {"criterion":"User-path scope","points":10,"observableEvidence":"Keeps the incident open and names representative payment and large-packet validation rather than accepting ACTIVE or ping."},
+    {"criterion":"State authority","points":10,"observableEvidence":"Separates Nova, Placement, OVN intent/realization, Ceph, guest and application evidence with proof limits."},
+    {"criterion":"Failure-domain arithmetic","points":10,"observableEvidence":"Correctly interprets two-of-three controller quorum, one surviving app replica and size/min_size across two racks."},
+    {"criterion":"Safe recovery","points":10,"observableEvidence":"Requires fencing, MTU repair, compatible capacity, bounded storage recovery and cross-authority reconciliation."},
+    {"criterion":"Closure and prevention","points":10,"observableEvidence":"Defines restored anti-affinity, storage reserve, exact user success, clean ownership and follow-up capacity/design work."}
+  ],
+  "maximumScore": 50,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

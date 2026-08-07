@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0258",
+  "lessonId": "LES-0091",
+  "type": "independent-transfer",
+  "difficulty": "expert",
+  "prompt": "In a fresh clone, an independent reviewer supplies a new synthetic private-cloud business operation, physical topology, workload mix, capacity state and at least four hidden faults not used verbatim in the guided material. Analyze the user path, construct or adapt a bounded no-infrastructure model, diagnose the hidden failures, produce a migration/upgrade/recovery dossier and defend the design under changing constraints. The reviewer controls the fault sheet and scoring. Do not use the guided scenario as an answer template and do not access any real hypervisor, OpenStack, Ceph, OVN, BMC, network or production endpoint.",
+  "deliverables": [
+    "A versioned workload contract naming the exact user operation, tier, state classes, availability/latency indicators, capacity demand, recovery objective candidates and proof limits.",
+    "A physical topology mapping racks, power, network, controller, compute, gateway and storage devices with declared correlated failure domains and ownership.",
+    "A logical architecture showing identity/policy, Placement, Nova cells, KVM/libvirt, image, Neutron/OVN, storage, hardware and observability boundaries.",
+    "A state-authority and recovery matrix that chooses restart, migration, evacuation, rebuild, restore, replay or reconciliation by failed state class and writer.",
+    "A capacity model for compatible compute, quota, maintenance and largest-failure reserve, plus protected storage, fullness, recovery headroom, demand growth and cost assumptions.",
+    "A security design covering individual identity, scoped roles, service communication, image trust, tenant segmentation, secrets/keys, audit and administrative break-glass controls.",
+    "A bounded deterministic simulator or calculation workbook using only synthetic project-local inputs, strict validation, explicit expected failure results and exact cleanup.",
+    "Evidence for at least four reviewer-owned hidden faults, including the first meaningful signal, competing hypotheses, state-owner checks, safe containment, recovery and closure.",
+    "A staged migration and upgrade plan with dependency order, compatibility windows, canaries, abort thresholds, rollback/recovery and representative user-path gates.",
+    "A design dossier and oral defense that distinguishes observed evidence, simulation, inference, unknowns, residual risk and work required before any production claim."
+  ],
+  "evidenceRequirements": [
+    "The reviewer records the fresh-clone revision, environment, fixture digest, learner identity and start/end times without including a real credential or infrastructure identifier.",
+    "The topology and workload are materially different from LES-0091: at least one failure-domain layout, workload state model, capacity constraint and network/storage choice changes.",
+    "The hidden fault set is unavailable to the learner before execution and includes at least one cross-domain or ambiguous-outcome failure.",
+    "Every input passes a strict schema or equivalent validator; duplicate/unknown fields, unsafe paths, credential/endpoint-shaped data and identity mismatch fail closed.",
+    "All mutating simulator outputs remain inside an exact disposable directory; unknown artifacts or descriptor tampering block cleanup and deletion remains narrowly allowlisted.",
+    "Capacity calculations show units, formulas, numerator/denominator, reserves and at least one sensitivity or changed-demand case.",
+    "Failure evidence separates lifecycle, allocation, logical intent, dataplane realization, storage protection, guest state and user-operation claims.",
+    "Recovery never force-migrates incompatible state, lowers durability silently, overwrites the only copy, repeats an ambiguous hardware action or edits an authoritative database to create agreement.",
+    "The learner validates the exact synthetic user operation after recovery and reconciles all applicable server, allocation, port, volume, image, guest and policy identities.",
+    "The upgrade/migration plan includes a stopped or rolled-back branch and explains which evidence triggers it.",
+    "The final environment is independently checked for exact absence of owned runtime state and for no external or infrastructure call.",
+    "A reviewer asks at least three changing follow-ups and records the learner's reasoning, correction behavior and unsupported claims separately from fixture output."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion":"User operation and evidence contract","points":10,"observableEvidence":"Defines measurable success, state, objectives, exclusions and proof limits for the reviewer-selected workload."},
+    {"criterion":"Physical failure-domain reasoning","points":10,"observableEvidence":"Maps correlated power/network/storage domains and calculates quorum, replica and workload survival without relying on logical labels alone."},
+    {"criterion":"State authority and architecture","points":10,"observableEvidence":"Traces the complete request and recovery path and assigns every durable, desired and realized state to an owner."},
+    {"criterion":"Compute and Placement correctness","points":10,"observableEvidence":"Uses compatible inventories, allocations, generations, quota, reserve, affinity and migration/evacuation boundaries."},
+    {"criterion":"Network and user-path diagnosis","points":10,"observableEvidence":"Separates intent from chassis/flow/underlay/gateway realization and validates the exact operation, including relevant MTU/DNS/TCP/TLS layers."},
+    {"criterion":"Storage protection and recovery","points":10,"observableEvidence":"Reasons from pool protection, physical placement, health, integrity, fullness, recovery load and state-specific restore evidence."},
+    {"criterion":"Security and unsafe-action refusal","points":10,"observableEvidence":"Applies least privilege, trust, segmentation, secret/audit boundaries and refuses destructive or ambiguous shortcuts."},
+    {"criterion":"Capacity, upgrade and migration decisions","points":10,"observableEvidence":"Shows formulas, reserves, compatibility, staged gates, abort/rollback and changed-demand trade-offs."},
+    {"criterion":"Hidden-fault recovery and validation","points":10,"observableEvidence":"Diagnoses at least four unseen faults, preserves evidence, recovers safely and reconciles user and state identities."},
+    {"criterion":"Communication, limits and independent defense","points":10,"observableEvidence":"Explains decisions clearly, adapts to reviewer changes, corrects errors and never converts simulation or local output into production or mastery claims."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

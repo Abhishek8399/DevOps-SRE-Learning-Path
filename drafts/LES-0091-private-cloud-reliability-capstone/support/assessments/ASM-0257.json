@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0257",
+  "lessonId": "LES-0091",
+  "type": "guided-transfer",
+  "difficulty": "expert",
+  "prompt": "Replace this proposed private-cloud design: one management rack contains three controller VMs, all Ceph monitors and both OVN gateways; twelve compute hosts and eighteen OSDs span three racks. Nova uses one cell. Workloads use host aggregates called az-a/az-b/az-c, but aggregate membership does not match physical power domains. Ceph size=3 uses host failure domain even though two OSD hosts share each rack PDU. The team advertises rack-loss tolerance, 99.99% VM availability and zero data loss. Capacity planning uses total vCPU with 8:1 overcommit, total raw disk and current average CPU; there is no evacuation, recovery or near-full reserve. Every image is public and unsigned. Operators share an admin credential. Security groups allow all east-west traffic. Upgrades update every controller, compute and OSD in one maintenance window; database and OVN backups exist but have never been restored. Produce a defensible replacement design, migration plan, SLO/evidence model and operational acceptance package without claiming evidence you do not have.",
+  "directAnswer": "Reject the availability and zero-loss claims until workload contracts and measured recovery evidence exist. Map physical rack, PDU, leaf and storage domains first. Place controller/database/message/OVN/monitor quorum members across independent domains rather than co-locating correlated failure. Define Nova cells for scale and containment only with explicit cross-cell move limits; make host aggregates, traits and end-user availability-zone language match an owned physical intent. Use Placement inventory, allocations, generations, quotas and reserves rather than raw totals. Establish a migratable CPU/machine baseline and separate workloads that need passthrough or local ephemeral state. Give OVN gateways members in multiple physical domains, validate MTU and the external user path, and keep northbound intent distinct from dataplane proof. Change Ceph CRUSH to the intended rack/PDU domain only after capacity and movement impact are modeled; set size/min_size, near-full/full thresholds, recovery headroom and client-latency gates by service tier. Require signed/approved images, per-person identity, least privilege, service credentials, default-deny tenant policy, protected secrets and audit evidence. Perform staged, compatibility-aware upgrades with health gates, canaries, abort, rollback and restore rehearsal. Migrate incrementally: inventory and correct labels, establish observation, add spare capacity, move low-risk workloads, rehearse host/rack/storage/control failures, then expand. Publish only objectives whose numerator, denominator, exclusions, window, ownership and recovery dependencies are measurable.",
+  "foundation": "Availability is a property of a defined user operation over time, not a property of component count. Logical labels do not create physical independence. Raw storage is not usable protected capacity: replication, fullness thresholds, failure reserve and recovery amplification consume space. CPU overcommit is a risk policy whose safety depends on workload demand, contention and tail latency. A backup becomes recovery evidence only after integrity validation, isolated restore, reconciliation and a promotion decision.",
+  "reasoningSteps": [
+    "Translate business operations into service tiers, state classes, latency/availability objectives, RPO/RTO candidates and explicit exclusions.",
+    "Build a physical source of truth for rooms, racks, PDUs, leaves, hosts, devices, firmware and ownership.",
+    "Map every controller, gateway, compute, monitor and OSD to those domains; expose correlated placement.",
+    "Separate OpenStack API/global state, Nova cell state, Placement state, OVN state, Ceph maps/data, images, volumes and guest-local state.",
+    "Choose quorum placement from independent failure domains and calculate majority survival for each declared loss.",
+    "Define cells as scale/containment boundaries, not availability zones; document cross-cell movement and quota caveats.",
+    "Make aggregates, traits, AZ hints and CRUSH rules encode reviewed intent with drift detection.",
+    "Model allocatable compute after host/system reserve, maintenance reserve, N+1 or rack-loss reserve and workload-specific overcommit.",
+    "Model protected storage after replication/erasure coding, metadata, near-full/full thresholds, recovery headroom and growth.",
+    "Define a versioned CPU/machine/device baseline and classify non-migratable workloads explicitly.",
+    "Design OVN northbound/southbound/controller/gateway topology and prove the packet path, including MTU, underlay and external routing.",
+    "Create image trust, identity, least privilege, service communication, tenant segmentation, secret and audit controls.",
+    "Design backup/restore separately for identity, databases, queues if applicable, OVN intent, images, Ceph data, keys and configuration.",
+    "Create a staged upgrade graph with supported compatibility windows, canaries, quorum gates, data migration, abort and rollback/recovery.",
+    "Migrate through bounded cohorts with before/after user-path, capacity, security and recoverability evidence.",
+    "Keep advertised availability and loss claims in draft until representative fault and restore evidence is accepted."
+  ],
+  "seniorAnswer": "I would start by withdrawing the rack-loss, four-nines and zero-loss language because the current placement creates a management-rack failure, CRUSH protects only across hosts, logical AZ labels do not match PDUs and no restore has been proven. The replacement begins with an owned physical topology and service-tier contract. Controller, database/message, OVN database/gateway and Ceph monitor quorums span independent power and network domains. Nova cells are chosen for scale and fault containment with their movement limits documented; Placement remains the allocation authority, using generation-safe inventories, traits, quotas and explicit maintenance/rack-loss reserve. Compute pools get versioned CPU/machine compatibility baselines and passthrough/local-disk exceptions are non-migratable by design. OVN gateway candidates span racks and every release validates logical intent, chassis realization, underlay/MTU and the exact external operation. Ceph CRUSH matches the intended physical domain, but I would change it only after modeling data movement and headroom. Capacity uses usable protected bytes, near-full/full thresholds, recovery reserve and client-latency gates, not raw disk. Security moves to individual federation-backed identity, scoped roles, service credentials, trusted images, default-deny segmentation, protected keys and audit. Upgrades are staged by dependency and compatibility, with canaries, health/user gates and rehearsed restore. Migration starts with inventory correction and observability, adds spare capacity, moves rebuildable workloads first and exercises host/rack/gateway/storage/control failures before expanding. Only measured user-operation SLIs and verified recovery can support an availability or RPO/RTO claim.",
+  "weakAnswer": "Move one controller and one gateway to another rack, change Ceph to rack failure domain immediately, keep 8:1 overcommit, buy more disk later and call the design highly available after all services show green.",
+  "whyWeak": "It does not establish independent quorum domains, workload objectives, usable capacity, migration compatibility, packet-path proof, security, restore, staged change or evidence. An immediate CRUSH change can trigger unsafe movement when headroom is unknown, and green components do not validate the user operation.",
+  "evidence": [
+    {
+      "signal": "Three controller VMs run in one management rack.",
+      "proves": "The modeled controller members share a correlated rack failure.",
+      "doesNotProve": "How long outage would last or which service fails first without dependency and fault evidence."
+    },
+    {
+      "signal": "Ceph size=3 uses host failure domain.",
+      "proves": "CRUSH is asked to separate copies by host, not by rack or PDU.",
+      "doesNotProve": "Every current PG is on one rack; inspect the actual CRUSH map and acting sets."
+    },
+    {
+      "signal": "Raw disk and total vCPU are used as capacity.",
+      "proves": "The plan omits protection, reserve, allocation and workload-demand adjustments.",
+      "doesNotProve": "The cloud is currently saturated; representative demand and allocation evidence is still needed."
+    },
+    {
+      "signal": "Backups have never been restored.",
+      "proves": "No restore procedure, time, integrity or reconciliation has been demonstrated.",
+      "doesNotProve": "The files are unusable, but they cannot support a recovery claim yet."
+    },
+    {
+      "signal": "All images are public/unsigned and operators share admin.",
+      "proves": "The proposed provenance, accountability and least-privilege boundaries are inadequate.",
+      "doesNotProve": "A compromise occurred; it establishes unacceptable exposure and weak attribution."
+    }
+  ],
+  "followUps": [
+    {
+      "prompt": "Should a Nova cell equal an availability zone?",
+      "answer": "Not automatically. A cell is primarily a Nova scale and failure-containment boundary with separate cell database/message state and cross-cell operation limits. An availability zone is user-visible placement intent. Map them only if the operational and product semantics truly align."
+    },
+    {
+      "prompt": "How do you calculate rack-loss compute admission?",
+      "answer": "For each compatible pool, subtract system reserve, current allocations, maintenance reserve and the capacity of the largest declared failed rack. Apply workload-specific overcommit and placement constraints. Admit only if the surviving compatible hosts can place required replicas without breaking affinity, quotas or SLOs."
+    },
+    {
+      "prompt": "Why can changing CRUSH failure domain be dangerous?",
+      "answer": "It remaps objects and can create large backfill/recovery demand. Without free-space, device/network and client-latency headroom, the protection improvement can drive near-full state or user impact. Model movement, stage it and gate on health."
+    },
+    {
+      "prompt": "What validates an OpenStack upgrade?",
+      "answer": "Supported version/skew policy, database migration status, API and message compatibility, Placement allocations, cell/compute service versions, OVN and storage health, representative user operations, capacity margin and a tested abort/recovery path—not service process liveness alone."
+    },
+    {
+      "prompt": "What may be promised before a full rack game day?",
+      "answer": "Only design intent and bounded component evidence with clear limitations. Do not promise rack-loss availability, RTO or zero loss until representative fault, user-path and recovery evidence has been reviewed."
+    }
+  ],
+  "rubric": [
+    {"criterion":"Workload and SLO contracts","points":10,"observableEvidence":"Defines user operations, tiers, state, SLI populations, objectives and unproved claims."},
+    {"criterion":"Physical and logical topology","points":10,"observableEvidence":"Maps racks/PDUs/leaves and aligns cells, aggregates, AZs, traits, gateways and CRUSH intentionally."},
+    {"criterion":"Control-plane resilience","points":10,"observableEvidence":"Places quorum members across independent domains and explains majority, dependencies and cell boundaries."},
+    {"criterion":"Compute capacity and compatibility","points":10,"observableEvidence":"Uses allocations, reserves, failure capacity, demand and CPU/machine/device constraints rather than raw totals."},
+    {"criterion":"Network correctness","points":10,"observableEvidence":"Separates OVN intent from realization and includes MTU, underlay, gateway and exact user-path evidence."},
+    {"criterion":"Storage durability and capacity","points":10,"observableEvidence":"Defines CRUSH, size/min_size, protected usable capacity, fullness, recovery reserve and client gates."},
+    {"criterion":"Security architecture","points":10,"observableEvidence":"Replaces shared admin/public unsigned images/allow-all policy with identity, trust, segmentation, secrets and audit controls."},
+    {"criterion":"Upgrade and recovery","points":10,"observableEvidence":"Provides dependency order, compatibility, canary, abort, backup, isolated restore and reconciliation."},
+    {"criterion":"Migration plan","points":10,"observableEvidence":"Stages inventory correction, capacity, low-risk cohorts, fault rehearsals and expansion with rollback."},
+    {"criterion":"Truthful evidence and residual risk","points":10,"observableEvidence":"Separates design, simulation and production proof and withholds unsupported HA, RPO/RTO or loss claims."}
+  ],
+  "maximumScore": 100,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-08-07",
+  "reviewAfter": "2027-02-07"
+}

@@ -1,6 +1,6 @@
 # LES-0091 draft status
 
-Status: **source-locked and implementation-verified quarantined capstone; assessment, manuscript, review and publication pending**
+Status: **source-locked implementation-and-assessment-complete quarantined capstone; manuscript, review and publication pending**
 
 This quarantined directory reserves `LES-0091` / `V11-L04` / `CAP-004` for the private-cloud reliability capstone at `/book/capstones/private-cloud-reliability-capstone`, volume `11-capstones`, order 4 and domain `capstone-engineering`.
 
@@ -14,6 +14,8 @@ Seventeen contract and adversarial tests pass. They cover JSON/input strictness,
 
 The full verifier runs twelve decisions: compute-host loss, rack loss, stale Placement generation, gateway failure, MTU mismatch, OSD loss, near-full storage, incompatible migration, unsupported upgrade jump, restore divergence, ambiguous BMC task and tenant policy violation. It records four `degraded`, seven `blocked` and one `unavailable` outcome, generates the design dossier and returns to an absent runtime. Expected refusal is treated as evidence rather than hidden as success.
 
-Three assessments (`ASM-0256` through `ASM-0258`), the exact eighteen-section manuscript, formal multidisciplinary review and reviewer-owned transfer remain pending.
+`ASM-0256` diagnoses a quantified rack-loss incident spanning controller quorum, OVN gateway/MTU, Ceph protection/recovery margin and migration compatibility. `ASM-0257` replaces an unsafe private-cloud design with workload, topology, capacity, security, upgrade, recovery and migration evidence. `ASM-0258` reserves reviewer-owned independent transfer using a different topology and at least four hidden faults. Direct schemas pass; rubrics total 50/100/100 and the independent record contains no answer-derived fields.
+
+The exact eighteen-section manuscript, formal multidisciplinary review and execution of the reviewer-owned transfer remain pending.
 
 No real infrastructure, credential, tenant, customer data, production action, accepted capacity/availability/recovery objective, learner result or mastery is claimed.
