@@ -110,15 +110,179 @@
 
 ## What you see and first thought
 
-When a virtual workload cannot communicate, do not translate “the network is down” into a restart. Name the exact source, destination, protocol, direction and user operation, then ask which owner last proved its part: intent, compilation, binding, installed policy, physical transport, delivery or reply.
+When a virtual workload cannot communicate, do not translate “the network is down” into a restart. That sentence is too wide to diagnose. Replace it with an operation:
+
+> Workload A at logical port P-A tried to open TCP from source IP and port S to destination IP and port D at time T. The connection did not complete within the promised latency.
+
+Now you have something an engineer can follow. Keep the original source and destination, tenant/network, protocol, ports, direction, timestamp and request ID. A ping from a controller is a different operation. A curl from another namespace is a different operation. If you silently change the experiment, you can get a green result while the user remains broken.
+
+### First thought: ask which promise failed
+
+OVS and OVN form a chain of promises:
+
+```text
+CMS intent
+  -> northbound commit
+  -> northd compilation
+  -> southbound binding and logical flows
+  -> chassis controller convergence
+  -> local OVSDB configuration
+  -> OpenFlow policy
+  -> datapath execution
+  -> tunnel and underlay transport
+  -> destination delivery
+  -> application reply
+```
+
+Each arrow is a boundary. A healthy component proves only its own bounded claim. An ACTIVE Neutron port says the control plane reached a defined state. It does not prove the destination interface has a usable ofport. NB quorum says a majority can agree on commits. It does not prove northd consumed the relevant commit. An installed OpenFlow rule says policy exists. It does not prove the packet matched it. `ovn-trace` predicts the logical decision for supplied fields. It explicitly cannot prove that two chassis can exchange physical packets.
+
+Whenever you see a green status, complete this sentence:
+
+> Green according to **which owner**, for **which identity**, at **which generation**, during **which time window**, and what later boundary is still unproved?
+
+That question is senior-level operational discipline.
+
+### Do not begin with daemon restarts
+
+A restart changes evidence. It can reconnect a controller, rebuild flows, move a gateway, expire caches or briefly remove networking for unrelated tenants. If the fault disappears, you still may not know whether the cause was a stale SB generation, an invalid interface, a tunnel route, a policy input or connection state. Worse, fleet-wide restarts synchronize load and expand a one-chassis problem.
+
+Begin with read-only evidence and one mutation queue. Freeze rollout expansion. Preserve current database terms/indexes, northd and controller progress, port bindings, interface errors, flow generations, counters and a bounded packet capture. Then identify the first boundary where expected and observed state differ. Repair that owner through its supported interface.
+
+### A small example that should stay in memory
+
+Suppose `ovn-trace` ends with output to the correct logical port, yet the application times out.
+
+Do not say, “OVN is fine.” Say:
+
+- The supplied microflow matched the expected logical pipeline in the SB snapshot.
+- Chassis placement, installed OpenFlow, datapath execution and physical delivery remain unproved.
+- I will bind the destination Port_Binding and chassis generation, correlate the logical flow with local OpenFlow, then observe source encapsulation, remote receipt, decapsulation, destination VIF delivery and the reply.
+
+That phrasing is accurate, actionable and safe.
 
 ## Terms before commands
 
-The final lesson will define every OVS, OpenFlow and OVN term before using its command. The central distinction is simple: a database row is desired or compiled state, a flow is forwarding policy, a datapath entry is cached execution, and a received application reply is outcome evidence.
+The same word can mean different objects at different layers. Learn the nouns before memorizing commands.
+
+### OVS, bridge, port and interface
+
+Open vSwitch, or OVS, is a programmable software-switch system. In OVS language, a **bridge** is a switch. A **Port** is a logical attachment on that bridge. An **Interface** describes the concrete network device or OVS-created endpoint used by a port. A simple port often contains one interface with the same name, but bonds and special interface types break that easy assumption.
+
+The Linux kernel also has interfaces, namespaces, routes and neighbors. Those are not the same as OVSDB rows. An Interface row may exist while its `ofport` is `-1` because realization failed. A Linux link may be UP while no correct OpenFlow action selects it. Always join database identity to effective interface identity.
+
+### OVSDB, ovs-vswitchd and the datapath
+
+**OVSDB** is a transactional database protocol and data model. The local Open_vSwitch database holds desired configuration such as bridges, ports, interfaces, controllers and mappings. `ovs-vsctl` primarily speaks to that configuration database.
+
+**ovs-vswitchd** reads configuration, implements switching policy and exposes OpenFlow behavior. The **datapath** performs packet execution. Depending on deployment, it may be the Linux kernel datapath, a userspace datapath or hardware offload. These implementations do not provide identical feature and evidence boundaries.
+
+OVS has multiple useful meanings of “flow”:
+
+- An **OpenFlow flow** has tables, priority, matches and actions. It expresses policy.
+- A **hidden flow** is internal policy that normal OpenFlow dumps may omit.
+- A **datapath flow** or **megaflow** is an implementation cache derived from packet classification. It is not the source-of-truth policy.
+
+This is why `ovs-ofctl dump-flows`, `ovs-appctl bridge/dump-flows` and `ovs-appctl dpif/dump-flows` answer different questions.
+
+### OpenFlow pipeline vocabulary
+
+A packet lookup occurs in a **table**. Within that table, matching rules compete by **priority**; the highest-priority matching rule wins. A **match** constrains fields such as input port, Ethernet/IP addresses, protocol, connection state, registers or metadata. **Actions** drop, output, modify, encapsulate, recirculate, group or continue processing.
+
+A **cookie** is controller-provided metadata used to identify flow ownership or purpose. It is not packet data and is not automatically unique unless the control system makes it so. **Registers** and **metadata** carry intermediate logical context through a pipeline. **resubmit** performs another lookup, often in another table. **recirculation** sends a packet through later classification with additional parsed or connection state.
+
+Never dump “flows” without recording bridge, OpenFlow protocol, table scope, time and ownership. Otherwise you may compare different views and call the difference a failure.
+
+### OVN, NB, SB, northd and chassis
+
+Open Virtual Network, or OVN, adds logical switching, routing and policy across many OVS chassis.
+
+- The **Northbound database (NB)** stores high-level desired networking: logical switches, routers, ports, ACLs, NAT, load balancers and related objects.
+- **ovn-northd** compiles NB intent into lower-level logical flows and bindings.
+- The **Southbound database (SB)** stores compiled logical datapaths, logical flows, chassis information and port bindings.
+- **ovn-controller** runs per chassis. It consumes relevant SB state and programs local OVSDB/OpenFlow realization.
+- A **chassis** is an OVN forwarding node with a stable system ID and advertised encapsulation endpoint.
+
+Configuration generally moves north to south. Some status moves south to north. Quorum is about database authority. `nb_cfg`-style generations or transaction indexes help reason about progress. Neither is a packet counter.
+
+### Logical topology and binding
+
+A **logical switch** provides logical Layer 2 connectivity. A **logical router** connects logical networks at Layer 3. A **logical switch port** or **logical router port** is an attachment in that topology.
+
+A **Port_Binding** connects a logical port/datapath identity to realization information such as tunnel keys and, when scheduled, a chassis. The row existing does not prove the named chassis consumed it. Binding, controller convergence and local interface readiness are separate gates.
+
+### Overlay, underlay and Geneve
+
+The **overlay** is the logical tenant topology. The **underlay** is the physical IP network between chassis. OVN commonly transports logical context in **Geneve** encapsulation. The outer packet needs routable tunnel endpoints and enough MTU for inner packet plus encapsulation headers.
+
+A correct logical route cannot repair a broken underlay route. A tunnel interface can exist while return traffic is filtered. An inner MTU of 1500 cannot traverse a 1500-byte underlay after adding outer headers without fragmentation or a smaller effective payload. Diagnose inner and outer packets separately.
+
+### Policy, connection tracking and NAT
+
+An **ACL** is direction- and priority-aware logical policy. **Address sets** and **port groups** supply membership used by policy. If membership is stale, a correctly compiled ACL can make the wrong decision for current intent.
+
+**Connection tracking** records flow state in a **zone**. Stateful policy and NAT depend on exact zone and tuple semantics. Existing connections can behave differently from new ones after a policy change. A global conntrack flush destroys unrelated state and is not a diagnostic shortcut.
+
+**NAT** changes addresses or ports. A **load balancer** selects a backend and may use connection state. A **gateway chassis** realizes centralized functions such as some north-south paths. Gateway placement, provider bridge/VLAN, physical route and reverse NAT path must agree.
 
 ## Architecture map
 
-The architecture runs from CMS intent to the OVN northbound database, through ovn-northd into the southbound database, then through one ovn-controller into local OVSDB, ovs-vswitchd and the datapath on each chassis. Overlay transport still depends on the physical underlay.
+The architecture runs from CMS intent to NB, through northd into SB, then through one controller into local OVSDB, ovs-vswitchd and the datapath on each participating chassis. Overlay transport still depends on the physical underlay.
+
+### Control and realization map
+
+```text
+OpenStack / CMS
+      |
+      | desired networks, ports, policy, routers
+      v
+OVN Northbound DB  ---- authority, term/index, schema
+      |
+      | consumed and compiled by ovn-northd
+      v
+OVN Southbound DB  ---- logical flows, datapaths, bindings, chassis
+      |
+      +-------------------------+
+      |                         |
+      v                         v
+ovn-controller A          ovn-controller B
+      |                         |
+ local OVSDB + OpenFlow     local OVSDB + OpenFlow
+      |                         |
+ datapath A -- Geneve / underlay -- datapath B
+      |                         |
+ source VIF                destination VIF
+      +------ application request and reply ------+
+```
+
+The important lesson is not the boxes; it is the handoff evidence. For each arrow, record the upstream identity and generation, downstream observed generation, lag, error and time.
+
+### Physical packet map
+
+For cross-chassis east-west traffic, a useful simplified path is:
+
+```text
+source process
+ -> source namespace/VIF
+ -> source integration bridge ingress
+ -> logical ingress policy
+ -> logical switch/router decision
+ -> logical egress policy
+ -> local tunnel output
+ -> outer underlay route/NIC
+ -> remote NIC/tunnel input
+ -> remote integration bridge
+ -> destination VIF/namespace
+ -> destination process
+ -> reverse path
+```
+
+The actual OpenFlow tables are implementation- and release-specific. Preserve the conceptual stages, then discover exact tables and cookies from the deployed system. Copying table numbers from another release is not expertise.
+
+### What high availability means here
+
+NB/SB database HA protects database authority and availability. Multiple northd processes or an active/standby design protect compilation. Per-host controllers protect local realization only when each is current. Gateway redundancy protects centralized forwarding only when placement, detection, physical adjacency, NAT/connection state and reverse routing recover coherently.
+
+Therefore “three databases and two gateways” is not a reliability proof. You need physical failure-domain independence, survivor capacity, bounded convergence, packet-path tests and application acceptance.
 
 ## Request or state path
 
