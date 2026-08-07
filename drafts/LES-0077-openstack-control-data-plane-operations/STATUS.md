@@ -1,6 +1,6 @@
 # LES-0077 draft status
 
-Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct, Ubuntu, canonical regression and production-build gates pass; tracker packaging pending**
+Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct, Ubuntu, canonical regression, production-build, hygiene, feature checkpoint and tracker packaging gates pass**
 
 This quarantined directory is reserved for `LES-0077` / `V09-L02` / `PRV-002`: OpenStack identity, API, service-catalog, Nova, Placement, Neutron, Glance and Cinder request paths; cells, databases, queues and agents; instance build, scheduling, image, network and volume state; HA, upgrades, incidents and recovery.
 
@@ -14,4 +14,4 @@ The 14,419-word lesson has one exact H1, all eighteen canonical H2 sections in o
 
 Direct lesson, assessment and reference schemas report zero issues. Relationships are exactly 3/15, rubrics total 50/100/100, and the independent assessment has zero answer-bearing fields. JSON and Python parsing, Bash syntax, ShellCheck and the Ubuntu 24.04 UID-1000 verifier pass with `verify=pass cases=51 refusal=true cleanup=true service_calls=none`. Git Bash lacks a usable `python3` mapping, so its verifier path is not claimed.
 
-Canonical content and registry validation, 38 schema tests plus one documented Windows capability skip, all 21 reader tests, lint, TypeScript and the production build pass. No OpenStack package, service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, formal review, learner evidence or mastery evidence exists. The manuscript remains quarantined until hygiene, feature checkpoint and tracker packaging pass.
+Canonical content and registry validation, 38 schema tests plus one documented Windows capability skip, all 21 reader tests, lint, TypeScript, production build and hygiene pass. Feature `1159769e430aab47cd9b30c4341ee07927af12c6`, tree `12b4144f6769170b49aef6e69d5c5dabee466258`, is pushed with 1,795 tracked files and exact origin parity. No OpenStack package, service/API call, database, queue, agent, hypervisor action, image, network, volume, instance, credential, external request, production action, formal review, learner evidence or mastery evidence exists. The manuscript remains quarantined pending representative runtime, formal review, learner transfer, delayed recall and publication gates.
