@@ -21,7 +21,7 @@
       "platform": "Ubuntu",
       "version": "24.04 LTS",
       "support": "required",
-      "notes": "The local static verifier passed on this platform as a normal user on 2026-08-02. The immutable locks remain incomplete, so this does not claim that the OpenTelemetry runtime lab passed."
+      "notes": "The normal-user static and full offline runtime paths passed on 2026-08-07, including exact dependency checks, three Collector binary validations, five containers, per-hop evidence, a gateway outage, sampling, and exact cleanup."
     },
     {
       "platform": "WSL 2 Ubuntu",
@@ -31,21 +31,21 @@
     },
     {
       "platform": "Docker Engine and Compose plugin",
-      "version": "exact versions discovered locally",
+      "version": "Engine 29.6.2 and Compose 5.3.1",
       "support": "supported",
       "notes": "The intended fixture requires an available daemon and pinned local image digests. No production or cross-platform behavior follows from one local execution."
     },
     {
       "platform": "OpenTelemetry Collector",
-      "version": "pinned by the draft support lock when available",
-      "support": "concept-only",
-      "notes": "Collector behavior remains a design claim until the exact locked image is present and the normal-user verifier passes without pulling during the offline lifecycle."
+      "version": "Collector Contrib 0.157.0, digest pinned",
+      "support": "supported",
+      "notes": "The exact local agent/gateway configuration and telemetry path passed on Ubuntu 24.04 before the controller's interruption-safe lock hardening. The current source tree still requires a complete rerun. This does not establish other distributions, versions, components, backends, or production behavior."
     },
     {
       "platform": "OpenTelemetry Python",
-      "version": "reviewed 2026-08-02; exact support bundle version pending",
-      "support": "concept-only",
-      "notes": "Signal maturity, package boundaries, semantic conventions, and SDK behavior evolve. Verify the locked packages and official status pages before production adoption."
+      "version": "SDK/API/exporter 1.44.0 and semantic conventions 0.65b0",
+      "support": "supported",
+      "notes": "The fourteen-wheel hash-pinned Python 3.12 set passed the local fixture before the controller's interruption-safe lock hardening. The current source tree still requires a complete rerun. Signal maturity, packages, conventions, and behavior still require version-specific review before production adoption."
     }
   ],
   "targetRoles": [
@@ -160,7 +160,7 @@
       "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after reading the lock file",
       "expectedBranches": [
         {"when": "locked references and matching local content digests are reported", "meaning": "the intended immutable image content is locally addressable", "nextEvidence": "render and validate configuration with LES-0027-CMD-003"},
-        {"when": "a digest is placeholder, absent, mutable-only, or mismatched", "meaning": "offline setup cannot prove the intended artifact identity", "nextEvidence": "do not substitute latest; use the explicit prepare path only under approved network policy, then re-run doctor"}
+        {"when": "a digest is absent, mutable-only, mismatched, or its cached content ID differs", "meaning": "offline setup cannot prove the intended artifact identity", "nextEvidence": "do not substitute latest; review the lock and use the explicit prepare path only under approved network policy, then re-run doctor"}
       ],
       "proves": "the wrapper's bounded lock and local-image comparison output",
       "doesNotProve": "image provenance, signature trust, absence of vulnerabilities, runtime compatibility, or that a container has started"
@@ -170,12 +170,12 @@
       "question": "Does Compose render the intended topology, and does the locked Collector accept the exact configuration before services start?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh validate-configs",
-      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user; real validation remains blocked until reviewed locked images are cached",
+      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after doctor reports complete locks and verified artifacts",
       "expectedBranches": [
         {"when": "Compose rendering and Collector validation both pass", "meaning": "the current inputs are syntactically acceptable to those exact local tools", "nextEvidence": "run offline setup and then prove runtime pipeline membership"},
         {"when": "rendering or validation fails", "meaning": "the topology, variable substitution, component name, option, or exact-version contract is invalid", "nextEvidence": "stop before startup and repair the smallest owned configuration defect"}
       ],
-      "proves": "static rendering and exact-image configuration acceptance only if this command actually reaches and reports both checks; current placeholder locks are expected to fail closed",
+      "proves": "resolved Compose acceptance plus successful start/attach, exited state, zero exit, timestamps, exact removal, and specific absence for each configuration under the digest-pinned Collector",
       "doesNotProve": "component enablement, receiver reachability, telemetry flow, exporter success, or backend visibility",
       "cleanup": "The wrapper removes each exact temporary validation container by immutable ID in a guaranteed cleanup path; no persistent lab lifecycle is created. Confirm with bash lab.sh status if the command is interrupted."
     },
@@ -194,13 +194,13 @@
     },
     {
       "id": "LES-0027-CMD-005",
-      "question": "Can the locked fixture start without pulling images or using non-loopback application traffic?",
+      "question": "Can the locked fixture start without pulling images or publishing any host port?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh setup",
       "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after doctor passes",
       "expectedBranches": [
         {"when": "setup reports the exact owned resources ready and runtime_pull_policy=never", "meaning": "the local locked containers and internal network reached the fixture's declared readiness checks without a runtime pull", "nextEvidence": "record the lifecycle token and send one fixed request with LES-0027-CMD-006"},
-        {"when": "an image is absent, a digest differs, a port is owned, or readiness fails", "meaning": "the offline lifecycle cannot safely continue", "nextEvidence": "stop, preserve diagnostics, and run cleanup; never silently pull or take over an unowned resource"}
+        {"when": "an image is absent, a digest differs, an unexpected resource exists, or readiness fails", "meaning": "the offline lifecycle cannot safely continue", "nextEvidence": "stop, preserve diagnostics, and run token-guarded cleanup; never silently pull or take over an unowned resource"}
       ],
       "proves": "only successful creation and readiness of resources named by the wrapper if actual output reports them",
       "doesNotProve": "production topology, external network isolation, end-to-end telemetry completeness, performance, security, or cleanup",
@@ -236,30 +236,30 @@
     },
     {
       "id": "LES-0027-CMD-008",
-      "question": "Which current-run records are bound to the fixed operation, and which Collector boundaries remain unmeasured?",
+      "question": "Which current-run records bind the fixed operation to aligned SDK, agent, gateway, and sink measurements?",
       "risk": "read-only",
       "command": "bash lab.sh status",
       "runFrom": "the prepared fixture directory after a bounded operation",
       "expectedBranches": [
-        {"when": "the operation identity, parentage fields, evidence-record hashes, and a current-window gateway receipt are present while per_hop_evidence_complete=false", "meaning": "the fixture bound a sanitized operation to its control record and gateway debug window but did not measure receiver, processor, exporter, refusal, retry, drop, or sink deltas", "nextEvidence": "preserve the record as partial evidence and do not localize a Collector hop until the missing counters and units are implemented"},
-        {"when": "a record is missing, stale, hash-invalid, bound to changed resources, or the current-window gateway receipt is absent", "meaning": "even the partial runtime evidence contract is invalid", "nextEvidence": "stop, preserve bounded diagnostics, and repair the earliest binding failure without inventing counter values"}
+        {"when": "the operation identity, direct parent fields, evidence hashes, bounded gateway lines, counter units, process-start identities, freshness, and 3-span deltas reconcile", "meaning": "the encoded local operation crossed the measured SDK, agent, gateway, and debug-sink boundaries", "nextEvidence": "compare the raw before/after snapshots and preserve the explicit backend and production exclusions"},
+        {"when": "a record is missing, stale, hash-invalid, bound to changed resources, crosses an unexpected reset, or fails exact reconciliation", "meaning": "the runtime evidence contract is invalid", "nextEvidence": "stop, preserve bounded diagnostics, and repair the earliest binding failure without inventing counter values"}
       ],
-      "proves": "only the exact evidence-record identities, selected parentage fields, current-window gateway-log receipt, and explicit not-measured fields printed by status",
-      "doesNotProve": "per-hop Collector traversal, queue behavior, sink or backend ingest, zero loss, provider behavior, or correctness of unobserved records"
+      "proves": "the exact record identities, direct parentage, aligned process-bound SDK/Collector counters, bounded gateway evidence lines, units, freshness, and local debug-sink visibility printed by status",
+      "doesNotProve": "backend ingest, indexing, retention, arbitrary queue behavior, production delivery guarantees, provider behavior, or correctness of unobserved records"
     },
     {
       "id": "LES-0027-CMD-009",
-      "question": "Does the runtime evidence audit refuse success until aligned per-hop counters, units, resets, and freshness are implemented?",
+      "question": "Does the runtime evidence audit accept only five records with aligned per-hop counters, units, process resets, freshness, queue, retry, and sampling evidence?",
       "risk": "sampled-read-only",
-      "command": "bash lab.sh verify-operation",
-      "runFrom": "the prepared fixture directory after the baseline operation and before cleanup",
+      "command": "bash lab.sh verify-operation --expect-token TOKEN_FROM_SETUP_OR_STATUS",
+      "runFrom": "the prepared fixture directory after all five guided records and before cleanup",
       "expectedBranches": [
-        {"when": "the command exits 78 with runtime-evidence-incomplete-per-hop-counter-contract-not-implemented", "meaning": "the current fixture verified selected control records but correctly refused to call them complete per-hop evidence", "nextEvidence": "implement source, SDK, agent, gateway, and sink measurements with explicit units, windows, reset detection, refusal, retry, drop, and freshness before changing this result"},
-        {"when": "a future reviewed implementation reports reconciled per-hop deltas", "meaning": "only the encoded operation, interval, units, and invariants passed", "nextEvidence": "review raw samples and repeat under one bounded fault; a passing fixture still is not production evidence"},
-        {"when": "the command succeeds without those measurements or prints a negative, stale, or missing delta as valid", "meaning": "the verifier is overclaiming or crossed a reset or source change", "nextEvidence": "reject the result and preserve raw before-and-after evidence"}
+        {"when": "runtime_verification_passed=true and every named delta and relationship matches", "meaning": "only the encoded local operations, windows, units, resets, queue/retry experiment, sampling comparison, and invariants passed", "nextEvidence": "review the stored snapshots and exclusions; a passing fixture is still not backend or production evidence"},
+        {"when": "a required record is absent or an action, digest, time, resource, network, source, workload, parent, metric, reset, queue, retry, or sampling binding differs", "meaning": "the audit fails closed at that boundary", "nextEvidence": "preserve the bounded failure and correct the earliest owned mismatch"},
+        {"when": "the command reports success without all five records or converts an absent/negative/stale measurement into success", "meaning": "the verifier is overclaiming", "nextEvidence": "reject the result and retain raw before-and-after evidence"}
       ],
-      "proves": "in the checked-in draft, only fail-closed refusal plus the selected bound-control-record checks printed before exit 78",
-      "doesNotProve": "per-hop reconciliation, Collector-wide health, all signal types, production delivery guarantees, absence of race conditions, or learner mastery"
+      "proves": "the checked-in local five-record evidence contract when the command returns success",
+      "doesNotProve": "backend ingest, Collector-wide health, all signal types, production delivery guarantees, absence of every race, or learner mastery"
     },
     {
       "id": "LES-0027-CMD-010",
@@ -277,16 +277,16 @@
     },
     {
       "id": "LES-0027-CMD-011",
-      "question": "What can a bounded gateway stop and current-window trace visibility establish before queue metrics exist?",
+      "question": "Can a bounded gateway stop produce measured queue occupancy, retry, drain, and exact post-restart reconciliation?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh interrupt-gateway",
       "runFrom": "the prepared fixture directory only; the wrapper must identify the exact owned gateway and enforce a finite request count and timeout",
       "expectedBranches": [
-        {"when": "four requests succeed during the exact gateway stop, the gateway is restored, and their operation and trace identifiers appear in the bounded post-recovery gateway log window", "meaning": "the fixture observed request success and later gateway debug export for those identifiers; its configured buffering or retry path is consistent with this outcome but was not directly measured", "nextEvidence": "record every queue, age, retry, refusal, drop, and per-hop field as unmeasured and keep queue_experiment_complete=false"},
+        {"when": "four requests succeed, both agent queues become nonzero, retry records appear, only the gateway process restarts, all twelve spans reach its new process, queues drain, and refusal/drop remain zero", "meaning": "the exact local bounded queue/retry path bridged this measured interruption", "nextEvidence": "retain the peak, capacity, observed age lower bound, retry records, reset identity, drain, and explicit non-production limits"},
         {"when": "an identifier is absent, ownership cannot be proven, restoration fails, or a request loses context", "meaning": "the bounded interruption did not produce valid recovery evidence", "nextEvidence": "stop generation, preserve current-window diagnostics, restore the exact owned gateway, and clean up without claiming drain or loss"}
       ],
-      "proves": "only exact-resource control, four bounded workload outcomes, restoration, current-window identifier visibility, and the recorded duration of observation",
-      "doesNotProve": "queue occupancy, queue age, retry attempts, refusal, drops, drain, per-hop reconciliation, production outage tolerance, durable buffering, or exactly-once delivery",
+      "proves": "exact-resource control, four bounded workload outcomes, measured agent queue occupancy/capacity, bounded retry records, observed residence lower bound, gateway-only reset, twelve-span drain, zero measured refusal/drop, and debug-sink visibility",
+      "doesNotProve": "durable buffering, queue saturation, arbitrary outage tolerance, process-crash survival, production behavior, or exactly-once delivery",
       "cleanup": "The wrapper must resume its exact gateway even on interruption; finish with bash lab.sh cleanup --expect-token TOKEN and final-absence status."
     },
     {
@@ -313,9 +313,9 @@
       "environment": "Ubuntu 24.04 or WSL 2 Ubuntu 24.04 with a working Docker daemon, Compose plugin, Bash, Python 3, curl, and all exact locked images already cached",
       "timeMinutes": 120,
       "privilege": "normal user only; no sudo; the wrapper must refuse root and refuse resources it cannot prove it owns",
-      "network": "setup and operation use only the fixture's Docker network and loopback host access; image acquisition is a separate explicit prepare step and is not part of offline setup",
+      "network": "setup and operation use only the fixture's internal Docker network through validated container IDs; no host port is published; artifact acquisition is a separate explicit prepare step",
       "changes": ["creates uniquely named fixture-owned containers", "creates one uniquely named fixture-owned Docker network", "creates only fixture-owned ephemeral records and a guarded local ownership descriptor", "temporarily changes only fixture-owned propagation, gateway, and sampling controls"],
-      "abortConditions": ["the caller is root", "an image lock is placeholder, mutable-only, absent, or mismatched", "a required port or resource already exists without matching ownership", "Compose rendering or exact Collector validation fails", "a command selects more than the exact owned resource", "a timeout, unexpected external address, secret-like value, or cleanup refusal appears"],
+      "abortConditions": ["the caller is root", "an image lock is mutable-only, absent, or mismatched", "a project resource already exists without matching ownership", "Compose rendering or exact Collector validation fails", "a command selects more than the exact owned resource", "a timeout, unexpected external address, secret-like value, or cleanup refusal appears"],
       "recovery": "Stop request generation, restore the exact owned gateway and context controls, collect bounded diagnostics, and invoke the dedicated idempotent cleanup. Never use global prune or delete by a broad name pattern.",
       "cleanupProof": "The ownership descriptor, exact containers, exact network, fixture records, and temporary state are absent; pre-existing and concurrent foreign resources remain; repeated cleanup is safe; status reports no owned residue."
     },
@@ -326,7 +326,7 @@
       "environment": "a fresh instructor-approved disposable clone or generated local fixture based on the LES-0027 support contract, never the already-solved guided instance",
       "timeMinutes": 180,
       "privilege": "normal user with Docker access; no sudo, no production target, and no unowned resource mutation",
-      "network": "loopback and fixture-internal traffic only after exact dependencies are locally available; no hidden package or image acquisition during the attempt",
+      "network": "fixture-internal traffic only through validated container identities after exact dependencies are locally available; no published port or hidden package/image acquisition",
       "changes": ["creates only uniquely owned disposable fixture resources", "permits one declared reversible action after baseline evidence", "records a sanitized evidence bundle and independent chronology"],
       "abortConditions": ["the learner has seen a solution to the exact scenario", "target ownership or independence is ambiguous", "baseline or raw evidence is missing", "more than one causal variable would change", "a secret, personal identifier, external destination, or unbounded load appears", "cleanup cannot prove exact ownership"],
       "recovery": "Return the exact changed variable to its baseline, stop bounded load, restore every owned component, reconcile user and telemetry outcomes, and invoke dedicated cleanup. A reviewer may require a fresh unseen case if independence was lost.",
@@ -367,11 +367,11 @@
   "referenceIds": ["REF-0166", "REF-0170", "REF-0173", "REF-0174", "REF-0175", "REF-0176", "REF-0177", "REF-0178", "REF-0179", "REF-0180", "REF-0181", "REF-0182", "REF-0183", "REF-0184"],
   "contentStatus": "substantive-draft",
   "masteryBoundary": "publication-does-not-award-mastery",
-  "lastReviewed": "2026-08-02",
-  "reviewAfter": "2027-02-02",
+  "lastReviewed": "2026-08-10",
+  "reviewAfter": "2027-02-10",
   "limitations": [
     "This file is quarantined under drafts and is not canonical content, a live route, or an accepted chapter.",
-    "The support bundle, locked images, SDK packages, Collector configuration, and normal-user lifecycle remain unproven until their exact verifier passes; prose must not be read as execution evidence.",
+    "The telemetry runtime path passed its verifier on 2026-08-07, before the controller's interruption-safe lock hardening. The current source tree requires a new complete runtime run. Any passing evidence applies only to the pinned fixture, synthetic operations, bounded faults, debug sink, and recorded host; prose must not be generalized into backend or production evidence.",
     "A local Docker fixture cannot establish Kubernetes, managed Collector, service mesh, cloud backend, vendor backend, production scale, cross-region, TLS, identity-provider, storage, retention, or failure-domain behavior.",
     "The traceparent parser is intentionally bounded to selected version-00 checks and does not replace the complete W3C processing model or current library conformance.",
     "Collector component names, defaults, feature gates, metric names, and configuration options evolve; exact behavior must be checked against the pinned distribution and current official documentation.",
@@ -385,7 +385,7 @@
 
 # OpenTelemetry instrumentation pipelines: preserve meaning from code to backend
 
-This chapter is a quarantined authoring draft. It is written so the idea can be reviewed, but nothing in `drafts/` is a published chapter or live reader route. The local support bundle is being built beside it. Until the exact locked fixture passes its own normal-user verifier, every runtime example below is an instruction or expected branch, not a claim that OpenTelemetry actually ran.
+This chapter is a quarantined authoring draft. It is written so the idea can be reviewed, but nothing in `drafts/` is a published chapter or live reader route. The pinned telemetry path completed a normal-user Ubuntu runtime on 2026-08-07. The controller was subsequently hardened so an abruptly terminated operation cannot strand cleanup behind a stale sentinel; that current revision still requires the complete runtime verifier. Treat the commands below as procedures, and accept runtime claims only from a verifier receipt whose source hashes match the checked-out tree.
 
 If LES-0026 gave you the mental model that a dashboard is the last page of a long evidence journey, this chapter opens the middle of that journey. OpenTelemetry is not one server and not a magic switch. It is a set of contracts that lets code describe work, carry context across boundaries, encode telemetry, move it through pipelines, and hand it to a destination. Your real SRE skill is preserving the meaning of the operation while each boundary is allowed to fail.
 
@@ -1050,7 +1050,7 @@ Branches:
 
 - Matching digest: local content identity matches the lock. Signature, provenance, vulnerability, and suitability are still separate checks.
 - Missing image: offline setup must fail. Pull only through an explicit approved prepare step.
-- Placeholder or mutable-only value: the package is not ready for promotion.
+- Mutable-only or mismatched value: the package is not ready for offline execution or promotion.
 - Platform mismatch: an image can be locked yet unusable on the current architecture.
 
 Never replace a missing digest with `latest` to “make the lab work.” That converts a reproducible proof into an unknown download.
@@ -1061,7 +1061,7 @@ Compose rendering resolves variables, merges files, expands defaults, and shows 
 
 Collector validation must use the exact locked distribution because component availability and configuration evolve. Static acceptance proves syntax and recognized components. It cannot prove a receiver is reachable, a pipeline is enabled, or an exporter can authenticate.
 
-The guarded interface for this stage is `bash lab.sh validate-configs`. With the current placeholder locks, it must fail closed before claiming exact-image Collector validation. After immutable artifacts are reviewed and cached, review must confirm it reports both Compose rendering and exact-distribution validation; otherwise the `proves` statement must be narrowed further.
+The guarded interface for this stage is `bash lab.sh validate-configs`. The current digest-pinned Collector Contrib 0.157.0 path passed for all three configurations. Acceptance requires more than exit zero: the verifier observes start/attach, an exited process, nonzero timestamps, exit code zero, exact container removal, and a specific Docker not-found result. This remains configuration evidence, not flow evidence.
 
 ### Command 4: parse traceparent without trusting it
 
@@ -1089,14 +1089,14 @@ Readiness means the fixture's declared local endpoints answered within a timeout
 
 ### Command 6: one fixed request creates a denominator of one
 
-`bash lab.sh run baseline` sends one sanitized request to a loopback endpoint and assigns a fixture-controlled operation identity. The current draft records:
+`bash lab.sh run baseline` sends one sanitized request through the exact validated service A container and assigns a fixture-controlled operation identity. No host port is published. The current draft records:
 
 - workload response and one operation identifier;
 - source, queued-worker, and downstream trace/span relationship fields;
 - the bounded in-process carrier keys and joined-context result;
 - an evidence binding to current container identities, configuration/source/artifact hashes, and operation timestamps;
-- a current-window gateway debug-log receipt for the operation and trace identifiers;
-- explicit `not-measured` boundaries for SDK, Collector per-hop, queue, sink, and backend counters.
+- bounded, sanitized gateway evidence lines for the operation and trace identifiers;
+- SDK ended/export-success counters, agent receive/process/export counters, gateway receive/process/export counters, debug-sink visibility, units, timestamps, freshness, and process-start reset identities.
 
 With one operation, “one expected trace” is understandable. It is still possible to create multiple spans, retries, or duplicate exports. Current-window identifier visibility is partial evidence, not accepted/exported/sink reconciliation. The wrapper must state its invariant rather than assume one request equals one span.
 
@@ -1117,13 +1117,13 @@ If the worker is a new root, return to carrier evidence. If all relationships ma
 
 ### Command 8: status separates bound evidence from missing evidence
 
-The current status interface exposes evidence-record hashes, sanitized relationship fields, resource/configuration bindings, and whether operation identifiers appeared in a bounded gateway debug-log window. It also prints that source, SDK, agent, gateway, sink, freshness, retry, refusal, and drop deltas are not measured. Those `not-measured` values are a useful refusal boundary, not zeros.
+The current status interface exposes evidence-record hashes, sanitized relationship fields, resource/configuration bindings, bounded gateway evidence, baseline source/SDK/agent/gateway/sink deltas, units, freshness, process-reset boundaries, and the outage experiment's refusal/retry/drop values. It reports completion only when all five recognized records are present and each one revalidates against the active lifecycle.
 
-Once reviewed per-hop measurements exist, reason from the earliest gap: agent accepted without agent sent points toward the agent processor, queue, or exporter; agent sent without gateway accepted points toward transport, listener, protocol, or identity; gateway accepted without gateway sent points toward the enabled processor/exporter path. The checked-in fixture cannot yet make any of those localizations. Avoid streaming unbounded logs, and use synthetic data only because debug exporters may copy complete telemetry payloads into logs.
+Reason from the earliest gap: agent accepted without agent sent points toward the agent processor, queue, or exporter; agent sent without gateway accepted points toward transport, listener, protocol, or identity; gateway accepted without gateway sent points toward the enabled processor/exporter path. The fixture demonstrates that reasoning for one synthetic path only. Avoid streaming unbounded logs, and use synthetic data because debug exporters may copy complete telemetry payloads into logs.
 
 ### Command 9: deltas need aligned windows and reset handling
 
-`bash lab.sh verify-operation` is deliberately incomplete. After validating selected control records, it prints every missing per-hop field and exits 78 with `runtime-evidence-incomplete-per-hop-counter-contract-not-implemented`. It must not return success until it can snapshot aligned internal metrics, bind a fixed operation and flush window, label units, and identify counter resets. A negative delta is not “negative spans”; it means the comparison crossed a restart, label disappearance, or source change.
+`bash lab.sh verify-operation --expect-token TOKEN` requires all five records. It revalidates action, time, lifecycle, state/root identities, locks, Compose, configs, service sources, stable resources, network, workload IDs, bounded evidence hashes, direct parentage, per-hop deltas, queue/retry/drain, and deterministic sampling. A normal operation may not cross a process start. The outage must cross exactly the gateway process start, so its new-process gateway counters are compared from zero while unchanged service and agent counters remain deltas.
 
 The verifier's invariants are code, not universal truth. Review them. If it asserts accepted equals sink count, confirm there is no intentional filter, batching still in flight, retry duplication, or signal fan-out. A passing verifier proves only its encoded model on that exact run.
 
@@ -1135,19 +1135,22 @@ The shell command stores the first exit status and invokes recovery. Review the 
 
 ### Command 11: a queue interruption teaches capacity, not heroics
 
-`bash lab.sh interrupt-gateway` selects the exact fixture gateway, stops it through an owned mechanism, sends four requests with timeouts, restores it in a guaranteed recovery path, and searches the current gateway log window for the resulting identifiers. The checked-in record deliberately marks queue occupancy, oldest age, retries, refusals, drops, per-hop reconciliation, and the queue experiment itself as unmeasured or incomplete. Record what exists and what does not:
+`bash lab.sh interrupt-gateway` selects the exact fixture gateway, stops it through an owned mechanism, sends four requests with timeouts, forces both SDKs to flush, samples the two agent queues, captures bounded retry-sender records, restores the gateway in `finally`, and reconciles the resulting twelve spans. Record the exact evidence:
 
 ```text
 request_count = 4
 gateway stop-control timeout = 3 seconds (not outage duration)
-gateway restored = observed boolean
-bounded post-recovery observation duration = observed seconds
-operation and trace identifiers visible in current gateway log window = observed boolean
-queue capacity, occupancy, oldest age, retries, refusals, drops = not measured
-per-hop reconciliation and backend ingest = not proven
+agent queue capacity and peak occupancy = measured queue items
+retry attempts = bounded retry-log records
+oldest queue residence = controller-observed lower bound in seconds
+gateway-only process reset = validated from process start identity
+post-restart gateway receive/process/export = 12 spans
+agent queues after recovery = 0 items
+refused and dropped = measured 0 spans for this window
+backend ingest and production behavior = not proven
 ```
 
-Later identifier visibility is consistent with buffering or retry somewhere before the gateway, but it does not isolate the agent queue: SDK batching could also retain spans. Docker's `stop --time 3` value is a graceful-stop timeout, not proof of a three-second outage. Do not calculate capacity or drain from absent measurements, and never increase load merely to make a graph dramatic.
+The exact agent config uses one-span batches and one exporter consumer so queue items have a declared one-span meaning during this experiment. Docker's `stop --time 3` remains a graceful-stop timeout, not the outage duration. The observed residence value is a lower bound from the first completed outage request to proven drain, not an internal oldest-item metric. Never generalize this bounded result to arbitrary outage duration, saturation, process crashes, or durable delivery.
 
 ### Command 12: sampling comparison ends with cleanup
 
@@ -1314,7 +1317,7 @@ Assign an owner and review date. “Add a dashboard” is not prevention if the 
 
 This chapter defines two lab records. The first is a guided mechanism lab. The second is an answer-isolated transfer. They are not interchangeable. Repeating a known fault proves practice, not unfamiliar diagnosis.
 
-The draft support bundle lives beside this lesson under `support/lab/`. It is not canonical. Its Ubuntu 24.04 verifier passes static contracts, a deterministic model, fail-closed placeholder-lock behavior, source-level root-guard checks, and initial/final absence; the passwordless-sudo root execution branch did not run. The checked-in locks intentionally contain placeholders, the required images are not prepared, and no OpenTelemetry SDK or Collector runtime executed. Read its current README, `STATUS.md`, and locks before using any command. If its interface differs from this prose, stop and report the mismatch; do not improvise destructive Docker commands.
+The support bundle lives beside this lesson under `support/lab/`. It remains noncanonical until promotion. A prior controller revision passed the bounded Ubuntu 24.04 runtime, context break/recovery, per-hop reconciliation, queue/retry/drain fault, deterministic sampling, token-guarded cleanup, and final zero resources. The current controller adds crash-safe kernel locking and stronger source/config/resource evidence; its fourteen Linux tests and full runtime must be rerun before publication. The passwordless-sudo root branch was unavailable and remains explicitly unclaimed. Read its README, `STATUS.md`, and locks before running commands.
 
 ### Safety card
 
@@ -1324,7 +1327,7 @@ The intended boundary is deliberately narrow:
 |---|---|
 | caller | normal Ubuntu user with authorized access to the local Docker daemon |
 | target | uniquely named LES-0027 disposable resources only |
-| application traffic | loopback host access and fixture-internal Docker networking |
+| application traffic | fixture-internal Docker networking through validated container IDs; no host port |
 | data | fixed synthetic values only |
 | setup pulls | forbidden; setup uses `--pull never` |
 | preparation | separate explicit path, only if network and registry access are approved |
@@ -1332,13 +1335,13 @@ The intended boundary is deliberately narrow:
 | broad cleanup | forbidden |
 | production or company target | forbidden |
 
-Abort if ownership is ambiguous, a digest lock is incomplete, an external address appears, a real secret or personal value appears, a port belongs to another process, or cleanup cannot prove its exact target.
+Abort if ownership is ambiguous, a digest lock is incomplete or mismatched, an external address appears, a real secret or personal value appears, a host port appears, or cleanup cannot prove its exact target.
 
 ### Lab 1: guided end-to-end path
 
 #### Stage A: read before you create
 
-From the lab directory, read the README, the lock file, Compose model, Collector configurations, fixture source, `lab.sh`, and `verify.sh`. This is not busywork. The wrapper is executable authority. You should know which containers, network, ports, files, and state it may create before giving it Docker access.
+From the lab directory, read the README, the lock file, Compose model, Collector configurations, fixture source, `lab.sh`, and `verify.sh`. This is not busywork. The wrapper is executable authority. You should know which containers, internal network, files, and state it may create before giving it Docker access.
 
 Record:
 
@@ -1351,7 +1354,7 @@ daemon/server version:
 Compose version:
 locked image references:
 expected owned resource prefix:
-expected host ports:
+expected published host ports: none
 baseline status:
 ~~~
 
@@ -1378,7 +1381,7 @@ Run:
 bash lab.sh doctor
 ~~~
 
-Decode every prerequisite as taught in commands 1 through 3. If the lock contains placeholder digests or images are not cached, the correct result is a closed failure. That protects reproducibility.
+Decode every prerequisite as taught in commands 1 through 3. If a locked digest, image, or wheel cache is absent or mismatched, the correct result is a closed failure. That protects reproducibility.
 
 The separate preparation interface is:
 
@@ -1394,7 +1397,7 @@ When reviewed immutable artifacts are locally available, run:
 bash lab.sh validate-configs
 ~~~
 
-This command renders the resolved Compose model and asks the exact Collector image to validate its configuration. The current placeholder locks and absent images must make it fail closed. Static support-file checks are not a substitute for this exact-image branch.
+This command renders the resolved Compose model and asks the exact Collector image to validate its configuration. The current locked image passed all three files, including exact temporary-container removal and absence. Static support-file checks remain weaker and are not a substitute.
 
 #### Stage D: offline setup
 
@@ -1405,7 +1408,7 @@ bash lab.sh setup
 bash lab.sh status
 ~~~
 
-Capture actual output. Do not replace it with the examples in this chapter. Confirm that setup reports `runtime_pull_policy=never`, returns a lifecycle token, creates the exact owned containers and internal network, uses only loopback host bindings, reaches its declared health/readiness checks, and configures no external destination.
+Capture actual output. Do not replace it with the examples in this chapter. Confirm that setup reports `runtime_pull_policy=never`, returns a lifecycle token, creates five exact owned containers and one internal network, publishes zero host ports, reaches health/readiness checks, and configures no external destination.
 
 Setup success proves only the declared local readiness conditions. It does not prove OTLP flow or parentage.
 
@@ -1416,7 +1419,7 @@ Run:
 ~~~bash
 bash lab.sh run baseline
 bash lab.sh status
-bash lab.sh verify-operation
+bash lab.sh verify-operation --expect-token TOKEN_FROM_SETUP_OR_STATUS
 ~~~
 
 Your notebook should contain two paths.
@@ -1430,13 +1433,13 @@ fixed request -> API outcome -> bounded queued work -> worker/downstream respons
 Telemetry:
 
 ~~~text
-SDK decision -> attempted agent path -> attempted gateway path -> gateway debug output
-             -> per-hop counters and backend ingest remain unmeasured
+SDK ended/exported -> agent received/processed/exported -> gateway received/processed/exported
+                   -> bounded debug-sink visibility; backend ingest remains unproven
 ~~~
 
 For the context path, draw the actual reported spans and write each trace ID, span ID, parent span ID or link, span kind, and operation name using only the fixture's sanitized identities. Explain why sharing a trace ID is correlation and why the parent or link expresses the intended reported relationship.
 
-For the Collector path, record every field that status labels `not-measured`; never invent a zero. In the checked-in draft, `verify-operation` must exit 78 because aligned per-hop counters, units, reset boundaries, and freshness are absent. Treat that refusal as the correct result, not as permission to continue a reconciliation table with guessed values.
+For the Collector path, verify the baseline equation `3 source-ended = 3 SDK-exported = 3 agent-received/processed/exported = 3 gateway-received/processed/exported = 3 debug-sink-visible`. Check that units are spans, the freshness window is bounded, process identities are unchanged, and refusal/drop deltas are zero. These are measured fixture values, not assumptions about a different pipeline.
 
 #### Stage F: decode a carrier
 
@@ -1459,13 +1462,12 @@ After preserving the clean baseline, run:
 bash lab.sh run broken-context
 bash lab.sh status
 bash lab.sh recover-context
-bash lab.sh run baseline
-bash lab.sh verify-operation
+bash lab.sh verify-operation --expect-token TOKEN_FROM_SETUP_OR_STATUS
 ~~~
 
 The support contract should change one owned propagation boundary. Your job is to prove where continuity first changes. Compare producer active context, injected carrier, consumer carrier, extraction result, and worker relationship. Do not stop at “two trace IDs.”
 
-Recovery of the context fault is demonstrated only when the exact setting returns to baseline, a new fixed operation preserves the intended queued-worker relationship, and the workload outcome remains correct. The current verifier still exits 78 afterward because it cannot prove that no unrelated Collector flow changed. Preserve that distinction and stop if any supported relationship check differs.
+Recovery is demonstrated only when a new fixed operation preserves request-to-worker and worker-to-downstream parentage, all three spans reconcile through the measured pipeline, and the workload outcome remains correct. The operation lock and absence of published ingress exclude concurrent lab requests, but this still proves only the synthetic fixture.
 
 #### Stage H: interrupt the exact gateway
 
@@ -1475,9 +1477,9 @@ Run only through the guarded wrapper:
 bash lab.sh interrupt-gateway
 ~~~
 
-Do not use a manual `docker pause` against a guessed name. The wrapper must prove ownership, enforce a finite operation count and timeout, and restore through a guaranteed recovery path. It reports current-window identifier visibility but explicitly does not report queue or per-hop reconciliation.
+Do not use a manual `docker pause` against a guessed name. The wrapper proves ownership, enforces four operations, measures agent queue/retry state, and restores through `finally`. It accepts only a gateway process restart, exactly twelve post-restart gateway spans, zero final queue, and zero refusal/drop.
 
-The following equations are the design target for a future measured queue experiment, not calculations supported by the current fixture:
+Use these equations to interpret the measured peak and drain, while keeping the fixture's limited observation window explicit:
 
 ~~~text
 net queue growth = producer arrival rate - sustainable export rate
@@ -1486,7 +1488,7 @@ drain rate = sustainable export rate - new arrival rate after recovery
 estimated drain time = queued backlog / drain rate
 ~~~
 
-Until occupancy, capacity, arrival rate, sustainable export rate, and drops are actually measured, write `not calculable from current evidence`. Once they exist, state units and assumptions and compare the estimate with a bounded drain observation. A queue that never filled can still contain old telemetry, while an empty queue after restart may mean loss rather than drain.
+The fixture measures capacity, peak occupancy, zero final occupancy, retry records, a residence lower bound, and zero refusal/drop, but it does not run long enough to estimate representative arrival or sustainable export rates. Write those rate-based calculations as `not calculable from this bounded run`. An empty queue alone could mean loss; the twelve-span post-restart reconciliation is what distinguishes drain here.
 
 #### Stage I: compare sampling decisions
 
@@ -2267,9 +2269,9 @@ Absence becomes useful evidence only when the producer and evidence path are mea
 
 ### 12. What can the LES-0027 local package prove?
 
-While it remains quarantined with incomplete locks, it proves only that prose, metadata, support design, assessments, and references exist at a draft revision and whatever static validators actually pass. The checked-in model can illustrate context, queue, recovery, and sampling arithmetic only if its verifier passes; it does not execute OpenTelemetry.
+While the package remains quarantined, the passing runtime proves only the pinned local fixture: its chosen Python SDK, two agents, gateway, exact configurations, synthetic operations, internal network, debug sink, bounded faults, evidence bindings, sampling comparison, and cleanup. The separate model still performs no OpenTelemetry execution.
 
-If maintainers later replace placeholders with reviewed immutable artifacts, prepare the cache, and the normal-user offline runtime verifier passes, that exact run can prove only the encoded fixture: its chosen SDK, Collectors, configuration, synthetic operations, local Docker network, sink, faults, recovery, and cleanup.
+The 2026-08-07 normal-user offline run used the reviewed immutable locks and verified cache. A future run must revalidate those exact bytes and all gates; historical success does not make changed artifacts equivalent.
 
 It still cannot prove production application correctness, Kubernetes behavior, managed backends, cross-region transport, TLS and identity, real scale, all sampling policies, privacy compliance, provider durability, learner transfer, delayed recall, or mastery. Each claim needs representative evidence and accepted review. Keeping this boundary explicit is part of engineering accuracy.
 
@@ -2498,7 +2500,7 @@ Answered assessments teach reasoning and permit comparison. They do not count as
 
 ### Review checklist
 
-On or before 2027-02-02, or earlier after a material release, a reviewer should:
+On or before 2027-02-07, or earlier after a material release, a reviewer should:
 
 1. Confirm exactly 18 required level-two sections in the required order.
 2. Confirm exactly six diagram records, twelve command records, two lab records, four incident records, three assessments, and fourteen references.
@@ -2507,9 +2509,9 @@ On or before 2027-02-02, or earlier after a material release, a reviewer should:
 5. Recheck REF-0166 and REF-0170, then every REF-0173 through REF-0184 registry record, canonical URL, current version, maturity, claim scope, and review window.
 6. Verify current OpenTelemetry specification, Python status, Python package and exporter guidance, OTLP, Collector configuration and resiliency, sampling, Semantic Conventions, and troubleshooting behavior.
 7. Compare every command with the actual support interface, risk class, namespace, expected branches, cleanup, `proves`, and `doesNotProve`.
-8. Confirm incomplete locks and absent runtime artifacts fail closed. Do not convert a model pass into OpenTelemetry execution evidence.
-9. When real immutable locks are reviewed and prepared, run exact-image configuration validation, then the normal-user offline lifecycle. Preserve actual output and failures.
-10. Confirm explicit root refusal, exact ownership, refusal of foreign resources, loopback and internal-network scope, no setup downloads, bounded timeouts, guaranteed recovery, repeated cleanup, and final absence.
+8. Confirm absent or mismatched locked artifacts fail closed. Do not convert a model pass into OpenTelemetry execution evidence.
+9. Re-run exact-image configuration validation and both explicit verifier modes on the normal-user offline lifecycle. Preserve actual output and failures.
+10. Confirm root refusal where passwordless sudo is available, exact ownership, foreign-resource refusal, zero host ports, internal-network scope, no setup downloads, bounded timeouts, guaranteed recovery, repeated cleanup, and final absence.
 11. Review the traceparent parser against W3C version processing and keep it labeled as a bounded teaching parser.
 12. Review parent-versus-link guidance against current messaging conventions and at least one representative transport.
 13. Review baggage, attributes, debug output, receiver binding, credentials, tenant routing, evidence sanitation, retention, and deletion with security and privacy owners.
@@ -2521,7 +2523,7 @@ On or before 2027-02-02, or earlier after a material release, a reviewer should:
 
 ### Final proof boundary
 
-This quarantined lesson teaches how meaning can survive—or fail to survive—from instrumentation to query. Its metadata and prose do not establish that the support code runs. The support model can prove only its encoded deterministic state if its verifier passes. Placeholder image and package locks mean no real OpenTelemetry runtime proof exists yet.
+This quarantined lesson teaches how meaning can survive—or fail to survive—from instrumentation to query. Its metadata and prose do not establish that the current support code runs. The image digests and fourteen-wheel dependency set are exact and complete; a prior controller revision completed the bounded Ubuntu runtime, but the current interruption-safe lock revision must pass the full verifier before canonical promotion. The deterministic model remains explanation evidence, never a substitute for that runtime receipt.
 
 If a later reviewer supplies immutable artifacts and records a successful normal-user offline execution, that result remains local and version-bound. Production claims require representative applications, transports, Collector distributions, security, scale, destinations, failures, and independent evidence. Learner mastery requires answer-isolated transfer, qualified review, delayed retrieval, and safe performance in unfamiliar systems.
 

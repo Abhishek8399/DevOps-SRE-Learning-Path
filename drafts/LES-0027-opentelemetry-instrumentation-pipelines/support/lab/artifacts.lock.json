@@ -2,23 +2,23 @@
   "schemaVersion": 1,
   "lesson": "LES-0027",
   "platform": "linux/amd64",
-  "policy": "Replace every RECORD_REAL_* marker with a digest observed and reviewed for the exact artifact before prepare is permitted.",
+  "policy": "Runtime uses only the reviewed linux/amd64 image manifest digests and the exact hashed wheel set declared by this lock.",
   "images": {
     "python": {
       "repository": "docker.io/library/python",
-      "tag": "3.12.4-slim-bookworm",
-      "digest": "sha256:RECORD_REAL_PYTHON_IMAGE_DIGEST_64_HEX"
+      "tag": "3.12.13-slim-bookworm",
+      "digest": "sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2"
     },
     "collector": {
       "repository": "docker.io/otel/opentelemetry-collector-contrib",
-      "tag": "0.104.0",
-      "digest": "sha256:RECORD_REAL_COLLECTOR_IMAGE_DIGEST_64_HEX"
+      "tag": "0.157.0",
+      "digest": "sha256:f2f01157055a9b2aab9df7118e1f1c9abf345e99b23bc7a2bc791db374a7d0f6"
     }
   },
   "requirementsFile": "requirements.lock",
   "notes": [
     "Tags document human-readable versions; runtime identity is repository@sha256 digest.",
-    "The repository intentionally ships incomplete locks rather than pretending unverified digests are trustworthy.",
-    "A maintainer must review upstream release provenance and record real image and wheel hashes in one auditable change."
+    "The image digests were resolved for linux/amd64 from Docker Hub on 2026-08-07 after reviewing the Python 3.12.13 tag and OpenTelemetry Collector release v0.157.0.",
+    "The wheel set was resolved inside the pinned Python image from OpenTelemetry Python 1.44.0 requirements, hashed locally and verified by a network-disabled offline import."
   ]
 }

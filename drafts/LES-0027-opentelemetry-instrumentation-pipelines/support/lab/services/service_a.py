@@ -6,6 +6,7 @@ import json
 import os
 import queue
 import re
+import signal
 import sys
 import threading
 import urllib.error
@@ -20,7 +21,9 @@ from telemetry import (
     configure_tracing,
     extract_trace_context,
     inject_trace_context,
+    shutdown_tracing,
     span_id_hex,
+    telemetry_snapshot,
     trace_id_hex,
 )
 
@@ -28,7 +31,10 @@ from telemetry import (
 TRACER = configure_tracing()
 DOWNSTREAM_URL = os.environ["LAB_DOWNSTREAM_URL"]
 ALLOWED_MODES = {"propagate", "drop-context"}
-WORK_QUEUE: queue.Queue[dict[str, object]] = queue.Queue(maxsize=8)
+WORK_QUEUE: queue.Queue[object] = queue.Queue(maxsize=8)
+WORKER_STOP = object()
+WORKER_ALIVE = threading.Event()
+WORKER_THREAD: threading.Thread | None = None
 
 
 def _json_bytes(value: object) -> bytes:
@@ -48,53 +54,71 @@ def _call_downstream(
 
 
 def _worker_loop() -> None:
-    while True:
-        job = WORK_QUEUE.get()
-        done = job["done"]
-        result = job["result"]
-        try:
-            if not isinstance(done, threading.Event) or not isinstance(result, dict):
-                raise TypeError("invalid internal work item")
-            raw_carrier = job["carrier"]
-            operation_id = job["operation_id"]
-            if not isinstance(raw_carrier, dict) or not all(
-                isinstance(key, str) and isinstance(value, str)
-                for key, value in raw_carrier.items()
-            ):
-                raise TypeError("invalid internal trace carrier")
-            if not isinstance(operation_id, str) or not re.fullmatch(
-                r"[0-9a-f]{16}", operation_id
-            ):
-                raise TypeError("invalid internal operation identity")
-            parent_context = extract_trace_context(raw_carrier)
-            extracted_parent = otel_trace.get_current_span(parent_context).get_span_context()
-            with TRACER.start_as_current_span(
-                "checkout.async_worker", context=parent_context
-            ) as worker_span:
-                worker_span.set_attribute("lab.carrier.type", "bounded-in-process-queue")
-                worker_span.set_attribute("lab.operation.id", operation_id)
-                downstream_carrier: dict[str, str] = {}
-                inject_trace_context(downstream_carrier)
-                downstream = _call_downstream(downstream_carrier, operation_id)
-                result.update(
-                    {
-                        "worker_trace_id": trace_id_hex(worker_span),
-                        "worker_span_id": span_id_hex(worker_span),
-                        "worker_parent_span_id": (
-                            f"{extracted_parent.span_id:016x}"
-                            if extracted_parent.is_valid
-                            else None
-                        ),
-                        "downstream_trace_id": str(downstream["trace_id"]),
-                        "carrier_keys": sorted(raw_carrier),
-                    }
-                )
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
-            result["error"] = type(exc).__name__
-        finally:
-            if isinstance(done, threading.Event):
-                done.set()
-            WORK_QUEUE.task_done()
+    WORKER_ALIVE.set()
+    try:
+        while True:
+            job = WORK_QUEUE.get()
+            if job is WORKER_STOP:
+                WORK_QUEUE.task_done()
+                return
+            if not isinstance(job, dict):
+                WORK_QUEUE.task_done()
+                raise TypeError("invalid internal work item shape")
+            done = job["done"]
+            result = job["result"]
+            try:
+                if not isinstance(done, threading.Event) or not isinstance(result, dict):
+                    raise TypeError("invalid internal work item")
+                raw_carrier = job["carrier"]
+                operation_id = job["operation_id"]
+                if not isinstance(raw_carrier, dict) or not all(
+                    isinstance(key, str) and isinstance(value, str)
+                    for key, value in raw_carrier.items()
+                ):
+                    raise TypeError("invalid internal trace carrier")
+                if not isinstance(operation_id, str) or not re.fullmatch(
+                    r"[0-9a-f]{16}", operation_id
+                ):
+                    raise TypeError("invalid internal operation identity")
+                parent_context = extract_trace_context(raw_carrier)
+                extracted_parent = otel_trace.get_current_span(
+                    parent_context
+                ).get_span_context()
+                with TRACER.start_as_current_span(
+                    "checkout.async_worker", context=parent_context
+                ) as worker_span:
+                    worker_span.set_attribute(
+                        "lab.carrier.type", "bounded-in-process-queue"
+                    )
+                    worker_span.set_attribute("lab.operation.id", operation_id)
+                    downstream_carrier: dict[str, str] = {}
+                    inject_trace_context(downstream_carrier)
+                    downstream = _call_downstream(downstream_carrier, operation_id)
+                    result.update(
+                        {
+                            "worker_trace_id": trace_id_hex(worker_span),
+                            "worker_span_id": span_id_hex(worker_span),
+                            "worker_parent_span_id": (
+                                f"{extracted_parent.span_id:016x}"
+                                if extracted_parent.is_valid
+                                else None
+                            ),
+                            "downstream_trace_id": str(downstream["trace_id"]),
+                            "downstream_span_id": str(downstream["span_id"]),
+                            "downstream_parent_span_id": downstream.get(
+                                "parent_span_id"
+                            ),
+                            "carrier_keys": sorted(raw_carrier),
+                        }
+                    )
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+                result["error"] = type(exc).__name__
+            finally:
+                if isinstance(done, threading.Event):
+                    done.set()
+                WORK_QUEUE.task_done()
+    finally:
+        WORKER_ALIVE.clear()
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -116,7 +140,27 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler contract
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == "/healthz":
-            self.reply(200, {"status": "ok", "service": "service-a"})
+            worker_healthy = bool(
+                WORKER_ALIVE.is_set()
+                and WORKER_THREAD is not None
+                and WORKER_THREAD.is_alive()
+            )
+            self.reply(
+                200 if worker_healthy else 503,
+                {
+                    "status": "ok" if worker_healthy else "worker-unavailable",
+                    "service": "service-a",
+                    "workerAlive": worker_healthy,
+                },
+            )
+            return
+        if parsed.path == "/telemetryz":
+            query = urllib.parse.parse_qs(parsed.query, strict_parsing=False)
+            flush = query.get("flush", ["false"])[0] == "true"
+            self.reply(
+                200,
+                {"service": "service-a", "telemetry": telemetry_snapshot(flush)},
+            )
             return
         if parsed.path != "/checkout":
             self.reply(404, {"error": "not-found"})
@@ -179,15 +223,23 @@ class Handler(BaseHTTPRequestHandler):
                 "worker_span_id": worker_result["worker_span_id"],
                 "worker_parent_span_id": worker_result["worker_parent_span_id"],
                 "downstream_trace_id": downstream_trace_id,
+                "downstream_span_id": worker_result["downstream_span_id"],
+                "downstream_parent_span_id": worker_result[
+                    "downstream_parent_span_id"
+                ],
                 "async_carrier_keys": worker_result["carrier_keys"],
                 "async_context_joined": (
                     own_trace_id == worker_trace_id == downstream_trace_id
                 ),
                 "joined_context": own_trace_id == worker_trace_id == downstream_trace_id,
                 "parentage_matches": (
-                    worker_result["worker_parent_span_id"] == own_span_id
-                    if mode == "propagate"
-                    else worker_result["worker_parent_span_id"] is None
+                    (
+                        worker_result["worker_parent_span_id"] == own_span_id
+                        if mode == "propagate"
+                        else worker_result["worker_parent_span_id"] is None
+                    )
+                    and worker_result["downstream_parent_span_id"]
+                    == worker_result["worker_span_id"]
                 ),
                 "sampled": bool(span.get_span_context().trace_flags.sampled),
             }
@@ -195,12 +247,19 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main() -> int:
+    global WORKER_THREAD
     worker = threading.Thread(
         target=_worker_loop, name="les0027-async-worker", daemon=True
     )
+    WORKER_THREAD = worker
     worker.start()
     server = ThreadingHTTPServer(("0.0.0.0", 8080), Handler)
     server.daemon_threads = True
+    def request_shutdown(_signum: int, _frame: object) -> None:
+        threading.Thread(target=server.shutdown, daemon=True).start()
+
+    signal.signal(signal.SIGTERM, request_shutdown)
+    signal.signal(signal.SIGINT, request_shutdown)
     print(json.dumps({"event": "ready", "service": "service-a", "port": 8080}), flush=True)
     try:
         server.serve_forever(poll_interval=0.2)
@@ -208,7 +267,13 @@ def main() -> int:
         pass
     finally:
         server.server_close()
-    return 0
+        try:
+            WORK_QUEUE.put(WORKER_STOP, timeout=0.5)
+        except queue.Full:
+            pass
+        worker.join(timeout=3)
+        shutdown_tracing()
+    return 0 if not worker.is_alive() else 1
 
 
 if __name__ == "__main__":

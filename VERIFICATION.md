@@ -1,6 +1,6 @@
 # Verification Register
 
-Last updated: 2026-08-07
+Last updated: 2026-08-10
 
 This register separates observed results from planned checks. A statement in a lesson, plan, or ledger is not silently converted into a test result.
 
@@ -28,6 +28,9 @@ This register separates observed results from planned checks. A statement in a l
 
 | ID | Date | Scope | Check | Result | Evidence and limitation |
 |---|---|---|---|---|---|
+| `VER-LES0027-20260810-03` | 2026-08-10 | Current uncommitted `LES-0027` lock-hardening worktree | Canonical regressions: `validate:content`, registry check, content-schema tests, reader tests, lint, typecheck and production build | `PASS` | Live corpus remains 21 lessons, 63 assessments and 172 references; 38 schema tests pass with one documented Windows capability skip, all 21 reader tests pass, and lint/type/build exit zero. These gates do not include the quarantined draft or prove its runtime. |
+| `VER-LES0027-20260810-02` | 2026-08-10 | Quarantined `LES-0027` lesson, three assessments and twelve new references | Direct schemas, exact relationships, answer isolation, Python AST, ShellCheck and diff check | `PASS` | All three schema issue counts are zero; exact assessment and new-reference relationships and ownership pass; `ASM-0066` has no forbidden answer field; six Python files parse; `lab.sh` and `verify.sh` pass ShellCheck; `git diff --check` passes. Linux-only behavior is outside this result. |
+| `VER-LES0027-20260810-01` | 2026-08-10 | Ubuntu 24.04 and Docker prerequisites for changed `LES-0027` controller | Start Ubuntu and query Docker Linux engine | `BLOCKED` | `wsl.exe -d Ubuntu24.04 -- /bin/true` fails before distribution startup with `Wsl/Service/E_ACCESSDENIED`; Docker client 29.6.2 is installed but the `dockerDesktopLinuxEngine` named pipe is absent. Thirteen Linux tests, static verifier and full runtime were not run and remain mandatory. |
 | `VER-001` | 2026-08-02 | Commit `d958043` website | `npm run lint` | `PASS` | Reported in the completed five-lesson release work; no lint failure remained at that commit |
 | `VER-002` | 2026-08-02 | Commit `d958043` website | `npm run build` | `PASS` | Production build completed; non-blocking vinext route-classification and Node deprecation warnings remained |
 | `VER-003` | 2026-08-02 | Commit `d958043` local server | HTTP smoke and rendered-title checks | `PASS` | Loopback returned HTTP 200 and the index, five lesson titles, labs, optional checks, and interview prompts were observed |

@@ -70,11 +70,9 @@ services:
         target: /requirements.lock
         read_only: true
       - type: bind
-        source: ./.artifacts/wheels
+        source: ${LAB_WHEELHOUSE_PATH:?run prepare}
         target: /wheelhouse
         read_only: true
-    ports:
-      - "127.0.0.1:${LAB_HTTP_PORT:-18027}:8080"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=1).read()"]
       interval: 2s
@@ -120,7 +118,7 @@ services:
         target: /requirements.lock
         read_only: true
       - type: bind
-        source: ./.artifacts/wheels
+        source: ${LAB_WHEELHOUSE_PATH:?run prepare}
         target: /wheelhouse
         read_only: true
     healthcheck:
@@ -144,8 +142,6 @@ services:
         source: ./config/agent-a.yaml
         target: /etc/otelcol/config.yaml
         read_only: true
-    ports:
-      - "127.0.0.1:${LAB_AGENT_A_METRICS_PORT:-18889}:8888"
     depends_on:
       gateway:
         condition: service_started
@@ -161,8 +157,6 @@ services:
         source: ./config/agent-b.yaml
         target: /etc/otelcol/config.yaml
         read_only: true
-    ports:
-      - "127.0.0.1:${LAB_AGENT_B_METRICS_PORT:-18890}:8888"
     depends_on:
       gateway:
         condition: service_started
@@ -178,9 +172,6 @@ services:
         source: ./config/gateway.yaml
         target: /etc/otelcol/config.yaml
         read_only: true
-    ports:
-      - "127.0.0.1:${LAB_GATEWAY_METRICS_PORT:-18888}:8888"
-
 networks:
   telemetry:
     internal: true

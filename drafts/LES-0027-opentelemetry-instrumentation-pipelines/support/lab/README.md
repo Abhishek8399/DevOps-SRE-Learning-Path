@@ -1,83 +1,77 @@
-# LES-0027 bounded OpenTelemetry pipeline lab candidate
+# LES-0027 bounded OpenTelemetry pipeline lab
 
 ## Read this boundary first
 
-This directory is a **quarantined lab candidate**, not a canonical learner lab and not evidence that OpenTelemetry has run. The checked-in image and wheel digests are deliberate `RECORD_REAL_*` placeholders. On the 2026-08-02 authoring host, the Docker client and Compose plugin were available, while daemon readiness varied between checks; neither required official image was cached during the dependency inspection. Consequently, `prepare`, `validate-configs`, `setup`, and every runtime exercise currently fail closed before creating a lab lifecycle.
+This is a **quarantined publication candidate**, not a canonical learner lab. Its local runtime and evidence contract have been exercised on Ubuntu 24.04, but the lesson is not a canonical website route until the package-level promotion gates pass.
 
-An independent source audit found unresolved runtime-safety defects in cleanup locking, partial-setup recovery, temporary validation-container proof, live enforcement of Compose limits/network membership, worker supervision, and durable evidence validation. They are listed in the package-level `STATUS.md`. Do not replace the placeholders, run preparation, or treat the conditional runtime walkthrough as authorized until those blockers are fixed and re-reviewed.
+The lab uses exact digest-addressed images, fourteen hash-pinned Python wheels, five non-root containers, and one Docker `internal` network. Normal setup and every exercise are offline. Only the explicitly named preparation command may download artifacts, and it is unnecessary while the verified UID-scoped artifact cache remains present.
 
-The runnable `[READ-ONLY]` model teaches the relationships without importing OpenTelemetry. Its output says `opentelemetry_executed=false`, `collector_executed=false`, and `model_is_not-runtime-evidence=true`. Do not relabel model output as SDK, Collector, container, export, or production evidence.
+The terminal observation boundary is the gateway Collector's detailed debug exporter. That proves the pinned local gateway decoded and exported the selected spans to its stdout. It does **not** prove vendor-backend ingest, indexing, querying, retention, production capacity, or learner mastery.
 
-## What this lab is designed to prove after its locks are reviewed
-
-The future runtime is deliberately small:
+## Architecture and trust boundaries
 
 ```text
-Host process
+Ubuntu lab controller
   |
-  | HTTP :18027 (127.0.0.1 only)
+  | exact validated container ID + docker exec
   v
-[service-a / Python SDK] --HTTP :8081 + W3C traceparent--> [service-b / Python SDK]
-          | OTLP/HTTP :4318                               | OTLP/HTTP :4318
-          v                                               v
-       [agent-a]                                       [agent-b]
-          |                                               |
-          +-------------- OTLP/gRPC :4317 ----------------+
+[service-a / Python SDK] -- HTTP + W3C traceparent --> [service-b / Python SDK]
+          | OTLP/HTTP :4318                              | OTLP/HTTP :4318
+          v                                              v
+       [agent-a]                                      [agent-b]
+          | finite queue + bounded retry                  |
+          +--------------- OTLP/gRPC :4317 ---------------+
                                   |
                                   v
                               [gateway]
                                   |
-                                  +--> detailed debug exporter -> container stdout
+                                  +--> detailed debug exporter --> stdout
 
-All five containers share one Docker internal network.
-No container can route to the Internet through that network.
-No backend, cloud service, Docker socket, host network, or production data is present.
+All five containers: one Docker internal network, no published host ports.
+No Internet route, cloud service, backend, Docker socket, or host network exists.
 ```
 
-The two agent Collectors own finite sending queues and bounded retries. The gateway owns receive, memory protection, batching, and a detailed debug exporter. The debug exporter is intentionally the terminal observation boundary. Finding a trace ID in gateway stdout proves that this exact gateway process decoded and exported that local trace to its debug output. It does **not** prove backend ingest, indexing, query visibility, retention, a vendor product, or production behavior.
+The controller does not trust a container name alone. It revalidates the lifecycle token, Compose project, lesson, service, immutable image digest, user, read-only root filesystem, capabilities, security options, memory, CPU, PID limit, tmpfs, restart policy, mounts, exact network membership, and internal-network labels.
 
 ## Safety and scope
 
-| Item | Contract |
+| Item | Enforced contract |
 |---|---|
-| Host | Ubuntu 24.04, normal user only; root exits 77 |
-| Default network use | none; model and static verification are local |
-| Explicit network use | only `prepare --allow-network-downloads`, and only after real reviewed locks exist |
-| Runtime pulls | prohibited with Compose `pull_policy: never` and `--pull never` |
-| Runtime package index | prohibited with `pip --no-index --require-hashes --no-deps` |
-| Host bindings | `127.0.0.1` only; service A `18027`, gateway metrics `18888`, agent metrics `18889` and `18890` |
-| Container privileges | read-only root filesystems, non-root users, all capabilities dropped, no-new-privileges, bounded memory/CPU/PIDs |
-| Docker access inside containers | none; the Docker socket is never mounted |
-| State | one UID-scoped state directory and one random UID-owned root under `/tmp` |
-| Runtime ownership | exact lesson, Compose project, service, and random owner-token labels |
-| Cleanup | token guarded, exact container/network IDs, exact local allowlist, restartable cleanup-state rename |
-| Atomic deletion claim | none; exact IDs make cooperative replacement races safe, but Docker has no compare-and-delete primitive |
-| Prepared dependencies | `.artifacts/` is a gitignored, verified prerequisite cache and is not runtime state |
+| Host | Ubuntu 24.04; normal user only; root exits 77 |
+| Runtime network use | none outside the internal Docker network |
+| Explicit Internet use | only `prepare --allow-network-downloads` |
+| Runtime pulls | prohibited by `pull_policy: never` and `--pull never` |
+| Python package index | prohibited by `--no-index --no-deps --require-hashes` |
+| Published host ports | none |
+| Containers | non-root, read-only, `cap_drop: ALL`, no-new-privileges |
+| Per-container ceiling | 192 MiB, 0.50 CPU, 96 PIDs |
+| Service tmpfs | 96 MiB; UID/GID owned; `nosuid,nodev` |
+| Collector tmpfs | 16 MiB; UID 10001; `nosuid,nodev,noexec` |
+| Docker access in containers | none; Docker socket is never mounted |
+| Runtime state | one UID-scoped state directory plus one random UID-owned `/tmp` root |
+| Cleanup | exact token, labels, immutable IDs, path identities, and allowlists |
+| Atomic deletion claim | none; cleanup is restartable and race-resistant, not atomic |
 
-Blast radius after preparation is five local containers, one internal Docker network, four loopback ports, and a small `/tmp` state tree. The image store and `.artifacts/` cache persist across runtime cleanup so preparation is not silently repeated. Runtime cleanup must prove all lifecycle containers, the lifecycle network, and the owned `/tmp` state are absent.
+Blast radius is five disposable containers, one internal network, and one small `/tmp` state tree. The image store and verified UID-scoped artifact cache survive runtime cleanup so the lab does not silently download again.
 
-Abort if an ownership label, UID, mode, inode identity, lifecycle token, project resource set, wheel hash, image digest, host binding, or expected trace relationship differs. Do not “fix” an ownership failure with a wildcard delete or `docker system prune`.
+Never use `docker system prune`, wildcard deletion, or a broad `docker compose down` to recover this lab. Run `status`, copy its exact lifecycle token, and use the guarded cleanup command.
 
-## Public action and risk contract
+## Public actions and risk
 
-Read the risk before running an action. The controller and verifier maintain the same complete action map.
-
-| Action | Risk | Persistent effect |
+| Action | Risk | Effect |
 |---|---|---|
-| `doctor`, `model`, `status`, `check` | `[READ-ONLY]` | None |
-| `verify-operation` | `[SAMPLED READ-ONLY]` | Uses a short-lived ownership lock while sampling existing lab evidence; it does not repair or complete evidence |
-| `validate-configs` | `[MUTATING]` bounded | Creates one exact temporary validation container at a time and removes it by immutable ID |
-| `setup`, `run ...`, `recover-context`, `interrupt-gateway`, `compare-sampling` | `[MUTATING]` bounded | Changes only the token-owned local lifecycle and its evidence records |
-| `prepare --allow-network-downloads` | `[MUTATING]` `[NETWORK ACCESS]` | Pulls only locked public artifacts and creates the verified local dependency cache |
-| `cleanup --expect-token TOKEN` | `[DESTRUCTIVE]` disposable | Removes only the exact token-owned lifecycle after revalidating identity |
+| `doctor`, `model`, `status`, `check` | `[READ-ONLY]` | Inspect readiness, model output, state, and evidence |
+| `verify-operation` | `[SAMPLED READ-ONLY]` | Uses a short-lived owned lock and audits five existing records |
+| `validate-configs` | `[MUTATING]` bounded | Creates and exactly removes three one-at-a-time validation containers |
+| `setup`, `run ...`, `recover-context`, `interrupt-gateway`, `compare-sampling` | `[MUTATING]` bounded | Mutate only the token-owned local lifecycle |
+| `prepare --allow-network-downloads` | `[MUTATING]` `[NETWORK ACCESS]` | Populate the verified UID-scoped artifact cache from locked public artifacts |
+| `cleanup --expect-token TOKEN` | `[DESTRUCTIVE]` disposable | Remove only the exact validated lifecycle |
 
-`verify-operation` currently exits 78 after reporting the missing per-hop counter contract. That refusal is deliberate: existing control records and trace-log receipts are useful evidence, but they do not measure source, SDK, agent, gateway, sink, refusal, retry, and drop deltas with units, reset boundaries, and freshness.
+## Quick readiness checks
 
-## Current safe walkthrough
+Run these commands from this directory in Ubuntu 24.04.
 
-Run from this directory in Ubuntu 24.04 as a normal user.
-
-### 1. Inspect readiness
+### Inspect the environment
 
 `[READ-ONLY]`
 
@@ -85,9 +79,28 @@ Run from this directory in Ubuntu 24.04 as a normal user.
 bash lab.sh doctor
 ```
 
-In the checked-in state, expect `artifact_lock=incomplete` and `prepared_artifacts=absent`. Docker readiness is reported independently. An available daemon does not make an incomplete supply-chain lock safe.
+Ready output includes:
 
-### 2. Run the teaching model
+```text
+ubuntu_24_04_ready=true
+docker_daemon_ready=true
+published_host_ports=0
+artifact_lock=complete
+requirements_lock_count=14
+prepared_artifacts=verified
+compose_render_binding=exact-reviewed-lock
+runtime_ready=true
+```
+
+If `prepared_artifacts=absent`, do not run setup. Review `artifacts.lock.json` and `requirements.lock`, then use the explicit preparation command only if network access is acceptable:
+
+```bash
+bash lab.sh prepare --allow-network-downloads
+```
+
+Preparation pulls only the two digest-addressed images and downloads only the fourteen named, hash-checked wheels. It stages the cache and publishes it only after every byte and manifest check passes.
+
+### Run the zero-runtime teaching model
 
 `[READ-ONLY]`
 
@@ -95,55 +108,31 @@ In the checked-in state, expect `artifact_lock=incomplete` and `prepared_artifac
 bash lab.sh model
 ```
 
-Read it as a prediction sheet:
+This predicts propagation, context loss, recovery, queueing, and sampling without importing OpenTelemetry, starting a container, changing a file, or contacting a network. Its output explicitly says `opentelemetry_executed=false` and `model_is_not-runtime-evidence=true`.
 
-- baseline propagation joins service A and service B under one trace;
-- dropping the carrier creates two unrelated traces even when both services succeed;
-- restoring injection and extraction repairs the trace relationship;
-- a bounded modeled gateway interruption queues four items and later drains four;
-- full versus quarter sampling changes recorded evidence, not request success.
-
-The model performs no filesystem mutation and has zero network targets. It does not import the SDK or start a Collector.
-
-### 3. Run static regression checks
+### Run non-mutating readiness verification
 
 `[READ-ONLY]`
 
 ```bash
-bash verify.sh
+bash verify.sh static
 ```
 
-This validates Python syntax, shell safety, repository contracts, Compose safety text, Collector topology text, fail-closed lock behavior, deterministic model output, and final absence. With placeholder locks it intentionally does not validate Collector configuration using the Collector binary and does not run the two services.
+This mode runs Python parsing, fourteen safety/static/atomicity tests, Bash parsing, ShellCheck, the action-risk contract, complete-lock checks, the deterministic model, Compose rendering, artifact verification, and doctor. It accepts either an absent or already-active valid lifecycle and performs zero runtime mutation.
 
-## Maintainer-only artifact preparation
+## Guided runtime lifecycle
 
-Do not invent a digest merely to make the lab start. A maintainer must first resolve the complete Python 3.12 linux/amd64 wheel set, review its provenance and compatibility, and replace every wheel hash marker in `requirements.lock`. The maintainer must also review the exact official image manifests and replace both digest markers in `artifacts.lock.json`. Tags are explanatory; runtime identity is `repository@sha256`.
+### 1. Validate Collector configurations
 
-Only after that reviewed change is committed may this explicit operation be considered:
-
-`[MUTATING]` `[NETWORK ACCESS]`
-
-```bash
-bash lab.sh prepare --allow-network-downloads
-```
-
-Prepare pulls only the two exact official digest references. It then uses the pinned Python image in a constrained temporary container to download the fully hashed wheel set. The controller verifies the downloaded bytes, writes an exact receipt, and atomically publishes `.artifacts/`. With placeholders, it exits 78 before Docker pull or pip download.
-
-## Conditional runtime walkthrough
-
-The following section documents the designed interface. It is **conditional**, because the repository currently has no reviewed artifact lock or prepared runtime.
-
-### Validate the Collector configurations
-
-`[READ-ONLY with respect to persistent lab state]` `[MUTATING temporary container]`
+`[MUTATING]` bounded temporary containers
 
 ```bash
 bash lab.sh validate-configs
 ```
 
-Each config is validated in an exact, temporary Collector container with `--network none`, a read-only filesystem, no capabilities, no-new-privileges, and an exact container ID cleanup. A YAML parser or successful Compose interpolation is weaker evidence; this command asks the pinned Collector binary whether its own config is valid.
+For each Collector config, the controller creates one digest-pinned container with no network, a read-only root filesystem, no capabilities, no-new-privileges, a non-root user, bounded resources, and a read-only config mount. Success requires a successful start/attach, observed `exited` state, valid start/finish timestamps, exit code zero, exact removal, and a specific Docker not-found result afterward.
 
-### Create the offline runtime
+### 2. Create the offline runtime
 
 `[MUTATING]`
 
@@ -151,13 +140,13 @@ Each config is validated in an exact, temporary Collector container with `--netw
 bash lab.sh setup
 ```
 
-Setup rechecks every artifact and local image digest, validates all three Collector configs, validates Compose, and starts with `--pull never --no-build`. Preserve `lifecycle_token=...`; cleanup requires it. Success also reports `network_internal=true`, `runtime_pull_policy=never`, and `runtime_package_index=disabled`.
+Setup rechecks the image and wheel bytes, validates all three Collector configurations, renders and validates Compose, atomically publishes a complete state document, and starts with `--pull never --no-build`. Preserve `lifecycle_token=...`; cleanup requires it.
 
-If setup stops part-way, run `[READ-ONLY] bash lab.sh status`, copy its lifecycle token, and use the token-guarded cleanup below. Do not run a broad Compose or Docker cleanup.
+If setup reports an incomplete token, run `bash lab.sh status`, copy that token, and use the exact cleanup command. A failure before state publication removes both the staging directory and temporary root; the injected failure test covers this path.
 
-### Prove propagation, break it, and recover it
+### 3. Prove propagation, break it, and recover it
 
-`[MUTATING local evidence records]`
+`[MUTATING]`
 
 ```bash
 bash lab.sh run baseline
@@ -165,9 +154,16 @@ bash lab.sh run broken-context
 bash lab.sh recover-context
 ```
 
-Baseline requires equal upstream and downstream trace IDs and then finds both IDs in gateway debug output. Broken context deliberately omits W3C injection; two successful HTTP operations then have different trace IDs. Recovery restores propagation and requires equality again. The lesson is simple: healthy HTTP is not proof of a connected trace.
+Each operation creates three spans: service A's request span, its bounded async-worker span, and service B's downstream span. The record proves:
 
-### Interrupt the gateway within a bound
+- service A's span is the worker parent when propagation is enabled;
+- the worker span is always service B's direct parent;
+- dropping the in-process carrier separates the request and worker traces without breaking HTTP;
+- restoring the carrier rejoins them;
+- SDK ended/export-success counters, agent receive/process/export counters, gateway receive/process/export counters, and debug-sink visibility reconcile exactly `3 = 3 = 3 = 3`;
+- refused, failed, and reset boundaries are explicit rather than assumed.
+
+### 4. Measure queueing, retry, and drain
 
 `[MUTATING]`
 
@@ -175,9 +171,11 @@ Baseline requires equal upstream and downstream trace IDs and then finds both ID
 bash lab.sh interrupt-gateway
 ```
 
-The controller stops the exact gateway container ID with a three-second stop bound, sends four requests through the still-running services and agents, restores the same gateway in `finally`, and waits for the trace IDs in gateway debug output. This supports a bounded inference that the configured agent queue/retry path bridged this interruption. It does not prove zero loss under arbitrary outage duration, agent failure, process crash, queue saturation, or backend failure.
+The controller snapshots the pipeline, stops the exact gateway container, sends four operations, forces both SDK exporters to flush, samples both agent queues, and captures bounded retry-sender records. The exact agent configuration uses one-span batches and one consumer, so queue occupancy is measured in queue items with one span per item.
 
-### Compare sampling without confusing it with request loss
+The gateway is restored in `finally`. Its process-start identity must change while both services and both agents must keep the same process identities. The new gateway's absolute counters must show all twelve queued spans, both agent queues must drain to zero, retry evidence must be present, and refusal/drop deltas must remain zero. The reported oldest queue residence is a controller-observed lower bound from the first completed outage request to proven drain; it is not an internal Collector oldest-item gauge.
+
+### 5. Compare deterministic head sampling
 
 `[MUTATING]`
 
@@ -185,31 +183,57 @@ The controller stops the exact gateway container ID with a three-second stop bou
 bash lab.sh compare-sampling
 ```
 
-The controller recreates only the two services first at ratio `1.0`, then `0.25`, and restores `1.0` in `finally`. A lab-only deterministic ID generator makes the comparison reproducible. All HTTP requests must succeed and preserve context; fewer spans are recorded at the lower ratio. Deterministic IDs are a teaching control, not a recommended production ID generator.
+The controller recreates only the two services at ratios `1.0` and `0.25`, sends 32 requests at each ratio, and restores `1.0` in `finally`. All requests must succeed. The lab-only deterministic ID generator must produce the same trace-ID sequence after recreation, full sampling must retain 32, and quarter sampling must retain a nonzero strict subset. This isolates the sampling decision from request success; deterministic IDs are not a production recommendation.
 
-### Audit the intentionally incomplete runtime evidence contract
+### 6. Audit all evidence
 
-`[READ-ONLY]`
+`[SAMPLED READ-ONLY]`
 
 ```bash
-bash lab.sh verify-operation
+bash lab.sh verify-operation --expect-token TOKEN_FROM_SETUP_OR_STATUS
 ```
 
-The command validates the exact active resources and whatever recognized control records are present, requires a valid baseline record, prints every missing per-hop measurement, and then deliberately exits 78 with `runtime-evidence-incomplete-per-hop-counter-contract-not-implemented`. It cannot succeed in the checked-in draft. Its output also states `backend_ingest_proven=false`, `production_behavior_proven=false`, and `runtime_evidence_complete=false`.
+Success requires exactly five records: baseline, broken context, recovery, gateway interruption, and sampling. Every record is digest protected and rebound to its action, time window, lifecycle, state/root identities, artifact locks, resolved Compose, three Collector configs, three service sources, exact stable runtime resources, internal network, and workload identifiers.
 
-### Clean up exactly
+Expected final markers include:
 
-`[DESTRUCTIVE]` — destructive only to the exact lab lifecycle named by the token.
+```text
+source_creation_delta=3
+sdk_export_delta=3
+agent_receive_delta=3
+gateway_export_delta=3
+refused_span_delta=0
+dropped_span_delta=0
+per_hop_reconciliation_passed=true
+sampling_deterministic_trace_ids_equal=true
+runtime_verification_passed=true
+backend_ingest_proven=false
+production_behavior_proven=false
+```
+
+### 7. Clean up exactly
+
+`[DESTRUCTIVE]` only for this disposable lifecycle
 
 ```bash
 bash lab.sh cleanup --expect-token TOKEN_FROM_SETUP_OR_STATUS
 bash lab.sh status
 ```
 
-Cleanup renames the fixed state directory to a token-specific recovery name before touching Docker. It validates every resource label, targets immutable Docker IDs rather than names, refuses unknown resources, removes only allowlisted UID-owned files with preserved identities, and proves final runtime absence. If Docker is unavailable, cleanup preserves the recovery state so the same command can resume later. It does not claim deletion is atomic.
+Final status must report `state=absent`, `state_recovery_count=0`, and `project_resource_count=0`. Cleanup acquires the same OS-held nonblocking file lock used by exercises before renaming state, refuses a genuinely concurrent operation, and can reclaim a matching sentinel after an abruptly terminated owner because the kernel releases the lock when that process exits. It then validates every target again, removes immutable container/network IDs, and deletes only allowlisted UID-owned files whose identities still match. A sentinel containing a different lifecycle token is preserved and rejected.
 
-## What this lab never proves
+## One-command full offline verification
 
-Even after a successful future runtime run, it will not prove production capacity, tail sampling, multi-tenant isolation, TLS or workload identity, durable queues, backend ingest/query/retention, vendor behavior, correct cardinality, privacy compliance, causality, learner mastery, or safe incident leadership. Those require separate versioned tests and reviewed evidence.
+Start only when `bash lab.sh status` reports absence:
 
-Memory sentence: **A connected trace is a propagation result, and a visible trace is a pipeline result; neither one is automatically a truthful picture of every request.**
+```bash
+bash verify.sh runtime
+```
+
+This mode performs the static gates, setup, a live cleanup-lock refusal test, all five exercises, the complete evidence audit, token-guarded cleanup, and final zero-resource proof. The kernel lock remains held across state rename, exact Docker removal, local-artifact removal, and final state deletion, so another cleanup cannot enter the transaction midway. A trap attempts the same exact cleanup if an intermediate command fails. It performs no download and no cloud call.
+
+## What this lab does not prove
+
+This lab does not prove backend ingest/query/retention, durable disk queues, arbitrary outage survival, queue saturation behavior, multi-tenant isolation, TLS or workload identity, tail sampling, vendor behavior, production cardinality, privacy compliance, representative capacity, or learner competency. Those need separate systems and evidence.
+
+Memory sentence: **A connected trace is a propagation result, and a visible trace is a pipeline result; neither is automatically a truthful picture of every request.**

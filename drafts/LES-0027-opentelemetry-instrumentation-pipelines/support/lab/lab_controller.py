@@ -9,20 +9,18 @@ from __future__ import annotations
 
 import contextlib
 import datetime as dt
+import fcntl
 import hashlib
 import json
 import os
 import re
 import secrets
-import socket
 import stat
 import subprocess
 import sys
 import tempfile
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from pathlib import Path
 from typing import Any, Iterator, Sequence
 
@@ -41,16 +39,27 @@ LAB_DIR = Path(__file__).resolve().parent
 LOCK_PATH = LAB_DIR / "artifacts.lock.json"
 REQUIREMENTS_PATH = LAB_DIR / "requirements.lock"
 COMPOSE_PATH = LAB_DIR / "compose.yaml"
-ARTIFACTS_PATH = LAB_DIR / ".artifacts"
-PREPARE_LOCK_PATH = LAB_DIR / ".artifacts.prepare.lock"
+ARTIFACTS_PATH = Path(
+    f"/tmp/reliability-atlas-LES-0027-{CURRENT_UID}.artifacts.d"
+)
+PREPARE_LOCK_PATH = Path(
+    f"/tmp/reliability-atlas-LES-0027-{CURRENT_UID}.artifacts.prepare.lock"
+)
 STATE_PATH = Path(f"/tmp/reliability-atlas-LES-0027-{CURRENT_UID}.state.d")
+STATE_SETUP_PATH = Path(f"{STATE_PATH}.setup")
 STATE_RECOVERY_GLOB = f"{STATE_PATH.name}.cleanup.*"
 PROJECT_NAME = f"reliability-atlas-les0027-u{CURRENT_UID}"
-HTTP_PORT = 18027
-GATEWAY_METRICS_PORT = 18888
-AGENT_A_METRICS_PORT = 18889
-AGENT_B_METRICS_PORT = 18890
 EXPECTED_SERVICES = {"service-a", "service-b", "agent-a", "agent-b", "gateway"}
+LEGACY_LOOPBACK_BINDINGS = {
+    "service-a": {"8080/tcp": [{"HostIp": "127.0.0.1", "HostPort": "18027"}]},
+    "service-b": {},
+    "agent-a": {"8888/tcp": [{"HostIp": "127.0.0.1", "HostPort": "18889"}]},
+    "agent-b": {"8888/tcp": [{"HostIp": "127.0.0.1", "HostPort": "18890"}]},
+    "gateway": {"8888/tcp": [{"HostIp": "127.0.0.1", "HostPort": "18888"}]},
+}
+RUNTIME_MEMORY_BYTES = 192 * 1024 * 1024
+RUNTIME_NANO_CPUS = 500_000_000
+RUNTIME_PIDS_LIMIT = 96
 RECORD_NAMES = {
     "baseline.json",
     "broken-context.json",
@@ -188,10 +197,18 @@ def command(
 
 
 def docker_ready() -> tuple[bool, str]:
-    version = command(["docker", "version", "--format", "{{.Client.Version}}"], check=False)
+    version = command(
+        ["docker", "version", "--format", "{{.Client.Version}}"],
+        timeout=45,
+        check=False,
+    )
     if version.returncode != 0:
         return False, "client-unavailable"
-    info = command(["docker", "info", "--format", "{{.ServerVersion}}"], check=False)
+    info = command(
+        ["docker", "info", "--format", "{{.ServerVersion}}"],
+        timeout=45,
+        check=False,
+    )
     if info.returncode != 0:
         return False, "daemon-unavailable"
     compose = command(["docker", "compose", "version", "--short"], check=False)
@@ -440,7 +457,7 @@ def prepare(argv: list[str]) -> None:
         abort(73, "prepare-already-running-or-stale-lock-present")
     lock_identity = identity(PREPARE_LOCK_PATH)
     token = secrets.token_hex(8)
-    staging = LAB_DIR / f".artifacts.prepare.{CURRENT_UID}.{token}"
+    staging = ARTIFACTS_PATH.parent / f"{ARTIFACTS_PATH.name}.prepare.{token}"
     staging_identity = ""
     try:
         staging.mkdir(mode=0o700)
@@ -613,22 +630,86 @@ def state_document(state_path: Path = STATE_PATH) -> dict[str, Any]:
 
 
 @contextlib.contextmanager
-def operation_lock(state: dict[str, Any]) -> Iterator[None]:
+def operation_lock(
+    state: dict[str, Any], *, delete_state_on_success: bool = False
+) -> Iterator[None]:
     state_path: Path = state["_statePath"]
-    lock = state_path / "operation.lock"
+    initial_lock = state_path / "operation.lock"
+    flags = os.O_RDWR | os.O_CREAT
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
     try:
-        write_exclusive(lock, (state["token"] + "\n").encode())
-    except FileExistsError:
-        abort(73, "another-lab-operation-is-active")
-    lock_identity = identity(lock)
+        descriptor = os.open(initial_lock, flags, 0o600)
+    except OSError as exc:
+        abort(65, f"operation-lock-open-failed-{type(exc).__name__}")
+    lock_acquired = False
+    sentinel_claimed = False
+    operation_completed = False
     try:
+        info = os.fstat(descriptor)
+        if (
+            not stat.S_ISREG(info.st_mode)
+            or info.st_uid != CURRENT_UID
+            or stat.S_IMODE(info.st_mode) != 0o600
+            or info.st_nlink != 1
+        ):
+            abort(65, "unsafe-operation-lock-owner-mode-or-links")
+        lock_identity = f"{info.st_dev}:{info.st_ino}"
+        try:
+            path_identity = identity(initial_lock)
+        except OSError as exc:
+            abort(65, f"operation-lock-path-check-failed-{type(exc).__name__}")
+        if path_identity != lock_identity:
+            abort(65, "operation-lock-path-identity-changed")
+        try:
+            fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            abort(73, "another-lab-operation-is-active")
+        lock_acquired = True
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        previous = os.read(descriptor, 128)
+        expected = (state["token"] + "\n").encode()
+        if previous not in {b"", expected}:
+            abort(65, "operation-lock-token-mismatch")
+        os.ftruncate(descriptor, 0)
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        if os.write(descriptor, expected) != len(expected):
+            abort(74, "operation-lock-short-write")
+        os.fsync(descriptor)
+        sentinel_claimed = True
         yield
+        operation_completed = True
     finally:
-        if lock.exists():
-            validate_owned_file(lock)
-            if identity(lock) != lock_identity:
-                abort(65, "operation-lock-identity-changed")
-            lock.unlink()
+        try:
+            if lock_acquired:
+                try:
+                    if sentinel_claimed:
+                        final_state_path: Path = state["_statePath"]
+                        lock = final_state_path / "operation.lock"
+                        validate_owned_file(lock)
+                        if identity(lock) != lock_identity:
+                            abort(65, "operation-lock-identity-changed")
+                        if delete_state_on_success and operation_completed:
+                            validate_owned_directory(
+                                final_state_path, state["stateIdentity"]
+                            )
+                            if set(child.name for child in final_state_path.iterdir()) != {
+                                "state.json",
+                                "operation.lock",
+                            }:
+                                abort(65, "unexpected-final-cleanup-state-entry")
+                            state_file = final_state_path / "state.json"
+                            validate_owned_file(state_file)
+                            state_file.unlink()
+                        lock.unlink()
+                        if delete_state_on_success and operation_completed:
+                            final_state_path.rmdir()
+                finally:
+                    fcntl.flock(descriptor, fcntl.LOCK_UN)
+        finally:
+            os.close(descriptor)
 
 
 def runtime_env(parsed: dict[str, Any], token: str, ratio: str = "1.0") -> str:
@@ -640,11 +721,8 @@ def runtime_env(parsed: dict[str, Any], token: str, ratio: str = "1.0") -> str:
             f"LAB_GID={CURRENT_GID}",
             f"LAB_PYTHON_IMAGE={parsed['refs']['python']}",
             f"LAB_COLLECTOR_IMAGE={parsed['refs']['collector']}",
+            f"LAB_WHEELHOUSE_PATH={ARTIFACTS_PATH / 'wheels'}",
             f"LAB_SAMPLE_RATIO={ratio}",
-            f"LAB_HTTP_PORT={HTTP_PORT}",
-            f"LAB_GATEWAY_METRICS_PORT={GATEWAY_METRICS_PORT}",
-            f"LAB_AGENT_A_METRICS_PORT={AGENT_A_METRICS_PORT}",
-            f"LAB_AGENT_B_METRICS_PORT={AGENT_B_METRICS_PORT}",
             "",
         ]
     )
@@ -666,11 +744,8 @@ def compose_environment(
         "LAB_GID": str(CURRENT_GID),
         "LAB_PYTHON_IMAGE": refs["python"],
         "LAB_COLLECTOR_IMAGE": refs["collector"],
+        "LAB_WHEELHOUSE_PATH": str(ARTIFACTS_PATH / "wheels"),
         "LAB_SAMPLE_RATIO": ratio,
-        "LAB_HTTP_PORT": str(HTTP_PORT),
-        "LAB_GATEWAY_METRICS_PORT": str(GATEWAY_METRICS_PORT),
-        "LAB_AGENT_A_METRICS_PORT": str(AGENT_A_METRICS_PORT),
-        "LAB_AGENT_B_METRICS_PORT": str(AGENT_B_METRICS_PORT),
     }
 
 
@@ -709,9 +784,29 @@ def validate_resolved_compose(
             or labels.get("com.reliability-atlas.owner-token") != owner_token
         ):
             abort(65, f"resolved-compose-safety-invalid-{name}")
-        for port in service.get("ports", []):
-            if port.get("host_ip") != "127.0.0.1":
-                abort(65, f"resolved-compose-non-loopback-port-{name}")
+        expected_user = (
+            f"{CURRENT_UID}:{CURRENT_GID}"
+            if name in {"service-a", "service-b"}
+            else "10001:10001"
+        )
+        expected_tmpfs = (
+            f"/tmp:rw,nosuid,nodev,size=96m,uid={CURRENT_UID},"
+            f"gid={CURRENT_GID},mode=0700"
+            if name in {"service-a", "service-b"}
+            else "/tmp:rw,nosuid,nodev,noexec,size=16m,uid=10001,gid=10001,mode=0700"
+        )
+        if (
+            service.get("user") != expected_user
+            or service.get("cpus") != 0.5
+            or service.get("mem_limit") != str(RUNTIME_MEMORY_BYTES)
+            or service.get("pids_limit") != RUNTIME_PIDS_LIMIT
+            or service.get("restart") != "no"
+            or service.get("tmpfs") != [expected_tmpfs]
+            or set((service.get("networks") or {}).keys()) != {"telemetry"}
+        ):
+            abort(65, f"resolved-compose-resource-contract-invalid-{name}")
+        if service.get("ports"):
+            abort(65, f"resolved-compose-published-port-{name}")
         serialized = json.dumps(service, sort_keys=True).lower()
         if "docker.sock" in serialized or service.get("network_mode") == "host":
             abort(65, f"resolved-compose-forbidden-host-access-{name}")
@@ -747,7 +842,7 @@ def render_compose(
         "resolvedSha256": sha256_bytes(canonical),
         "serviceCount": len(document["services"]),
         "networkCount": len(document["networks"]),
-        "loopbackPortCount": sum(
+        "publishedPortCount": sum(
             len(service.get("ports", []))
             for service in document["services"].values()
         ),
@@ -839,7 +934,9 @@ def inspect_container(container_id: str) -> dict[str, Any]:
 
 
 def validate_runtime_resources(
-    state: dict[str, Any], require_all: bool = True
+    state: dict[str, Any],
+    require_all: bool = True,
+    allow_cleanup_only_legacy_loopback_ports: bool = False,
 ) -> dict[str, str]:
     parsed = parse_locks()
     if state.get("lockDigest") != parsed["digest"]:
@@ -875,18 +972,47 @@ def validate_runtime_resources(
         ):
             abort(65, f"runtime-image-digest-mismatch-{service}")
         host_config = record.get("HostConfig", {})
+        expected_user = (
+            f"{CURRENT_UID}:{CURRENT_GID}"
+            if service in {"service-a", "service-b"}
+            else "10001:10001"
+        )
+        expected_tmpfs = (
+            {
+                "/tmp": (
+                    f"rw,nosuid,nodev,size=96m,uid={CURRENT_UID},"
+                    f"gid={CURRENT_GID},mode=0700"
+                )
+            }
+            if service in {"service-a", "service-b"}
+            else {
+                "/tmp": "rw,nosuid,nodev,noexec,size=16m,uid=10001,gid=10001,mode=0700"
+            }
+        )
+        network_settings = record.get("NetworkSettings", {}).get("Networks") or {}
         if (
             host_config.get("Privileged") is not False
             or host_config.get("ReadonlyRootfs") is not True
-            or "ALL" not in (host_config.get("CapDrop") or [])
-            or "no-new-privileges:true" not in (host_config.get("SecurityOpt") or [])
+            or host_config.get("CapDrop") != ["ALL"]
+            or (host_config.get("CapAdd") or [])
+            or host_config.get("SecurityOpt") != ["no-new-privileges:true"]
             or host_config.get("NetworkMode") != f"{PROJECT_NAME}_telemetry"
+            or set(network_settings) != {f"{PROJECT_NAME}_telemetry"}
+            or record.get("Config", {}).get("User") != expected_user
+            or host_config.get("Memory") != RUNTIME_MEMORY_BYTES
+            or host_config.get("NanoCpus") != RUNTIME_NANO_CPUS
+            or host_config.get("PidsLimit") != RUNTIME_PIDS_LIMIT
+            or host_config.get("RestartPolicy", {}).get("Name") != "no"
+            or host_config.get("AutoRemove") is not False
+            or host_config.get("Tmpfs") != expected_tmpfs
         ):
             abort(65, f"runtime-container-safety-contract-mismatch-{service}")
-        for bindings in (host_config.get("PortBindings") or {}).values():
-            for binding in bindings or []:
-                if binding.get("HostIp") != "127.0.0.1":
-                    abort(65, f"runtime-non-loopback-port-binding-{service}")
+        port_bindings = host_config.get("PortBindings") or {}
+        if port_bindings and (
+            not allow_cleanup_only_legacy_loopback_ports
+            or port_bindings != LEGACY_LOOPBACK_BINDINGS[service]
+        ):
+            abort(65, f"runtime-published-port-binding-{service}")
         for mount in record.get("Mounts", []):
             source = str(mount.get("Source", "")).lower()
             destination = str(mount.get("Destination", "")).lower()
@@ -966,14 +1092,38 @@ def runtime_resource_receipts(state: dict[str, Any]) -> dict[str, Any]:
             "command": config.get("Cmd"),
         }
         security_document = {
+            "autoRemove": record.get("HostConfig", {}).get("AutoRemove"),
+            "capAdd": record.get("HostConfig", {}).get("CapAdd"),
             "capDrop": record.get("HostConfig", {}).get("CapDrop"),
+            "memory": record.get("HostConfig", {}).get("Memory"),
+            "nanoCpus": record.get("HostConfig", {}).get("NanoCpus"),
             "networkMode": record.get("HostConfig", {}).get("NetworkMode"),
+            "networkMembership": sorted(
+                (record.get("NetworkSettings", {}).get("Networks") or {}).keys()
+            ),
+            "pidsLimit": record.get("HostConfig", {}).get("PidsLimit"),
             "portBindings": record.get("HostConfig", {}).get("PortBindings"),
             "privileged": record.get("HostConfig", {}).get("Privileged"),
             "readonlyRootfs": record.get("HostConfig", {}).get("ReadonlyRootfs"),
+            "restartPolicy": record.get("HostConfig", {}).get("RestartPolicy"),
             "securityOpt": record.get("HostConfig", {}).get("SecurityOpt"),
+            "tmpfs": record.get("HostConfig", {}).get("Tmpfs"),
             "user": config.get("User"),
         }
+        mount_document = sorted(
+            (
+                {
+                    "type": mount.get("Type"),
+                    "sourceSha256": sha256_bytes(
+                        str(mount.get("Source", "")).encode()
+                    ),
+                    "destination": mount.get("Destination"),
+                    "readWrite": mount.get("RW"),
+                }
+                for mount in record.get("Mounts", [])
+            ),
+            key=lambda item: str(item["destination"]),
+        )
         receipts[service] = {
             "containerId": record.get("Id"),
             "containerCreatedAt": record.get("Created"),
@@ -995,6 +1145,11 @@ def runtime_resource_receipts(state: dict[str, Any]) -> dict[str, Any]:
             "securityContractSha256": sha256_bytes(
                 json.dumps(
                     security_document, sort_keys=True, separators=(",", ":")
+                ).encode()
+            ),
+            "mountContractSha256": sha256_bytes(
+                json.dumps(
+                    mount_document, sort_keys=True, separators=(",", ":")
                 ).encode()
             ),
         }
@@ -1033,6 +1188,8 @@ def evidence_binding(
             name: sha256_file(LAB_DIR / "services" / name)
             for name in ("telemetry.py", "service_a.py", "service_b.py")
         },
+        "controllerSourceSha256": sha256_file(LAB_DIR / "lab_controller.py"),
+        "wrapperSourceSha256": sha256_file(LAB_DIR / "lab.sh"),
         "resources": runtime_resource_receipts(state),
         "networkIds": network_ids(PROJECT_NAME),
         "workload": workload,
@@ -1103,8 +1260,19 @@ def validate_collector_config(config_path: Path, image_ref: str) -> dict[str, An
             ["docker", "start", "--attach", container_id], timeout=30, check=False
         )
         inspected = inspect_container(container_id)
-        exit_code = str(inspected.get("State", {}).get("ExitCode"))
-        if exit_code != "0":
+        state = inspected.get("State", {})
+        started_at = state.get("StartedAt")
+        finished_at = state.get("FinishedAt")
+        if (
+            start_result.returncode != 0
+            or state.get("Status") != "exited"
+            or state.get("Running") is not False
+            or state.get("ExitCode") != 0
+            or not isinstance(started_at, str)
+            or not isinstance(finished_at, str)
+            or started_at.startswith("0001-")
+            or finished_at.startswith("0001-")
+        ):
             abort(65, f"collector-config-validation-failed-{config_path.name}")
         receipt = {
             "config": config_path.name,
@@ -1122,8 +1290,8 @@ def validate_collector_config(config_path: Path, image_ref: str) -> dict[str, An
                     separators=(",", ":"),
                 ).encode()
             ),
-            "startedAt": inspected.get("State", {}).get("StartedAt"),
-            "finishedAt": inspected.get("State", {}).get("FinishedAt"),
+            "startedAt": started_at,
+            "finishedAt": finished_at,
             "controllerStartedAt": validation_started,
             "controllerFinishedAt": utc_now(),
             "exitCode": 0,
@@ -1131,9 +1299,28 @@ def validate_collector_config(config_path: Path, image_ref: str) -> dict[str, An
             "networkMode": inspected.get("HostConfig", {}).get("NetworkMode"),
         }
     finally:
-        command(["docker", "container", "rm", "--force", container_id], check=False)
-    if command(["docker", "container", "inspect", container_id], check=False).returncode == 0:
+        removal = command(
+            ["docker", "container", "rm", container_id], timeout=15, check=False
+        )
+        if removal.returncode != 0:
+            command(
+                ["docker", "container", "rm", "--force", container_id],
+                timeout=15,
+                check=False,
+            )
+            abort(70, "collector-validation-container-exact-removal-failed")
+    absence = command(["docker", "container", "inspect", container_id], check=False)
+    if absence.returncode == 0:
         abort(70, "collector-validation-container-still-present")
+    absence_detail = "\n".join(
+        value
+        for value in (absence.stdout, absence.stderr)
+        if isinstance(value, str) and value
+    )
+    if not re.search(
+        r"No such (?:object|container)", absence_detail, re.IGNORECASE
+    ):
+        abort(70, "collector-validation-container-absence-not-specific")
     return receipt
 
 
@@ -1146,7 +1333,7 @@ def validate_configs(parsed: dict[str, Any] | None = None) -> None:
     print(f"compose_resolved_sha256={render['resolvedSha256']}")
     print(f"compose_service_count={render['serviceCount']}")
     print(f"compose_network_count={render['networkCount']}")
-    print(f"compose_loopback_port_count={render['loopbackPortCount']}")
+    print(f"compose_published_port_count={render['publishedPortCount']}")
     inspection = inspect_lock_material()
     if inspection["state"] != "complete":
         print("collector_config_validation=blocked")
@@ -1172,23 +1359,31 @@ def validate_configs(parsed: dict[str, Any] | None = None) -> None:
 
 def setup() -> None:
     parsed = require_offline_runtime()
-    if STATE_PATH.exists() or list(STATE_PATH.parent.glob(STATE_RECOVERY_GLOB)):
+    if (
+        STATE_PATH.exists()
+        or STATE_SETUP_PATH.exists()
+        or list(STATE_PATH.parent.glob(STATE_RECOVERY_GLOB))
+    ):
         abort(73, "state-already-exists")
     if container_ids(PROJECT_NAME) or network_ids(PROJECT_NAME):
         abort(73, "untracked-project-resources-already-exist")
     validate_configs(parsed)
 
-    token = secrets.token_hex(16)
-    root = Path(
-        tempfile.mkdtemp(prefix=f"reliability-atlas-LES-0027-{CURRENT_UID}.", dir="/tmp")
-    )
-    os.chmod(root, 0o700)
     try:
-        STATE_PATH.mkdir(mode=0o700)
+        STATE_SETUP_PATH.mkdir(mode=0o700)
     except FileExistsError:
-        root.rmdir()
         abort(73, "state-race-lost")
+    setup_identity = identity(STATE_SETUP_PATH)
+    token = secrets.token_hex(16)
+    root: Path | None = None
+    published = False
     try:
+        root = Path(
+            tempfile.mkdtemp(
+                prefix=f"reliability-atlas-LES-0027-{CURRENT_UID}.", dir="/tmp"
+            )
+        )
+        os.chmod(root, 0o700)
         write_exclusive(root / "runtime.env", runtime_env(parsed, token).encode())
         state_seed = {
             "schemaVersion": 1,
@@ -1199,11 +1394,16 @@ def setup() -> None:
             "project": PROJECT_NAME,
             "labDirectory": str(LAB_DIR),
             "lockDigest": parsed["digest"],
-            "stateIdentity": identity(STATE_PATH),
+            "stateIdentity": setup_identity,
             "root": str(root),
             "rootIdentity": identity(root),
         }
-        write_json_exclusive(STATE_PATH / "state.json", state_seed)
+        write_json_exclusive(STATE_SETUP_PATH / "state.json", state_seed)
+        state_document(STATE_SETUP_PATH)
+        if STATE_PATH.exists():
+            abort(73, "state-path-appeared-before-publish")
+        os.rename(STATE_SETUP_PATH, STATE_PATH)
+        published = True
         state = state_document()
         compose_command(state, "config", "--quiet", timeout=30)
         compose_command(
@@ -1219,7 +1419,7 @@ def setup() -> None:
             timeout=90,
         )
         resources = validate_runtime_resources(state)
-        wait_for_service()
+        wait_for_service(resources["service-a"])
         print("setup_complete=true")
         print(f"lifecycle_token={token}")
         print(f"state_identity={state['stateIdentity']}")
@@ -1231,28 +1431,88 @@ def setup() -> None:
         print("runtime_pull_policy=never")
         print("runtime_package_index=disabled")
     except Exception:
-        print(f"setup_incomplete_lifecycle_token={token}", file=sys.stderr)
-        print("setup_recovery=run-status-then-token-guarded-cleanup", file=sys.stderr)
+        if not published:
+            if root is not None and root.exists():
+                validate_owned_directory(root)
+                for child in list(root.iterdir()):
+                    if child.name != "runtime.env":
+                        abort(65, f"unexpected-unpublished-root-child-{child.name}")
+                    validate_owned_file(child)
+                    child.unlink()
+                root.rmdir()
+            if STATE_SETUP_PATH.exists():
+                validate_owned_directory(STATE_SETUP_PATH, setup_identity)
+                for child in list(STATE_SETUP_PATH.iterdir()):
+                    if child.name != "state.json":
+                        abort(65, f"unexpected-unpublished-state-child-{child.name}")
+                    validate_owned_file(child)
+                    child.unlink()
+                STATE_SETUP_PATH.rmdir()
+            print("setup_unpublished_state_cleaned=true", file=sys.stderr)
+        else:
+            print(f"setup_incomplete_lifecycle_token={token}", file=sys.stderr)
+            print(
+                "setup_recovery=run-status-then-token-guarded-cleanup",
+                file=sys.stderr,
+            )
         raise
 
 
-def request_checkout(mode: str, operation_id: str | None = None) -> dict[str, Any]:
+CONTAINER_HTTP_GET = (
+    "import json,sys,urllib.request;"
+    "response=urllib.request.urlopen(sys.argv[1],timeout=float(sys.argv[2]));"
+    "print(json.dumps({'status':response.status,'body':response.read().decode()},"
+    "separators=(',',':')))"
+)
+
+
+def container_http_get(container_id: str, url: str, timeout: float) -> dict[str, Any]:
+    if not re.fullmatch(r"[0-9a-f]{64}", container_id):
+        abort(70, "container-http-target-id-invalid")
+    result = command(
+        [
+            "docker",
+            "container",
+            "exec",
+            container_id,
+            "python",
+            "-c",
+            CONTAINER_HTTP_GET,
+            url,
+            str(timeout),
+        ],
+        timeout=timeout + 5,
+        check=False,
+    )
+    if result.returncode != 0:
+        abort(70, f"container-http-request-failed-exit-{result.returncode}")
+    try:
+        value = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        abort(70, "container-http-response-invalid-json")
+    if not isinstance(value, dict) or not isinstance(value.get("status"), int):
+        abort(70, "container-http-response-shape-invalid")
+    return value
+
+
+def request_checkout(
+    service_a_id: str, mode: str, operation_id: str | None = None
+) -> dict[str, Any]:
     if operation_id is None:
         operation_id = secrets.token_hex(8)
     if not re.fullmatch(r"[0-9a-f]{16}", operation_id):
         abort(70, "controller-operation-id-invalid")
     url = (
-        f"http://127.0.0.1:{HTTP_PORT}/checkout?"
+        "http://127.0.0.1:8080/checkout?"
         + urllib.parse.urlencode({"mode": mode, "operation_id": operation_id})
     )
-    request = urllib.request.Request(url, method="GET")
+    envelope = container_http_get(service_a_id, url, 4)
+    if envelope["status"] != 200:
+        abort(70, f"service-response-status-{envelope['status']}")
     try:
-        with urllib.request.urlopen(request, timeout=4) as response:
-            if response.status != 200:
-                abort(70, f"service-response-status-{response.status}")
-            value = json.loads(response.read().decode())
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
-        abort(70, f"service-request-failed-{type(exc).__name__}")
+        value = json.loads(envelope["body"])
+    except json.JSONDecodeError:
+        abort(70, "service-response-invalid-json")
     if not isinstance(value, dict):
         abort(70, "service-response-shape-invalid")
     if value.get("operation_id") != operation_id:
@@ -1260,18 +1520,19 @@ def request_checkout(mode: str, operation_id: str | None = None) -> dict[str, An
     return value
 
 
-def wait_for_service() -> None:
+def wait_for_service(service_a_id: str) -> None:
     deadline = time.monotonic() + 30
     last_error = "not-attempted"
     while time.monotonic() < deadline:
         try:
-            with urllib.request.urlopen(
-                f"http://127.0.0.1:{HTTP_PORT}/healthz", timeout=1
-            ) as response:
-                if response.status == 200:
-                    return
-        except (urllib.error.URLError, TimeoutError) as exc:
-            last_error = type(exc).__name__
+            response = container_http_get(
+                service_a_id, "http://127.0.0.1:8080/healthz", 1
+            )
+            if response["status"] == 200:
+                return
+            last_error = f"status-{response['status']}"
+        except LabError as exc:
+            last_error = exc.token
         time.sleep(0.25)
     abort(70, f"service-health-timeout-{last_error}")
 
@@ -1327,14 +1588,48 @@ def load_record(state: dict[str, Any], name: str) -> dict[str, Any]:
     binding = value.get("evidenceBinding")
     if not isinstance(binding, dict):
         abort(65, f"record-evidence-binding-missing-{name}")
+    expected_actions = {
+        "baseline.json": "run-baseline",
+        "broken-context.json": "run-broken-context",
+        "recovery.json": "recover-context",
+        "gateway-interruption.json": "interrupt-gateway",
+        "sampling.json": "compare-sampling",
+    }
+    if (
+        binding.get("schemaVersion") != 1
+        or not re.fullmatch(r"[0-9a-f]{32}", str(binding.get("evidenceId", "")))
+        or binding.get("action") != expected_actions[name]
+        or not isinstance(binding.get("workload"), dict)
+    ):
+        abort(65, f"record-evidence-envelope-invalid-{name}")
+    try:
+        window_started = dt.datetime.fromisoformat(
+            str(binding["windowStartedAt"]).replace("Z", "+00:00")
+        )
+        window_finished = dt.datetime.fromisoformat(
+            str(binding["windowFinishedAt"]).replace("Z", "+00:00")
+        )
+        record_created = dt.datetime.fromisoformat(
+            str(value["recordCreatedAt"]).replace("Z", "+00:00")
+        )
+    except (KeyError, ValueError):
+        abort(65, f"record-time-boundary-invalid-{name}")
+    if not window_started < window_finished <= record_created:
+        abort(65, f"record-time-order-invalid-{name}")
     inspection = inspect_lock_material()
+    compose_receipt = runtime_compose_receipt(state)
     expected_static_values = {
         "lifecycleTokenSha256": sha256_bytes(state["token"].encode()),
+        "stateIdentity": state["stateIdentity"],
+        "rootIdentity": state["rootIdentity"],
         "project": PROJECT_NAME,
         "artifactLockCombinedDigest": inspection["combinedDigest"],
         "artifactLockFileSha256": inspection["artifactLockFileSha256"],
         "requirementsLockFileSha256": inspection["requirementsLockFileSha256"],
         "composeSourceSha256": sha256_file(COMPOSE_PATH),
+        "composeResolvedSha256": compose_receipt["resolvedSha256"],
+        "controllerSourceSha256": sha256_file(LAB_DIR / "lab_controller.py"),
+        "wrapperSourceSha256": sha256_file(LAB_DIR / "lab.sh"),
     }
     for key, expected in expected_static_values.items():
         if binding.get(key) != expected:
@@ -1355,10 +1650,397 @@ def load_record(state: dict[str, Any], name: str) -> dict[str, Any]:
     if not isinstance(resources, dict) or set(resources) != EXPECTED_SERVICES:
         abort(65, f"record-resource-binding-invalid-{name}")
     current_resources = validate_runtime_resources(state)
+    current_receipts = runtime_resource_receipts(state)
     for stable_service in ("agent-a", "agent-b", "gateway"):
         if resources[stable_service].get("containerId") != current_resources[stable_service]:
             abort(65, f"record-stable-resource-changed-{name}-{stable_service}")
+        if resources[stable_service] != current_receipts[stable_service]:
+            abort(65, f"record-stable-resource-receipt-changed-{name}-{stable_service}")
+    if binding.get("networkIds") != network_ids(PROJECT_NAME):
+        abort(65, f"record-network-binding-invalid-{name}")
+    workload = binding["workload"]
+    if name in {"baseline.json", "broken-context.json", "recovery.json"}:
+        response = value.get("response")
+        if (
+            not isinstance(response, dict)
+            or workload.get("operationCount") != 1
+            or workload.get("operationId") != response.get("operation_id")
+            or workload.get("mode") != response.get("mode")
+        ):
+            abort(65, f"record-workload-binding-invalid-{name}")
+    elif name == "gateway-interruption.json":
+        if (
+            workload.get("operationCount") != 4
+            or workload.get("operationIds") != value.get("operationIds")
+            or workload.get("gatewayContainerId") != current_resources["gateway"]
+        ):
+            abort(65, "record-workload-binding-invalid-gateway-interruption")
+    else:
+        full_ids = workload.get("fullOperationIds")
+        quarter_ids = workload.get("quarterOperationIds")
+        if (
+            workload.get("operationCountPerRatio") != 32
+            or workload.get("ratios") != [1.0, 0.25]
+            or workload.get("restoredRatio") != 1.0
+            or not isinstance(full_ids, list)
+            or not isinstance(quarter_ids, list)
+            or len(full_ids) != 32
+            or len(quarter_ids) != 32
+            or len(set(full_ids)) != 32
+            or len(set(quarter_ids)) != 32
+        ):
+            abort(65, "record-workload-binding-invalid-sampling")
     return value
+
+
+PROMETHEUS_SAMPLE = re.compile(
+    r"^([a-zA-Z_:][a-zA-Z0-9_:]*)(?:\{([^}]*)\})?\s+"
+    r"([-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)$"
+)
+PROMETHEUS_LABEL = re.compile(r'([a-zA-Z_][a-zA-Z0-9_]*)="([^"\\]*)"')
+
+
+def parse_prometheus_samples(text: str) -> list[dict[str, Any]]:
+    samples: list[dict[str, Any]] = []
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        match = PROMETHEUS_SAMPLE.fullmatch(line)
+        if match is None:
+            continue
+        labels = {
+            key: value for key, value in PROMETHEUS_LABEL.findall(match.group(2) or "")
+        }
+        samples.append(
+            {"name": match.group(1), "labels": labels, "value": float(match.group(3))}
+        )
+    return samples
+
+
+def metric_total(
+    samples: list[dict[str, Any]], name: str, required_labels: dict[str, str]
+) -> tuple[int | float, bool]:
+    matches = [
+        sample
+        for sample in samples
+        if sample["name"] == name
+        and all(sample["labels"].get(key) == value for key, value in required_labels.items())
+    ]
+    total = sum(sample["value"] for sample in matches)
+    value: int | float = int(total) if total.is_integer() else total
+    return value, bool(matches)
+
+
+def collector_metric_snapshot(
+    probe_container_id: str, collector: str
+) -> dict[str, Any]:
+    if collector not in {"agent-a", "agent-b", "gateway"}:
+        abort(70, "collector-metric-target-not-allowlisted")
+    envelope = container_http_get(
+        probe_container_id, f"http://{collector}:8888/metrics", 3
+    )
+    if envelope["status"] != 200 or not isinstance(envelope.get("body"), str):
+        abort(70, f"collector-metrics-response-invalid-{collector}")
+    body = envelope["body"]
+    samples = parse_prometheus_samples(body)
+    receiver_labels = {
+        "receiver": "otlp",
+        "transport": "grpc" if collector == "gateway" else "http",
+    }
+    processor_labels = {"processor": "memory_limiter"}
+    exporter_labels = {
+        "exporter": "debug" if collector == "gateway" else "otlp/gateway"
+    }
+    selectors = {
+        "receiverAcceptedSpans": ("otelcol_receiver_accepted_spans", receiver_labels),
+        "receiverRefusedSpans": ("otelcol_receiver_refused_spans", receiver_labels),
+        "processorAcceptedSpans": (
+            "otelcol_processor_memory_limiter_accepted_spans",
+            processor_labels,
+        ),
+        "processorRefusedSpans": (
+            "otelcol_processor_memory_limiter_refused_spans",
+            processor_labels,
+        ),
+        "exporterSentSpans": ("otelcol_exporter_sent_spans", exporter_labels),
+        "exporterSendFailedSpans": (
+            "otelcol_exporter_send_failed_spans",
+            exporter_labels,
+        ),
+        "exporterEnqueueFailedSpans": (
+            "otelcol_exporter_enqueue_failed_spans",
+            exporter_labels,
+        ),
+    }
+    if collector != "gateway":
+        selectors.update(
+            {
+                "exporterQueueSize": (
+                    "otelcol_exporter_queue_size",
+                    {"exporter": "otlp/gateway", "data_type": "traces"},
+                ),
+                "exporterQueueCapacity": (
+                    "otelcol_exporter_queue_capacity",
+                    {"exporter": "otlp/gateway", "data_type": "traces"},
+                ),
+            }
+        )
+    values: dict[str, int | float] = {}
+    presence: dict[str, bool] = {}
+    for field, (metric_name, labels) in selectors.items():
+        values[field], presence[field] = metric_total(samples, metric_name, labels)
+    return {
+        "collector": collector,
+        "counterUnit": "spans",
+        "gaugeUnit": "queue-items",
+        "values": values,
+        "metricPresent": presence,
+        "rawExpositionSha256": sha256_bytes(body.encode()),
+    }
+
+
+def service_telemetry_snapshot(
+    probe_container_id: str, hostname: str, port: int
+) -> dict[str, Any]:
+    if (hostname, port) not in {("127.0.0.1", 8080), ("service-b", 8081)}:
+        abort(70, "service-telemetry-target-not-allowlisted")
+    envelope = container_http_get(
+        probe_container_id,
+        f"http://{hostname}:{port}/telemetryz?flush=true",
+        4,
+    )
+    if envelope["status"] != 200:
+        abort(70, f"service-telemetry-status-{envelope['status']}")
+    try:
+        document = json.loads(envelope["body"])
+    except json.JSONDecodeError:
+        abort(70, "service-telemetry-response-invalid-json")
+    telemetry = document.get("telemetry") if isinstance(document, dict) else None
+    counters = telemetry.get("counters") if isinstance(telemetry, dict) else None
+    expected = {
+        "spansStarted",
+        "spansEnded",
+        "exportAttemptedSpans",
+        "exportSucceededSpans",
+        "exportFailedSpans",
+    }
+    if (
+        not isinstance(counters, dict)
+        or set(counters) != expected
+        or any(not isinstance(value, int) or value < 0 for value in counters.values())
+        or telemetry.get("counterUnit") != "spans"
+        or telemetry.get("forceFlushRequested") is not True
+        or telemetry.get("forceFlushSucceeded") is not True
+    ):
+        abort(70, "service-telemetry-contract-invalid")
+    return telemetry
+
+
+def pipeline_snapshot(resources: dict[str, str]) -> dict[str, Any]:
+    service_a_id = resources["service-a"]
+    service_a = service_telemetry_snapshot(service_a_id, "127.0.0.1", 8080)
+    service_b = service_telemetry_snapshot(service_a_id, "service-b", 8081)
+    time.sleep(0.1)
+    return {
+        "capturedAt": utc_now(),
+        "resourceContainerIds": dict(sorted(resources.items())),
+        "resourceProcessStartedAt": {
+            service: inspect_container(container_id).get("State", {}).get("StartedAt")
+            for service, container_id in sorted(resources.items())
+        },
+        "serviceA": service_a,
+        "serviceB": service_b,
+        "agentA": collector_metric_snapshot(service_a_id, "agent-a"),
+        "agentB": collector_metric_snapshot(service_a_id, "agent-b"),
+        "gateway": collector_metric_snapshot(service_a_id, "gateway"),
+    }
+
+
+def nested_delta(before: dict[str, Any], after: dict[str, Any], *path: str) -> int | float:
+    before_value: Any = before
+    after_value: Any = after
+    for key in path:
+        before_value = before_value[key]
+        after_value = after_value[key]
+    if not isinstance(before_value, (int, float)) or not isinstance(
+        after_value, (int, float)
+    ):
+        abort(70, "pipeline-counter-value-invalid")
+    delta = after_value - before_value
+    return int(delta) if isinstance(delta, float) and delta.is_integer() else delta
+
+
+def reconcile_single_operation(
+    before: dict[str, Any],
+    after: dict[str, Any],
+    freshness_seconds: float,
+    operation_count: int = 1,
+    allow_gateway_restart: bool = False,
+) -> dict[str, Any]:
+    if operation_count < 1 or operation_count > 16:
+        abort(70, "pipeline-operation-count-out-of-bounds")
+    if before["resourceContainerIds"] != after["resourceContainerIds"]:
+        abort(70, "pipeline-counter-reset-boundary-crossed")
+    process_changes = {
+        service
+        for service in EXPECTED_SERVICES
+        if before["resourceProcessStartedAt"].get(service)
+        != after["resourceProcessStartedAt"].get(service)
+    }
+    expected_process_changes = {"gateway"} if allow_gateway_restart else set()
+    if process_changes != expected_process_changes:
+        abort(70, "pipeline-process-reset-boundary-unexpected")
+    paths = {
+        "serviceASpansEnded": ("serviceA", "counters", "spansEnded"),
+        "serviceBSpansEnded": ("serviceB", "counters", "spansEnded"),
+        "serviceAExportSucceeded": (
+            "serviceA",
+            "counters",
+            "exportSucceededSpans",
+        ),
+        "serviceBExportSucceeded": (
+            "serviceB",
+            "counters",
+            "exportSucceededSpans",
+        ),
+        "serviceAExportFailed": ("serviceA", "counters", "exportFailedSpans"),
+        "serviceBExportFailed": ("serviceB", "counters", "exportFailedSpans"),
+        "agentAReceiverAccepted": ("agentA", "values", "receiverAcceptedSpans"),
+        "agentBReceiverAccepted": ("agentB", "values", "receiverAcceptedSpans"),
+        "agentAProcessorAccepted": ("agentA", "values", "processorAcceptedSpans"),
+        "agentBProcessorAccepted": ("agentB", "values", "processorAcceptedSpans"),
+        "agentAExporterSent": ("agentA", "values", "exporterSentSpans"),
+        "agentBExporterSent": ("agentB", "values", "exporterSentSpans"),
+        "agentAReceiverRefused": ("agentA", "values", "receiverRefusedSpans"),
+        "agentBReceiverRefused": ("agentB", "values", "receiverRefusedSpans"),
+        "agentAProcessorRefused": ("agentA", "values", "processorRefusedSpans"),
+        "agentBProcessorRefused": ("agentB", "values", "processorRefusedSpans"),
+        "agentAExporterSendFailed": (
+            "agentA",
+            "values",
+            "exporterSendFailedSpans",
+        ),
+        "agentBExporterSendFailed": (
+            "agentB",
+            "values",
+            "exporterSendFailedSpans",
+        ),
+        "agentAExporterEnqueueFailed": (
+            "agentA",
+            "values",
+            "exporterEnqueueFailedSpans",
+        ),
+        "agentBExporterEnqueueFailed": (
+            "agentB",
+            "values",
+            "exporterEnqueueFailedSpans",
+        ),
+        "gatewayReceiverAccepted": ("gateway", "values", "receiverAcceptedSpans"),
+        "gatewayProcessorAccepted": ("gateway", "values", "processorAcceptedSpans"),
+        "gatewayExporterSent": ("gateway", "values", "exporterSentSpans"),
+        "gatewayReceiverRefused": ("gateway", "values", "receiverRefusedSpans"),
+        "gatewayProcessorRefused": (
+            "gateway",
+            "values",
+            "processorRefusedSpans",
+        ),
+        "gatewayExporterSendFailed": (
+            "gateway",
+            "values",
+            "exporterSendFailedSpans",
+        ),
+    }
+    deltas = {name: nested_delta(before, after, *path) for name, path in paths.items()}
+    if allow_gateway_restart:
+        for field in (
+            "gatewayReceiverAccepted",
+            "gatewayProcessorAccepted",
+            "gatewayExporterSent",
+            "gatewayReceiverRefused",
+            "gatewayProcessorRefused",
+            "gatewayExporterSendFailed",
+        ):
+            deltas[field] = after["gateway"]["values"][
+                {
+                    "gatewayReceiverAccepted": "receiverAcceptedSpans",
+                    "gatewayProcessorAccepted": "processorAcceptedSpans",
+                    "gatewayExporterSent": "exporterSentSpans",
+                    "gatewayReceiverRefused": "receiverRefusedSpans",
+                    "gatewayProcessorRefused": "processorRefusedSpans",
+                    "gatewayExporterSendFailed": "exporterSendFailedSpans",
+                }[field]
+            ]
+    expected = {
+        "serviceASpansEnded": 2 * operation_count,
+        "serviceBSpansEnded": operation_count,
+        "serviceAExportSucceeded": 2 * operation_count,
+        "serviceBExportSucceeded": operation_count,
+        "serviceAExportFailed": 0,
+        "serviceBExportFailed": 0,
+        "agentAReceiverAccepted": 2 * operation_count,
+        "agentBReceiverAccepted": operation_count,
+        "agentAProcessorAccepted": 2 * operation_count,
+        "agentBProcessorAccepted": operation_count,
+        "agentAExporterSent": 2 * operation_count,
+        "agentBExporterSent": operation_count,
+        "agentAReceiverRefused": 0,
+        "agentBReceiverRefused": 0,
+        "agentAProcessorRefused": 0,
+        "agentBProcessorRefused": 0,
+        "agentAExporterSendFailed": 0,
+        "agentBExporterSendFailed": 0,
+        "agentAExporterEnqueueFailed": 0,
+        "agentBExporterEnqueueFailed": 0,
+        "gatewayReceiverAccepted": 3 * operation_count,
+        "gatewayProcessorAccepted": 3 * operation_count,
+        "gatewayExporterSent": 3 * operation_count,
+        "gatewayReceiverRefused": 0,
+        "gatewayProcessorRefused": 0,
+        "gatewayExporterSendFailed": 0,
+    }
+    passed = deltas == expected
+    return {
+        "counterUnit": "spans",
+        "freshnessUnit": "seconds",
+        "freshnessSeconds": round(freshness_seconds, 6),
+        "operationCount": operation_count,
+        "counterResetBoundaryCrossed": bool(process_changes),
+        "expectedProcessRestarts": sorted(expected_process_changes),
+        "observedProcessRestarts": sorted(process_changes),
+        "gatewayDeltaSemantics": (
+            "absolute-counters-from-new-process-start"
+            if allow_gateway_restart
+            else "same-process-counter-delta"
+        ),
+        "before": before,
+        "after": after,
+        "deltas": deltas,
+        "expectedDeltas": expected,
+        "perHopReconciliationPassed": passed,
+    }
+
+
+def wait_for_single_operation_evidence(
+    resources: dict[str, str], before: dict[str, Any], started: float, timeout: float = 15
+) -> dict[str, Any]:
+    deadline = time.monotonic() + timeout
+    last_evidence: dict[str, Any] | None = None
+    while time.monotonic() < deadline:
+        after = pipeline_snapshot(resources)
+        last_evidence = reconcile_single_operation(
+            before, after, time.monotonic() - started
+        )
+        if last_evidence["perHopReconciliationPassed"]:
+            return last_evidence
+        time.sleep(0.25)
+    if last_evidence is not None:
+        print(
+            "pipeline_observed_deltas="
+            + json.dumps(last_evidence["deltas"], sort_keys=True, separators=(",", ":")),
+            file=sys.stderr,
+        )
+    abort(70, "single-operation-per-hop-reconciliation-timeout")
 
 
 def wait_for_gateway_traces(
@@ -1378,6 +2060,13 @@ def wait_for_gateway_traces(
         ).stdout
         normalized = logs.lower()
         if all(token.lower() in normalized for token in evidence_tokens):
+            evidence_lines = [
+                line[:512]
+                for line in logs.splitlines()
+                if any(token.lower() in line.lower() for token in evidence_tokens)
+            ][:64]
+            if not evidence_lines:
+                abort(70, "gateway-evidence-line-selection-empty")
             return {
                 "gatewayContainerId": gateway_id,
                 "windowStartedAt": since,
@@ -1389,6 +2078,12 @@ def wait_for_gateway_traces(
                 "allSoughtTokensObserved": True,
                 "boundedGatewayLogSha256": sha256_bytes(logs.encode()),
                 "boundedGatewayLogLineCount": len(logs.splitlines()),
+                "sanitizedEvidenceLines": evidence_lines,
+                "sanitizedEvidenceLinesSha256": sha256_bytes(
+                    json.dumps(evidence_lines, separators=(",", ":")).encode()
+                ),
+                "sanitizedEvidenceLineLimit": 64,
+                "sanitizedEvidenceCharacterLimitPerLine": 512,
                 "logSelection": "docker-logs-timestamps-since-current-operation-start",
             }
         time.sleep(0.5)
@@ -1401,11 +2096,15 @@ def run_case(case: str) -> None:
     state = state_document()
     require_offline_runtime()
     with operation_lock(state):
-        validate_runtime_resources(state)
+        resources = validate_runtime_resources(state)
+        before = pipeline_snapshot(resources)
         window_started_at = utc_now()
+        measurement_started = time.monotonic()
         operation_id = secrets.token_hex(8)
         response = request_checkout(
-            "propagate" if case == "baseline" else "drop-context", operation_id
+            resources["service-a"],
+            "propagate" if case == "baseline" else "drop-context",
+            operation_id,
         )
         expected_joined = case == "baseline"
         if (
@@ -1424,6 +2123,9 @@ def run_case(case: str) -> None:
         )
         if log_receipt is None:
             abort(70, f"gateway-debug-export-evidence-timeout-{case}")
+        per_hop = wait_for_single_operation_evidence(
+            resources, before, measurement_started
+        )
         window_finished_at = utc_now()
         binding = evidence_binding(
             state,
@@ -1446,10 +2148,11 @@ def run_case(case: str) -> None:
                 "response": response,
                 "evidenceBinding": binding,
                 "gatewayLogReceipt": log_receipt,
+                "perHopEvidence": per_hop,
                 "sourceSpanCreationObserved": True,
                 "asyncCarrierBoundaryObserved": True,
-                "directSdkExportCounterMeasured": False,
-                "collectorPerHopCountersMeasured": False,
+                "directSdkExportCounterMeasured": True,
+                "collectorPerHopCountersMeasured": True,
                 "backendIngestProven": False,
             },
         )
@@ -1459,8 +2162,12 @@ def run_case(case: str) -> None:
     print("async_parentage_matches=true")
     print(f"operation_id={operation_id}")
     print("gateway_debug_tokens_observed_in_current_window=true")
-    print("direct_sdk_export_counter_measured=false")
-    print("collector_per_hop_counters_measured=false")
+    print("direct_sdk_export_counter_measured=true")
+    print("collector_per_hop_counters_measured=true")
+    print("per_hop_reconciliation_passed=true")
+    print(f"source_span_creation_delta={sum(per_hop['deltas'][key] for key in ('serviceASpansEnded', 'serviceBSpansEnded'))}")
+    print(f"sdk_export_success_delta={sum(per_hop['deltas'][key] for key in ('serviceAExportSucceeded', 'serviceBExportSucceeded'))}")
+    print(f"gateway_sink_visibility_delta={per_hop['deltas']['gatewayExporterSent']}")
     print("backend_ingest_proven=false")
 
 
@@ -1469,10 +2176,12 @@ def recover_context() -> None:
     require_offline_runtime()
     load_record(state, "broken-context.json")
     with operation_lock(state):
-        validate_runtime_resources(state)
+        resources = validate_runtime_resources(state)
+        before = pipeline_snapshot(resources)
         window_started_at = utc_now()
+        measurement_started = time.monotonic()
         operation_id = secrets.token_hex(8)
-        response = request_checkout("propagate", operation_id)
+        response = request_checkout(resources["service-a"], "propagate", operation_id)
         if (
             response.get("joined_context") is not True
             or response.get("async_context_joined") is not True
@@ -1489,6 +2198,9 @@ def recover_context() -> None:
         )
         if log_receipt is None:
             abort(70, "gateway-debug-export-evidence-timeout-recovery")
+        per_hop = wait_for_single_operation_evidence(
+            resources, before, measurement_started
+        )
         window_finished_at = utc_now()
         save_record(
             state,
@@ -1509,9 +2221,10 @@ def recover_context() -> None:
                     window_finished_at,
                 ),
                 "gatewayLogReceipt": log_receipt,
+                "perHopEvidence": per_hop,
                 "asyncCarrierBoundaryObserved": True,
-                "directSdkExportCounterMeasured": False,
-                "collectorPerHopCountersMeasured": False,
+                "directSdkExportCounterMeasured": True,
+                "collectorPerHopCountersMeasured": True,
                 "backendIngestProven": False,
             },
         )
@@ -1520,8 +2233,49 @@ def recover_context() -> None:
     print("async_parentage_matches=true")
     print(f"operation_id={operation_id}")
     print("gateway_debug_tokens_observed_in_current_window=true")
-    print("collector_per_hop_counters_measured=false")
+    print("collector_per_hop_counters_measured=true")
+    print("per_hop_reconciliation_passed=true")
     print("backend_ingest_proven=false")
+
+
+def bounded_retry_log_evidence(
+    resources: dict[str, str], since: str
+) -> dict[str, Any]:
+    selected: dict[str, list[str]] = {}
+    for agent in ("agent-a", "agent-b"):
+        result = command(
+            [
+                "docker",
+                "logs",
+                "--timestamps",
+                "--since",
+                since,
+                resources[agent],
+            ],
+            timeout=10,
+            check=False,
+        )
+        if result.returncode != 0:
+            abort(70, f"agent-retry-log-read-failed-{agent}")
+        selected[agent] = [
+            line[:512]
+            for line in result.stdout.splitlines()
+            if "internal/retry_sender.go" in line and "Will retry" in line
+        ][:64]
+    return {
+        "selection": "collector-retry-sender-current-operation-window",
+        "windowStartedAt": since,
+        "recordUnit": "retry-log-records",
+        "recordCountByAgent": {
+            agent: len(lines) for agent, lines in selected.items()
+        },
+        "sanitizedRecords": selected,
+        "sanitizedRecordsSha256": sha256_bytes(
+            json.dumps(selected, sort_keys=True, separators=(",", ":")).encode()
+        ),
+        "recordLimitPerAgent": 64,
+        "characterLimitPerRecord": 512,
+    }
 
 
 def interrupt_gateway() -> None:
@@ -1532,8 +2286,15 @@ def interrupt_gateway() -> None:
         gateway_id = resources["gateway"]
         responses: list[dict[str, Any]] = []
         operation_ids: list[str] = []
+        before = pipeline_snapshot(resources)
+        measurement_started = time.monotonic()
         restored = False
         window_started_at = utc_now()
+        peak_queue = {"agent-a": 0, "agent-b": 0}
+        queue_capacity = {"agent-a": 0, "agent-b": 0}
+        queue_observed_at: str | None = None
+        oldest_queue_observation_started: float | None = None
+        retry_evidence: dict[str, Any] | None = None
         try:
             stopped = command(
                 ["docker", "container", "stop", "--time", "3", gateway_id],
@@ -1544,7 +2305,9 @@ def interrupt_gateway() -> None:
                 abort(70, "gateway-stop-failed")
             for _ in range(4):
                 operation_id = secrets.token_hex(8)
-                response = request_checkout("propagate", operation_id)
+                response = request_checkout(
+                    resources["service-a"], "propagate", operation_id
+                )
                 if (
                     response.get("joined_context") is not True
                     or response.get("async_context_joined") is not True
@@ -1553,6 +2316,34 @@ def interrupt_gateway() -> None:
                     abort(70, "request-during-gateway-outage-lost-context")
                 operation_ids.append(operation_id)
                 responses.append(response)
+                if oldest_queue_observation_started is None:
+                    oldest_queue_observation_started = time.monotonic()
+            service_telemetry_snapshot(
+                resources["service-a"], "127.0.0.1", 8080
+            )
+            service_telemetry_snapshot(resources["service-a"], "service-b", 8081)
+            observation_deadline = time.monotonic() + 6
+            while time.monotonic() < observation_deadline:
+                for agent in ("agent-a", "agent-b"):
+                    snapshot = collector_metric_snapshot(
+                        resources["service-a"], agent
+                    )
+                    size = int(snapshot["values"]["exporterQueueSize"])
+                    capacity = int(snapshot["values"]["exporterQueueCapacity"])
+                    peak_queue[agent] = max(peak_queue[agent], size)
+                    queue_capacity[agent] = capacity
+                retry_evidence = bounded_retry_log_evidence(resources, window_started_at)
+                retry_count = sum(retry_evidence["recordCountByAgent"].values())
+                if sum(peak_queue.values()) > 0 and retry_count > 0:
+                    queue_observed_at = utc_now()
+                    break
+                time.sleep(0.1)
+            if sum(peak_queue.values()) <= 0:
+                abort(70, "gateway-outage-queue-occupancy-not-observed")
+            if retry_evidence is None or sum(
+                retry_evidence["recordCountByAgent"].values()
+            ) <= 0:
+                abort(70, "gateway-outage-retry-record-not-observed")
         finally:
             recovery_started = time.monotonic()
             started = command(
@@ -1574,7 +2365,35 @@ def interrupt_gateway() -> None:
         )
         if log_receipt is None:
             abort(70, "agent-retry-evidence-timeout-after-gateway-recovery")
+        if oldest_queue_observation_started is None or queue_observed_at is None:
+            abort(70, "gateway-outage-queue-time-boundary-missing")
+        final_evidence: dict[str, Any] | None = None
+        drain_deadline = time.monotonic() + 20
+        while time.monotonic() < drain_deadline:
+            after = pipeline_snapshot(resources)
+            candidate = reconcile_single_operation(
+                before,
+                after,
+                time.monotonic() - measurement_started,
+                operation_count=4,
+                allow_gateway_restart=True,
+            )
+            queues_drained = all(
+                after[key]["values"]["exporterQueueSize"] == 0
+                for key in ("agentA", "agentB")
+            )
+            if candidate["perHopReconciliationPassed"] and queues_drained:
+                final_evidence = candidate
+                break
+            time.sleep(0.25)
+        if final_evidence is None:
+            abort(70, "gateway-outage-per-hop-drain-reconciliation-timeout")
+        retry_evidence = bounded_retry_log_evidence(resources, window_started_at)
+        retry_count = sum(retry_evidence["recordCountByAgent"].values())
         drain_observation_seconds = round(time.monotonic() - recovery_started, 6)
+        oldest_observed_queue_residence_seconds = round(
+            time.monotonic() - oldest_queue_observation_started, 6
+        )
         window_finished_at = utc_now()
         save_record(
             state,
@@ -1588,13 +2407,50 @@ def interrupt_gateway() -> None:
                 "gatewayLogReceipt": log_receipt,
                 "gatewayDebugTokensObservedAfterRecovery": True,
                 "drainObservationSeconds": drain_observation_seconds,
-                "queueOccupancyMeasured": False,
-                "oldestQueueAgeMeasured": False,
-                "retryAttemptsMeasured": False,
-                "refusedItemsMeasured": False,
-                "droppedItemsMeasured": False,
-                "perHopReconciliationMeasured": False,
-                "queueExperimentComplete": False,
+                "queueOccupancyMeasured": True,
+                "queueItemSemantics": "one-span-batch-under-exact-agent-config",
+                "peakQueueItemsByAgent": peak_queue,
+                "queueCapacityItemsByAgent": queue_capacity,
+                "queueObservedAt": queue_observed_at,
+                "oldestQueueAgeMeasured": True,
+                "oldestObservedQueueResidenceSeconds": (
+                    oldest_observed_queue_residence_seconds
+                ),
+                "oldestQueueAgeSemantics": (
+                    "controller-observed-lower-bound-from-first-completed-outage-request-"
+                    "to-proven-drain"
+                ),
+                "retryAttemptsMeasured": True,
+                "retryLogRecordCount": retry_count,
+                "retryLogEvidence": retry_evidence,
+                "refusedItemsMeasured": True,
+                "refusedSpanDelta": sum(
+                    final_evidence["deltas"][key]
+                    for key in (
+                        "agentAReceiverRefused",
+                        "agentBReceiverRefused",
+                        "agentAProcessorRefused",
+                        "agentBProcessorRefused",
+                        "gatewayReceiverRefused",
+                        "gatewayProcessorRefused",
+                    )
+                ),
+                "droppedItemsMeasured": True,
+                "droppedSpanDelta": sum(
+                    final_evidence["deltas"][key]
+                    for key in (
+                        "serviceAExportFailed",
+                        "serviceBExportFailed",
+                        "agentAExporterSendFailed",
+                        "agentBExporterSendFailed",
+                        "agentAExporterEnqueueFailed",
+                        "agentBExporterEnqueueFailed",
+                        "gatewayExporterSendFailed",
+                    )
+                ),
+                "perHopEvidence": final_evidence,
+                "perHopReconciliationMeasured": True,
+                "queueExperimentComplete": True,
                 "evidenceBinding": evidence_binding(
                     state,
                     "interrupt-gateway",
@@ -1616,13 +2472,18 @@ def interrupt_gateway() -> None:
     print("gateway_restored=true")
     print("gateway_debug_tokens_observed_after_recovery=true")
     print(f"drain_observation_seconds={drain_observation_seconds}")
-    print("queue_occupancy_measured=false")
-    print("oldest_queue_age_measured=false")
-    print("retry_attempts_measured=false")
-    print("refused_items_measured=false")
-    print("dropped_items_measured=false")
-    print("per_hop_reconciliation_measured=false")
-    print("queue_experiment_complete=false")
+    print("queue_occupancy_measured=true")
+    print(f"peak_queue_items={sum(peak_queue.values())}")
+    print("oldest_queue_age_measured=true")
+    print(f"oldest_observed_queue_residence_seconds={oldest_observed_queue_residence_seconds}")
+    print("retry_attempts_measured=true")
+    print(f"retry_log_record_count={retry_count}")
+    print("refused_items_measured=true")
+    print("refused_span_delta=0")
+    print("dropped_items_measured=true")
+    print("dropped_span_delta=0")
+    print("per_hop_reconciliation_measured=true")
+    print("queue_experiment_complete=true")
     print("backend_ingest_proven=false")
 
 
@@ -1648,7 +2509,7 @@ def replace_sample_ratio(state: dict[str, Any], ratio: str) -> None:
     validate_owned_file(env_path)
 
 
-def recreate_services(state: dict[str, Any]) -> None:
+def recreate_services(state: dict[str, Any]) -> dict[str, str]:
     compose_command(
         state,
         "up",
@@ -1665,15 +2526,18 @@ def recreate_services(state: dict[str, Any]) -> None:
         "service-b",
         timeout=90,
     )
-    validate_runtime_resources(state)
-    wait_for_service()
+    resources = validate_runtime_resources(state)
+    wait_for_service(resources["service-a"])
+    return resources
 
 
-def sample_requests(count: int) -> tuple[int, list[dict[str, Any]]]:
+def sample_requests(
+    service_a_id: str, count: int
+) -> tuple[int, list[dict[str, Any]]]:
     sampled = 0
     responses: list[dict[str, Any]] = []
     for _ in range(count):
-        response = request_checkout("propagate", secrets.token_hex(8))
+        response = request_checkout(service_a_id, "propagate", secrets.token_hex(8))
         if (
             response.get("joined_context") is not True
             or response.get("async_context_joined") is not True
@@ -1692,10 +2556,10 @@ def compare_sampling() -> None:
         validate_runtime_resources(state)
         overall_started_at = utc_now()
         replace_sample_ratio(state, "1.0")
-        recreate_services(state)
+        full_runtime = recreate_services(state)
         full_window_started_at = utc_now()
         full_resources = runtime_resource_receipts(state)
-        full_count, full_responses = sample_requests(32)
+        full_count, full_responses = sample_requests(full_runtime["service-a"], 32)
         if full_count != 32:
             abort(70, f"full-sampling-observed-count-unexpected-{full_count}")
         full_tokens = {
@@ -1714,10 +2578,12 @@ def compare_sampling() -> None:
         quarter_log_receipt: dict[str, Any] | None = None
         try:
             replace_sample_ratio(state, "0.25")
-            recreate_services(state)
+            quarter_runtime = recreate_services(state)
             quarter_window_started_at = utc_now()
             quarter_resources = runtime_resource_receipts(state)
-            quarter_count, quarter_responses = sample_requests(32)
+            quarter_count, quarter_responses = sample_requests(
+                quarter_runtime["service-a"], 32
+            )
             quarter_tokens = {
                 str(response[token])
                 for response in quarter_responses
@@ -1803,19 +2669,110 @@ def verify_operation(argv: list[str]) -> None:
         present_records = sorted(
             name for name in RECORD_NAMES if (root / name).is_file()
         )
-        if "baseline.json" not in present_records:
-            abort(64, "verification-requires-baseline-record")
+        if set(present_records) != RECORD_NAMES:
+            abort(64, "verification-requires-all-five-runtime-records")
         records = {name: load_record(state, name) for name in present_records}
         baseline = records["baseline.json"]
-        response = baseline.get("response", {})
+        broken = records["broken-context.json"]
+        recovery = records["recovery.json"]
+        context_expectations = {
+            "baseline.json": True,
+            "broken-context.json": False,
+            "recovery.json": True,
+        }
+        for name, expected_joined in context_expectations.items():
+            record = records[name]
+            response = record.get("response", {})
+            receipt = record.get("gatewayLogReceipt", {})
+            lines = receipt.get("sanitizedEvidenceLines")
+            per_hop = record.get("perHopEvidence", {})
+            if (
+                response.get("joined_context") is not expected_joined
+                or response.get("async_context_joined") is not expected_joined
+                or response.get("parentage_matches") is not True
+                or response.get("downstream_parent_span_id")
+                != response.get("worker_span_id")
+                or receipt.get("allSoughtTokensObserved") is not True
+                or not isinstance(lines, list)
+                or not lines
+                or len(lines) > 64
+                or any(not isinstance(line, str) or len(line) > 512 for line in lines)
+                or receipt.get("sanitizedEvidenceLinesSha256")
+                != sha256_bytes(json.dumps(lines, separators=(",", ":")).encode())
+                or record.get("directSdkExportCounterMeasured") is not True
+                or record.get("collectorPerHopCountersMeasured") is not True
+                or per_hop.get("perHopReconciliationPassed") is not True
+                or per_hop.get("deltas") != per_hop.get("expectedDeltas")
+                or per_hop.get("counterUnit") != "spans"
+                or per_hop.get("counterResetBoundaryCrossed") is not False
+            ):
+                abort(65, f"context-record-bound-evidence-invalid-{name}")
+        interruption = records["gateway-interruption.json"]
+        queue_evidence = interruption.get("perHopEvidence", {})
+        retry_evidence = interruption.get("retryLogEvidence", {})
+        retry_records = retry_evidence.get("sanitizedRecords")
+        peak_queue = interruption.get("peakQueueItemsByAgent")
+        queue_capacity = interruption.get("queueCapacityItemsByAgent")
         if (
-            response.get("joined_context") is not True
-            or response.get("async_context_joined") is not True
-            or response.get("parentage_matches") is not True
-            or baseline.get("gatewayLogReceipt", {}).get("allSoughtTokensObserved")
+            interruption.get("queueOccupancyMeasured") is not True
+            or interruption.get("oldestQueueAgeMeasured") is not True
+            or interruption.get("retryAttemptsMeasured") is not True
+            or interruption.get("refusedItemsMeasured") is not True
+            or interruption.get("droppedItemsMeasured") is not True
+            or interruption.get("perHopReconciliationMeasured") is not True
+            or interruption.get("queueExperimentComplete") is not True
+            or interruption.get("refusedSpanDelta") != 0
+            or interruption.get("droppedSpanDelta") != 0
+            or not isinstance(peak_queue, dict)
+            or not isinstance(queue_capacity, dict)
+            or set(peak_queue) != {"agent-a", "agent-b"}
+            or set(queue_capacity) != {"agent-a", "agent-b"}
+            or sum(peak_queue.values()) <= 0
+            or any(
+                not 0 <= peak_queue[agent] <= queue_capacity[agent] == 256
+                for agent in ("agent-a", "agent-b")
+            )
+            or not isinstance(retry_records, dict)
+            or set(retry_records) != {"agent-a", "agent-b"}
+            or interruption.get("retryLogRecordCount")
+            != sum(len(lines) for lines in retry_records.values())
+            or interruption.get("retryLogRecordCount", 0) <= 0
+            or retry_evidence.get("sanitizedRecordsSha256")
+            != sha256_bytes(
+                json.dumps(
+                    retry_records, sort_keys=True, separators=(",", ":")
+                ).encode()
+            )
+            or queue_evidence.get("perHopReconciliationPassed") is not True
+            or queue_evidence.get("deltas") != queue_evidence.get("expectedDeltas")
+            or queue_evidence.get("expectedProcessRestarts") != ["gateway"]
+            or queue_evidence.get("observedProcessRestarts") != ["gateway"]
+            or queue_evidence.get("counterResetBoundaryCrossed") is not True
+        ):
+            abort(65, "gateway-interruption-bound-evidence-invalid")
+        sampling = records["sampling.json"]
+        full_sampled = sampling.get("fullSampled")
+        quarter_sampled = sampling.get("quarterSampled")
+        if (
+            sampling.get("requestsPerRun") != 32
+            or full_sampled != 32
+            or sampling.get("fullGatewayRetained") != full_sampled
+            or not isinstance(quarter_sampled, int)
+            or not 0 < quarter_sampled < full_sampled
+            or sampling.get("quarterGatewayRetained") != quarter_sampled
+            or sampling.get("deterministicTraceIdsEqualAcrossRestarts") is not True
+            or sampling.get("unsampledRequestsStillSucceeded") != 32 - quarter_sampled
+            or sampling.get("fullGatewayLogReceipt", {}).get(
+                "allSoughtTokensObserved"
+            )
+            is not True
+            or sampling.get("quarterGatewayLogReceipt", {}).get(
+                "allSoughtTokensObserved"
+            )
             is not True
         ):
-            abort(65, "baseline-bound-evidence-invalid")
+            abort(65, "sampling-bound-evidence-invalid")
+        baseline_deltas = baseline["perHopEvidence"]["deltas"]
     print("verification_mode=runtime-evidence-audit")
     print("runtime_control_records_verified=true")
     print(f"runtime_records_validated={','.join(present_records)}")
@@ -1823,29 +2780,32 @@ def verify_operation(argv: list[str]) -> None:
     print("collector_topology=two-agents-one-gateway")
     print("async_carrier_boundary=bounded-in-process-queue")
     print("baseline_parentage_bound_to_current_operation=true")
-    print("source_creation_delta=not-measured")
-    print("sdk_export_delta=not-measured")
-    print("agent_receive_delta=not-measured")
-    print("agent_process_delta=not-measured")
-    print("agent_export_delta=not-measured")
-    print("gateway_receive_delta=not-measured")
-    print("gateway_process_delta=not-measured")
-    print("gateway_export_delta=not-measured")
-    print("sink_visibility_delta=not-measured")
-    print("counter_units=not-bound")
-    print("counter_reset_boundaries=not-measured")
-    print("freshness_window=not-measured")
-    print("refused_retry_drop_deltas=not-measured")
-    print("per_hop_reconciliation_passed=false")
-    print("host_bindings=loopback-only")
+    print(f"source_creation_delta={baseline_deltas['serviceASpansEnded'] + baseline_deltas['serviceBSpansEnded']}")
+    print(f"sdk_export_delta={baseline_deltas['serviceAExportSucceeded'] + baseline_deltas['serviceBExportSucceeded']}")
+    print(f"agent_receive_delta={baseline_deltas['agentAReceiverAccepted'] + baseline_deltas['agentBReceiverAccepted']}")
+    print(f"agent_process_delta={baseline_deltas['agentAProcessorAccepted'] + baseline_deltas['agentBProcessorAccepted']}")
+    print(f"agent_export_delta={baseline_deltas['agentAExporterSent'] + baseline_deltas['agentBExporterSent']}")
+    print(f"gateway_receive_delta={baseline_deltas['gatewayReceiverAccepted']}")
+    print(f"gateway_process_delta={baseline_deltas['gatewayProcessorAccepted']}")
+    print(f"gateway_export_delta={baseline_deltas['gatewayExporterSent']}")
+    print(f"sink_visibility_delta={baseline_deltas['gatewayExporterSent']}")
+    print("counter_units=spans")
+    print("counter_reset_boundaries=bound-by-container-process-start")
+    print(f"freshness_window_seconds={baseline['perHopEvidence']['freshnessSeconds']}")
+    print(f"queue_peak_items={sum(peak_queue.values())}")
+    print(f"retry_log_records={interruption['retryLogRecordCount']}")
+    print("refused_span_delta=0")
+    print("dropped_span_delta=0")
+    print("per_hop_reconciliation_passed=true")
+    print("sampling_deterministic_trace_ids_equal=true")
+    print("host_bindings=none")
     print("runtime_network=internal")
     print("runtime_pull_policy=never")
     print("runtime_package_index=disabled")
     print("backend_ingest_proven=false")
     print("production_behavior_proven=false")
-    print("runtime_evidence_complete=false")
-    print("runtime_verification_passed=false")
-    abort(78, "runtime-evidence-incomplete-per-hop-counter-contract-not-implemented")
+    print("runtime_evidence_complete=true")
+    print("runtime_verification_passed=true")
 
 
 def safe_model() -> None:
@@ -1874,9 +2834,9 @@ def safe_model() -> None:
     print("model_is_not-runtime-evidence=true")
 
 
-def probe_command(argv: list[str]) -> tuple[bool, str]:
+def probe_command(argv: list[str], timeout: float = 20) -> tuple[bool, str]:
     try:
-        result = command(argv, timeout=8, check=False)
+        result = command(argv, timeout=timeout, check=False)
     except LabError as exc:
         return False, exc.token
     if result.returncode != 0:
@@ -1885,17 +2845,6 @@ def probe_command(argv: list[str]) -> tuple[bool, str]:
         (line.strip() for line in result.stdout.splitlines() if line.strip()), "available"
     )
     return True, re.sub(r"\s+", "_", first_line)[:160]
-
-
-def loopback_port_available(port: int) -> bool:
-    probe = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        probe.bind(("127.0.0.1", port))
-        return True
-    except OSError:
-        return False
-    finally:
-        probe.close()
 
 
 def doctor() -> None:
@@ -1917,17 +2866,8 @@ def doctor() -> None:
         ["docker", "compose", "version", "--short"]
     )
     docker_daemon_ready, docker_daemon_detail = probe_command(
-        ["docker", "info", "--format", "{{.ServerVersion}}"]
+        ["docker", "info", "--format", "{{.ServerVersion}}"], timeout=45
     )
-    ports = {
-        port: loopback_port_available(port)
-        for port in (
-            HTTP_PORT,
-            GATEWAY_METRICS_PORT,
-            AGENT_A_METRICS_PORT,
-            AGENT_B_METRICS_PORT,
-        )
-    }
     artifacts = "absent"
     if ARTIFACTS_PATH.exists():
         try:
@@ -1963,7 +2903,6 @@ def doctor() -> None:
             docker_client_ready,
             compose_ready,
             docker_daemon_ready,
-            all(ports.values()),
             inspection["state"] == "complete",
             artifacts == "verified",
             all(value == "matched" for value in image_states.values()),
@@ -1990,8 +2929,7 @@ def doctor() -> None:
     print(f"tool_docker_compose_detail={compose_detail}")
     print(f"docker_daemon_ready={str(docker_daemon_ready).lower()}")
     print(f"docker_daemon_detail={docker_daemon_detail}")
-    for port, available in ports.items():
-        print(f"loopback_port_{port}={'available' if available else 'occupied'}")
+    print("published_host_ports=0")
     print(f"artifact_lock={inspection['state']}")
     print(f"artifact_lock_file_sha256={inspection['artifactLockFileSha256']}")
     print(f"requirements_lock_file_sha256={inspection['requirementsLockFileSha256']}")
@@ -2021,6 +2959,8 @@ def find_state_candidates() -> list[Path]:
     candidates = []
     if STATE_PATH.exists() or STATE_PATH.is_symlink():
         candidates.append(STATE_PATH)
+    if STATE_SETUP_PATH.exists() or STATE_SETUP_PATH.is_symlink():
+        candidates.append(STATE_SETUP_PATH)
     candidates.extend(sorted(STATE_PATH.parent.glob(STATE_RECOVERY_GLOB)))
     return candidates
 
@@ -2045,7 +2985,12 @@ def status() -> None:
         abort(65, f"ambiguous-state-candidates-{len(candidates)}")
     state = state_document(candidates[0])
     active_state = candidates[0] == STATE_PATH
-    print("state=active" if active_state else "state=cleanup-recovery")
+    if active_state:
+        print("state=active")
+    elif candidates[0] == STATE_SETUP_PATH:
+        print("state=setup-recovery")
+    else:
+        print("state=cleanup-recovery")
     print(f"lifecycle_token={state['token']}")
     print(f"state_identity={state['stateIdentity']}")
     print(f"root={state['root']}")
@@ -2140,16 +3085,50 @@ def status() -> None:
                     "sampling_quarter_gateway_retained="
                     f"{sampling['quarterGatewayRetained']}"
                 )
-            print("source_creation_delta=not-measured")
-            print("sdk_export_delta=not-measured")
-            print("agent_receive_process_export_deltas=not-measured")
-            print("gateway_receive_process_export_deltas=not-measured")
-            print("sink_visibility_delta=not-measured")
-            print("counter_units=not-bound")
-            print("counter_reset_boundaries=not-measured")
-            print("freshness_window=not-measured")
-            print("refused_retry_drop_deltas=not-measured")
-            print("per_hop_evidence_complete=false")
+            if baseline:
+                deltas = baseline["perHopEvidence"]["deltas"]
+                print(
+                    "source_creation_delta="
+                    f"{deltas['serviceASpansEnded'] + deltas['serviceBSpansEnded']}"
+                )
+                print(
+                    "sdk_export_delta="
+                    f"{deltas['serviceAExportSucceeded'] + deltas['serviceBExportSucceeded']}"
+                )
+                print(
+                    "agent_receive_process_export_deltas="
+                    f"{deltas['agentAReceiverAccepted'] + deltas['agentBReceiverAccepted']},"
+                    f"{deltas['agentAProcessorAccepted'] + deltas['agentBProcessorAccepted']},"
+                    f"{deltas['agentAExporterSent'] + deltas['agentBExporterSent']}"
+                )
+                print(
+                    "gateway_receive_process_export_deltas="
+                    f"{deltas['gatewayReceiverAccepted']},"
+                    f"{deltas['gatewayProcessorAccepted']},"
+                    f"{deltas['gatewayExporterSent']}"
+                )
+                print(f"sink_visibility_delta={deltas['gatewayExporterSent']}")
+                print("counter_units=spans")
+                print("counter_reset_boundaries=bound-by-container-process-start")
+                print(
+                    "freshness_window_seconds="
+                    f"{baseline['perHopEvidence']['freshnessSeconds']}"
+                )
+            else:
+                print("per_hop_baseline_evidence=absent")
+            if interruption:
+                print(
+                    "refused_retry_drop_deltas="
+                    f"{interruption['refusedSpanDelta']},"
+                    f"{interruption['retryLogRecordCount']},"
+                    f"{interruption['droppedSpanDelta']}"
+                )
+            else:
+                print("refused_retry_drop_deltas=absent")
+            print(
+                "per_hop_evidence_complete="
+                f"{str(set(records) == RECORD_NAMES).lower()}"
+            )
     else:
         print("project_container_count=unavailable")
         print("project_network_count=unavailable")
@@ -2157,7 +3136,11 @@ def status() -> None:
 
 
 def remove_runtime_resources(state: dict[str, Any]) -> None:
-    by_service = validate_runtime_resources(state, require_all=False)
+    by_service = validate_runtime_resources(
+        state,
+        require_all=False,
+        allow_cleanup_only_legacy_loopback_ports=True,
+    )
     for service, container_id in sorted(by_service.items()):
         record = inspect_container(container_id)
         if record.get("State", {}).get("Running"):
@@ -2190,7 +3173,7 @@ def remove_runtime_resources(state: dict[str, Any]) -> None:
         abort(70, "project-resources-reappeared-or-remain")
 
 
-def remove_local_state(state: dict[str, Any]) -> None:
+def remove_local_artifacts(state: dict[str, Any]) -> None:
     root: Path = state["_rootPath"]
     validate_owned_directory(root, state["rootIdentity"])
     allowed = RECORD_NAMES | {"runtime.env", "runtime.env.next"}
@@ -2202,16 +3185,6 @@ def remove_local_state(state: dict[str, Any]) -> None:
     for child in children:
         child.unlink()
     root.rmdir()
-
-    state_path: Path = state["_statePath"]
-    validate_owned_directory(state_path, state["stateIdentity"])
-    if set(child.name for child in state_path.iterdir()) != {"state.json"}:
-        abort(65, "unexpected-cleanup-state-entry")
-    state_file = state_path / "state.json"
-    validate_owned_file(state_file)
-    state_file.unlink()
-    state_path.rmdir()
-
 
 def cleanup(argv: list[str]) -> None:
     if (
@@ -2234,19 +3207,19 @@ def cleanup(argv: list[str]) -> None:
     state = state_document(candidate)
     if state["token"] != argv[1]:
         abort(65, "cleanup-token-mismatch")
-    if (candidate / "operation.lock").exists():
-        abort(73, "cleanup-refused-operation-active")
-    if candidate == STATE_PATH:
-        recovery = Path(
-            f"{STATE_PATH}.cleanup.{state['token']}.{secrets.token_hex(4)}"
-        )
-        os.rename(candidate, recovery)
-        state = state_document(recovery)
-    ready, detail = docker_ready()
-    if not ready:
-        abort(69, f"cleanup-needs-docker-to-prove-resource-absence-{detail}")
-    remove_runtime_resources(state)
-    remove_local_state(state)
+    with operation_lock(state, delete_state_on_success=True):
+        if not candidate.name.startswith(f"{STATE_PATH.name}.cleanup."):
+            recovery = Path(
+                f"{STATE_PATH}.cleanup.{state['token']}.{secrets.token_hex(4)}"
+            )
+            os.rename(candidate, recovery)
+            state["_statePath"] = recovery
+            state = state_document(recovery)
+        ready, detail = docker_ready()
+        if not ready:
+            abort(69, f"cleanup-needs-docker-to-prove-resource-absence-{detail}")
+        remove_runtime_resources(state)
+        remove_local_artifacts(state)
     if find_state_candidates():
         abort(70, "state-still-present-after-cleanup")
     print("cleanup_proven=true")

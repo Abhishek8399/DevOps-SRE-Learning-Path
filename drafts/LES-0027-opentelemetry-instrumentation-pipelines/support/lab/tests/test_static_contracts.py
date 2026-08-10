@@ -18,7 +18,7 @@ class StaticLabContracts(unittest.TestCase):
         for path in sorted(ROOT.rglob("*.py")):
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
 
-    def test_artifact_locks_are_explicitly_incomplete(self) -> None:
+    def test_artifact_locks_are_complete_and_digest_bound(self) -> None:
         lock = json.loads(self.read("artifacts.lock.json"))
         self.assertEqual(lock["lesson"], "LES-0027")
         self.assertEqual(lock["platform"], "linux/amd64")
@@ -29,12 +29,15 @@ class StaticLabContracts(unittest.TestCase):
             lock["images"]["collector"]["repository"],
             "docker.io/otel/opentelemetry-collector-contrib",
         )
-        self.assertIn("RECORD_REAL_", self.read("artifacts.lock.json"))
+        for item in lock["images"].values():
+            self.assertRegex(item["digest"], r"^sha256:[0-9a-f]{64}$")
         requirements = self.read("requirements.lock")
-        self.assertIn("RECORD_REAL_", requirements)
+        self.assertNotIn("RECORD_REAL_", requirements)
         records = [line for line in requirements.splitlines() if line and not line.startswith("#")]
-        self.assertGreaterEqual(len(records), 12)
+        self.assertEqual(len(records), 14)
         self.assertTrue(all("==" in line and "--hash=sha256:" in line for line in records))
+        self.assertIn("opentelemetry-sdk==1.44.0", requirements)
+        self.assertIn("opentelemetry-semantic-conventions==0.65b0", requirements)
 
     def test_compose_has_five_bounded_services(self) -> None:
         compose = self.read("compose.yaml")
@@ -45,13 +48,14 @@ class StaticLabContracts(unittest.TestCase):
         self.assertIn("read_only: true", compose)
         self.assertIn("pull_policy: never", compose)
         self.assertIn("internal: true", compose)
-        self.assertGreaterEqual(compose.count('"127.0.0.1:'), 4)
+        self.assertNotIn("ports:", compose)
         self.assertNotIn("network_mode: host", compose)
         self.assertNotIn("privileged: true", compose)
         self.assertNotIn("docker.sock", compose)
         self.assertNotIn("/var/run", compose)
         self.assertIn("--no-index --no-deps", compose)
         self.assertIn("--require-hashes", compose)
+        self.assertEqual(compose.count("${LAB_WHEELHOUSE_PATH:?run prepare}"), 2)
 
     def test_collector_topology_is_bounded(self) -> None:
         agent_a = self.read("config/agent-a.yaml")
@@ -61,14 +65,21 @@ class StaticLabContracts(unittest.TestCase):
             self.assertIn("endpoint: gateway:4317", agent)
             self.assertIn("sending_queue:", agent)
             self.assertIn("queue_size: 256", agent)
+            self.assertIn("num_consumers: 1", agent)
+            self.assertIn("send_batch_size: 1", agent)
+            self.assertIn("send_batch_max_size: 1", agent)
             self.assertIn("retry_on_failure:", agent)
             self.assertIn("max_elapsed_time: 10s", agent)
             self.assertIn(f"value: {role}", agent)
             self.assertIn("memory_limiter", agent)
+            self.assertIn("readers:", agent)
+            self.assertIn("host: 0.0.0.0", agent)
+            self.assertIn("port: 8888", agent)
         self.assertIn("exporters:\n  debug:", gateway)
         self.assertIn("verbosity: detailed", gateway)
         self.assertIn("value: gateway", gateway)
         self.assertNotIn("prometheusremotewrite", gateway.lower())
+        self.assertIn("readers:", gateway)
 
     def test_services_encode_propagation_and_sampling(self) -> None:
         common = self.read("services/telemetry.py")
@@ -82,6 +93,11 @@ class StaticLabContracts(unittest.TestCase):
         self.assertIn("inject_trace_context(carrier)", service_a)
         self.assertIn("extract_trace_context(carrier)", service_b)
         self.assertIn("joined_context", service_a)
+        self.assertIn("WORKER_ALIVE", service_a)
+        self.assertIn("downstream_parent_span_id", service_a)
+        self.assertIn("shutdown_tracing", service_a)
+        self.assertIn("telemetry_snapshot", common)
+        self.assertIn("CountingSpanExporter", common)
 
     def test_controller_fails_closed_and_uses_exact_ownership(self) -> None:
         controller = self.read("lab_controller.py")
@@ -92,8 +108,13 @@ class StaticLabContracts(unittest.TestCase):
             "stateIdentity",
             "rootIdentity",
             "operation.lock",
+            "reliability-atlas-LES-0027-{CURRENT_UID}.artifacts.d",
             "runtime-container-safety-contract-mismatch",
-            "runtime-non-loopback-port-binding",
+            "resolved-compose-resource-contract-invalid",
+            "collector-validation-container-absence-not-specific",
+            "runtime-published-port-binding",
+            "allow_cleanup_only_legacy_loopback_ports",
+            "container_http_get",
             "runtime-writable-bind-mount",
             "atomic_deletion_claimed=false",
             "backend_ingest_proven=false",
