@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "lesson": "LES-0028",
+  "platform": "linux/amd64",
+  "reviewedAt": "2026-08-10",
+  "policy": "Runtime identity is the repository plus exact linux/amd64 manifest digest. Tags are explanatory labels only.",
+  "images": {
+    "python": {
+      "repository": "docker.io/library/python",
+      "tag": "3.12.13-slim-bookworm",
+      "digest": "sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2"
+    },
+    "prometheus": {
+      "repository": "docker.io/prom/prometheus",
+      "tag": "v3.13.2-distroless",
+      "indexDigest": "sha256:64f71bb84e03c855948418b0fc5dea53e9543d8e3fc9931598f583805507f05e",
+      "digest": "sha256:ce95cfa77eff5aad28bd7a65aff19868cf78d9e17e4c254da7dfe22ade78318b"
+    },
+    "alertmanager": {
+      "repository": "docker.io/prom/alertmanager",
+      "tag": "v0.33.1",
+      "indexDigest": "sha256:9e082985f56f4c8c9f724e18f2288c6708f472e56a5286b8863d080434ea065d",
+      "digest": "sha256:a89f8d4520954079275441eecdb71444328bd90633dd4eddfc33b9ed657f349b"
+    },
+    "grafana": {
+      "repository": "docker.io/grafana/grafana",
+      "tag": "13.1.1-ubuntu",
+      "indexDigest": "sha256:5a9df011defa8384ee01fc9b393854daecc6afb98132c66e2e658b3f564830e8",
+      "digest": "sha256:a8abdb55bde54dc20dff7072463d5f4f6baeddd48dbeba0ab1276db8fd280ae2"
+    }
+  },
+  "sources": [
+    "https://github.com/prometheus/prometheus/releases/tag/v3.13.2",
+    "https://github.com/prometheus/alertmanager/releases/tag/v0.33.1",
+    "https://grafana.com/grafana/download?edition=oss&platform=docker",
+    "https://github.com/grafana/grafana/releases"
+  ],
+  "limitations": [
+    "Registry inspection proves manifest identity, not vulnerability absence, license acceptance, runtime fitness, or future availability.",
+    "The Python digest is reused from the separately reviewed LES-0027 linux/amd64 lock and must be locally available before offline setup.",
+    "No image has executed under LES-0028 in the current worktree because the Docker Linux engine is unavailable."
+  ]
+}

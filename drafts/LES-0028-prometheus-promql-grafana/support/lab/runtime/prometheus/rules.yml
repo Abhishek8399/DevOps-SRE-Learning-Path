@@ -1,0 +1,17 @@
+groups:
+  - name: reliability-atlas-les0028
+    interval: 1s
+    rules:
+      - record: job:training_requests:rate5s
+        expr: sum by (job, operation, outcome) (rate(training_requests_total[5s]))
+      - alert: TrainingFixtureHighErrorRatio
+        expr: |
+          sum(rate(training_requests_total{outcome="failure"}[5s]))
+          /
+          sum(rate(training_requests_total[5s])) > 0.20
+        for: 3s
+        labels:
+          severity: exercise
+        annotations:
+          summary: Synthetic LES-0028 error ratio is high
+          runbook: local-only-no-external-action

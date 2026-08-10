@@ -31,13 +31,13 @@
     },
     {
       "platform": "Prometheus",
-      "version": "current official documentation reviewed 2026-08-04; exact local artifact pending",
+      "version": "3.13.2 distroless linux/amd64 manifest pinned; runtime pending",
       "support": "concept-only",
       "notes": "Native histogram, feature-flag, storage, and command behavior are version-sensitive. No exact Prometheus runtime claim is made until a reviewed immutable artifact executes."
     },
     {
       "platform": "Grafana",
-      "version": "current official documentation reviewed 2026-08-04; exact local artifact pending",
+      "version": "13.1.1 Ubuntu linux/amd64 manifest pinned; runtime pending",
       "support": "concept-only",
       "notes": "Dashboard schema and provisioning behavior evolve. The checked-in dashboard review fixture is a teaching contract, not Grafana acceptance."
     }
@@ -335,12 +335,12 @@
   "referenceIds": ["REF-0167", "REF-0185", "REF-0186", "REF-0187", "REF-0188", "REF-0189", "REF-0190", "REF-0191", "REF-0192", "REF-0193", "REF-0194", "REF-0195", "REF-0196", "REF-0197", "REF-0198"],
   "contentStatus": "substantive-draft",
   "masteryBoundary": "publication-does-not-award-mastery",
-  "lastReviewed": "2026-08-04",
-  "reviewAfter": "2027-02-04",
+  "lastReviewed": "2026-08-10",
+  "reviewAfter": "2027-02-10",
   "limitations": [
     "The current package is quarantined and is not loaded by the website or canonical registry.",
     "The bounded lab is a deterministic teaching model and does not implement the Prometheus query engine, TSDB, scraper, rule engine, Alertmanager, or Grafana renderer.",
-    "Exact immutable Prometheus and Grafana artifacts, configuration validation, runtime lifecycle evidence, and browser review are pending.",
+    "Exact Linux/amd64 image manifests are recorded for Prometheus 3.13.2, Alertmanager 0.33.1, Grafana 13.1.1 and Python 3.12.13, but offline availability, product configuration validation, runtime lifecycle evidence and browser review are pending.",
     "Official current documentation was reviewed, but feature flags, native histogram behavior, configuration schema, dashboard schema, and release support remain version-sensitive.",
     "No project artifact, model answer, passing verifier, reading-progress state, or mentor-generated output changes learner competency or proves mastery."
   ]

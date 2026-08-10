@@ -1,0 +1,12 @@
+global:
+  resolve_timeout: 30s
+
+route:
+  receiver: local-null
+  group_by: [alertname, lesson]
+  group_wait: 1s
+  group_interval: 2s
+  repeat_interval: 1h
+
+receivers:
+  - name: local-null

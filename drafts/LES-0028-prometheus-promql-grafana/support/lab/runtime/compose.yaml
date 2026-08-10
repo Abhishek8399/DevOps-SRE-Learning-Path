@@ -1,0 +1,122 @@
+name: reliability-atlas-les0028
+
+services:
+  fixture:
+    image: docker.io/library/python@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2
+    pull_policy: never
+    command: ["python", "/opt/fixture/metrics_fixture.py"]
+    user: "10001:10001"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+    networks: ["metrics"]
+    expose: ["8080"]
+    volumes:
+      - ./fixture/metrics_fixture.py:/opt/fixture/metrics_fixture.py:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    pids_limit: 64
+    mem_limit: 96m
+    memswap_limit: 96m
+    cpus: 0.50
+
+  prometheus:
+    image: docker.io/prom/prometheus@sha256:ce95cfa77eff5aad28bd7a65aff19868cf78d9e17e4c254da7dfe22ade78318b
+    pull_policy: never
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30m
+      - --storage.tsdb.retention.size=64MB
+      - --web.listen-address=0.0.0.0:9090
+      - --log.level=info
+    user: "65532:65532"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+    depends_on: ["fixture", "alertmanager"]
+    networks: ["metrics"]
+    expose: ["9090"]
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml:ro
+    tmpfs:
+      - /prometheus:rw,noexec,nosuid,nodev,size=96m,mode=0750,uid=65532,gid=65532
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    pids_limit: 96
+    mem_limit: 192m
+    memswap_limit: 192m
+    cpus: 1.00
+
+  alertmanager:
+    image: docker.io/prom/alertmanager@sha256:a89f8d4520954079275441eecdb71444328bd90633dd4eddfc33b9ed657f349b
+    pull_policy: never
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+      - --web.listen-address=0.0.0.0:9093
+      - --log.level=info
+    user: "65534:65534"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+    networks: ["metrics"]
+    expose: ["9093"]
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    tmpfs:
+      - /alertmanager:rw,noexec,nosuid,nodev,size=16m,mode=0750,uid=65534,gid=65534
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    pids_limit: 64
+    mem_limit: 96m
+    memswap_limit: 96m
+    cpus: 0.50
+
+  grafana:
+    image: docker.io/grafana/grafana@sha256:a8abdb55bde54dc20dff7072463d5f4f6baeddd48dbeba0ab1276db8fd280ae2
+    pull_policy: never
+    user: "472:472"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+    depends_on: ["prometheus"]
+    networks: ["metrics"]
+    expose: ["3000"]
+    environment:
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_DATE_FORMATS_DEFAULT_TIMEZONE: UTC
+      GF_LOG_MODE: console
+      GF_PATHS_DATA: /var/lib/grafana
+      GF_PATHS_LOGS: /tmp/grafana-logs
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_SERVER_DOMAIN: grafana
+      GF_SERVER_ENFORCE_DOMAIN: "true"
+      GF_SERVER_HTTP_ADDR: 0.0.0.0
+      GF_SERVER_HTTP_PORT: "3000"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/reliability-atlas-dashboards:ro
+    tmpfs:
+      - /var/lib/grafana:rw,noexec,nosuid,nodev,size=64m,mode=0750,uid=472,gid=472
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    pids_limit: 128
+    mem_limit: 256m
+    memswap_limit: 256m
+    cpus: 1.00
+
+networks:
+  metrics:
+    internal: true
+    attachable: false
+    driver: bridge
