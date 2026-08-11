@@ -63,6 +63,7 @@ Career study artifacts:
 - [Security threat primer](security-threat-primer.md) — identity, authorization, secrets, threat modeling, runtime hardening, and response.
 - [Containers and OCI primer](containers-oci-primer.md) — images, layers, runtimes, namespaces, cgroups, non-root, and safe isolation.
 - [Migration engineering primer](migration-primer.md) — authority, compatibility, coexistence, cutover, reconciliation, rollback, and retirement.
+- [OpenTelemetry primer](opentelemetry-primer.md) — context propagation, signal semantics, collectors, sampling, redaction, and cost.
 
 ## Chapter pattern
 
