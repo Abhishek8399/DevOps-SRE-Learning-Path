@@ -25,6 +25,11 @@ local website (teaching interface)
 
 The repository is durable because it can be cloned, reviewed, and understood by a future mentor or AI. The browser is an interface, not the authoritative record.
 
+Career study artifacts:
+
+- [Target-role requirements matrix](target-role-matrix.md) — shared capabilities across the supplied job profiles.
+- [Interview mastery playbook](interview-playbook.md) — spoken scenarios, proof boundaries, weak-answer warnings, and senior follow-ups.
+
 ## Chapter pattern
 
 Every topic should use the same compact sequence:
