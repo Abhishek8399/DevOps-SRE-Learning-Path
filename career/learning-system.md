@@ -40,6 +40,7 @@ Career study artifacts:
 - [SLO primer](slo-primer.md) — user journeys, indicators, objectives, error budgets, burn, and policy.
 - [Resilience primer](resilience-primer.md) — capacity, deadlines, retries, bulkheads, backpressure, shedding, and degradation.
 - [Incident-command primer](incident-command-primer.md) — coordination, evidence, containment, handoffs, recovery, and learning.
+- [Kubernetes-operations primer](kubernetes-operations-primer.md) — reconciliation, scheduling, probes, services, identity, rollouts, and safe triage.
 
 ## Chapter pattern
 
