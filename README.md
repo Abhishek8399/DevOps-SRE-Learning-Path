@@ -66,6 +66,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Terraform primer](career/terraform-primer.md)
 - [Ansible primer](career/ansible-primer.md)
 - [CI/CD and release primer](career/cicd-release-primer.md)
+- [Progressive delivery primer](career/progressive-delivery-primer.md)
 - [Platform product primer](career/platform-product-primer.md)
 - [Senior ownership primer](career/senior-ownership-primer.md)
 - [GitOps and supply-chain primer](career/gitops-supply-chain-primer.md)
