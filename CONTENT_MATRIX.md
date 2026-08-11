@@ -248,4 +248,6 @@ Expanded job-driven and future-facing coverage is tracked by `PRV-001..005`, `DM
 - The website has a strong routed reading foundation with twenty-six lesson identities and twenty-one structured records across five populated volumes. The deterministic corpus is 21 lessons, 63 assessments, and 172 references; exact integrated test, crawl, asset, contrast, and browser-availability evidence is recorded in `VERIFICATION.md`. Filters, evidence export, complete interactive assessment, clean-install proof, and manual browser accessibility/visual proof remain unfinished.
 - No capstone exists, no curriculum domain is complete, and no learner capability beyond Linux storage recall is currently evidence-rated.
 
+2026-08-11 checkpoint: the quarantined LES-0028 runtime scaffold now has source-locked Prometheus, Alertmanager, Grafana and Python artifacts plus a guarded normal-user lifecycle controller. Static/content/build gates pass, but WSL/Docker startup is denied before Linux execution and the in-app browser connector is unavailable; no runtime, visual, learner-transfer or publication claim is made.
+
 Future updates must change a status only when the row's repository evidence and acceptance evidence are both updated. Do not infer completion from file size, route existence, number of questions, or successful rendering.

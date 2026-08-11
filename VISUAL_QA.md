@@ -48,6 +48,7 @@ For every matrix sample check page-level overflow, clipped text, manuscript cent
 | 2026-08-04 | HTTP, viewport-independent | Root, library, five volumes, search, My Learning, practice | Pass: HTTP 200 and no transform-error marker | Not applicable | None |
 | 2026-08-04 | HTTP, viewport-independent | Structured systems-thinking lesson | Pass: HTTP 200, 1,821,279 bytes, no transform-error marker | Not applicable | None |
 | 2026-08-04 | HTTP, viewport-independent | Legacy storage lesson | Pass: HTTP 200, expected heading, no transform-error marker | Not applicable | None |
+| 2026-08-11 | In-app browser connector | Home and representative lesson routes | Blocked: connector reports `No browser is available`; local HTTP server responds 200 | None | Retry screenshot, keyboard, zoom, theme and mobile matrix when a supported browser is available |
 
 ## Automated evidence
 

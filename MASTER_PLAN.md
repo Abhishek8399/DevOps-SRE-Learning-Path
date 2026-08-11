@@ -1,6 +1,6 @@
 # Master Plan
 
-Last updated: 2026-08-02
+Last updated: 2026-08-11
 
 This is the durable delivery plan for Reliability Atlas and its evidence-driven DevOps, SRE, platform, cloud, data, security, and architecture learning program. It describes project delivery, not learner mastery. Reviewed competency remains in `progress/ledger.md`.
 

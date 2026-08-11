@@ -1,6 +1,6 @@
 # Verification Register
 
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 This register separates observed results from planned checks. A statement in a lesson, plan, or ledger is not silently converted into a test result.
 
@@ -28,6 +28,8 @@ This register separates observed results from planned checks. A statement in a l
 
 | ID | Date | Scope | Check | Result | Evidence and limitation |
 |---|---|---|---|---|---|
+| `VER-LES0028-20260811-01` | 2026-08-11 | Pushed LES-0028 guarded-runtime source checkpoint `3414cde` | Fresh WSL/Docker environment probe | `BLOCKED` | `wsl.exe -d Ubuntu24.04 -- /bin/true` fails before distribution startup with `Wsl/Service/E_ACCESSDENIED`; Docker cannot connect because `dockerDesktopLinuxEngine` is absent. The guarded controller, six Linux unit tests, static verifier and product runtime remain unexecuted on Linux. This is the second consecutive environment observation, not a project-completion or blocked-goal declaration. |
+| `VER-APP-20260811-01` | 2026-08-11 | Learning cockpit | Content validation, schema tests, reader tests, lint, typecheck and production build | `PASS` | Content registry reports 21 live lessons, 63 assessments and 172 references; schema tests pass 38 with one file-link capability skip; reader tests pass 21; lint/typecheck/build exit zero. The in-app browser connector returned `No browser is available`, so screenshot, focus, zoom and interaction evidence remains open. |
 | `VER-LES0028-20260810-01` | 2026-08-10 | Quarantined `LES-0028` runtime source checkpoint | Official version/registry inspection; Python/JSON/YAML parsing; Compose rendering; direct schemas/relationships; ShellCheck | `PASS` for source-only scope | Exact Linux/amd64 manifests are recorded for Prometheus 3.13.2, Alertmanager 0.33.1, Grafana 13.1.1 and Python 3.12.13. Fixture AST, JSON/YAML, Compose rendering, zero-issue lesson/assessment/reference schemas, exact 3/14 links, answer isolation and both existing scripts pass. Docker has no Linux engine and WSL returns `E_ACCESSDENIED`; no product binary, container, PromQL query, rule, dashboard, cleanup or learner result is included. |
 | `VER-LES0027-20260810-03` | 2026-08-10 | Current uncommitted `LES-0027` lock-hardening worktree | Canonical regressions: `validate:content`, registry check, content-schema tests, reader tests, lint, typecheck and production build | `PASS` | Live corpus remains 21 lessons, 63 assessments and 172 references; 38 schema tests pass with one documented Windows capability skip, all 21 reader tests pass, and lint/type/build exit zero. These gates do not include the quarantined draft or prove its runtime. |
 | `VER-LES0027-20260810-02` | 2026-08-10 | Quarantined `LES-0027` lesson, three assessments and twelve new references | Direct schemas, exact relationships, answer isolation, Python AST, ShellCheck and diff check | `PASS` | All three schema issue counts are zero; exact assessment and new-reference relationships and ownership pass; `ASM-0066` has no forbidden answer field; six Python files parse; `lab.sh` and `verify.sh` pass ShellCheck; `git diff --check` passes. Linux-only behavior is outside this result. |
