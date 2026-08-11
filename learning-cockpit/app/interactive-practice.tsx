@@ -24,6 +24,45 @@ const incidentChoices = [
   { label: "Delete the largest file", tone: "unsafe", feedback: "One large file usually frees one inode. You have not proved it is safe to delete." },
 ];
 
+const interviewQuestions = [
+  {
+    role: "Senior Linux / SRE",
+    prompt: "A container reports ENOSPC while the host has 200 GB free. Walk me through your response.",
+    points: [
+      "Clarify impact, exact failing path, scope, and recent changes.",
+      "Map the path to its container mount, writable layer, quota, or volume.",
+      "Compare block, inode, quota, and runtime-limit evidence before changing state.",
+      "Identify the producer and retention policy before proposing bounded cleanup.",
+      "Define system and user-visible recovery checks.",
+    ],
+    rubric: "Strong answers distinguish symptom, immediate cause, and root cause; preserve evidence; mention mount namespaces and inode exhaustion; and verify a real upload after recovery.",
+  },
+  {
+    role: "Platform / Networking",
+    prompt: "Small HTTPS requests succeed, but larger responses fail across one routed boundary. How do you investigate without guessing?",
+    points: [
+      "Separate affected path, direction, payload size, client population, and time window.",
+      "Trace DNS, route selection, MTU, TCP retransmission, TLS, proxy, and response framing.",
+      "Compare packet evidence at both sides of the boundary and test a safe control path.",
+      "Check whether NAT, firewall state, load-balancer limits, or PMTUD filtering explains the threshold.",
+      "Mitigate with a reversible scoped change and verify both success and error rates.",
+    ],
+    rubric: "Strong answers do not call it a generic network issue. They name the next observation, its proof boundary, and the smallest reversible test.",
+  },
+  {
+    role: "SRE / Reliability",
+    prompt: "The availability dashboard is green, but customers in one region report failed checkouts. What do you challenge first?",
+    points: [
+      "Define the user journey and valid population before trusting an aggregate objective.",
+      "Compare black-box regional probes with white-box service and dependency signals.",
+      "Check missing telemetry, sampling, label cardinality, timestamp skew, and aggregation windows.",
+      "Contain the customer impact while preserving a hypothesis table and incident timeline.",
+      "Repair the SLI, alert, ownership, and runbook so the same blind spot cannot recur.",
+    ],
+    rubric: "Strong answers treat a green dashboard as evidence about its query, not proof that the customer journey is healthy.",
+  },
+];
+
 export default function InteractivePractice() {
   const [mode, setMode] = useState<Mode>("incident");
   const [card, setCard] = useState(0);
@@ -31,6 +70,7 @@ export default function InteractivePractice() {
   const [feedback, setFeedback] = useState("");
   const [teachBack, setTeachBack] = useState("");
   const [saved, setSaved] = useState(false);
+  const [interviewCard, setInterviewCard] = useState(0);
 
 
   const saveTeachBack = () => {
@@ -124,19 +164,16 @@ export default function InteractivePractice() {
         )}
         {mode === "interview" && (
           <div className="mode-content interview-mode">
-            <div className="mode-kicker">SENIOR SRE INTERVIEW / TWO MINUTES</div>
-            <h3>A container reports ENOSPC while the host has 200 GB free. Walk me through your response.</h3>
+            <div className="mode-kicker">{interviewQuestions[interviewCard].role} / SCENARIO {interviewCard + 1} OF {interviewQuestions.length}</div>
+            <h3>{interviewQuestions[interviewCard].prompt}</h3>
             <ol>
-              <li>Clarify impact, exact failing path, scope, and recent changes.</li>
-              <li>Map the path to its container mount or writable layer.</li>
-              <li>Compare block, inode, quota, and runtime-limit evidence.</li>
-              <li>Identify the producer before proposing a bounded mitigation.</li>
-              <li>Define system and user-visible recovery checks.</li>
+              {interviewQuestions[interviewCard].points.map((point) => <li key={point}>{point}</li>)}
             </ol>
             <details>
               <summary>Reveal scoring rubric</summary>
-              <p>Strong answers distinguish symptom, immediate cause, and root cause; refuse unapproved deletion; mention container mount namespaces; and verify the real upload after recovery.</p>
+              <p>{interviewQuestions[interviewCard].rubric}</p>
             </details>
+            <button className="next-card" type="button" onClick={() => setInterviewCard((interviewCard + 1) % interviewQuestions.length)}>Next scenario -&gt;</button>
           </div>
         )}
       </div>
