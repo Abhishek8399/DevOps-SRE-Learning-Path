@@ -69,6 +69,7 @@ Career study artifacts:
 - [System design primer](system-design-primer.md) — user journeys, authorities, capacity, failure domains, trade-offs, security, cost, and recovery.
 - [SQL and PostgreSQL primer](sql-postgresql-primer.md) — plans, indexes, transactions, locks, pools, replication, and restore.
 - [SRE toil and on-call primer](sre-toil-oncall-primer.md) — toil, paging, ownership, capacity, error budgets, readiness, and learning.
+- [Testing and debugging primer](testing-debugging-primer.md) — test boundaries, reproduction, dependency integrity, packaging, and diagnosis.
 
 ## Chapter pattern
 
