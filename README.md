@@ -17,6 +17,16 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 
 ## Workflow
 
+On Windows, run `startlearning.cmd` from the repository root. It checks for Node.js and installed dependencies, then binds the reader only to `127.0.0.1:3000`. Stop it with `Ctrl+C`; it does not create a background service.
+
+Manual equivalent:
+
+```powershell
+Set-Location learning-cockpit
+npm ci
+npm run dev -- --hostname 127.0.0.1 --port 3000
+```
+
 1. Launch the local field manual from [learning-cockpit](learning-cockpit/README.md) and follow the current lesson path.
 2. Read the prerequisite vocabulary, system picture, and field-by-field output decoder before running a command.
 3. Run only the bounded Ubuntu or isolated lab stated by the lesson and preserve the requested output.
