@@ -74,6 +74,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Python automation primer](career/python-automation-primer.md)
 - [Go infrastructure primer](career/go-infrastructure-primer.md)
 - [PowerShell operations primer](career/powershell-operations-primer.md)
+- [Network troubleshooting primer](career/network-troubleshooting-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)

@@ -52,6 +52,7 @@ Career study artifacts:
 - [Python automation primer](python-automation-primer.md) — validation, subprocess/API safety, dry runs, idempotency, testing, and verification.
 - [Go infrastructure primer](go-infrastructure-primer.md) — cancellation, bounded concurrency, errors, API clients, and repeatable tooling.
 - [PowerShell operations primer](powershell-operations-primer.md) — object pipelines, error semantics, remoting, WhatIf, and safe evidence.
+- [Network troubleshooting primer](network-troubleshooting-primer.md) — DNS, routing, TCP, TLS, HTTP, proxies, selective failure, and safe evidence.
 
 ## Chapter pattern
 
