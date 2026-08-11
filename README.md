@@ -68,6 +68,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [CI/CD and release primer](career/cicd-release-primer.md)
 - [Progressive delivery primer](career/progressive-delivery-primer.md)
 - [Local lab engineering primer](career/local-lab-engineering-primer.md)
+- [Operational readiness primer](career/operational-readiness-primer.md)
 - [Platform product primer](career/platform-product-primer.md)
 - [Senior ownership primer](career/senior-ownership-primer.md)
 - [GitOps and supply-chain primer](career/gitops-supply-chain-primer.md)
