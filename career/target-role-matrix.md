@@ -61,7 +61,7 @@ Only after those foundations have evidence will specialist tracks deepen:
 - **AWS/EKS and cloud reliability:** [AWS/EKS reliability primer](aws-eks-reliability-primer.md) covers EC2, ASG, VPC, IAM, ECR, EKS/ECS, RDS, S3, Lambda, CloudWatch, cost, backup, and disaster recovery. Local labs model behavior without creating cloud resources.
 - **Private cloud and compute:** [Private-cloud and virtualization primer](private-cloud-virtualization-primer.md) covers KVM, libvirt, OpenStack, bare metal, Ceph, OVS/OVN, high availability, and lifecycle operations through bounded local models.
 - **Data and ML platforms:** [Data-platform operations primer](data-platform-operations-primer.md) and [MLOps/LLMOps reliability primer](mlops-llmops-reliability-primer.md) cover Spark, Flink, Trino/Pinot, Iceberg, Airflow, MLflow, catalogs, notebooks, vector databases, Cassandra, serving, evaluation, and recovery through local models.
-- **Developer platforms and CI compute:** GitLab Runner, Jenkins, GitHub workflows, autoscaling workers, ephemeral environments, golden paths, and platform APIs.
+- **Developer platforms and CI compute:** [CI runner platform primer](ci-runner-platform-primer.md) and the [platform product primer](platform-product-primer.md) cover GitLab Runner, Jenkins, GitHub workflows, autoscaling workers, ephemeral environments, golden paths, and platform APIs.
 - **AI-assisted operations:** safe use of models for classification, correlation, runbook retrieval, and automation with deterministic validation and bounded authority.
 
 ## Portfolio evidence expected
