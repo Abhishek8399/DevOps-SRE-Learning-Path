@@ -38,6 +38,7 @@ Career study artifacts:
 - [Hybrid-connectivity primer](hybrid-connectivity-primer.md) — private links, VPNs, routing, zero trust, MTU, and boundary evidence.
 - [Observability primer](observability-primer.md) — metrics, logs, traces, profiles, cardinality, correlation, alerts, and cost.
 - [SLO primer](slo-primer.md) — user journeys, indicators, objectives, error budgets, burn, and policy.
+- [Resilience primer](resilience-primer.md) — capacity, deadlines, retries, bulkheads, backpressure, shedding, and degradation.
 
 ## Chapter pattern
 
