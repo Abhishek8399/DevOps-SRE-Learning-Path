@@ -54,6 +54,7 @@ Career study artifacts:
 - [CI runner platform primer](ci-runner-platform-primer.md) — runner trust, isolation, queues, caches, autoscaling, artifacts, provenance, and failure response.
 - [Policy as code primer](policy-as-code-primer.md) — decision boundaries, input contracts, staged enforcement, exceptions, audit reasons, and safe rollback.
 - [eBPF and kernel observability primer](ebpf-kernel-observability-primer.md) — hooks, process/cgroup scope, syscall/network/storage evidence, overhead, privacy, and safe rollback.
+- [Identity and secrets operations primer](identity-secrets-operations-primer.md) — workload identity, least privilege, short-lived credentials, rotation, revocation, audit, and break-glass control.
 - [Platform product primer](platform-product-primer.md) — golden paths, contracts, tenancy, platform SLOs, adoption, and developer experience.
 - [Senior ownership primer](senior-ownership-primer.md) — outcomes, authority, trade-offs, communication, capacity, and decision records.
 - [GitOps and supply-chain primer](gitops-supply-chain-primer.md) — desired state, provenance, signatures, policy, reconciliation, and recovery.
