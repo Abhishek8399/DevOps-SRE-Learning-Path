@@ -12,6 +12,7 @@ Nothing here is canonical book content, a live website route, learner evidence, 
 - The model is explicitly not Prometheus, PromQL, Alertmanager, Grafana, a performance benchmark, provider acceptance, or production evidence.
 - A quarantined real-runtime scaffold now pins Prometheus 3.13.2 distroless, Alertmanager 0.33.1, Grafana 13.1.1 Ubuntu, and Python 3.12.13 slim to exact Linux/amd64 manifests. Its four containers have no host ports, use one internal network, read-only roots, dropped capabilities, `no-new-privileges`, bounded tmpfs and finite resource ceilings.
 - The scaffold includes a synthetic metrics endpoint, exact Prometheus scrape/rule configuration, a notification-free Alertmanager route, and provisioned Grafana data source/dashboard. It has passed only Python/JSON parsing and `docker compose config`; no product binary has accepted or executed it.
+- A guarded `runtime.sh`/Python controller and six-operation-lock unit tests now bind source hashes, enforce normal-user/offline boundaries, validate exact image/network/container envelopes, exercise only internal APIs, and remove only recorded IDs. The controller source parses and ShellCheck passes; Linux unit/static/runtime execution remains pending.
 - Canonical registration remains 21 structured lessons, 63 assessments, and 172 references. This draft adds no route and changes no learner evidence.
 
 ## Evidence recorded on 2026-08-04
@@ -30,7 +31,7 @@ Nothing here is canonical book content, a live website route, learner evidence, 
 | Gate | Result | Exact boundary |
 |---|---|---|
 | Official release and registry identity review | `PASS` | Prometheus 3.13.2, Alertmanager 0.33.1, Grafana 13.1.1 and exact Linux/amd64 manifest digests recorded; this is provenance metadata, not a vulnerability or runtime pass |
-| Runtime scaffold parsing | `PASS` | Fixture Python AST, two JSON documents and Docker Compose rendering pass on Windows; product configuration schemas and live behavior remain untested |
+| Runtime scaffold and controller source checks | `PASS` | Three Python files parse, JSON/YAML parse, six controller unit-test definitions are present, ShellCheck passes both runtime scripts, and Docker Compose renders; product configuration schemas and live behavior remain untested |
 | Ubuntu/Docker execution | `BLOCKED` | `Wsl/Service/E_ACCESSDENIED` prevents Ubuntu startup and the Docker Linux-engine named pipe is absent |
 
 The verifier now attempts cleanup after any failure, removes only the two exact adversarial entries it created, refuses an ambiguous state-root symlink, and reports cleanup failure instead of swallowing it. This hardening is statically checked but remains unproved on Ubuntu until WSL starts successfully.
@@ -40,7 +41,7 @@ The verifier now attempts cleanup after any failure, removes only the two exact 
 Promotion remains `NO-GO` until all of the following are complete:
 
 1. Complete license review and prove that every exact pinned artifact is locally available offline.
-2. Finish the safety controller, validate configuration with the pinned binaries, and test the real stack's scrape, PromQL, recording-rule, alert-rule, Alertmanager and Grafana provisioning behavior; keep deterministic-model evidence separate.
+2. Run the guarded controller, validate configuration with the pinned binaries, and test the real stack's scrape, PromQL, recording-rule, alert-rule, Alertmanager and Grafana provisioning behavior; keep deterministic-model evidence separate.
 3. Run the complete normal-user Ubuntu lifecycle, root refusal, interrupted setup, replacement/race, adversarial refusal, cleanup, and final-absence matrix.
 4. Resolve the canonical `REF-0167` backlink, move every record to its canonical owner, regenerate registries, and prove relationship validation.
 5. Run content, schema, reader, lint, typecheck, build, route, asset, 404, privacy, secret, residue, and source-hygiene gates on the exact promoted tree.

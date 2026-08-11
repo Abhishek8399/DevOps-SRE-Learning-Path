@@ -12,9 +12,21 @@ This directory is quarantined source for a future offline Prometheus, Alertmanag
 - Grafana disables update/plugin checks, analytics and sign-up; provisions one local Prometheus data source and one two-panel teaching dashboard.
 - The fixture exposes only synthetic values and three bounded state transitions. It contains no secret, credential, personal record or production endpoint.
 
-## Why there is no run command yet
+## Guarded workflow
 
-The safety controller still needs exact rendered/live resource validation, config validation with the pinned binaries, token-bound ownership state, operation serialization, API assertions, interruption tests and exact cleanup. Running `docker compose up` manually would bypass those gates and is therefore outside the lesson contract.
+Use only the wrapper; do not run `docker compose up` manually:
+
+```text
+bash runtime.sh doctor
+bash runtime.sh prepare --allow-network-downloads   # explicit network step, only when images are absent
+bash runtime.sh validate-configs
+bash runtime.sh setup
+bash runtime.sh status
+bash runtime.sh exercise
+bash runtime.sh cleanup --expect-token <token-from-setup>
+```
+
+The controller performs exact rendered/live resource validation, config validation with the pinned binaries, token-bound ownership state, kernel operation serialization, internal API assertions and ID-bound cleanup. The guarded commands are source-complete, but their Linux execution is still pending the environment gate. Running `docker compose up` manually would bypass those controls and is outside the lesson contract.
 
 The current Windows session has no Docker Linux engine and WSL refuses Ubuntu startup. Static parsing can review this scaffold, but it cannot establish container users, mounts, tmpfs behavior, product configuration acceptance, scrape success, PromQL results, rule state, Alertmanager receipt, Grafana provisioning or cleanup.
 
