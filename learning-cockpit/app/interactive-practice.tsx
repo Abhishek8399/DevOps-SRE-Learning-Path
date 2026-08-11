@@ -190,6 +190,7 @@ export default function InteractivePractice() {
               <p>{interviewQuestions[interviewCard].rubric}</p>
             </details>
             <button className="next-card" type="button" onClick={() => setInterviewCard((interviewCard + 1) % interviewQuestions.length)}>Next scenario -&gt;</button>
+            <button className="load-note" type="button" onClick={() => { setInterviewCard(0); try { window.localStorage.removeItem("devops-sre-interview-scenario"); } catch { /* Local reset remains usable without storage. */ } }}>Reset interview rotation</button>
           </div>
         )}
       </div>
