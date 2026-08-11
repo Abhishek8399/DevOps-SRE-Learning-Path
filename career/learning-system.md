@@ -37,6 +37,7 @@ Career study artifacts:
 - [Data-systems primer](data-systems-primer.md) — transactions, indexes, replicas, queues, idempotency, backups, and recovery.
 - [Hybrid-connectivity primer](hybrid-connectivity-primer.md) — private links, VPNs, routing, zero trust, MTU, and boundary evidence.
 - [Observability primer](observability-primer.md) — metrics, logs, traces, profiles, cardinality, correlation, alerts, and cost.
+- [SLO primer](slo-primer.md) — user journeys, indicators, objectives, error budgets, burn, and policy.
 
 ## Chapter pattern
 
