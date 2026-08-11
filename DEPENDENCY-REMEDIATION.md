@@ -17,13 +17,13 @@ The override was installed in a disposable clean clone. `npm ls` showed the expe
 
 ## Remaining risk
 
-The production-only audit still reports high-severity paths through `next@16.2.6` and `sharp@0.34.5`. npm proposes a Next.js upgrade outside the currently declared range; that is not an acceptable unattended fix.
+The controlled upgrade to `next@16.3.0` and its refreshed lockfile was tested in a disposable clone. The production-only audit now reports zero vulnerabilities. Keep the upgrade procedure below for future changes; a clean audit is point-in-time evidence, not a permanent guarantee.
 
-Until reviewed:
+Until the next dependency review:
 
 - bind the dev server to loopback only;
 - do not expose the cockpit to the internet or untrusted users;
-- do not enable image/server-action features merely to test them;
+- keep the application local-only unless a new exposure/security review is completed;
 - keep the lockfile and rerun the production audit after dependency changes.
 
 ## Safe upgrade procedure
