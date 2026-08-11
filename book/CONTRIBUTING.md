@@ -121,4 +121,10 @@ npm run test:content-schema
 npm run build
 ```
 
+From the repository root, run the teaching-structure coverage audit as well:
+
+```bash
+node tools/audit-lesson-standard.mjs
+```
+
 For shell labs, run `shellcheck` when available, exercise each supported action, and prove cleanup from a fresh shell. Review the Git diff and scan for credentials, signed URLs, employer data, local paths, and secrets before committing.
