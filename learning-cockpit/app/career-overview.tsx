@@ -28,7 +28,10 @@ export default function CareerOverview() {
             understand the path, prove the failure, recover safely, and prevent recurrence.
           </p>
         </div>
-        <Link className="text-link" href="/practice/storage">Practice current lesson -&gt;</Link>
+        <div className="career-panel-actions">
+          <Link className="text-link" href="/practice/storage">Practice current lesson -&gt;</Link>
+          <Link className="text-link" href="/practice/interview">Defend it in an interview -&gt;</Link>
+        </div>
       </div>
 
       <div className="career-map" aria-label="Role-driven learning architecture">

@@ -497,6 +497,7 @@ a { color: inherit; text-decoration: none; }
 .teach-actions button.load-note { background: var(--navy); }
 
 .career-panel { padding: 70px 0 82px; }
+.career-panel-actions { display: flex; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
 .text-link { align-self: flex-end; color: var(--teal); font-size: 12px; font-weight: 850; }
 .career-map { margin-top: 32px; display: grid; grid-template-columns: 1.1fr 110px .9fr; gap: 22px; align-items: center; }
 .map-label { margin: 0 0 11px; color: var(--orange); font-size: 9px; font-weight: 900; letter-spacing: .16em; }
