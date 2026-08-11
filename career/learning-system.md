@@ -60,6 +60,7 @@ Career study artifacts:
 - [Git recovery primer](git-recovery-primer.md) — objects, refs, collaboration, recovery, rollback, and secret response.
 - [Performance engineering primer](performance-engineering-primer.md) — workload contracts, profiling, capacity knees, tuning, canaries, and proof.
 - [Data pipeline reliability primer](data-pipeline-reliability-primer.md) — schemas, lineage, checkpoints, replay, quality, quarantine, and backfill.
+- [Security threat primer](security-threat-primer.md) — identity, authorization, secrets, threat modeling, runtime hardening, and response.
 
 ## Chapter pattern
 
