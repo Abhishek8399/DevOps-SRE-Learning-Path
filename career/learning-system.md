@@ -56,6 +56,7 @@ Career study artifacts:
 - [TLS and PKI primer](tls-pki-primer.md) — certificates, SANs, trust stores, termination, mTLS, rotation, and safe debugging.
 - [API contract primer](api-contract-primer.md) — HTTP semantics, compatibility, idempotency, limits, security, and contract testing.
 - [FinOps primer](finops-primer.md) — cost semantics, allocation, unit economics, commitments, safe optimization, and verification.
+- [Consensus and replication primer](consensus-replication-primer.md) — failure models, quorums, leaders, fencing, consistency, and repair.
 
 ## Chapter pattern
 
