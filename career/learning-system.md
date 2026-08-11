@@ -67,6 +67,7 @@ Career study artifacts:
 - [Queue and stream primer](queue-stream-primer.md) — delivery semantics, partitions, consumer groups, backlog, poison work, and replay.
 - [Cache and Redis primer](cache-redis-primer.md) — freshness, invalidation, stampedes, hot keys, eviction, and rebuilds.
 - [System design primer](system-design-primer.md) — user journeys, authorities, capacity, failure domains, trade-offs, security, cost, and recovery.
+- [SQL and PostgreSQL primer](sql-postgresql-primer.md) — plans, indexes, transactions, locks, pools, replication, and restore.
 
 ## Chapter pattern
 
