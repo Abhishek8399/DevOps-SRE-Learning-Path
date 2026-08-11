@@ -70,6 +70,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Local lab engineering primer](career/local-lab-engineering-primer.md)
 - [Operational readiness primer](career/operational-readiness-primer.md)
 - [AWS and EKS reliability primer](career/aws-eks-reliability-primer.md)
+- [Private cloud and virtualization primer](career/private-cloud-virtualization-primer.md)
 - [Platform product primer](career/platform-product-primer.md)
 - [Senior ownership primer](career/senior-ownership-primer.md)
 - [GitOps and supply-chain primer](career/gitops-supply-chain-primer.md)
