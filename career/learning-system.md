@@ -51,6 +51,7 @@ Career study artifacts:
 - [Backup and recovery primer](backup-recovery-primer.md) — RPO, RTO, layered protection, fencing, restore, and user validation.
 - [Python automation primer](python-automation-primer.md) — validation, subprocess/API safety, dry runs, idempotency, testing, and verification.
 - [Go infrastructure primer](go-infrastructure-primer.md) — cancellation, bounded concurrency, errors, API clients, and repeatable tooling.
+- [PowerShell operations primer](powershell-operations-primer.md) — object pipelines, error semantics, remoting, WhatIf, and safe evidence.
 
 ## Chapter pattern
 
