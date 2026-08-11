@@ -32,6 +32,8 @@ cd learning-cockpit
 npm run dev -- --hostname 127.0.0.1 --port 3001
 ```
 
+`npm run start:dev -- --hostname 127.0.0.1 --port 3000` is an equivalent explicit alias. Do not use `npm start dev`: `npm start` is the production server command and does not mean “start development.”
+
 ## Disconnected check
 
 After dependencies are installed, disconnect the network and run the start command. Reading, navigation, local search, lesson rendering, margin notes, bookmarks, and evidence export should remain local. The first start may still run repository validation; that validation reads files and does not call a cloud service.

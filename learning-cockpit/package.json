@@ -10,6 +10,7 @@
     "prepare:local-runtime": "node ../tools/patch-vinext-windows-static-cache.mjs",
     "predev": "npm run validate:content",
     "dev": "vinext dev",
+    "start:dev": "vinext dev",
     "prebuild": "npm run validate:content",
     "build": "vinext build",
     "start": "npm run prepare:local-runtime && vinext start",
