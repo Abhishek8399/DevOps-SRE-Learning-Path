@@ -29,6 +29,7 @@ Career study artifacts:
 
 - [Target-role requirements matrix](target-role-matrix.md) — shared capabilities across the supplied job profiles.
 - [Interview mastery playbook](interview-playbook.md) — spoken scenarios, proof boundaries, weak-answer warnings, and senior follow-ups.
+- [Incident communication playbook](incident-communication-playbook.md) — incident updates, handoffs, stakeholder translation, and post-incident language.
 
 ## Chapter pattern
 
