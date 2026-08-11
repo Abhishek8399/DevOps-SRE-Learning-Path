@@ -39,6 +39,7 @@ Career study artifacts:
 - [Observability primer](observability-primer.md) — metrics, logs, traces, profiles, cardinality, correlation, alerts, and cost.
 - [SLO primer](slo-primer.md) — user journeys, indicators, objectives, error budgets, burn, and policy.
 - [Resilience primer](resilience-primer.md) — capacity, deadlines, retries, bulkheads, backpressure, shedding, and degradation.
+- [Incident-command primer](incident-command-primer.md) — coordination, evidence, containment, handoffs, recovery, and learning.
 
 ## Chapter pattern
 

@@ -61,6 +61,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Observability primer](career/observability-primer.md)
 - [SLO primer](career/slo-primer.md)
 - [Resilience primer](career/resilience-primer.md)
+- [Incident-command primer](career/incident-command-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
