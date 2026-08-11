@@ -72,6 +72,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Chaos and game-day primer](career/chaos-game-day-primer.md)
 - [Backup and recovery primer](career/backup-recovery-primer.md)
 - [Python automation primer](career/python-automation-primer.md)
+- [Go infrastructure primer](career/go-infrastructure-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
