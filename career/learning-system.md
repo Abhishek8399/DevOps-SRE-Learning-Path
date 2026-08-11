@@ -34,6 +34,7 @@ Career study artifacts:
 - [Cloud architecture primer](cloud-architecture-primer.md) — provider-neutral identity, networking, resilience, recovery, and cost reasoning.
 - [DevSecOps and supply-chain primer](devsecops-supply-chain-primer.md) — provenance, SBOMs, signing, scanning, runtime policy, and response.
 - [Distributed-systems primer](distributed-systems-primer.md) — partial failure, consistency, time, retries, queues, and reconciliation.
+- [Data-systems primer](data-systems-primer.md) — transactions, indexes, replicas, queues, idempotency, backups, and recovery.
 
 ## Chapter pattern
 
