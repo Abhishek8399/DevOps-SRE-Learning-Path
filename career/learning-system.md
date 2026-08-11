@@ -58,6 +58,7 @@ Career study artifacts:
 - [FinOps primer](finops-primer.md) — cost semantics, allocation, unit economics, commitments, safe optimization, and verification.
 - [Consensus and replication primer](consensus-replication-primer.md) — failure models, quorums, leaders, fencing, consistency, and repair.
 - [Git recovery primer](git-recovery-primer.md) — objects, refs, collaboration, recovery, rollback, and secret response.
+- [Performance engineering primer](performance-engineering-primer.md) — workload contracts, profiling, capacity knees, tuning, canaries, and proof.
 
 ## Chapter pattern
 
