@@ -17,7 +17,7 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 
 ## Workflow
 
-On Windows, run `startlearning.cmd` from the repository root. It checks for Node.js and installed dependencies, then binds the reader only to `127.0.0.1:3000`. Stop it with `Ctrl+C`; it does not create a background service.
+On Windows, run `startlearning.cmd`; on Ubuntu/WSL, run `bash startlearning.sh`. Both check for Node.js and installed dependencies, then bind the reader only to `127.0.0.1:3000`. Stop it with `Ctrl+C`; neither creates a background service.
 
 Manual equivalent:
 
