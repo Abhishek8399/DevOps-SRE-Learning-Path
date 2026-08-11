@@ -76,6 +76,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Data-platform operations primer](career/data-platform-operations-primer.md)
 - [CI runner platform primer](career/ci-runner-platform-primer.md)
 - [Policy as code primer](career/policy-as-code-primer.md)
+- [eBPF and kernel observability primer](career/ebpf-kernel-observability-primer.md)
 - [Platform product primer](career/platform-product-primer.md)
 - [Senior ownership primer](career/senior-ownership-primer.md)
 - [GitOps and supply-chain primer](career/gitops-supply-chain-primer.md)
