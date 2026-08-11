@@ -87,6 +87,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Migration engineering primer](career/migration-primer.md)
 - [OpenTelemetry primer](career/opentelemetry-primer.md)
 - [Queue and stream primer](career/queue-stream-primer.md)
+- [Cache and Redis primer](career/cache-redis-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
