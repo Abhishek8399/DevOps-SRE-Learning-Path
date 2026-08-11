@@ -59,6 +59,7 @@ Career study artifacts:
 - [Consensus and replication primer](consensus-replication-primer.md) — failure models, quorums, leaders, fencing, consistency, and repair.
 - [Git recovery primer](git-recovery-primer.md) — objects, refs, collaboration, recovery, rollback, and secret response.
 - [Performance engineering primer](performance-engineering-primer.md) — workload contracts, profiling, capacity knees, tuning, canaries, and proof.
+- [Data pipeline reliability primer](data-pipeline-reliability-primer.md) — schemas, lineage, checkpoints, replay, quality, quarantine, and backfill.
 
 ## Chapter pattern
 
