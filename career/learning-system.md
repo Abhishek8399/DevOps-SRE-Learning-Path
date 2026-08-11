@@ -44,6 +44,7 @@ Career study artifacts:
 - [Terraform primer](terraform-primer.md) — state, plans, modules, identity, drift, recovery, and safe change.
 - [Ansible primer](ansible-primer.md) — inventory, idempotency, variables, handlers, secrets, drift, and rollout safety.
 - [CI/CD and release primer](cicd-release-primer.md) — pipeline boundaries, immutable artifacts, gates, deployment strategies, and rollback.
+- [Platform product primer](platform-product-primer.md) — golden paths, contracts, tenancy, platform SLOs, adoption, and developer experience.
 
 ## Chapter pattern
 
