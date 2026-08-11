@@ -15,6 +15,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 
 - Linux, networking, TLS, APIs, containers, testing, and debugging
 - Observability, SLOs, resilience, incident command, toil, on-call, and operational readiness
+- Kernel-level evidence with [eBPF and kernel observability](ebpf-kernel-observability-primer.md)
 - Terraform, Ansible, CI/CD, GitOps, progressive delivery, policy as code, and supply chain
 - Data systems, queues, caches, SQL/PostgreSQL, pipelines, migrations, and distributed systems
 
