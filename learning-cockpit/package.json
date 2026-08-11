@@ -20,7 +20,8 @@
     "validate:content": "node ../tools/validate-content.mjs && npm run check:content-registry",
     "test:content-schema": "node --test --test-isolation=none ../tools/tests/content-schema.test.mjs",
     "test:reader": "node --experimental-strip-types --test --test-isolation=none tests/reader.test.mjs",
-    "test:evidence-export": "node --experimental-strip-types --test tests/evidence-export.test.mjs"
+    "test:evidence-export": "node --experimental-strip-types --test tests/evidence-export.test.mjs",
+    "audit:runtime": "npm audit --omit=dev --audit-level=moderate"
   },
   "dependencies": {
     "next": "16.2.6",

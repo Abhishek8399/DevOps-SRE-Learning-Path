@@ -33,6 +33,6 @@ Until reviewed:
 3. Run `npm ci`, `npm ls`, content validation, typecheck, lint, reader tests, schema tests, and production build.
 4. Exercise loopback routes and local evidence export; check for changed security boundaries.
 5. Compare bundle/runtime behavior and document rollback before merging.
-6. Rerun `npm audit --omit=dev --audit-level=moderate` and record unresolved advisories explicitly.
+6. Rerun `npm run audit:runtime` (equivalent to `npm audit --omit=dev --audit-level=moderate`) and record unresolved advisories explicitly.
 
 Never use `npm audit fix --force` as a substitute for compatibility review.
