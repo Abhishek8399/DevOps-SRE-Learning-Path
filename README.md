@@ -58,6 +58,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Distributed-systems primer](career/distributed-systems-primer.md)
 - [Data-systems primer](career/data-systems-primer.md)
 - [Hybrid-connectivity primer](career/hybrid-connectivity-primer.md)
+- [Observability primer](career/observability-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
