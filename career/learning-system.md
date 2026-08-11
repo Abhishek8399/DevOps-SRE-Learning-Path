@@ -43,6 +43,7 @@ Career study artifacts:
 - [Kubernetes-operations primer](kubernetes-operations-primer.md) — reconciliation, scheduling, probes, services, identity, rollouts, and safe triage.
 - [Terraform primer](terraform-primer.md) — state, plans, modules, identity, drift, recovery, and safe change.
 - [Ansible primer](ansible-primer.md) — inventory, idempotency, variables, handlers, secrets, drift, and rollout safety.
+- [CI/CD and release primer](cicd-release-primer.md) — pipeline boundaries, immutable artifacts, gates, deployment strategies, and rollback.
 
 ## Chapter pattern
 
