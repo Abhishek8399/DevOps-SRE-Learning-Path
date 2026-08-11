@@ -90,6 +90,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Cache and Redis primer](career/cache-redis-primer.md)
 - [System design primer](career/system-design-primer.md)
 - [SQL and PostgreSQL primer](career/sql-postgresql-primer.md)
+- [SRE toil and on-call primer](career/sre-toil-oncall-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
