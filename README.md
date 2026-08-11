@@ -79,6 +79,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [API contract primer](career/api-contract-primer.md)
 - [FinOps primer](career/finops-primer.md)
 - [Consensus and replication primer](career/consensus-replication-primer.md)
+- [Git recovery primer](career/git-recovery-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)

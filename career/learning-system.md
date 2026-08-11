@@ -57,6 +57,7 @@ Career study artifacts:
 - [API contract primer](api-contract-primer.md) — HTTP semantics, compatibility, idempotency, limits, security, and contract testing.
 - [FinOps primer](finops-primer.md) — cost semantics, allocation, unit economics, commitments, safe optimization, and verification.
 - [Consensus and replication primer](consensus-replication-primer.md) — failure models, quorums, leaders, fencing, consistency, and repair.
+- [Git recovery primer](git-recovery-primer.md) — objects, refs, collaboration, recovery, rollback, and secret response.
 
 ## Chapter pattern
 
