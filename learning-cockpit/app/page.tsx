@@ -201,6 +201,7 @@ export default function Home() {
           <Link href="/book/start">Start Volume 00 <span aria-hidden="true">-&gt;</span></Link>
           <Link href="/book">Browse the library</Link>
           <Link href="/search">Search all current lessons</Link>
+          <Link href="/practice/interview">Practice interview scenarios</Link>
         </div>
       </section>
 
