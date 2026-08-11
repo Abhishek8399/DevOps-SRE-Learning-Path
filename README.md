@@ -84,6 +84,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Data pipeline reliability primer](career/data-pipeline-reliability-primer.md)
 - [Security threat primer](career/security-threat-primer.md)
 - [Containers and OCI primer](career/containers-oci-primer.md)
+- [Migration engineering primer](career/migration-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)

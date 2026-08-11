@@ -62,6 +62,7 @@ Career study artifacts:
 - [Data pipeline reliability primer](data-pipeline-reliability-primer.md) — schemas, lineage, checkpoints, replay, quality, quarantine, and backfill.
 - [Security threat primer](security-threat-primer.md) — identity, authorization, secrets, threat modeling, runtime hardening, and response.
 - [Containers and OCI primer](containers-oci-primer.md) — images, layers, runtimes, namespaces, cgroups, non-root, and safe isolation.
+- [Migration engineering primer](migration-primer.md) — authority, compatibility, coexistence, cutover, reconciliation, rollback, and retirement.
 
 ## Chapter pattern
 
