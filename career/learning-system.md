@@ -32,6 +32,7 @@ Career study artifacts:
 - [Incident communication playbook](incident-communication-playbook.md) — incident updates, handoffs, stakeholder translation, and post-incident language.
 - [Platform engineering primer](platform-engineering-primer.md) — internal platforms, golden paths, reliability, tenancy, and cost trade-offs.
 - [Cloud architecture primer](cloud-architecture-primer.md) — provider-neutral identity, networking, resilience, recovery, and cost reasoning.
+- [DevSecOps and supply-chain primer](devsecops-supply-chain-primer.md) — provenance, SBOMs, signing, scanning, runtime policy, and response.
 
 ## Chapter pattern
 
