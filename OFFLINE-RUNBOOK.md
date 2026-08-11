@@ -56,3 +56,13 @@ Offline means the reader has no runtime dependency on cloud services or external
 ## Reset without deleting the repository
 
 Stop the dev server first. Browser-local notes and bookmarks can be cleared from the browser’s site data; this does not change Git content. To rebuild dependencies, remove only `learning-cockpit/node_modules` and rerun `npm ci` when package sources are available. Never use a broad recursive delete from the repository root.
+
+On Windows, if `npm ci` reports `ENOTEMPTY`, `EBUSY`, or `EPERM` inside `node_modules`, close every Node/dev-server process and editor task using the folder, then run:
+
+```bat
+cd C:\Users\ajha\Repos\DevOps-SRE-Learning-Path\learning-cockpit
+rmdir /s /q node_modules
+npm ci
+```
+
+This removes generated dependencies only. Keep `package.json` and `package-lock.json`; they are the reproducible inputs.
