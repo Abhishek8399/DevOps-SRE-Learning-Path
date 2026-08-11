@@ -53,6 +53,7 @@ Career study artifacts:
 - [Go infrastructure primer](go-infrastructure-primer.md) — cancellation, bounded concurrency, errors, API clients, and repeatable tooling.
 - [PowerShell operations primer](powershell-operations-primer.md) — object pipelines, error semantics, remoting, WhatIf, and safe evidence.
 - [Network troubleshooting primer](network-troubleshooting-primer.md) — DNS, routing, TCP, TLS, HTTP, proxies, selective failure, and safe evidence.
+- [TLS and PKI primer](tls-pki-primer.md) — certificates, SANs, trust stores, termination, mTLS, rotation, and safe debugging.
 
 ## Chapter pattern
 
