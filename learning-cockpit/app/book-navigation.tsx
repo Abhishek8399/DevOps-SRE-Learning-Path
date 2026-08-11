@@ -60,6 +60,7 @@ function NavigationLinks() {
         ))}</div>
       </details>
       <NavigationLink className="practice-link" href="/practice/storage">Open storage practice <span aria-hidden="true">-&gt;</span></NavigationLink>
+      <NavigationLink className="practice-link" href="/practice/interview">Open interview practice <span aria-hidden="true">-&gt;</span></NavigationLink>
       <p className="nav-footnote">Available to read is not the same as verified mastery.</p>
     </nav>
   );
