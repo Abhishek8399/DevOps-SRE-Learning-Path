@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import ShellToggle from "./shell-toggle";
+import { createEvidenceExport, evidenceAsJson, evidenceAsMarkdown } from "./evidence-export";
 
 type PageHeading = Readonly<{ id: string; text: string }>;
 
@@ -67,6 +68,19 @@ export default function ReaderContextRail() {
     }
   };
 
+  const downloadEvidence = (format: "markdown" | "json") => {
+    const evidence = createEvidenceExport(pathname, note);
+    const body = format === "markdown" ? evidenceAsMarkdown(evidence) : evidenceAsJson(evidence);
+    const blob = new Blob([body], { type: format === "markdown" ? "text/markdown" : "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `learning-evidence.${format === "markdown" ? "md" : "json"}`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setAnnouncement(`Sanitized ${format} evidence downloaded locally.`);
+  };
+
   return (
     <>
       <button
@@ -101,6 +115,11 @@ export default function ReaderContextRail() {
             value={note}
           />
           <button onClick={saveNote} type="button">Save note</button>
+          <div className="evidence-export-actions" aria-label="Export local evidence">
+            <button onClick={() => downloadEvidence("markdown")} type="button">Export Markdown</button>
+            <button onClick={() => downloadEvidence("json")} type="button">Export JSON</button>
+          </div>
+          <small>Exports this note only, with common secret-like lines redacted. Nothing is uploaded or written to Git.</small>
         </section>
         <a className="context-learning-link" href="/my-learning">Bookmarks and study history</a>
         <span className="sr-only" aria-live="polite">{announcement}</span>

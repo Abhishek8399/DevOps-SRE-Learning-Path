@@ -19,7 +19,8 @@
     "check:content-registry": "node ../tools/generate-content-registry.mjs --check",
     "validate:content": "node ../tools/validate-content.mjs && npm run check:content-registry",
     "test:content-schema": "node --test --test-isolation=none ../tools/tests/content-schema.test.mjs",
-    "test:reader": "node --experimental-strip-types --test --test-isolation=none tests/reader.test.mjs"
+    "test:reader": "node --experimental-strip-types --test --test-isolation=none tests/reader.test.mjs",
+    "test:evidence-export": "node --experimental-strip-types --test tests/evidence-export.test.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

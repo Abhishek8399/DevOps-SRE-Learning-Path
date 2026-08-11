@@ -228,6 +228,9 @@ body {
 .margin-note textarea { width: 100%; min-height: 120px; padding: 10px; resize: vertical; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--book-surface); color: var(--ink-primary); font: .75rem/1.55 var(--font-interface); }
 .margin-note button { min-height: 40px; margin-top: 7px; padding: 8px 11px; border: 1px solid var(--accent-primary); border-radius: 7px; background: var(--accent-primary); color: var(--ink-inverse); font-size: .68rem; font-weight: 750; cursor: pointer; }
 .context-learning-link { margin-top: 18px; padding: 11px; display: block; border: 1px solid var(--border-subtle); border-radius: 8px; color: var(--accent-primary-strong); font-size: .68rem; font-weight: 750; }
+.evidence-export-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 7px; }
+.evidence-export-actions button { font-size: .62rem; }
+.margin-note small { display: block; margin-top: 7px; color: var(--ink-tertiary); line-height: 1.4; }
 .navigation-backdrop,.context-backdrop { display: none; }
 
 html[data-navigation="closed"] .book-layout { grid-template-columns: 0 minmax(0,1fr) var(--context-width); }
