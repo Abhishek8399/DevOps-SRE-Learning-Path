@@ -34,6 +34,7 @@ import {
 } from "../app/lessons/structured-lesson-parser.ts";
 import { legacySearchDocuments } from "../app/search/legacy-search-catalog.ts";
 import { searchLessons } from "../app/search/search-index.ts";
+import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
@@ -1354,6 +1355,11 @@ test("the live production search set has twenty-six unique lessons and stable go
     const results = searchLessons(documents, query);
     assert.equal(results[0]?.document.id, expectedId, `unexpected top result for ${query}`);
   }
+});
+
+test("navigation search documents keep career and interview destinations discoverable", () => {
+  assert.equal(searchLessons(navigationSearchDocuments, "interview")[0]?.document.href, "/practice/interview");
+  assert.equal(searchLessons(navigationSearchDocuments, "career map")[0]?.document.href, "/career");
 });
 
 test("all twenty-one independent transfers stay answer-isolated from their answered records", () => {
