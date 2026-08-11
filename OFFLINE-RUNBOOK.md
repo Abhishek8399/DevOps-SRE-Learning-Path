@@ -10,9 +10,12 @@ From the repository root:
 cd learning-cockpit
 npm ci
 npm run validate:content
+npm run audit:runtime
 ```
 
 `npm ci` needs the package tarballs available through your normal npm cache or registry. After it succeeds, the application itself does not need internet access.
+
+The audit command may need registry metadata the first time. Its result is point-in-time dependency evidence; it does not send application content or learner notes anywhere.
 
 ## Start locally
 
