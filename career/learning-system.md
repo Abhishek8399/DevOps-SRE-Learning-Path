@@ -47,6 +47,7 @@ Career study artifacts:
 - [Progressive delivery primer](progressive-delivery-primer.md) — canary, blue/green, shadow, feature flags, measurable gates, and state-aware recovery.
 - [Local lab engineering primer](local-lab-engineering-primer.md) — boundaries, reproducibility, fault injection, evidence, recovery, and teardown.
 - [Operational readiness primer](operational-readiness-primer.md) — service ownership, launch gates, SLOs, dependencies, recovery, security, cost, and runbooks.
+- [AWS and EKS reliability primer](aws-eks-reliability-primer.md) — AWS boundaries, IAM, VPC, EKS operations, failure domains, recovery, observability, and cost without cloud spend.
 - [Platform product primer](platform-product-primer.md) — golden paths, contracts, tenancy, platform SLOs, adoption, and developer experience.
 - [Senior ownership primer](senior-ownership-primer.md) — outcomes, authority, trade-offs, communication, capacity, and decision records.
 - [GitOps and supply-chain primer](gitops-supply-chain-primer.md) — desired state, provenance, signatures, policy, reconciliation, and recovery.
