@@ -84,6 +84,7 @@ export default function Home() {
         <nav className={styles.navigation} aria-label="Primary navigation">
           <a href="#journey">Learning journey</a>
           <Link href="/book">Library</Link>
+          <Link href="/career">Career map</Link>
           <Link href="/search">Search</Link>
           <Link href="/my-learning">My learning</Link>
         </nav>
