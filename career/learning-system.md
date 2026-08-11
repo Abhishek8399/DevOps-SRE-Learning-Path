@@ -64,6 +64,7 @@ Career study artifacts:
 - [Containers and OCI primer](containers-oci-primer.md) — images, layers, runtimes, namespaces, cgroups, non-root, and safe isolation.
 - [Migration engineering primer](migration-primer.md) — authority, compatibility, coexistence, cutover, reconciliation, rollback, and retirement.
 - [OpenTelemetry primer](opentelemetry-primer.md) — context propagation, signal semantics, collectors, sampling, redaction, and cost.
+- [Queue and stream primer](queue-stream-primer.md) — delivery semantics, partitions, consumer groups, backlog, poison work, and replay.
 
 ## Chapter pattern
 
