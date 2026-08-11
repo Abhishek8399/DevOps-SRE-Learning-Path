@@ -73,6 +73,7 @@ Career study artifacts:
 - [Cloud operations primer](cloud-operations-primer.md) — provider-neutral primitives, IAM, networking, quotas, failure domains, recovery, and cost.
 - [Service discovery and mesh primer](service-discovery-mesh-primer.md) — registration, health, TTL, identity, mTLS, routing, retries, and convergence.
 - [Kubernetes network/security primer](kubernetes-network-security-primer.md) — Services, Ingress, storage claims, RBAC, Secrets, policy, and tenant isolation.
+- [Kubernetes upgrades/capacity primer](kubernetes-upgrades-capacity-primer.md) — version skew, disruption, autoscaling, quotas, control-plane load, and recovery.
 
 ## Chapter pattern
 
