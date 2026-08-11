@@ -77,6 +77,7 @@ export default function BookLibraryPage() {
           <div className="library-actions">
             <Link href="/book/start">Open Volume 00 <span aria-hidden="true">→</span></Link>
             <Link href="/search">Search the field manual</Link>
+            <Link href="/practice/interview">Practice interview scenarios</Link>
           </div>
           <dl className="library-edition-facts">
             <div><dt>Published</dt><dd>{lessons.length} lessons</dd></div>
