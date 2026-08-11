@@ -41,6 +41,7 @@ Career study artifacts:
 - [Resilience primer](resilience-primer.md) — capacity, deadlines, retries, bulkheads, backpressure, shedding, and degradation.
 - [Incident-command primer](incident-command-primer.md) — coordination, evidence, containment, handoffs, recovery, and learning.
 - [Kubernetes-operations primer](kubernetes-operations-primer.md) — reconciliation, scheduling, probes, services, identity, rollouts, and safe triage.
+- [Terraform primer](terraform-primer.md) — state, plans, modules, identity, drift, recovery, and safe change.
 
 ## Chapter pattern
 
