@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Mode = "incident" | "recall" | "teach" | "interview";
 
@@ -71,6 +71,22 @@ export default function InteractivePractice() {
   const [teachBack, setTeachBack] = useState("");
   const [saved, setSaved] = useState(false);
   const [interviewCard, setInterviewCard] = useState(0);
+
+  useEffect(() => {
+    let frame = 0;
+    try {
+      const stored = Number.parseInt(window.localStorage.getItem("devops-sre-interview-scenario") ?? "", 10);
+      if (Number.isInteger(stored) && stored >= 0 && stored < interviewQuestions.length) {
+        frame = window.requestAnimationFrame(() => setInterviewCard(stored));
+      }
+    } catch { /* Practice remains usable when browser storage is unavailable. */ }
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    try { window.localStorage.setItem("devops-sre-interview-scenario", String(interviewCard)); }
+    catch { /* Persistence is a convenience, not a requirement for practice. */ }
+  }, [interviewCard]);
 
 
   const saveTeachBack = () => {
