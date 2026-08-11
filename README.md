@@ -69,6 +69,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Platform product primer](career/platform-product-primer.md)
 - [Senior ownership primer](career/senior-ownership-primer.md)
 - [GitOps and supply-chain primer](career/gitops-supply-chain-primer.md)
+- [Chaos and game-day primer](career/chaos-game-day-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)

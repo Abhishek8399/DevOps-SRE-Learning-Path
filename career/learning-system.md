@@ -47,6 +47,7 @@ Career study artifacts:
 - [Platform product primer](platform-product-primer.md) — golden paths, contracts, tenancy, platform SLOs, adoption, and developer experience.
 - [Senior ownership primer](senior-ownership-primer.md) — outcomes, authority, trade-offs, communication, capacity, and decision records.
 - [GitOps and supply-chain primer](gitops-supply-chain-primer.md) — desired state, provenance, signatures, policy, reconciliation, and recovery.
+- [Chaos and game-day primer](chaos-game-day-primer.md) — hypotheses, blast radius, independent safety, aborts, recovery, and learning.
 
 ## Chapter pattern
 
