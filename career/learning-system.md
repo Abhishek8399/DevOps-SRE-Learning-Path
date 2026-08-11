@@ -48,6 +48,7 @@ Career study artifacts:
 - [Senior ownership primer](senior-ownership-primer.md) — outcomes, authority, trade-offs, communication, capacity, and decision records.
 - [GitOps and supply-chain primer](gitops-supply-chain-primer.md) — desired state, provenance, signatures, policy, reconciliation, and recovery.
 - [Chaos and game-day primer](chaos-game-day-primer.md) — hypotheses, blast radius, independent safety, aborts, recovery, and learning.
+- [Backup and recovery primer](backup-recovery-primer.md) — RPO, RTO, layered protection, fencing, restore, and user validation.
 
 ## Chapter pattern
 
