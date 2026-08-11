@@ -71,6 +71,7 @@ Career study artifacts:
 - [SRE toil and on-call primer](sre-toil-oncall-primer.md) — toil, paging, ownership, capacity, error budgets, readiness, and learning.
 - [Testing and debugging primer](testing-debugging-primer.md) — test boundaries, reproduction, dependency integrity, packaging, and diagnosis.
 - [Cloud operations primer](cloud-operations-primer.md) — provider-neutral primitives, IAM, networking, quotas, failure domains, recovery, and cost.
+- [Service discovery and mesh primer](service-discovery-mesh-primer.md) — registration, health, TTL, identity, mTLS, routing, retries, and convergence.
 
 ## Chapter pattern
 
