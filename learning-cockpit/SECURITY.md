@@ -11,7 +11,7 @@ Do not enter secrets, credentials, employer data, private URLs, or production in
 Latest registry-backed evidence for the committed lockfile (2026-08-11):
 
 - A fresh-clone `npm ci --ignore-scripts` completed and reported 18 advisories overall (2 low, 16 high).
-- `npm audit --omit=dev --audit-level=moderate` found four high-severity runtime paths involving `next`, `postcss`, `sharp`, and `nanoid`.
+- `npm audit --omit=dev --audit-level=moderate` now reports two high-severity runtime paths involving `next` and `sharp`; patched `postcss` and `nanoid` are constrained by reviewed overrides.
 - Automatic `npm audit fix --force` was not run: npm proposes `next@16.3.0`, outside the declared dependency range, so remediation needs a reviewed compatibility/security change.
 
 The older results below are retained as historical evidence only. Audit results remain point-in-time evidence and must be rerun after dependency changes.
@@ -23,7 +23,7 @@ Validation on 2026-08-01 produced conflicting advisory evidence:
 
 The offline result does not override the registry-backed install result because the local advisory cache may be incomplete or stale. A fresh networked `npm audit` was not run because the program is constrained to local-only operation and sending dependency metadata externally was not authorized.
 
-The 2026-08-01 and 2026-08-02 statements describe prior lockfile states and are preserved for audit history; they are not the current status. Treat the runtime advisories above as an open release/security risk until each dependency path is upgraded or the local-only exposure is explicitly accepted by review.
+The 2026-08-01 and 2026-08-02 statements describe prior lockfile states and are preserved for audit history; they are not the current status. Treat the remaining runtime advisories above as an open release/security risk until each dependency path is upgraded or the local-only exposure is explicitly accepted by review.
 
 ## Safe operation
 
