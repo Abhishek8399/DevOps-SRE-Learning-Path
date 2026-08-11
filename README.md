@@ -94,6 +94,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Testing and debugging primer](career/testing-debugging-primer.md)
 - [Cloud operations primer](career/cloud-operations-primer.md)
 - [Service discovery and mesh primer](career/service-discovery-mesh-primer.md)
+- [Kubernetes network/security primer](career/kubernetes-network-security-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
