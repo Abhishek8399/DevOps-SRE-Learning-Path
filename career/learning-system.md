@@ -52,6 +52,7 @@ Career study artifacts:
 - [MLOps and LLMOps reliability primer](mlops-llmops-reliability-primer.md) — lineage, evaluation, serving, gateways, GPU economics, drift, safety, canaries, and rollback.
 - [Data-platform operations primer](data-platform-operations-primer.md) — ingestion, lakehouse, batch/stream compute, serving, orchestration, freshness, replay, lineage, and cost.
 - [CI runner platform primer](ci-runner-platform-primer.md) — runner trust, isolation, queues, caches, autoscaling, artifacts, provenance, and failure response.
+- [Policy as code primer](policy-as-code-primer.md) — decision boundaries, input contracts, staged enforcement, exceptions, audit reasons, and safe rollback.
 - [Platform product primer](platform-product-primer.md) — golden paths, contracts, tenancy, platform SLOs, adoption, and developer experience.
 - [Senior ownership primer](senior-ownership-primer.md) — outcomes, authority, trade-offs, communication, capacity, and decision records.
 - [GitOps and supply-chain primer](gitops-supply-chain-primer.md) — desired state, provenance, signatures, policy, reconciliation, and recovery.
