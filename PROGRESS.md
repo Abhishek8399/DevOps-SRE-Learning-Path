@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `967551f` - complete quarantined `LES-0092` secured-AI incident-assistant capstone; the current uncommitted checkpoint hardens the earlier `LES-0027` OpenTelemetry lab before publication review |
+| Latest committed substantive checkpoint | `89a4a1f` - role-track navigation and career field-manual index; specialist primers for AWS/EKS, private cloud, data/ML, CI runners, policy as code, and data platforms are now durable and pushed |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
