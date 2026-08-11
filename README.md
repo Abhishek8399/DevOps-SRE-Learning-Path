@@ -76,6 +76,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [PowerShell operations primer](career/powershell-operations-primer.md)
 - [Network troubleshooting primer](career/network-troubleshooting-primer.md)
 - [TLS and PKI primer](career/tls-pki-primer.md)
+- [API contract primer](career/api-contract-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)

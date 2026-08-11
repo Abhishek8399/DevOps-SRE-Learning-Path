@@ -54,6 +54,7 @@ Career study artifacts:
 - [PowerShell operations primer](powershell-operations-primer.md) — object pipelines, error semantics, remoting, WhatIf, and safe evidence.
 - [Network troubleshooting primer](network-troubleshooting-primer.md) — DNS, routing, TCP, TLS, HTTP, proxies, selective failure, and safe evidence.
 - [TLS and PKI primer](tls-pki-primer.md) — certificates, SANs, trust stores, termination, mTLS, rotation, and safe debugging.
+- [API contract primer](api-contract-primer.md) — HTTP semantics, compatibility, idempotency, limits, security, and contract testing.
 
 ## Chapter pattern
 
