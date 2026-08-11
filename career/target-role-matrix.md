@@ -4,6 +4,8 @@ Last updated: 2026-08-01
 
 This matrix is derived from the job descriptions supplied by the learner for Apple, Experian, Mastercard, Cisco, Visa, GitLab, NVIDIA, Arm, and ADP. It is a planning input, not competency evidence and not a claim that the postings remain open or unchanged.
 
+Use the companion [interview playbook](interview-playbook.md) after each relevant lesson. It turns the shared hiring bar below into spoken practice, evidence boundaries, weak-answer warnings, and senior follow-ups.
+
 ## The shared hiring bar
 
 The companies use different product names, but the engineering loop is remarkably consistent:
