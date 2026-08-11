@@ -70,6 +70,7 @@ Career study artifacts:
 - [SQL and PostgreSQL primer](sql-postgresql-primer.md) — plans, indexes, transactions, locks, pools, replication, and restore.
 - [SRE toil and on-call primer](sre-toil-oncall-primer.md) — toil, paging, ownership, capacity, error budgets, readiness, and learning.
 - [Testing and debugging primer](testing-debugging-primer.md) — test boundaries, reproduction, dependency integrity, packaging, and diagnosis.
+- [Cloud operations primer](cloud-operations-primer.md) — provider-neutral primitives, IAM, networking, quotas, failure domains, recovery, and cost.
 
 ## Chapter pattern
 
