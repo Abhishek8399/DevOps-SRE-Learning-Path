@@ -81,6 +81,8 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 - `/book/engineering/<lesson-id>` - one statically generated engineering lesson per URL.
 - `/book/reliability` - Volume 04 reliability-and-operations index.
 - `/book/reliability/<lesson-id>` - one statically generated reliability lesson per URL.
+- `/career` - role map and the complete version-controlled career-primer library.
+- `/career/<primer>` - one statically generated career field-manual chapter sourced from `career/*.md`.
 - `/practice/storage` - practice separated from the explanatory chapter.
 - `/search` - offline search by symptom, command, term, title, or stable lesson ID.
 - `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.

@@ -10,10 +10,10 @@ const foundations = [
 ];
 
 const tracks = [
-  { name: "AWS and EKS", roles: "Experian / Mastercard / GitLab / ADP" },
-  { name: "Private cloud", roles: "Cisco / NVIDIA / Arm" },
-  { name: "Data and ML", roles: "Apple / Visa / NVIDIA" },
-  { name: "CI compute", roles: "GitLab / NVIDIA / Arm" },
+  { name: "AWS and EKS", roles: "Experian / Mastercard / GitLab / ADP", href: "/career/aws-eks-reliability-primer" },
+  { name: "Private cloud", roles: "Cisco / NVIDIA / Arm", href: "/career/private-cloud-virtualization-primer" },
+  { name: "Data and ML", roles: "Apple / Visa / NVIDIA", href: "/career/data-platform-operations-primer" },
+  { name: "CI compute", roles: "GitLab / NVIDIA / Arm", href: "/career/ci-runner-platform-primer" },
 ];
 
 export default function CareerOverview() {
@@ -52,10 +52,10 @@ export default function CareerOverview() {
         <div className="track-column">
           <p className="map-label">SPECIALIST TRACKS</p>
           {tracks.map((track) => (
-            <article className="track-card" key={track.name}>
+            <Link className="track-card" href={track.href} key={track.name}>
               <strong>{track.name}</strong>
               <small>{track.roles}</small>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

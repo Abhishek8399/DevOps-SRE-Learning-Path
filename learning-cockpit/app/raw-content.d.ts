@@ -7,3 +7,7 @@ declare module "virtual:book-lesson/*" {
   const content: string;
   export default content;
 }
+
+declare module "virtual:career-primers" {
+  export const generatedCareerPrimerSources: readonly { slug: string; title: string; source: string }[];
+}
