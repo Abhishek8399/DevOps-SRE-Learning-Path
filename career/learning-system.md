@@ -42,6 +42,7 @@ Career study artifacts:
 - [Incident-command primer](incident-command-primer.md) — coordination, evidence, containment, handoffs, recovery, and learning.
 - [Kubernetes-operations primer](kubernetes-operations-primer.md) — reconciliation, scheduling, probes, services, identity, rollouts, and safe triage.
 - [Terraform primer](terraform-primer.md) — state, plans, modules, identity, drift, recovery, and safe change.
+- [Ansible primer](ansible-primer.md) — inventory, idempotency, variables, handlers, secrets, drift, and rollout safety.
 
 ## Chapter pattern
 

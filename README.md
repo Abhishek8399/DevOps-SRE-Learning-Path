@@ -64,6 +64,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Incident-command primer](career/incident-command-primer.md)
 - [Kubernetes-operations primer](career/kubernetes-operations-primer.md)
 - [Terraform primer](career/terraform-primer.md)
+- [Ansible primer](career/ansible-primer.md)
 - [Book architecture and knowledge map](book/README.md)
 - [Lesson and Ubuntu lab standard](book/LESSON-STANDARD.md)
 - [Field-manual contribution workflow](book/CONTRIBUTING.md)
