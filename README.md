@@ -112,5 +112,6 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Local learning field manual design](career/learning-system.md)
 - [Local visual learning cockpit](learning-cockpit/README.md)
 - [Offline local runbook](OFFLINE-RUNBOOK.md)
+- [Dependency remediation record](DEPENDENCY-REMEDIATION.md)
 - [Phase 1: Foundations](phase-01-foundations/README.md)
 - [Active Lesson 1: Linux storage and ENOSPC triage](phase-01-foundations/lesson-01-linux-storage-enospc/README.md)
