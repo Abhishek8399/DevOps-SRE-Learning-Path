@@ -19,8 +19,13 @@ for (const file of walk(lessonsRoot)) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
   if (!match || !/"schemaVersion"\s*:\s*1/.test(match[1])) continue;
   structured += 1;
-  const body = source.slice(match[0].length).replace(/^```[\s\S]*?^```\s*$/gm, "").toLowerCase();
-  const missing = required.filter((term) => !body.includes(term));
+  const headings = source.slice(match[0].length)
+    .replace(/^```[\s\S]*?^```\s*$/gm, "")
+    .split(/\r?\n/)
+    .filter((line) => /^##\s+/.test(line))
+    .join(" ")
+    .toLowerCase();
+  const missing = required.filter((term) => !headings.includes(term));
   if (missing.length) failures.push(`${path.relative(root, file)}: missing ${missing.join(", ")}`);
 }
 
