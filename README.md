@@ -50,6 +50,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - [Initial assessment](assessments/initial-assessment.md)
 - [Progress ledger](progress/ledger.md)
 - [Target-role requirements matrix](career/target-role-matrix.md)
+- [Career field-manual index](career/README.md)
 - [Interview mastery playbook](career/interview-playbook.md)
 - [Incident communication playbook](career/incident-communication-playbook.md)
 - [Platform engineering primer](career/platform-engineering-primer.md)
