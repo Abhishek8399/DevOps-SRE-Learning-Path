@@ -143,6 +143,7 @@ npm run test:reader
 npm run build
 npm run audit:web-budget
 npm run report:labs
+npm run audit:hygiene
 npm audit  # optional network-backed advisory check
 ```
 
@@ -151,6 +152,8 @@ The lockfile is committed for reproducible installation. `npm audit` sends depen
 Run `npm run build` before `npm run audit:web-budget`. The audit checks only generated client assets and intentionally budgets JavaScript at 512 KiB, CSS at 256 KiB, all client assets at 768 KiB, and 80 files. These are repository guardrails for the local reader, not network-performance or browser-rendering measurements; compressed transfer size, runtime performance, accessibility, and visual QA require their own evidence.
 
 `npm run report:labs` produces a read-only inventory of the twenty canonical local lab contracts. It checks for a README, paired runner/verifier, and a basic Bash or PowerShell safety preamble. It deliberately reports runtime evidence as `not assessed`; run each lab's supported lifecycle separately and record its result in `VERIFICATION.md`.
+
+`npm run audit:hygiene` scans only the contents of tracked text files; it never scans path strings or prints a matched secret. It fails on unresolved merge markers, high-confidence private-key/GitHub/AWS/Slack credential signatures, or the configured removed-name marker. It is a narrow source guardrail rather than complete secret detection, Git-history scanning, credential rotation, or a substitute for human review.
 
 ## Continuous integration
 

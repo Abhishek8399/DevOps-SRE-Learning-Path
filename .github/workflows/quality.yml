@@ -59,6 +59,9 @@ jobs:
       - name: Check canonical local-lab source contracts
         run: npm run report:labs
 
+      - name: Check tracked source hygiene
+        run: npm run audit:hygiene
+
       - name: Refuse unexpected generated changes
         working-directory: .
         run: |
