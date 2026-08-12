@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `00e5ce2` - published database-reliability production-interview primer adds six evidence-first scenarios covering connection pools, slow queries, replica lag, migrations, restore proof and data repair; the current platform-product chapter is in progress |
+| Latest committed substantive checkpoint | `e959b11` - published platform-product production-interview primer adds six evidence-first scenarios covering adoption, self-service contracts, shared-platform outages, guardrail exceptions, outcome measurement and ownership; the current private-cloud/virtualization chapter is in progress |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
