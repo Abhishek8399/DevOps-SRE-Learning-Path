@@ -36,6 +36,7 @@ import { legacySearchDocuments } from "../app/search/legacy-search-catalog.ts";
 import { searchLessons } from "../app/search/search-index.ts";
 import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
 import { createCareerPrimerSearchDocuments } from "../app/search/career-search.ts";
+import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts";
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 
@@ -1387,6 +1388,17 @@ test("career-primer search documents preserve one local route per source and sea
   assert.deepEqual(documents.map((document) => document.kind), ["chapter", "chapter"]);
   assert.equal(searchLessons(documents, "cache miss")[0]?.document.href, "/career/cache-redis-primer");
   assert.equal(searchLessons(documents, "terraform plan")[0]?.document.href, "/career/terraform-primer");
+});
+
+test("career library filter keeps local chapter order and requires every query token", () => {
+  const primers = [
+    { slug: "kubernetes-production-interview-primer", title: "Kubernetes production interview" },
+    { slug: "terraform-primer", title: "Terraform operations primer" },
+    { slug: "network-troubleshooting-primer", title: "Network troubleshooting" },
+  ];
+  assert.deepEqual(filterCareerPrimerLibrary(primers, "production kubernetes").map((item) => item.slug), ["kubernetes-production-interview-primer"]);
+  assert.deepEqual(filterCareerPrimerLibrary(primers, "network terraform"), []);
+  assert.deepEqual(filterCareerPrimerLibrary(primers, "").map((item) => item.slug), primers.map((item) => item.slug));
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {

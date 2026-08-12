@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | pending current checkpoint - networking production-interview primer adds six evidence-first scenarios covering regional path splits, payload thresholds, socket pressure, DNS propagation, TLS rotation and load-balancer health-check blind spots; it is validated locally and awaiting this tracker commit/push |
+| Latest committed substantive checkpoint | pending current checkpoint - Career field-manual shelf now has a lightweight client-side filter preserving local source order, multi-token matching, an accessible result count and no persistence/network traffic; it is validated locally and awaiting this tracker commit/push |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
