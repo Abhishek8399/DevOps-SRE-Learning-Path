@@ -1440,13 +1440,14 @@ test("career library filter keeps local chapter order and requires every query t
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {
-  assert.equal(questionsForRole("SRE").length, 3);
+  assert.equal(questionsForRole("SRE").length, 4);
   assert.equal(questionsForRole("Platform engineer").every((question) => question.role === "Platform engineer"), true);
   assert.equal(questionsForRole("Infrastructure engineer").length, 1);
   assert.equal(questionsForRole("Data platform engineer").length, 1);
   assert.equal(questionsForRole("Engineering lead").length, 2);
   assert.equal(questionsForRole("Systems architect").length, 2);
   assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Networking").map((question) => question.id), ["cloud-networking"]);
+  assert.deepEqual(questionsForRoleAndArea("SRE", "Incident response").map((question) => question.id), ["sre-user-journey", "sre-incident-command"]);
   assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Platform design").map((question) => question.id), ["cloud-networking", "cloud-eks-capacity"]);
   assert.deepEqual(questionsForRoleAndArea("Data platform engineer", "Data systems").map((question) => question.id), ["data-stream-replay"]);
   assert.deepEqual(questionsForRoleAndArea("Systems architect", "System design").map((question) => question.id), ["architect-multi-region-consistency", "architect-platform-boundaries"]);

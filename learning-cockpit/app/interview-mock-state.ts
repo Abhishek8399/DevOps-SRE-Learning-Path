@@ -34,6 +34,15 @@ export const mockQuestions: readonly MockQuestion[] = [
     followUps: ["How can an invalid denominator distort the budget?", "What release guard would you automate next time?"],
   },
   {
+    id: "sre-incident-command",
+    role: "SRE",
+    areas: ["Incident response", "Reliability"],
+    prompt: "A checkout incident spans two regions. Error rate is falling after traffic reduction, but support still reports payment failures and two teams want to make different production changes. Lead the next ten minutes.",
+    evaluator: "Whether you establish a safe decision system: user impact, role clarity, evidence discipline, mutation control, communication and customer-boundary recovery.",
+    strongAnswer: "State the affected customer operation, regions, cohorts, start time, current error and latency evidence, known mitigation, and the next update time. Assign or confirm an incident commander, technical lead, communications owner and scribe; one person may hold more than one role only if the responsibilities stay visible. Freeze uncoordinated production changes long enough to create a single mutation queue. Ask each proposed change for its hypothesis, target, expected outcome, risk, rollback or abort condition, authority and confirming evidence. Prefer the smallest authorized reversible containment that protects checkout without hiding the investigation. Treat falling aggregate error as a clue, not closure: compare affected cohorts, payment outcomes, backlog and retries, then verify a safe end-to-end transaction and watch for delayed failures. Communicate what is known, unknown, changed and next, without inventing an ETA or root cause. Preserve the timeline and decision log for the review.",
+    followUps: ["What should make you keep the incident open after the main alert turns green?", "How do you prevent the incident commander from becoming the only debugger or approver?"],
+  },
+  {
     id: "platform-golden-path",
     role: "Platform engineer",
     areas: ["Platform design", "Delivery security"],
