@@ -30,6 +30,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Observability production interview](observability-production-interview-primer.md)
 - [Disaster recovery production interview](disaster-recovery-production-interview-primer.md)
 - [Incident command production interview](incident-command-production-interview-primer.md)
+- [Configuration management production interview](configuration-management-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
