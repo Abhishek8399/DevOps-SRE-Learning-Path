@@ -48,6 +48,7 @@ export function createCareerPrimerSearchDocuments(
 
     return {
       id: `career-${primer.slug}`,
+      kind: "chapter",
       number: String(index + 1).padStart(2, "0"),
       volumeNumber: "06",
       volumeTitle: "Career field manual",

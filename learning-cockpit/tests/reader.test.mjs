@@ -1382,6 +1382,7 @@ test("career-primer search documents preserve one local route per source and sea
     "/career/terraform-primer",
   ]);
   assert.equal(new Set(documents.map((document) => document.id)).size, 2);
+  assert.deepEqual(documents.map((document) => document.kind), ["chapter", "chapter"]);
   assert.equal(searchLessons(documents, "cache miss")[0]?.document.href, "/career/cache-redis-primer");
   assert.equal(searchLessons(documents, "terraform plan")[0]?.document.href, "/career/terraform-primer");
 });

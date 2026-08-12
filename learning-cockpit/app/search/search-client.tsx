@@ -181,7 +181,7 @@ export default function SearchClient({
               </div>
               <div className={styles.resultBody}>
                 <div className={styles.resultMeta}>
-                  <span>VOLUME {document.volumeNumber} / {document.volumeTitle.toUpperCase()} / LESSON {document.number}</span>
+                  <span>VOLUME {document.volumeNumber} / {document.volumeTitle.toUpperCase()} / {(document.kind ?? "lesson").toUpperCase()} {document.number}</span>
                   <code>{document.id}</code>
                 </div>
                 <h2><Link href={document.href}>{document.title}</Link></h2>
@@ -195,7 +195,7 @@ export default function SearchClient({
                   ))}
                 </dl>
                 <Link className={styles.openLesson} href={document.href}>
-                  Open lesson <span aria-hidden="true">-&gt;</span>
+                  Open {document.kind ?? "lesson"} <span aria-hidden="true">-&gt;</span>
                 </Link>
               </div>
             </article>
