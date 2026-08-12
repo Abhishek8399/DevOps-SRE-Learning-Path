@@ -1,4 +1,4 @@
-export const mockRoles = ["SRE", "Platform engineer", "DevOps engineer", "Cloud engineer", "Infrastructure engineer", "Data platform engineer"] as const;
+export const mockRoles = ["SRE", "Platform engineer", "DevOps engineer", "Cloud engineer", "Infrastructure engineer", "Data platform engineer", "Engineering lead", "Systems architect"] as const;
 export const mockAreas = ["Incident response", "Reliability", "Platform design", "Delivery security", "Networking", "Data systems", "Private cloud", "System design"] as const;
 
 export type MockRole = (typeof mockRoles)[number];
@@ -122,6 +122,42 @@ export const mockQuestions: readonly MockQuestion[] = [
     evaluator: "Whether you distinguish checkpoint state from end-to-end effects and design idempotent recovery with reconciliation.",
     strongAnswer: "Map source identity/offsets, checkpoint completion, operator state, sink commit, notification side effect, idempotency key and retry path. A correctly restored checkpoint does not make an external side effect exactly once. Preserve the affected range, stop unsafe additional delivery if authorized, and use durable idempotency or an inbox/outbox record to identify and reconcile duplicates. Replay only a bounded interval after proving the sink rejects already-applied effects. Verify authoritative business state and user effects, then test crash points and reconciliation as part of the pipeline contract.",
     followUps: ["What does exactly-once mean without naming a source and sink?", "Why is an unbounded replay unsafe when identity is uncertain?"],
+  },
+  {
+    id: "lead-incident-decision",
+    role: "Engineering lead",
+    areas: ["Incident response", "Reliability"],
+    prompt: "Two teams disagree during a customer-impacting incident: one wants an immediate rollback and one wants to keep investigating. How do you lead the next decision without becoming the bottleneck?",
+    evaluator: "Whether you create shared evidence, decision ownership, safe momentum, and clear communication under uncertainty.",
+    strongAnswer: "Name the user impact, decision deadline, current evidence, unknowns, and authority for the next change. Assign a small investigation split: one person validates rollback safety and expected recovery, another tests the competing hypothesis, while an incident commander keeps a single mutation queue and status cadence. Prefer the smallest reversible containment when its benefit outweighs the uncertainty; do not let a debate become a hidden freeze. Record the decision, owner, abort condition, and customer-facing verification. After stabilization, review why the team lacked a pre-agreed rollback or evidence path rather than judging people from hindsight.",
+    followUps: ["What makes a rollback unsafe even when a release was recent?", "How do you communicate uncertainty to non-technical stakeholders without losing trust?"],
+  },
+  {
+    id: "lead-reliability-prioritization",
+    role: "Engineering lead",
+    areas: ["Reliability", "Platform design"],
+    prompt: "Your team has a full reliability backlog, delivery commitments, and recurring on-call pain. How do you choose the next quarter's work?",
+    evaluator: "Whether you use outcomes, evidence, ownership, and capacity honestly instead of ranking work by whoever is loudest.",
+    strongAnswer: "I build a transparent view of user impact, incident recurrence, error-budget risk, toil load, security/compliance obligations, operational ownership, dependency sequencing and effort/uncertainty. I distinguish urgent risk reduction from strategic capability and from unbounded requests. I reserve capacity for interrupts, make trade-offs explicit with product and platform partners, and choose work with a measurable outcome: fewer unsafe pages, shorter recovery time, a protected critical journey, or removal of a recurring manual source. Each initiative gets an owner, baseline, decision date, safety/rollback boundary and evidence of completion. I revisit the plan when assumptions change; a roadmap is a controlled hypothesis, not a promise that ignores production reality.",
+    followUps: ["Why is toil reduction not automatically the highest-priority work?", "What evidence would show that a reliability investment actually worked?"],
+  },
+  {
+    id: "architect-multi-region-consistency",
+    role: "Systems architect",
+    areas: ["System design", "Reliability"],
+    prompt: "Design a multi-region order service that must stay available during a regional outage but must never silently duplicate a customer order. What do you establish before choosing a topology?",
+    evaluator: "Whether you begin with operation-level correctness and failure assumptions rather than naming an architecture pattern.",
+    strongAnswer: "Start with the order contract: identity, duplicate semantics, payment/inventory side effects, acceptable stale reads, RPO/RTO, regional failure assumptions, legal/data boundaries, traffic shape and recovery authority. Separate the customer intention from execution attempts using durable idempotency and reconciliation. Then compare active-passive, single-writer with failover, partitioned ownership, and active-active designs against write latency, conflict resolution, fencing, replication lag, cost and operational complexity. Define how a region is declared unavailable, how the old writer is fenced, how traffic shifts, how ambiguous operations reconcile, and which user journeys prove recovery. I select the smallest design that meets the documented guarantees and test regional loss, delayed replication, duplicate submissions and failback before claiming the guarantee.",
+    followUps: ["Why is a globally replicated database not a complete answer?", "What must failover prove beyond a DNS or load-balancer change?"],
+  },
+  {
+    id: "architect-platform-boundaries",
+    role: "Systems architect",
+    areas: ["System design", "Platform design"],
+    prompt: "Several product teams want a shared internal platform, but their workloads have different security and lifecycle needs. How do you design the boundaries?",
+    evaluator: "Whether you treat platform capabilities, tenancy, policy, lifecycle and adoption as explicit contracts rather than one large cluster or portal.",
+    strongAnswer: "I begin with the supported user journeys and classify what is truly common: identity, build provenance, deployment interface, observability, policy and lifecycle. I map tenant trust, data classification, resource isolation, regulatory boundaries, operational support tier and recovery objectives. The platform exposes versioned self-service contracts with validated inputs, least-privilege defaults, quotas, audit, asynchronous status and an exception path; it does not silently turn every team into an administrator. I choose isolation boundaries appropriate to the risk—namespace, account/project, cluster, network, key or control plane—and make their limits clear. I measure adoption, time to safe capability, support load, reliability and cost, then evolve the product with migration tooling instead of forcing a one-time rewrite.",
+    followUps: ["When is a separate cluster or account justified over a namespace boundary?", "How do you prevent the exception path from becoming the real platform API?"],
   },
 ];
 
