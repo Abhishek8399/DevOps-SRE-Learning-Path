@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `9b1a155` - published disaster-recovery production-interview primer with six evidence-first scenarios; the current lead/architect mock-practice expansion is in progress |
+| Latest committed substantive checkpoint | `748f26a` - expanded local mock practice with Engineering lead and Systems architect scenarios; the current lightweight-reader asset budget is in progress |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
@@ -19,6 +19,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Quarantined work in progress | `LES-0027` through `LES-0092` include all prior technical, reliability, platform, provider, data, security, private-cloud, AI, architecture, leadership, interview and career candidates plus five integrated capstones. Direct/static/model/runtime checks pass only within recorded boundaries. CAP-001 has a local service stack, CAP-002 a local kind platform, CAP-003 a local data path, CAP-004 an explicitly no-infrastructure decision simulator and CAP-005 an explicitly no-model/no-network security-and-evaluation harness. None proves organizational or production use. No representative organizational decision, learner evaluation, inferred level, hiring outcome, provider production runtime or mastery is claimed. None of the sixty-six drafts is in the registry or website |
 
 | 2026-08-12 | `PLAN-INT-005`, local mock-interview role coverage | Added Engineering lead and Systems architect to the local runner, with four differentiated scenarios: incident decision leadership, reliability prioritization, multi-region order correctness and platform-boundary design | The runner now has eight role focuses, eight skill areas and seventeen scenario records. Reader tests assert exact role and system-design selection; typecheck, lint and production build pass. The browser interface, learner performance, hiring readiness and mastery remain unverified. |
+| 2026-08-12 | `PLAN-QUA-007`, client asset budget | Added a dependency-free build artifact audit that enforces JavaScript, CSS, total-asset and file-count limits for the local reader | The audit measures generated files only after a production build; it does not prove browser rendering, network transfer, route-level performance, accessibility, or external dependency freshness. |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
