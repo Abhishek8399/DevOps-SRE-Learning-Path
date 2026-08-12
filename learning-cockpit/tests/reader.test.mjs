@@ -1402,10 +1402,13 @@ test("career library filter keeps local chapter order and requires every query t
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {
-  assert.equal(questionsForRole("SRE").length, 2);
+  assert.equal(questionsForRole("SRE").length, 3);
   assert.equal(questionsForRole("Platform engineer").every((question) => question.role === "Platform engineer"), true);
+  assert.equal(questionsForRole("Infrastructure engineer").length, 1);
+  assert.equal(questionsForRole("Data platform engineer").length, 1);
   assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Networking").map((question) => question.id), ["cloud-networking"]);
-  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Platform design").map((question) => question.id), ["cloud-networking"]);
+  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Platform design").map((question) => question.id), ["cloud-networking", "cloud-eks-capacity"]);
+  assert.deepEqual(questionsForRoleAndArea("Data platform engineer", "Data systems").map((question) => question.id), ["data-stream-replay"]);
   assert.equal(formatMockDuration(65), "01:05");
   const record = mockEvidenceMarkdown({
     role: "SRE",
