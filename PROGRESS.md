@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `fa9ce30` - published Linux production-interview primer adds six mechanism-first scenarios with strong/weak answer guidance, senior follow-ups and command proof limits; it is available through the local Career reader and offline search |
+| Latest committed substantive checkpoint | pending current checkpoint - cloud production-interview primer adds six provider-neutral scenarios covering private connectivity, scaling, IAM, regional recovery, restore testing and incident cost control; it is validated locally and awaiting this tracker commit/push |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
