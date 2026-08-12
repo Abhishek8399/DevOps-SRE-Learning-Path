@@ -1,6 +1,6 @@
 # Project Progress
 
-Last updated: 2026-08-11
+Last updated: 2026-08-12
 
 This file reports delivery of the repository and website. It does not award competency. Learner evidence and levels remain in `progress/ledger.md`.
 
@@ -23,6 +23,7 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-08-12 | `PLAN-LAB-900`, canonical local lab matrix | Added a read-only inventory for all twenty canonical book labs, checking README, paired runner/verifier and safety preamble without claiming execution | The first matrix run found missing `umask 077` preambles in LES-0025 and LES-0026; both Bash wrappers now use `set -Eeuo pipefail` and `umask 077`. The corrected matrix passes, while all runtime evidence remains explicitly unassessed. |
 | 2026-08-12 | `LES-0020`, Go infrastructure tooling local lifecycle | Re-ran the bounded Windows Go verifier under its declared offline/current-user temporary-state contract | Go 1.22.0 windows/amd64 passed formatting, test, vet, build metadata, guided/independent paths, idempotency, refusal cases and cleanup in 122.6 seconds. This does not prove Ubuntu behavior, race-detector support, live HTTP, learner execution, production operation or mastery. |
 | 2026-08-12 | `PLAN-QUA-002`, current content-schema safety suite | Re-ran the full fail-closed content-schema suite against the current canonical corpus | 38 checks passed with zero failures. One Windows `EPERM` file-symlink-capability case was skipped; browser, runtime-lab, source-freshness, review and learner evidence remain separate. |
+| 2026-08-12 | `INT-001`, incident-command production interview | Added a six-scenario, evidence-first interview chapter that complements the incident-command primer with declaration, rollback, mutation coordination, user-boundary recovery, uncertainty communication and post-incident review decisions | Content validation reports 409 Markdown files and 196 local links; reader tests pass 26/26; typecheck, lint and production build pass. The chapter is version-controlled, locally searchable and reachable through the career reader. It is teaching material, not incident-runtime, reviewed-answer, hiring, competency or mastery evidence. |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
