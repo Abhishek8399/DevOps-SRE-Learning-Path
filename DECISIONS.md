@@ -815,3 +815,10 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 **Rationale:** Fluent text can be unsupported, injected, stale, cross-tenant or unsafe even when it names a real runbook. Prompt filtering alone cannot supply least privilege or complete mediation. Binding every material claim to evidence and every effect to independently evaluated identity, policy, approval and reconciliation makes failure visible and limits the harm of a compromised or mistaken generator.
 
 **Consequences:** LES-0092 defaults to an offline deterministic untrusted-generator fixture so security and evaluation cases are reproducible without a model download, credential or network service. Its 17,007-word manuscript, 22 tests, 16 scenario decisions, four grounded claims, two abstentions, policy/approval boundary, audit chain, dossier, exact cleanup and three assessments prove only documented and implemented reasoning contracts over synthetic data. They do not prove real-model quality, population performance, external integration, production safety, incident competence or mastery. An optional local-model adapter must use the same contracts and be evaluated separately. Formal AI/security/SRE/privacy review, executed reviewer-owned transfer and publication remain separate gates.
+# 2026-08-12 — Loopback launcher port override
+
+`startlearning.cmd` and `startlearning.sh` accept an optional `RELIABILITY_ATLAS_PORT` only when it is numeric and within 1 through 65535. The default remains `3000`, and the host binding remains fixed to `127.0.0.1`.
+
+Reason: a local book reader must not require stopping another user-owned loopback service when its default port is already occupied. The override preserves local-only exposure, rejects malformed input before launch, and makes isolated reproducibility checks possible on a different loopback port.
+
+Boundary: this does not auto-select ports, expose non-loopback interfaces, create a background service, or replace explicit port-occupancy/error handling.

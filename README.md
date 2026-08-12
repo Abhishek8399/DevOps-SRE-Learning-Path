@@ -17,7 +17,7 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 
 ## Workflow
 
-On Windows, run `startlearning.cmd`; on Ubuntu/WSL, run `bash startlearning.sh`. Both check for Node.js and installed dependencies, then bind the reader only to `127.0.0.1:3000`. Stop it with `Ctrl+C`; neither creates a background service.
+On Windows, run `startlearning.cmd`; on Ubuntu/WSL, run `bash startlearning.sh`. Both check for Node.js and installed dependencies, then bind the reader only to `127.0.0.1:3000`. Stop it with `Ctrl+C`; neither creates a background service. If port 3000 is already in use, set `RELIABILITY_ATLAS_PORT` to an unused numeric port from 1 to 65535 before launching; the reader still binds only to loopback.
 
 Manual equivalent:
 
