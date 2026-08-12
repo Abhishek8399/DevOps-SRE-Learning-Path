@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { formatMockDuration, mockEvidenceMarkdown, mockRoles, questionsForRole, type MockRole } from "./interview-mock-state";
+import { formatMockDuration, mockAreas, mockEvidenceMarkdown, mockRoles, questionsForRoleAndArea, type MockArea, type MockRole } from "./interview-mock-state";
 
 function downloadText(filename: string, value: string): void {
   const blob = new Blob([value], { type: "text/markdown;charset=utf-8" });
@@ -15,7 +15,8 @@ function downloadText(filename: string, value: string): void {
 
 export default function InterviewMockRunner() {
   const [role, setRole] = useState<MockRole>("SRE");
-  const questions = useMemo(() => questionsForRole(role), [role]);
+  const [area, setArea] = useState<MockArea>("Incident response");
+  const questions = useMemo(() => questionsForRoleAndArea(role, area), [role, area]);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState("");
   const [confidence, setConfidence] = useState(3);
@@ -40,6 +41,16 @@ export default function InterviewMockRunner() {
     setAnswerVisible(false);
   };
 
+  const changeArea = (nextArea: MockArea) => {
+    setArea(nextArea);
+    setQuestionIndex(0);
+    setResponse("");
+    setConfidence(3);
+    setElapsedSeconds(0);
+    setRunning(false);
+    setAnswerVisible(false);
+  };
+
   const nextQuestion = () => {
     setQuestionIndex((index) => (index + 1) % questions.length);
     setResponse("");
@@ -51,7 +62,7 @@ export default function InterviewMockRunner() {
 
   const exportRecord = () => downloadText(
     `reliability-atlas-mock-${question.id}.md`,
-    mockEvidenceMarkdown({ role, question, response, confidence, elapsedSeconds, exportedAt: new Date().toISOString() }),
+    mockEvidenceMarkdown({ role, area, question, response, confidence, elapsedSeconds, exportedAt: new Date().toISOString() }),
   );
 
   return <section className="mock-interview" aria-labelledby="mock-interview-title">
@@ -60,8 +71,9 @@ export default function InterviewMockRunner() {
       <output aria-label="Elapsed response time" className="mock-timer">{formatMockDuration(elapsedSeconds)}</output>
     </div>
     <fieldset className="mock-role-picker"><legend>Choose a role focus</legend><div>{mockRoles.map((value) => <button aria-pressed={role === value} key={value} onClick={() => changeRole(value)} type="button">{value}</button>)}</div></fieldset>
+    <fieldset className="mock-role-picker"><legend>Choose the skill area to exercise</legend><div>{mockAreas.map((value) => <button aria-pressed={area === value} key={value} onClick={() => changeArea(value)} type="button">{value}</button>)}</div></fieldset>
     <article className="mock-question">
-      <p className="mode-kicker">{role.toUpperCase()} / QUESTION {questionIndex + 1} OF {questions.length}</p>
+      <p className="mode-kicker">{role.toUpperCase()} / {area.toUpperCase()} / QUESTION {questionIndex + 1} OF {questions.length}</p>
       <h3>{question.prompt}</h3>
       <p><strong>What the interviewer is evaluating:</strong> {question.evaluator}</p>
       <label htmlFor="mock-response">Your spoken-answer outline or written response</label>

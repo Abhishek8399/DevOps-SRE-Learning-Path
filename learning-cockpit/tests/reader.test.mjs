@@ -36,7 +36,7 @@ import { legacySearchDocuments } from "../app/search/legacy-search-catalog.ts";
 import { searchLessons } from "../app/search/search-index.ts";
 import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
 import { createCareerPrimerSearchDocuments } from "../app/search/career-search.ts";
-import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole } from "../app/interview-mock-state.ts";
+import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
@@ -1392,9 +1392,12 @@ test("career-primer search documents preserve one local route per source and sea
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {
   assert.equal(questionsForRole("SRE").length, 2);
   assert.equal(questionsForRole("Platform engineer").every((question) => question.role === "Platform engineer"), true);
+  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Networking").map((question) => question.id), ["cloud-networking"]);
+  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Platform design").map((question) => question.id), ["cloud-networking"]);
   assert.equal(formatMockDuration(65), "01:05");
   const record = mockEvidenceMarkdown({
     role: "SRE",
+    area: "Incident response",
     question: mockQuestions[0],
     response: "I would start with the customer journey.\r\nThen I would compare regional evidence.",
     confidence: 4,
@@ -1402,6 +1405,7 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
     exportedAt: "2026-08-12T00:00:00.000Z",
   });
   assert.match(record, /Question ID: sre-user-journey/);
+  assert.match(record, /Skill focus: Incident response/);
   assert.match(record, /Elapsed time: 02:05/);
   assert.match(record, /private practice record; it is not a score, verified skill, hiring signal, or mastery evidence/);
   assert.equal(record.includes("\r"), false);
