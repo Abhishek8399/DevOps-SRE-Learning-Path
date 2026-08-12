@@ -28,6 +28,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [AI-assisted operations production interview](ai-assisted-operations-production-interview-primer.md)
 - [FinOps and reliability production interview](finops-reliability-production-interview-primer.md)
 - [Observability production interview](observability-production-interview-primer.md)
+- [Disaster recovery production interview](disaster-recovery-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
