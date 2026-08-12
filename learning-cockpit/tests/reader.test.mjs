@@ -1362,6 +1362,7 @@ test("the live production search set has twenty-six unique lessons and stable go
 test("navigation search documents keep career and interview destinations discoverable", () => {
   assert.equal(searchLessons(navigationSearchDocuments, "interview")[0]?.document.href, "/practice/interview");
   assert.equal(searchLessons(navigationSearchDocuments, "career map")[0]?.document.href, "/career");
+  assert.equal(searchLessons(navigationSearchDocuments, "timed mock")[0]?.document.id, "timed-mock-interview");
 });
 
 test("career-primer search documents preserve one local route per source and search headings", () => {

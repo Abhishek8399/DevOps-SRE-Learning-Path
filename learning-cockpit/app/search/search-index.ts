@@ -17,7 +17,7 @@ type SearchField = Readonly<{
 
 export type SearchDocument = Readonly<{
   id: string;
-  kind?: "lesson" | "chapter";
+  kind?: "lesson" | "chapter" | "page";
   number: string;
   volumeNumber: string;
   volumeTitle: string;
