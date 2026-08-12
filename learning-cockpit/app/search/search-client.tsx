@@ -66,8 +66,8 @@ export default function SearchClient({
   const resultMessage = !hasQuery
     ? "Search is ready."
     : results.length === 0
-      ? `No lessons found for ${query.trim()}.`
-      : `${results.length} ${results.length === 1 ? "lesson" : "lessons"} found.`;
+      ? `No manual entries found for ${query.trim()}.`
+      : `${results.length} ${results.length === 1 ? "manual entry" : "manual entries"} found.`;
 
   return (
     <main className={styles.page} id="main-content">
@@ -83,7 +83,7 @@ export default function SearchClient({
         <p>OFFLINE FIELD-MANUAL SEARCH</p>
         <h1>Find the signal before choosing the command.</h1>
         <span>
-          Search all {documents.length} locally available lessons by incident symptom,
+          Search all {documents.length} locally available manual entries by incident symptom,
           Linux command, technical term, route ID, or curriculum ID. Nothing is uploaded.
         </span>
       </header>
@@ -168,7 +168,7 @@ export default function SearchClient({
           <p>
             Try one boundary at a time: the exact error, a command name, or one
             mechanism such as inode, route, OOM, PID, ACL, TLS, or journal. Only the
-            {documents.length} locally published lessons are searchable today.
+            {documents.length} locally published manual entries are searchable today.
           </p>
           <Link href="/book">Browse the knowledge library</Link>
         </section>

@@ -35,6 +35,7 @@ import {
 import { legacySearchDocuments } from "../app/search/legacy-search-catalog.ts";
 import { searchLessons } from "../app/search/search-index.ts";
 import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
+import { createCareerPrimerSearchDocuments } from "../app/search/career-search.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
@@ -1360,6 +1361,29 @@ test("the live production search set has twenty-six unique lessons and stable go
 test("navigation search documents keep career and interview destinations discoverable", () => {
   assert.equal(searchLessons(navigationSearchDocuments, "interview")[0]?.document.href, "/practice/interview");
   assert.equal(searchLessons(navigationSearchDocuments, "career map")[0]?.document.href, "/career");
+});
+
+test("career-primer search documents preserve one local route per source and search headings", () => {
+  const documents = createCareerPrimerSearchDocuments([
+    {
+      slug: "cache-redis-primer",
+      title: "Cache and Redis operations primer",
+      source: "# Cache and Redis operations primer\n\nUse this chapter for local diagnosis.\n\n## Cache miss storms\n\nInspect `redis-cli INFO stats` before changing eviction policy.",
+    },
+    {
+      slug: "terraform-primer",
+      title: "Terraform operations primer",
+      source: "# Terraform operations primer\n\nUnderstand desired state and ownership.\n\n## Safe plan review\n\nRun `terraform plan` before an apply.",
+    },
+  ]);
+
+  assert.deepEqual(documents.map((document) => document.href), [
+    "/career/cache-redis-primer",
+    "/career/terraform-primer",
+  ]);
+  assert.equal(new Set(documents.map((document) => document.id)).size, 2);
+  assert.equal(searchLessons(documents, "cache miss")[0]?.document.href, "/career/cache-redis-primer");
+  assert.equal(searchLessons(documents, "terraform plan")[0]?.document.href, "/career/terraform-primer");
 });
 
 test("all twenty-one independent transfers stay answer-isolated from their answered records", () => {
