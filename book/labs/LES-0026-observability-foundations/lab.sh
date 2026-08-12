@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+umask 077
 
 if (( EUID == 0 )); then
   printf '%s\n' 'root-is-refused-run-as-a-normal-user' >&2

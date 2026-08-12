@@ -142,12 +142,15 @@ npm run test:content-schema
 npm run test:reader
 npm run build
 npm run audit:web-budget
+npm run report:labs
 npm audit  # optional network-backed advisory check
 ```
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
 
 Run `npm run build` before `npm run audit:web-budget`. The audit checks only generated client assets and intentionally budgets JavaScript at 512 KiB, CSS at 256 KiB, all client assets at 768 KiB, and 80 files. These are repository guardrails for the local reader, not network-performance or browser-rendering measurements; compressed transfer size, runtime performance, accessibility, and visual QA require their own evidence.
+
+`npm run report:labs` produces a read-only inventory of the twenty canonical local lab contracts. It checks for a README, paired runner/verifier, and a basic Bash or PowerShell safety preamble. It deliberately reports runtime evidence as `not assessed`; run each lab's supported lifecycle separately and record its result in `VERIFICATION.md`.
 
 The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, canonical curriculum homes, and live cross-record relationships without adding another package dependency. Canonical feature `f2e3e23` has twenty-one lessons, 63 assessments—forty-two complete-answer records and twenty-one answer-isolated independent transfers—and 172 references. Exact current counters and gate results are recorded in `VERIFICATION.md`; the Windows schema suite retains one documented `EPERM` symlink-policy skip that must run on Linux or symlink-capable Windows before a public release. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, canonical volume ownership, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus.
 

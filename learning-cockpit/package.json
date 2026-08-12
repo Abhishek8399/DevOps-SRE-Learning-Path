@@ -23,6 +23,7 @@
     "test:reader": "node --experimental-strip-types --test --test-isolation=none tests/reader.test.mjs",
     "test:evidence-export": "node --experimental-strip-types --test tests/evidence-export.test.mjs",
     "audit:web-budget": "node ../tools/audit-web-budget.mjs",
+    "report:labs": "node ../tools/report-lab-matrix.mjs",
     "audit:runtime": "npm audit --omit=dev --audit-level=moderate"
   },
   "dependencies": {
