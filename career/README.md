@@ -31,6 +31,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Disaster recovery production interview](disaster-recovery-production-interview-primer.md)
 - [Incident command production interview](incident-command-production-interview-primer.md)
 - [Configuration management production interview](configuration-management-production-interview-primer.md)
+- [Automation code production interview](automation-code-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
