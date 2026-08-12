@@ -18,6 +18,7 @@ import {
   type LearningLibraryState,
   type ReadingMarker,
 } from "./learning-state";
+import { createLearningSnapshot, learningSnapshotAsJson, learningSnapshotAsMarkdown } from "./learning-export";
 import styles from "./my-learning.module.css";
 
 export type LearningLibraryLesson = {
@@ -46,6 +47,16 @@ function formatOpenedAt(value: string | null): string | null {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(timestamp);
+}
+
+function downloadSnapshot(filename: string, value: string, type: string): void {
+  const blob = new Blob([value], { type });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function LearningLibrary({ lessons }: { lessons: LearningLibraryLesson[] }) {
@@ -158,6 +169,17 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
     closeClearConfirmation();
   };
 
+  const exportSnapshot = (format: "markdown" | "json") => {
+    const snapshot = createLearningSnapshot(stateRef.current);
+    const value = format === "markdown" ? learningSnapshotAsMarkdown(snapshot) : learningSnapshotAsJson(snapshot);
+    downloadSnapshot(
+      `reliability-atlas-reading-snapshot.${format === "markdown" ? "md" : "json"}`,
+      value,
+      format === "markdown" ? "text/markdown;charset=utf-8" : "application/json;charset=utf-8",
+    );
+    setAnnouncement(`Local reading snapshot downloaded as ${format}. It is not mastery evidence.`);
+  };
+
   const recentLessons = learningState.recentLessonIds
     .map((lessonId) => lessonById.get(lessonId))
     .filter((lesson): lesson is LearningLibraryLesson => lesson !== undefined);
@@ -239,6 +261,11 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
             <div><dt>Finished reading</dt><dd>{counts.finished}</dd></div>
           </dl>
           <p>These totals organise reading only. They never calculate skill, competency, readiness, or mastery.</p>
+          <div className={styles.snapshotActions} aria-label="Export local reading snapshot">
+            <button type="button" onClick={() => exportSnapshot("markdown")}>Export Markdown</button>
+            <button type="button" onClick={() => exportSnapshot("json")}>Export JSON</button>
+          </div>
+          <small className={styles.snapshotBoundary}>Exports fixed lesson IDs and markers only. It never uploads, writes Git, or includes notes/responses.</small>
         </div>
       </div>
 

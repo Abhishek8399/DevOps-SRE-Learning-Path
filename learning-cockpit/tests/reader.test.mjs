@@ -16,6 +16,11 @@ import {
   toggleLessonBookmark,
 } from "../app/my-learning/learning-state.ts";
 import {
+  createLearningSnapshot,
+  learningSnapshotAsJson,
+  learningSnapshotAsMarkdown,
+} from "../app/my-learning/learning-export.ts";
+import {
   adjacentReaderEntriesInCatalog,
   createReaderCatalog,
   findReaderEntryByCanonicalIdInCatalog,
@@ -670,6 +675,22 @@ test("recent history is ordered, duplicate-free, and capped to the trusted catal
   assert.equal(state.recentLessonIds.length, LEARNING_LIBRARY_LESSON_IDS.length);
   assert.equal(state.recentLessonIds[0], "storage");
   assert.equal(new Set(state.recentLessonIds).size, state.recentLessonIds.length);
+});
+
+test("local reading snapshot exports only trusted convenience markers and states its non-mastery boundary", () => {
+  let state = createEmptyLearningState();
+  state = toggleLessonBookmark(state, LEARNING_LIBRARY_LESSON_IDS[0]);
+  state = setLessonMarker(state, LEARNING_LIBRARY_LESSON_IDS[1], "finished-reading");
+  state = recordLessonOpened(state, LEARNING_LIBRARY_LESSON_IDS[1], "2026-08-12T10:00:00.000Z");
+  const snapshot = createLearningSnapshot(state, "2026-08-12T12:00:00.000Z");
+  assert.deepEqual(snapshot.lessons, [
+    { lessonId: LEARNING_LIBRARY_LESSON_IDS[0], bookmarked: true, marker: "not-started" },
+    { lessonId: LEARNING_LIBRARY_LESSON_IDS[1], bookmarked: false, marker: "finished-reading" },
+  ]);
+  assert.deepEqual(snapshot.recentLessonIds, [LEARNING_LIBRARY_LESSON_IDS[1]]);
+  assert.match(learningSnapshotAsMarkdown(snapshot), /not a score, reviewed evidence, competency record, hiring signal, or mastery claim/);
+  assert.match(learningSnapshotAsMarkdown(snapshot), /excludes notes, responses, commands, credentials, tokens, employer data, and repository writes/);
+  assert.deepEqual(JSON.parse(learningSnapshotAsJson(snapshot)), snapshot);
 });
 
 const searchFixture = [
