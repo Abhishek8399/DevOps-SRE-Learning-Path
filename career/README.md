@@ -25,6 +25,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Private cloud and virtualization](private-cloud-virtualization-primer.md)
 - [Data-platform operations](data-platform-operations-primer.md)
 - [MLOps and LLMOps reliability](mlops-llmops-reliability-primer.md)
+- [AI-assisted operations production interview](ai-assisted-operations-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
