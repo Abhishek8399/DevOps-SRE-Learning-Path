@@ -83,6 +83,7 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 - `/book/reliability/<lesson-id>` - one statically generated reliability lesson per URL.
 - `/career` - role map and the complete version-controlled career-primer library.
 - `/career/<primer>` - one statically generated career field-manual chapter sourced from `career/*.md`.
+- `/practice/interview` - local role-scoped timed mock questions, private response capture, answer reveal, follow-ups, and explicit practice-record export.
 - `/practice/storage` - practice separated from the explanatory chapter.
 - `/search` - offline search across published lessons, navigation, and all version-controlled career primers by symptom, command, term, title, or stable identifier.
 - `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.
