@@ -112,6 +112,6 @@ I share appropriate learnings, protect sensitive evidence, and track actions thr
 
 ## Practice without a production system
 
-Use the existing [incident command primer](incident-command-primer.md) with a local scripted fixture. Before touching any environment, write a one-page incident record containing impact, facts, three ranked hypotheses, one reversible containment, explicit abort/rollback conditions, two stakeholder updates, and user-journey recovery checks. Then compare it to the scenario answers above. This is guided practice, not independent mastery or production evidence.
+Use the existing [incident command primer](/career/incident-command-primer) with a local scripted fixture. Before touching any environment, write a one-page incident record containing impact, facts, three ranked hypotheses, one reversible containment, explicit abort/rollback conditions, two stakeholder updates, and user-journey recovery checks. Then compare it to the scenario answers above. This is guided practice, not independent mastery or production evidence.
 
 The sentence worth remembering is: **“During an incident, I make uncertainty visible, authorize the safest useful next move, and close only when the user outcome—not merely a component—has recovered.”**

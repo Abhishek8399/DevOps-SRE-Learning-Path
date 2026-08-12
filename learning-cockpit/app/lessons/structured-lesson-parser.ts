@@ -254,6 +254,7 @@ export function isSafeStructuredHref(value: string): boolean {
   if (/^\/book\/[a-z0-9]+(?:\/[a-z0-9-]+)+(?:#[a-z0-9]+(?:-[a-z0-9]+)*)?$/.test(value)) {
     return true;
   }
+  if (/^\/career\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) return true;
   if (!value.startsWith("https://")) return false;
   try {
     const parsed = new URL(value);

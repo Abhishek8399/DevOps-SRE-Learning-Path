@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -832,6 +832,7 @@ test("structured href policy rejects executable, remote-insecure, and malformed 
     "#architecture-map",
     "/book/linux/storage",
     "/book/linux/boot-kernel-systemd-journal#decision-path",
+    "/career/incident-command-primer",
     "https://www.freedesktop.org/software/systemd/man/latest/systemd.html",
   ]) assert.equal(isSafeStructuredHref(href), true, `expected safe href: ${href}`);
 
@@ -1409,6 +1410,22 @@ test("career-primer search documents preserve one local route per source and sea
   assert.deepEqual(documents.map((document) => document.kind), ["chapter", "chapter"]);
   assert.equal(searchLessons(documents, "cache miss")[0]?.document.href, "/career/cache-redis-primer");
   assert.equal(searchLessons(documents, "terraform plan")[0]?.document.href, "/career/terraform-primer");
+});
+
+test("every generated career primer parses under the production inline-link policy", () => {
+  const careerDirectory = join(repositoryRoot, "career");
+  const primerFiles = readdirSync(careerDirectory, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith("-primer.md"))
+    .map((entry) => entry.name)
+    .sort();
+  assert.ok(primerFiles.length > 0);
+  for (const file of primerFiles) {
+    const source = readFileSync(join(careerDirectory, file), "utf8");
+    assert.doesNotThrow(
+      () => parseMarkdownBlocks(source.replace(/^#\s+.+\n+/, "")),
+      `career primer ${file} must render under the local reader policy`,
+    );
+  }
 });
 
 test("career library filter keeps local chapter order and requires every query token", () => {
