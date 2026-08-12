@@ -9,7 +9,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `b4a3acb` - added a measured local-reader asset budget; the current canonical lab-verification matrix is in progress |
+| Latest committed substantive checkpoint | `bd94068` - added a canonical static lab-contract matrix; the current Windows Go lab lifecycle revalidation is in progress |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
 | Active repository | `<isolated-repository>` outside OneDrive; the prior OneDrive working copy remains untouched as a rollback source |
@@ -21,6 +21,7 @@ This file reports delivery of the repository and website. It does not award comp
 | 2026-08-12 | `PLAN-INT-005`, local mock-interview role coverage | Added Engineering lead and Systems architect to the local runner, with four differentiated scenarios: incident decision leadership, reliability prioritization, multi-region order correctness and platform-boundary design | The runner now has eight role focuses, eight skill areas and seventeen scenario records. Reader tests assert exact role and system-design selection; typecheck, lint and production build pass. The browser interface, learner performance, hiring readiness and mastery remain unverified. |
 | 2026-08-12 | `PLAN-QUA-007`, client asset budget | Added a dependency-free build artifact audit that enforces JavaScript, CSS, total-asset and file-count limits for the local reader | The audit measures generated files only after a production build; it does not prove browser rendering, network transfer, route-level performance, accessibility, or external dependency freshness. |
 | 2026-08-12 | `PLAN-LAB-900`, canonical local lab matrix | Added a read-only inventory for all twenty canonical book labs, checking README, paired runner/verifier and safety preamble without claiming execution | The first matrix run found missing `umask 077` preambles in LES-0025 and LES-0026; both Bash wrappers now use `set -Eeuo pipefail` and `umask 077`. The corrected matrix passes, while all runtime evidence remains explicitly unassessed. |
+| 2026-08-12 | `LES-0020`, Go infrastructure tooling local lifecycle | Re-ran the bounded Windows Go verifier under its declared offline/current-user temporary-state contract | Go 1.22.0 windows/amd64 passed formatting, test, vet, build metadata, guided/independent paths, idempotency, refusal cases and cleanup in 122.6 seconds. This does not prove Ubuntu behavior, race-detector support, live HTTP, learner execution, production operation or mastery. |
 | Current learner gate | `PLAN-CUR-101` / `PLAN-LAB-102` - learner-operated inode remediation evidence is pending |
 | Cloud policy | Local only; no online cloud resources |
 
