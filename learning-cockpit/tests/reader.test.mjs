@@ -1464,6 +1464,10 @@ test("every staged draft preview has parseable lesson, assessment, and reference
     const lesson = parseStructuredLesson(readFileSync(file, "utf8"));
     const supportDirectory = join(dirname(file), "support");
 
+    assert.ok(lesson.metadata.labs.length > 0, `${file} must declare at least one local lab`);
+    for (const lab of lesson.metadata.labs) {
+      assert.equal(Number.isInteger(lab.timeMinutes) && lab.timeMinutes > 0, true, `${file} has invalid lab time for ${lab.id}`);
+    }
     assert.equal(lesson.metadata.assessmentIds.length, 3, `${file} must declare three assessments`);
     for (const assessmentId of lesson.metadata.assessmentIds) {
       const assessmentPath = join(supportDirectory, "assessments", `${assessmentId}.json`);
