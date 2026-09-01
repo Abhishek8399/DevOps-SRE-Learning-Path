@@ -45,6 +45,7 @@ import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts"
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
+import { groupStagedDrafts } from "../app/staged-draft-library-core.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(testDirectory, "..", "..");
@@ -1462,6 +1463,18 @@ test("staged draft previews are locally searchable without joining the canonical
   assert.equal(documents[0].href, "/drafts/LES-0032-sli-slo-sla-error-budgets");
   assert.equal(documents[0].id, "draft-LES-0032");
   assert.equal(searchLessons(documents, "error budget")[0]?.document.id, "draft-LES-0032");
+});
+
+test("staged draft library groups chapters in curriculum volume order", () => {
+  const grouped = groupStagedDrafts([
+    { lesson: { metadata: { volume: "06-state-distributed-systems" } } },
+    { lesson: { metadata: { volume: "04-reliability-operations" } } },
+    { lesson: { metadata: { volume: "04-reliability-operations" } } },
+  ]);
+  assert.deepEqual(grouped.map((group) => [group.id, group.number, group.title, group.drafts.length]), [
+    ["04-reliability-operations", "04", "Reliability and operations", 2],
+    ["06-state-distributed-systems", "06", "State and distributed systems", 1],
+  ]);
 });
 
 test("career library filter keeps local chapter order and requires every query token", () => {
