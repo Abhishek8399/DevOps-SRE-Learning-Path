@@ -33,6 +33,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Configuration management production interview](configuration-management-production-interview-primer.md)
 - [Automation code production interview](automation-code-production-interview-primer.md)
 - [API and distributed systems production interview](api-distributed-systems-production-interview-primer.md)
+- [Windows and PowerShell production interview](windows-powershell-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
