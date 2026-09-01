@@ -28,11 +28,42 @@ function Blocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
   })}</div>;
 }
 
-function Section({ section }: { section: StructuredSection }) {
-  return <section className="chapter-block" id={section.anchor}><h2>{section.title}</h2><Blocks blocks={section.blocks} /></section>;
+function Section({ lessonId, number, section }: { lessonId: string; number: number; section: StructuredSection }) {
+  return <section className={styles.section} id={section.anchor}><header><span>{String(number).padStart(2, "0")} / {lessonId}</span><h2>{section.title}</h2></header><Blocks blocks={section.blocks} /></section>;
 }
 
-export default function StagedDraftArticle({ draft }: { draft: StagedDraft }) {
+export default function StagedDraftArticle({
+  adjacent,
+  draft,
+}: {
+  adjacent: Readonly<{ previous: StagedDraft | undefined; next: StagedDraft | undefined }>;
+  draft: StagedDraft;
+}) {
   const { lesson } = draft;
-  return <article className="chapter-block"><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/drafts">Staged drafts</Link><span>/</span><b>{lesson.title}</b></nav><header className="practice-page-heading"><p className="eyebrow">STAGED DRAFT â€” READING PREVIEW</p><h1>{lesson.title}</h1><p>{lesson.metadata.summary}</p><p><strong>Important:</strong> this is substantial teaching material, but it is not canonical publication, validated lab evidence, production proof, or mastery evidence. Follow only commands whose risks and prerequisites you understand.</p></header>{lesson.sections.map((section) => <Section key={section.title} section={section} />)}</article>;
+  const metadata = lesson.metadata;
+  return <article className={styles.article} id={draft.slug}>
+    <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/drafts">Staged drafts</Link><span>/</span><b>{lesson.title}</b></nav>
+    <header className={styles.hero}>
+      <div className={styles.lessonNumber}>{metadata.order}</div>
+      <div><p>VOLUME {metadata.volume.slice(0, 2)} / {metadata.id} / STAGED READING PREVIEW</p><h1>{lesson.title}</h1><span>{metadata.summary}</span></div>
+    </header>
+    <aside className={styles.masteryBoundary}><strong>READABLE DRAFT, NOT A VERIFIED CLAIM</strong><span>This chapter is substantial teaching material. It is not canonical publication, validated lab evidence, production proof, or mastery evidence. Follow only commands whose risks and prerequisites you understand.</span></aside>
+    <div className={styles.factGrid}>
+      <article><span>LEVEL</span><strong>{metadata.level.from} to {metadata.level.to}</strong></article>
+      <article><span>STUDY TIME</span><strong>{metadata.estimatedMinutes} minutes</strong></article>
+      <article><span>OBJECTIVES</span><strong>{metadata.learningObjectives.length} outcomes</strong></article>
+      <article><span>LOCAL LABS</span><strong>{metadata.labs.length} included</strong></article>
+    </div>
+    <details className={styles.draftContents}>
+      <summary>Chapter contents <span>{lesson.sections.length} sections</span></summary>
+      <nav aria-label={`${lesson.title} contents`}>{lesson.sections.map((section, index) => <a href={`#${section.anchor}`} key={section.anchor}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>
+    </details>
+    {lesson.sections.map((section, index) => <Section key={section.title} lessonId={metadata.id} number={index + 1} section={section} />)}
+    <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>
+    <nav className="lesson-pagination" aria-label="Staged chapter navigation">
+      {adjacent.previous ? <Link href={`/drafts/${adjacent.previous.slug}`}>&lt;- Previous chapter</Link> : <Link href="/drafts">&lt;- Staged library</Link>}
+      <Link href="/drafts">All staged chapters</Link>
+      {adjacent.next ? <Link href={`/drafts/${adjacent.next.slug}`}>Next chapter -&gt;</Link> : <Link href="/book">Canonical library -&gt;</Link>}
+    </nav>
+  </article>;
 }

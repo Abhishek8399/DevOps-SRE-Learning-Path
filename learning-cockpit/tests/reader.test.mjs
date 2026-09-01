@@ -45,6 +45,7 @@ import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts"
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
+import { adjacentStagedDraftsInCatalog, sortStagedDraftCatalog } from "../app/staged-draft-catalog-core.ts";
 import { groupStagedDrafts } from "../app/staged-draft-library-core.ts";
 import { parseStagedDraft } from "../app/staged-draft-core.ts";
 
@@ -1521,6 +1522,20 @@ test("staged draft library groups chapters in curriculum volume order", () => {
     ["04-reliability-operations", "04", "Reliability and operations", 2],
     ["06-state-distributed-systems", "06", "State and distributed systems", 1],
   ]);
+});
+
+test("staged draft chapter navigation follows volume and lesson order", () => {
+  const drafts = [
+    { slug: "reliability-two", lesson: { metadata: { volume: "04-reliability-operations", order: 2 } } },
+    { slug: "linux-one", lesson: { metadata: { volume: "01-linux-systems", order: 1 } } },
+    { slug: "reliability-one", lesson: { metadata: { volume: "04-reliability-operations", order: 1 } } },
+  ];
+  assert.deepEqual(sortStagedDraftCatalog(drafts).map((draft) => draft.slug), ["linux-one", "reliability-one", "reliability-two"]);
+  assert.deepEqual(adjacentStagedDraftsInCatalog(drafts, "reliability-one"), {
+    previous: drafts[1],
+    next: drafts[0],
+  });
+  assert.deepEqual(adjacentStagedDraftsInCatalog(drafts, "absent"), { previous: undefined, next: undefined });
 });
 
 test("career library filter keeps local chapter order and requires every query token", () => {
