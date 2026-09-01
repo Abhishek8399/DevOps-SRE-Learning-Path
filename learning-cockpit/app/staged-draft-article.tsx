@@ -1,6 +1,7 @@
 import Link from "next/link";
 import EditorialCodeBlock from "./editorial-code-block";
 import LessonReadingActions from "./lesson-reading-actions";
+import { StructuredOperationalSupplement } from "./structured-lesson";
 import {
   headingAnchor,
   type AnsweredAssessment,
@@ -32,8 +33,8 @@ function Blocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
   })}</div>;
 }
 
-function Section({ lessonId, number, section }: { lessonId: string; number: number; section: StructuredSection }) {
-  return <section className={styles.section} id={section.anchor}><header><span>{String(number).padStart(2, "0")} / {lessonId}</span><h2>{section.title}</h2></header><Blocks blocks={section.blocks} /></section>;
+function Section({ draft, number, section }: { draft: StagedDraft; number: number; section: StructuredSection }) {
+  return <section className={styles.section} id={section.anchor}><header><span>{String(number).padStart(2, "0")} / {draft.lesson.metadata.id}</span><h2>{section.title}</h2></header><Blocks blocks={section.blocks} /><StructuredOperationalSupplement bundle={draft} section={section.title} /></section>;
 }
 
 function AnsweredPractice({ assessment }: { assessment: AnsweredAssessment }) {
@@ -120,7 +121,7 @@ export default function StagedDraftArticle({
         ? <IndependentPractice assessment={assessment} key={assessment.id} />
         : <AnsweredPractice assessment={assessment} key={assessment.id} />)}</div>
     </details>
-    {lesson.sections.map((section, index) => <Section key={section.title} lessonId={metadata.id} number={index + 1} section={section} />)}
+    {lesson.sections.map((section, index) => <Section draft={draft} key={section.title} number={index + 1} section={section} />)}
     <ReferenceShelf draft={draft} />
     <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>
     <nav className="lesson-pagination" aria-label="Staged chapter navigation">

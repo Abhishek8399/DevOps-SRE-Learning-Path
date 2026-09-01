@@ -6,6 +6,7 @@ This file reports delivery of the repository and website. It does not award comp
 
 ## Latest verified change
 
+- 2026-09-01 / `PLAN-WEB-006`: exposed every staged chapter's structured diagrams, command decision cards, lab safety contracts and incident paths by reusing the canonical operational supplement renderer. Typecheck, lint, production build, 33 reader tests, hygiene and the static web budget pass. A representative LES-0027 route returned HTTP 200 with all four structure IDs. The uncompressed production response measured 849.3 KiB; browser visual and interaction QA remain unavailable.
 - 2026-09-01 / `PLAN-WEB-003`: added a compact ten-volume jump index above the 66-chapter staged shelf so readers can move directly to a curriculum area without scanning the entire page. Lint, typecheck, production build, 33 reader tests, source hygiene and the web budget pass. The first HTTP request occurred before the temporary server reported readiness and failed; retrying the same confirmed listener returned HTTP 200 and proved the Volume 04 link and destination. No browser surface was connected, so visual, keyboard and viewport claims remain open.
 
 ## Snapshot

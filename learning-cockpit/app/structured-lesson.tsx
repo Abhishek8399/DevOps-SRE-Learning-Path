@@ -211,11 +211,18 @@ function ReferenceCards({ bundle }: { bundle: StructuredLessonBundle }) {
   return <div className={styles.references}>{bundle.references.map((reference) => <article key={reference.id}><span>{reference.id} / {reference.sourceType.toUpperCase()}</span><h3><a href={reference.url} rel="noreferrer" target="_blank">{reference.title}</a></h3><p>{reference.organization} / {reference.versionOrDate}</p><p>{reference.relevance}</p><small>Reviewed {reference.lastReviewed}; review after {reference.reviewAfter}</small></article>)}</div>;
 }
 
-function SectionSupplement({ section, bundle }: { section: string; bundle: StructuredLessonBundle }) {
+export function StructuredOperationalSupplement({ section, bundle }: { section: string; bundle: StructuredLessonBundle }) {
   if (section === "Architecture map") return <DiagramCards bundle={bundle} />;
   if (section === "Failure zoom") return <IncidentCards bundle={bundle} />;
   if (section === "Evidence table") return <CommandCards bundle={bundle} />;
   if (section === "Guided Ubuntu lab") return <LabCards bundle={bundle} />;
+  return null;
+}
+
+function SectionSupplement({ section, bundle }: { section: string; bundle: StructuredLessonBundle }) {
+  if (["Architecture map", "Failure zoom", "Evidence table", "Guided Ubuntu lab"].includes(section)) {
+    return <StructuredOperationalSupplement bundle={bundle} section={section} />;
+  }
   if (section === "Complete answers") return <div className={styles.answerList}>{bundle.assessments.filter((item): item is AnsweredAssessment => item.type !== "independent-transfer" && item.type !== "interview").map((item) => <AnsweredCard assessment={item} key={item.id} />)}</div>;
   if (section === "Product-company interview") return <div className={styles.answerList}>{bundle.assessments.filter((item): item is AnsweredAssessment => item.type === "interview").map((item) => <AnsweredCard assessment={item} key={item.id} />)}</div>;
   if (section === "Independent transfer and rubric") return <div>{bundle.assessments.filter((item): item is IndependentAssessment => item.type === "independent-transfer").map((item) => <IndependentCard assessment={item} key={item.id} />)}</div>;
