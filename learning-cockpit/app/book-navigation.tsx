@@ -41,6 +41,7 @@ function NavigationLinks() {
       </div>
       <div className="nav-utilities">
         <NavigationLink href="/book">Library</NavigationLink>
+        <NavigationLink href="/drafts">Staged drafts</NavigationLink>
         <NavigationLink href="/career">Career map</NavigationLink>
         <NavigationLink href="/search">Search</NavigationLink>
         <NavigationLink href="/my-learning">My learning</NavigationLink>

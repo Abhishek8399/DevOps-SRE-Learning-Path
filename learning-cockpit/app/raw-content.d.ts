@@ -11,3 +11,7 @@ declare module "virtual:book-lesson/*" {
 declare module "virtual:career-primers" {
   export const generatedCareerPrimerSources: readonly { slug: string; title: string; source: string }[];
 }
+
+declare module "virtual:staged-drafts" {
+  export const generatedStagedDraftSources: readonly { slug: string; source: string }[];
+}

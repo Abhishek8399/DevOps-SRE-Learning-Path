@@ -7,6 +7,8 @@ const VIRTUAL_PREFIX = "virtual:book-lesson/";
 const RESOLVED_PREFIX = `\0${VIRTUAL_PREFIX}`;
 const CAREER_MODULE = "virtual:career-primers";
 const RESOLVED_CAREER_MODULE = `\0${CAREER_MODULE}`;
+const DRAFT_MODULE = "virtual:staged-drafts";
+const RESOLVED_DRAFT_MODULE = `\0${DRAFT_MODULE}`;
 
 type RegisteredLessonId = keyof typeof lessonPaths;
 
@@ -27,6 +29,7 @@ export function bookContent(): Plugin {
     },
     resolveId(id) {
       if (id === CAREER_MODULE) return RESOLVED_CAREER_MODULE;
+      if (id === DRAFT_MODULE) return RESOLVED_DRAFT_MODULE;
       if (!id.startsWith(VIRTUAL_PREFIX)) return null;
       const lessonId = id.slice(VIRTUAL_PREFIX.length);
       if (!isRegisteredLessonId(lessonId)) {
@@ -49,6 +52,24 @@ export function bookContent(): Plugin {
           return { slug: file.replace(/\.md$/, ""), title, source };
         }));
         return { code: `export const generatedCareerPrimerSources = ${JSON.stringify(primers)};`, map: null };
+      }
+      if (id === RESOLVED_DRAFT_MODULE) {
+        const draftsDirectory = resolve(repositoryRoot, "drafts");
+        const candidateDirectories = (await readdir(draftsDirectory, { withFileTypes: true }))
+          .filter((entry) => entry.isDirectory()
+            && /^LES-\d{4}-[a-z0-9-]+$/.test(entry.name))
+          .sort((left, right) => left.name.localeCompare(right.name));
+        const directories = (await Promise.all(candidateDirectories.map(async (entry) => {
+          const files = await readdir(resolve(draftsDirectory, entry.name));
+          return files.includes("lesson.md") ? entry : null;
+        }))).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+        const drafts = await Promise.all(directories.map(async (entry) => {
+          const sourcePath = resolve(draftsDirectory, entry.name, "lesson.md");
+          this.addWatchFile(sourcePath);
+          const source = await readFile(sourcePath, "utf8");
+          return { slug: entry.name, source };
+        }));
+        return { code: `export const generatedStagedDraftSources = ${JSON.stringify(drafts)};`, map: null };
       }
       if (!id.startsWith(RESOLVED_PREFIX)) return null;
       const lessonId = id.slice(RESOLVED_PREFIX.length);
