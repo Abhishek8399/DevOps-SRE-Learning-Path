@@ -1,15 +1,9 @@
 import { generatedStagedDraftSources } from "virtual:staged-drafts";
-import { parseStructuredLesson } from "./lessons/structured-lesson-parser";
+import { parseStagedDraft, type StagedDraft } from "./staged-draft-core";
 
-export type StagedDraft = Readonly<{
-  slug: string;
-  lesson: ReturnType<typeof parseStructuredLesson>;
-}>;
+export type { StagedDraft } from "./staged-draft-core";
 
-export const stagedDrafts: readonly StagedDraft[] = generatedStagedDraftSources.map((draft) => ({
-  slug: draft.slug,
-  lesson: parseStructuredLesson(draft.source),
-}));
+export const stagedDrafts: readonly StagedDraft[] = generatedStagedDraftSources.map(parseStagedDraft);
 
 export function findStagedDraft(slug: string): StagedDraft | undefined {
   return stagedDrafts.find((draft) => draft.slug === slug);

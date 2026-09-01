@@ -46,6 +46,7 @@ import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRo
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
 import { groupStagedDrafts } from "../app/staged-draft-library-core.ts";
+import { parseStagedDraft } from "../app/staged-draft-core.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(testDirectory, "..", "..");
@@ -1452,6 +1453,13 @@ test("every staged draft with a lesson source parses before the local reader sta
       `staged lesson ${file} must render under the production reader policy`,
     );
   }
+});
+
+test("a malformed staged draft identifies its source directory", () => {
+  assert.throws(
+    () => parseStagedDraft({ slug: "LES-9999-broken", source: "# missing front matter" }),
+    /staged draft LES-9999-broken cannot render: structured lesson front matter is missing/,
+  );
 });
 
 test("staged draft previews are locally searchable without joining the canonical registry", () => {
