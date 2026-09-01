@@ -2,6 +2,8 @@ import Link from "next/link";
 import EditorialCodeBlock from "./editorial-code-block";
 import {
   headingAnchor,
+  type AnsweredAssessment,
+  type IndependentAssessment,
   type MarkdownBlock,
   type MarkdownInline,
   type StructuredSection,
@@ -30,6 +32,29 @@ function Blocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
 
 function Section({ lessonId, number, section }: { lessonId: string; number: number; section: StructuredSection }) {
   return <section className={styles.section} id={section.anchor}><header><span>{String(number).padStart(2, "0")} / {lessonId}</span><h2>{section.title}</h2></header><Blocks blocks={section.blocks} /></section>;
+}
+
+function AnsweredPractice({ assessment }: { assessment: AnsweredAssessment }) {
+  return <details className={`${styles.answerCard} ${styles.draftAnswerCard}`}>
+    <summary><div><span>{assessment.id} / {assessment.type.replaceAll("-", " ")} / {assessment.difficulty}</span><h3>{assessment.prompt}</h3></div><b>Reveal the teaching answer</b></summary>
+    <section className={styles.directAnswer}><strong>THE DIRECT ANSWER</strong><p>{assessment.directAnswer}</p></section>
+    <section><strong>BUILD THE FOUNDATION</strong><p>{assessment.foundation}</p></section>
+    <section><strong>REASONING, STEP BY STEP</strong><ol>{assessment.reasoningSteps.map((step) => <li key={step}>{step}</li>)}</ol></section>
+    <section className={styles.seniorAnswer}><strong>HOW A SENIOR ENGINEER WOULD ANSWER</strong><p>{assessment.seniorAnswer}</p></section>
+    <div className={styles.weakAnswer}><section><strong>COMMON WEAK ANSWER</strong><p>{assessment.weakAnswer}</p></section><section><strong>WHY IT IS WEAK</strong><p>{assessment.whyWeak}</p></section></div>
+    <section><strong>EVIDENCE BOUNDARIES</strong><div className={styles.assessmentEvidence}>{assessment.evidence.map((item) => <article key={item.signal}><h4>{item.signal}</h4><p><b>Proves:</b> {item.proves}</p><p><b>Does not prove:</b> {item.doesNotProve}</p></article>)}</div></section>
+    <section><strong>ANSWERED FOLLOW-UPS</strong><dl className={styles.followUps}>{assessment.followUps.map((item) => <div key={item.prompt}><dt>{item.prompt}</dt><dd>{item.answer}</dd></div>)}</dl></section>
+    <section className={styles.rubric}><strong>REVIEW RUBRIC / {assessment.maximumScore} POINTS</strong>{assessment.rubric.map((row) => <div key={row.criterion}><b>{row.criterion} / {row.points}</b><p>{row.observableEvidence}</p></div>)}</section>
+  </details>;
+}
+
+function IndependentPractice({ assessment }: { assessment: IndependentAssessment }) {
+  return <article className={`${styles.independentCard} ${styles.draftIndependentCard}`}>
+    <header><span>{assessment.id} / ANSWER-ISOLATED / {assessment.difficulty}</span><h3>{assessment.prompt}</h3></header>
+    <p className={styles.noAnswer}>No model answer is stored or rendered. Work from the chapter, collect only sanitized evidence, and use the rubric to review your own reasoning.</p>
+    <div className={styles.safetyColumns}><section><strong>DELIVERABLES</strong><ol>{assessment.deliverables.map((item) => <li key={item}>{item}</li>)}</ol></section><section><strong>EVIDENCE REQUIREMENTS</strong><ul>{assessment.evidenceRequirements.map((item) => <li key={item}>{item}</li>)}</ul></section></div>
+    <section className={styles.rubric}><strong>OBSERVABLE RUBRIC / {assessment.maximumScore} POINTS</strong>{assessment.rubric.map((row) => <div key={row.criterion}><b>{row.criterion} / {row.points}</b><p>{row.observableEvidence}</p></div>)}</section>
+  </article>;
 }
 
 export default function StagedDraftArticle({
@@ -72,7 +97,9 @@ export default function StagedDraftArticle({
     </details>
     <details className={styles.draftContents}>
       <summary>Practice prompts <span>{draft.assessments.length} local assessments</span></summary>
-      <div className={styles.draftAssessments}>{draft.assessments.map((assessment) => <article key={assessment.id}><strong>{assessment.id} / {assessment.type.replaceAll("-", " ")}</strong><p>{assessment.prompt}</p><small>Think through the evidence before consulting the chapter's complete-answers section. Independent-transfer answer models remain intentionally unavailable here.</small></article>)}</div>
+      <div className={styles.draftAssessments}>{draft.assessments.map((assessment) => assessment.type === "independent-transfer"
+        ? <IndependentPractice assessment={assessment} key={assessment.id} />
+        : <AnsweredPractice assessment={assessment} key={assessment.id} />)}</div>
     </details>
     {lesson.sections.map((section, index) => <Section key={section.title} lessonId={metadata.id} number={index + 1} section={section} />)}
     <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>

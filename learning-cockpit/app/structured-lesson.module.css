@@ -156,11 +156,10 @@
 .draftContents a { display: grid; grid-template-columns: 27px minmax(0,1fr); gap: 8px; padding: 7px 0; color: var(--ink-secondary); font: .77rem/1.4 var(--font-interface); }
 .draftContents a:hover,.draftContents a:focus-visible { color: var(--accent-primary-strong); text-decoration: underline; text-underline-offset: 3px; }
 .draftContents a span { color: var(--accent-secondary); font-size: .63rem; font-weight: 750; }
-.draftAssessments { padding: 0 0 18px; display: grid; gap: 12px; }
-.draftAssessments article { padding: 15px 17px; border-left: 2px solid var(--accent-primary); background: var(--surface-subtle); }
-.draftAssessments strong { color: var(--accent-primary-strong); font: 700 .65rem var(--font-interface); letter-spacing: .06em; text-transform: uppercase; }
-.draftAssessments p { margin: 9px 0; color: var(--ink-primary); font: .88rem/1.55 var(--font-prose); }
-.draftAssessments small { color: var(--ink-tertiary); font: .68rem/1.45 var(--font-interface); }
+.draftAssessments { padding: 0 0 18px; display: grid; gap: 16px; }
+.draftAssessments > .draftAnswerCard,.draftAssessments > .draftIndependentCard { margin: 0; }
+.draftAssessments .answerCard summary { border-radius: 0; }
+.draftAssessments .independentCard { border-radius: 0; }
 .draftCompass { width: min(100%,var(--manuscript-width)); margin: 24px auto 0; display: grid; grid-template-columns: minmax(190px,.7fr) minmax(0,2fr); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
 .draftCompass section { padding: 18px 20px; }
 .draftCompass section + section { border-left: 1px solid var(--border-subtle); }
