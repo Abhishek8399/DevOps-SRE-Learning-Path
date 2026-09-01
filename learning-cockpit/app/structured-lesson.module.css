@@ -160,6 +160,7 @@
 .draftAssessments > .draftAnswerCard,.draftAssessments > .draftIndependentCard { margin: 0; }
 .draftAssessments .answerCard summary { border-radius: 0; }
 .draftAssessments .independentCard { border-radius: 0; }
+.draftContents > .references { margin-top: 0; padding-bottom: 20px; }
 .draftCompass { width: min(100%,var(--manuscript-width)); margin: 24px auto 0; display: grid; grid-template-columns: minmax(190px,.7fr) minmax(0,2fr); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
 .draftCompass section { padding: 18px 20px; }
 .draftCompass section + section { border-left: 1px solid var(--border-subtle); }

@@ -1504,8 +1504,25 @@ test("every staged draft preview has parseable lesson, assessment, and reference
 
 test("a malformed staged draft identifies its source directory", () => {
   assert.throws(
-    () => parseStagedDraft({ slug: "LES-9999-broken", source: "# missing front matter", assessments: [] }),
+    () => parseStagedDraft({ slug: "LES-9999-broken", source: "# missing front matter", assessments: [], references: [] }),
     /staged draft LES-9999-broken cannot render: structured lesson front matter is missing/,
+  );
+});
+
+test("staged draft parsing preserves exact declared reference order", () => {
+  const slug = "LES-0032-sli-slo-sla-error-budgets";
+  const draftDirectory = join(repositoryRoot, "drafts", slug);
+  const source = readFileSync(join(draftDirectory, "lesson.md"), "utf8");
+  const lesson = parseStructuredLesson(source);
+  const assessments = lesson.metadata.assessmentIds.map((id) =>
+    JSON.parse(readFileSync(join(draftDirectory, "support", "assessments", `${id}.json`), "utf8")));
+  const references = lesson.metadata.referenceIds.map((id) =>
+    JSON.parse(readFileSync(join(draftDirectory, "support", "references", `${id}.json`), "utf8")));
+  const parsed = parseStagedDraft({ slug, source, assessments, references });
+  assert.deepEqual(parsed.references.map((reference) => reference.id), lesson.metadata.referenceIds);
+  assert.throws(
+    () => parseStagedDraft({ slug, source, assessments, references: [...references].reverse() }),
+    /reference records do not match the lesson contract/,
   );
 });
 

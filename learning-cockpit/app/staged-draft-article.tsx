@@ -59,6 +59,19 @@ function IndependentPractice({ assessment }: { assessment: IndependentAssessment
   </article>;
 }
 
+function ReferenceShelf({ draft }: { draft: StagedDraft }) {
+  return <details className={styles.draftContents}>
+    <summary>Authoritative sources <span>{draft.references.length} checked-in records</span></summary>
+    <div className={styles.references}>{draft.references.map((reference) => <article key={reference.id}>
+      <span>{reference.id} / {reference.sourceType}</span>
+      <h3><a href={reference.url} rel="noreferrer" target="_blank">{reference.title}</a></h3>
+      <p>{reference.organization} / {reference.versionOrDate}</p>
+      <p>{reference.relevance}</p>
+      <small>Reviewed {reference.lastReviewed}; review after {reference.reviewAfter}</small>
+    </article>)}</div>
+  </details>;
+}
+
 export default function StagedDraftArticle({
   adjacent,
   draft,
@@ -108,6 +121,7 @@ export default function StagedDraftArticle({
         : <AnsweredPractice assessment={assessment} key={assessment.id} />)}</div>
     </details>
     {lesson.sections.map((section, index) => <Section key={section.title} lessonId={metadata.id} number={index + 1} section={section} />)}
+    <ReferenceShelf draft={draft} />
     <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>
     <nav className="lesson-pagination" aria-label="Staged chapter navigation">
       {adjacent.previous ? <Link href={`/drafts/${adjacent.previous.slug}`}>&lt;- Previous chapter</Link> : <Link href="/drafts">&lt;- Staged library</Link>}

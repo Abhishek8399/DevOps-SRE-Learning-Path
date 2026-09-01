@@ -1,6 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { Plugin } from "vite";
+import { parseStructuredLesson } from "../app/lessons/structured-lesson-parser.ts";
 import { generatedLessonPaths as lessonPaths } from "./generated-lesson-paths.ts";
 
 const VIRTUAL_PREFIX = "virtual:book-lesson/";
@@ -63,6 +64,30 @@ export function bookContent(): Plugin {
           const files = await readdir(resolve(draftsDirectory, entry.name));
           return files.includes("lesson.md") ? entry : null;
         }))).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+        const referencesById = new Map<string, unknown>();
+        const loadReferenceDirectory = async (directory: string) => {
+          let files: string[];
+          try {
+            files = await readdir(directory);
+          } catch (error) {
+            if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") return;
+            throw error;
+          }
+          for (const file of files.filter((name) => /^REF-\d{4}\.json$/.test(name)).sort()) {
+            const referencePath = resolve(directory, file);
+            const value: unknown = JSON.parse(await readFile(referencePath, "utf8"));
+            const id = value && typeof value === "object" && "id" in value ? value.id : undefined;
+            if (typeof id !== "string" || referencesById.has(id)) {
+              throw new Error(`staged reference identity is invalid or duplicated: ${file}`);
+            }
+            this.addWatchFile(referencePath);
+            referencesById.set(id, value);
+          }
+        };
+        await loadReferenceDirectory(resolve(repositoryRoot, "book", "references"));
+        for (const entry of directories) {
+          await loadReferenceDirectory(resolve(draftsDirectory, entry.name, "support", "references"));
+        }
         const drafts = await Promise.all(directories.map(async (entry) => {
           const sourcePath = resolve(draftsDirectory, entry.name, "lesson.md");
           const assessmentDirectory = resolve(draftsDirectory, entry.name, "support", "assessments");
@@ -76,7 +101,13 @@ export function bookContent(): Plugin {
             this.addWatchFile(assessmentPath);
             return JSON.parse(await readFile(assessmentPath, "utf8"));
           }));
-          return { slug: entry.name, source, assessments };
+          const referenceIds = parseStructuredLesson(source).metadata.referenceIds;
+          const references = referenceIds.map((referenceId) => {
+            const reference = referencesById.get(referenceId);
+            if (reference === undefined) throw new Error(`${entry.name} declares missing reference ${referenceId}`);
+            return reference;
+          });
+          return { slug: entry.name, source, assessments, references };
         }));
         return { code: `export const generatedStagedDraftSources = ${JSON.stringify(drafts)};`, map: null };
       }
