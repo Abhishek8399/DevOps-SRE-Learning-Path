@@ -41,6 +41,8 @@ export default function StagedDraftArticle({
 }) {
   const { lesson } = draft;
   const metadata = lesson.metadata;
+  const labMinutes = metadata.labs.reduce((total, lab) => total + lab.timeMinutes, 0);
+  const prerequisites = [...metadata.prerequisiteLessonIds, ...metadata.prerequisiteCurriculumIds];
   return <article className={styles.article} id={draft.slug}>
     <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/drafts">Staged drafts</Link><span>/</span><b>{lesson.title}</b></nav>
     <header className={styles.hero}>
@@ -52,8 +54,18 @@ export default function StagedDraftArticle({
       <article><span>LEVEL</span><strong>{metadata.level.from} to {metadata.level.to}</strong></article>
       <article><span>STUDY TIME</span><strong>{metadata.estimatedMinutes} minutes</strong></article>
       <article><span>OBJECTIVES</span><strong>{metadata.learningObjectives.length} outcomes</strong></article>
-      <article><span>LOCAL LABS</span><strong>{metadata.labs.length} included</strong></article>
+      <article><span>LOCAL LAB TIME</span><strong>{labMinutes} minutes</strong></article>
     </div>
+    <aside className={styles.draftCompass}>
+      <section>
+        <strong>BEFORE YOU BEGIN</strong>
+        {prerequisites.length ? <ul>{prerequisites.map((id) => <li key={id}><code>{id}</code></li>)}</ul> : <p>No earlier chapter is required. Start slowly and validate each new term as you go.</p>}
+      </section>
+      <section>
+        <strong>BY THE END, YOU SHOULD BE ABLE TO</strong>
+        <ul>{metadata.learningObjectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
+      </section>
+    </aside>
     <details className={styles.draftContents}>
       <summary>Chapter contents <span>{lesson.sections.length} sections</span></summary>
       <nav aria-label={`${lesson.title} contents`}>{lesson.sections.map((section, index) => <a href={`#${section.anchor}`} key={section.anchor}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>

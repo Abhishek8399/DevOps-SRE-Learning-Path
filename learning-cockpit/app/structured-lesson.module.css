@@ -156,6 +156,13 @@
 .draftContents a { display: grid; grid-template-columns: 27px minmax(0,1fr); gap: 8px; padding: 7px 0; color: var(--ink-secondary); font: .77rem/1.4 var(--font-interface); }
 .draftContents a:hover,.draftContents a:focus-visible { color: var(--accent-primary-strong); text-decoration: underline; text-underline-offset: 3px; }
 .draftContents a span { color: var(--accent-secondary); font-size: .63rem; font-weight: 750; }
+.draftCompass { width: min(100%,var(--manuscript-width)); margin: 24px auto 0; display: grid; grid-template-columns: minmax(190px,.7fr) minmax(0,2fr); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.draftCompass section { padding: 18px 20px; }
+.draftCompass section + section { border-left: 1px solid var(--border-subtle); }
+.draftCompass strong { color: var(--ink-tertiary); font: 700 .62rem var(--font-interface); letter-spacing: .08em; }
+.draftCompass p,.draftCompass li { margin: 8px 0 0; color: var(--ink-secondary); font: .77rem/1.55 var(--font-interface); }
+.draftCompass ul { margin: 9px 0 0; padding-left: 17px; }
+.draftCompass code { color: var(--accent-primary-strong); font-family: var(--font-code); font-size: .75rem; }
 .section {
   padding: clamp(62px,8vw,110px) 0 6px;
   border-top: 0;
@@ -220,6 +227,8 @@
   .factGrid article:nth-child(4) { border-top: 1px solid var(--border-subtle); }
   .section { padding-top: 68px; }
   .draftContents nav { grid-template-columns: 1fr; }
+  .draftCompass { grid-template-columns: 1fr; }
+  .draftCompass section + section { border-top: 1px solid var(--border-subtle); border-left: 0; }
   .section + .section::before { margin-bottom: 62px; }
   .markdown blockquote { margin-inline: 0; }
   .diagramCards { grid-template-columns: 1fr; }
