@@ -38,6 +38,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Resilience and overload production interview](resilience-overload-production-interview-primer.md)
 - [Data pipeline and ML reliability production interview](data-pipeline-ml-production-interview-primer.md)
 - [Technical leadership and operational excellence interview](technical-leadership-operational-excellence-interview-primer.md)
+- [GitOps production interview](gitops-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
