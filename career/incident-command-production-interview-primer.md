@@ -103,7 +103,7 @@ I share appropriate learnings, protect sensitive evidence, and track actions thr
 
 ## Incident-command answer map
 
-1. Declare based on customer impact, uncertainty, coordination need, and policyâ€”not alert count or ego.
+1. Declare based on customer impact, uncertainty, coordination need, and policy, not alert count or ego.
 2. Separate facts, hypotheses, and decisions; preserve a timeline and decision log.
 3. Prefer small, authorized, reversible containment over simultaneous unrelated changes.
 4. Treat recovery as a verified customer journey, including cohorts and delayed work, not a green component metric.
