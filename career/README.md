@@ -36,6 +36,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Windows and PowerShell production interview](windows-powershell-production-interview-primer.md)
 - [Production testing and quality interview](production-testing-quality-interview-primer.md)
 - [Resilience and overload production interview](resilience-overload-production-interview-primer.md)
+- [Data pipeline and ML reliability production interview](data-pipeline-ml-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
