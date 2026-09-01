@@ -70,6 +70,10 @@ export default function StagedDraftArticle({
       <summary>Chapter contents <span>{lesson.sections.length} sections</span></summary>
       <nav aria-label={`${lesson.title} contents`}>{lesson.sections.map((section, index) => <a href={`#${section.anchor}`} key={section.anchor}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>
     </details>
+    <details className={styles.draftContents}>
+      <summary>Practice prompts <span>{draft.assessments.length} local assessments</span></summary>
+      <div className={styles.draftAssessments}>{draft.assessments.map((assessment) => <article key={assessment.id}><strong>{assessment.id} / {assessment.type.replaceAll("-", " ")}</strong><p>{assessment.prompt}</p><small>Think through the evidence before consulting the chapter's complete-answers section. Independent-transfer answer models remain intentionally unavailable here.</small></article>)}</div>
+    </details>
     {lesson.sections.map((section, index) => <Section key={section.title} lessonId={metadata.id} number={index + 1} section={section} />)}
     <aside className={styles.limitations}><strong>KNOWN LIMITATIONS</strong><ul>{metadata.limitations.map((item) => <li key={item}>{item}</li>)}</ul></aside>
     <nav className="lesson-pagination" aria-label="Staged chapter navigation">
