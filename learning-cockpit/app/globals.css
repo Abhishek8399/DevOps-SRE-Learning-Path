@@ -539,6 +539,12 @@ a { color: inherit; text-decoration: none; }
 .primer-library-card span { color: var(--teal); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
 .primer-library-card strong { font: 600 18px/1.2 Georgia, serif; }
 .primer-library-card small { margin-top: auto; color: var(--muted); font-size: 12px; }
+.draft-volume-index { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 9px; }
+.draft-volume-index a { min-width: 0; padding: 14px 15px; display: grid; gap: 5px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-subtle); color: var(--ink); }
+.draft-volume-index a:hover,.draft-volume-index a:focus-visible { border-color: var(--teal); color: var(--teal-text); }
+.draft-volume-index span,.draft-volume-index small { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.draft-volume-index strong { font: 600 15px/1.25 Georgia,serif; }
+.draft-volume-index + .primer-library h2,[id^="draft-volume-"] { scroll-margin-top: calc(var(--shell-top) + 24px); }
 .career-panel-actions { display: flex; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; }
 .text-link { align-self: flex-end; color: var(--teal); font-size: 12px; font-weight: 850; }
 .career-map { margin-top: 32px; display: grid; grid-template-columns: 1.1fr 110px .9fr; gap: 22px; align-items: center; }

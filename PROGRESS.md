@@ -4,6 +4,10 @@ Last updated: 2026-09-01
 
 This file reports delivery of the repository and website. It does not award competency. Learner evidence and levels remain in `progress/ledger.md`.
 
+## Latest verified change
+
+- 2026-09-01 / `PLAN-WEB-003`: added a compact ten-volume jump index above the 66-chapter staged shelf so readers can move directly to a curriculum area without scanning the entire page. Lint, typecheck, production build, 33 reader tests, source hygiene and the web budget pass. The first HTTP request occurred before the temporary server reported readiness and failed; retrying the same confirmed listener returned HTTP 200 and proved the Volume 04 link and destination. No browser surface was connected, so visual, keyboard and viewport claims remain open.
+
 ## Snapshot
 
 | Field | Current value |
