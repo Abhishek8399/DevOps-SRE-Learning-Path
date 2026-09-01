@@ -44,6 +44,7 @@ import { createCareerPrimerSearchDocuments } from "../app/search/career-search.t
 import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts";
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
+import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
 
 const testDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(testDirectory, "..", "..");
@@ -1450,6 +1451,17 @@ test("every staged draft with a lesson source parses before the local reader sta
       `staged lesson ${file} must render under the production reader policy`,
     );
   }
+});
+
+test("staged draft previews are locally searchable without joining the canonical registry", () => {
+  const raw = readFileSync(join(repositoryRoot, "drafts", "LES-0032-sli-slo-sla-error-budgets", "lesson.md"), "utf8");
+  const documents = createStagedDraftSearchDocuments([{
+    slug: "LES-0032-sli-slo-sla-error-budgets",
+    lesson: parseStructuredLesson(raw),
+  }]);
+  assert.equal(documents[0].href, "/drafts/LES-0032-sli-slo-sla-error-budgets");
+  assert.equal(documents[0].id, "draft-LES-0032");
+  assert.equal(searchLessons(documents, "error budget")[0]?.document.id, "draft-LES-0032");
 });
 
 test("career library filter keeps local chapter order and requires every query token", () => {

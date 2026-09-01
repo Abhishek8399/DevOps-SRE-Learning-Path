@@ -2,6 +2,20 @@ import type { SearchDocument } from "./search-index";
 
 export const navigationSearchDocuments: readonly SearchDocument[] = [
   {
+    id: "staged-draft-library",
+    kind: "page",
+    number: "00",
+    volumeNumber: "00",
+    volumeTitle: "Field manual navigation",
+    title: "Staged draft library",
+    subtitle: "Clearly labelled preview chapters awaiting canonical publication evidence",
+    href: "/drafts",
+    fields: [
+      { category: "Title", values: ["staged drafts", "draft library", "preview chapters"], weight: 12 },
+      { category: "Term", values: ["Kubernetes", "Terraform", "SLO", "observability", "platform", "security"], weight: 8 },
+    ],
+  },
+  {
     id: "career-map",
     kind: "page",
     number: "00",
