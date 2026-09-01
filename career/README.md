@@ -40,6 +40,7 @@ Use the primers for the mental model, then follow the linked structured lessons 
 - [Technical leadership and operational excellence interview](technical-leadership-operational-excellence-interview-primer.md)
 - [GitOps production interview](gitops-production-interview-primer.md)
 - [Migration production interview](migration-production-interview-primer.md)
+- [SLO and error-budget production interview](slo-error-budget-production-interview-primer.md)
 - [CI runner platforms](ci-runner-platform-primer.md)
 - [Platform product engineering](platform-product-primer.md)
 - [Cloud architecture](cloud-architecture-primer.md)
