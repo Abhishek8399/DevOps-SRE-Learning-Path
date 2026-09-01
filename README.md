@@ -14,6 +14,7 @@ The [target-role requirements matrix](career/target-role-matrix.md) maps the sup
 - Competency ratings: Linux storage diagnosis is L1; other areas remain unassessed
 - Delivery model: local-first; no online cloud resources
 - Primary implementation stack: Ubuntu 24.04 in WSL 2, Docker only for isolated failures, and the local field-manual website
+- Extended study library: 66 complete staged chapters are readable at the local `/drafts` route and remain clearly separate from canonical publication and learner evidence
 
 ## Workflow
 
