@@ -19,6 +19,7 @@ const stages = [
     detail: "Systems thinking, evidence boundaries, command risk, cleanup, and controlled troubleshooting.",
     state: availableLessons(readerEntriesForVolume("00-start-safely").length),
     href: "/book/start",
+    kind: "canonical",
   },
   {
     number: "02",
@@ -26,6 +27,7 @@ const stages = [
     detail: "Filesystems, processes, boot, systemd, identity, CPU, memory, and the operating system beneath every platform.",
     state: availableLessons(readerEntriesForVolume("01-linux-systems").length),
     href: "/book/linux",
+    kind: "canonical",
   },
   {
     number: "03",
@@ -33,6 +35,7 @@ const stages = [
     detail: "Packets to requests: routing, DNS, TCP, TLS, HTTP, proxies, load balancers, and failure localization.",
     state: availableLessons(readerEntriesForVolume("02-connectivity").length),
     href: "/book/connectivity",
+    kind: "canonical",
   },
   {
     number: "04",
@@ -40,6 +43,7 @@ const stages = [
     detail: "Git, Bash, Python, APIs, testing, artifacts, containers, CI/CD, rollback, and software supply chains.",
     state: availableLessons(readerEntriesForVolume("03-engineering-delivery").length),
     href: "/book/engineering",
+    kind: "canonical",
   },
   {
     number: "05",
@@ -47,26 +51,39 @@ const stages = [
     detail: "Signals, SLIs, SLOs, alert quality, incidents, capacity, overload, toil, resilience, and recovery.",
     state: availableLessons(readerEntriesForVolume("04-reliability-operations").length),
     href: "/book/reliability",
+    kind: "canonical",
   },
   {
     number: "06",
     title: "IaC & Kubernetes",
     detail: "Terraform, configuration management, Kubernetes internals, GitOps, upgrades, and platform operations.",
+    state: "20 staged chapters",
+    href: "/drafts#draft-volume-05",
+    kind: "staged",
   },
   {
     number: "07",
     title: "Data & Distributed Systems",
     detail: "Databases, caches, queues, streams, consistency, replication, consensus, and data-platform reliability.",
+    state: "10 staged chapters",
+    href: "/drafts#draft-volume-06",
+    kind: "staged",
   },
   {
     number: "08",
     title: "Security & Platform Design",
     detail: "Least privilege, secrets, policy, tenancy, golden paths, self-service, cost, governance, and architecture tradeoffs.",
+    state: "12 staged chapters",
+    href: "/drafts#draft-volume-07",
+    kind: "staged",
   },
   {
     number: "09",
     title: "Capstones & Interviews",
     detail: "Cross-system incidents, production design reviews, operational narratives, interview drills, and reviewed evidence.",
+    state: "10 staged chapters",
+    href: "/drafts#draft-volume-10",
+    kind: "staged",
   },
 ] as const;
 
@@ -136,19 +153,19 @@ export default function Home() {
             <h2 id="journey-title">One route through the systems that production depends on.</h2>
           </div>
           <p>
-            Start with the five available stages. Planned stages reserve the curriculum order;
-            they have no lesson route and do not imply that content or competency exists yet.
+            Start with the canonical stages, then continue into clearly labelled previews.
+            A staged chapter is available to read but is not a verified lesson, lab result, or mastery claim.
           </p>
         </header>
         <div className={styles.legend} aria-label="Journey status legend">
           <span><i className={styles.availableKey} aria-hidden="true" /> Available to study</span>
-          <span><i className={styles.plannedKey} aria-hidden="true" /> Planned, not published</span>
+          <span><i className={styles.stagedKey} aria-hidden="true" /> Staged reading preview</span>
         </div>
         <ol className={styles.journeyList}>
           {stages.map((stage) => (
-            <li className={"href" in stage ? styles.availableStage : styles.plannedStage} key={stage.number}>
+            <li className={stage.kind === "canonical" ? styles.availableStage : styles.stagedStage} key={stage.number}>
               <span className={styles.stageMarker} aria-hidden="true">{stage.number}</span>
-              {"href" in stage ? (
+              {stage.kind === "canonical" ? (
                 <Link className={styles.stageCard} href={stage.href}>
                   <span className={styles.stageTopline}><strong>AVAILABLE</strong><small>{stage.state}</small></span>
                   <h3>{stage.title}</h3>
@@ -156,12 +173,12 @@ export default function Home() {
                   <span className={styles.openStage}>Open stage <b aria-hidden="true">-&gt;</b></span>
                 </Link>
               ) : (
-                <article className={styles.stageCard} aria-label={`${stage.title}, planned`}>
-                  <span className={styles.stageTopline}><strong>PLANNED</strong><small>No route published</small></span>
+                <Link className={styles.stageCard} href={stage.href}>
+                  <span className={styles.stageTopline}><strong>STAGED PREVIEW</strong><small>{stage.state}</small></span>
                   <h3>{stage.title}</h3>
                   <p>{stage.detail}</p>
-                  <span className={styles.plannedNote}>Reserved for reviewed, locally validated content.</span>
-                </article>
+                  <span className={styles.openStage}>Open staged chapters <b aria-hidden="true">-&gt;</b></span>
+                </Link>
               )}
             </li>
           ))}

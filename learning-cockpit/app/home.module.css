@@ -70,6 +70,7 @@
 .legend span { display: inline-flex; align-items: center; gap: 8px; }
 .legend i { width: 11px; height: 11px; display: block; border-radius: 50%; }
 .availableKey { background: #70d6c3; }
+.stagedKey { border: 2px solid #f0bb65; }
 .plannedKey { border: 2px solid #8090a6; }
 .journeyList { position: relative; margin: 38px 0 0; padding: 0; list-style: none; display: grid; gap: 13px; }
 .journeyList::before { content: ""; position: absolute; top: 27px; bottom: 27px; left: 27px; width: 2px; background: linear-gradient(#70d6c3 0 17%,#50627a 17% 100%); }
@@ -79,9 +80,13 @@
 .stageCard { min-height: 132px; padding: 20px 22px; display: block; border: 1px solid #40536c; border-radius: 13px; background: #162b47; }
 .availableStage .stageCard { border-color: #4f8e87; background: linear-gradient(110deg,#15354a,#17314f); }
 .availableStage .stageCard:hover { border-color: #8ce6d4; transform: translateX(4px); }
+.stagedStage .stageMarker { border-color: #f0bb65; background: #47351c; color: #ffe3a9; }
+.stagedStage .stageCard { border-color: #8d7042; background: linear-gradient(110deg,#352d22,#263148); }
+.stagedStage .stageCard:hover { border-color: #f0bb65; transform: translateX(4px); }
 .stageTopline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .stageTopline strong { color: #ffad88; font-size: .65rem; letter-spacing: .13em; }
 .availableStage .stageTopline strong { color: #8ce6d4; }
+.stagedStage .stageTopline strong { color: #f8d38f; }
 .stageTopline small { color: #aebdd0; font-size: .67rem; font-weight: 800; text-transform: uppercase; }
 .stageCard h3 { margin: 10px 0 0; font: 600 1.38rem/1.2 Georgia,serif; }
 .stageCard p { max-width: 900px; margin: 8px 0 0; color: #c2cede; font-size: .82rem; line-height: 1.6; }
@@ -146,7 +151,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .stageCard,.primaryAction,.secondaryAction,.entryActions a { transition: none; }
-  .availableStage .stageCard:hover { transform: none; }
+  .availableStage .stageCard:hover,.stagedStage .stageCard:hover { transform: none; }
 }
 
 @media print {
