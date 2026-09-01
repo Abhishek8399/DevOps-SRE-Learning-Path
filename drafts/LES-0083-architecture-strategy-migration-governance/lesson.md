@@ -2008,7 +2008,7 @@ If your answer is mainly a product list, go one layer deeper into state, evidenc
 
 ## Independent transfer and rubric
 
-The independent assessment is [ASM-0234](support/assessments/ASM-0234.json). It intentionally contains no published answer fields.
+The independent assessment is `ASM-0234`. It intentionally contains no published answer fields.
 
 ### Reviewer setup
 

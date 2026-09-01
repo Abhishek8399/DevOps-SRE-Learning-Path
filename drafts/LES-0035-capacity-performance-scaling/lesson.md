@@ -211,9 +211,9 @@ Picture a curve:
 |---:|---:|---:|---:|---:|---|
 | 300 | 298 | 90 ms | 0 | 0.2% | Linear region |
 | 600 | 594 | 120 ms | 5 ms | 0.5% | Healthy but not proof of reserve |
-| 900 | 870 | 260 ms | 80 ms | Knee: contention changes response |
-| 1,050 | 900 | 850 ms | 600 ms | Added load mostly waits |
-| 1,200 | 820 | 4.8 s | 3.7 s | Collapse: timeouts and retries reduce goodput |
+| 900 | 870 | 260 ms | 80 ms | Rising | Knee: contention changes response |
+| 1,050 | 900 | 850 ms | 600 ms | Rising | Added load mostly waits |
+| 1,200 | 820 | 4.8 s | 3.7 s | Rising sharply | Collapse: timeouts and retries reduce goodput |
 
 The bottleneck is not simply the resource with the highest percentage. It is the constrained resource or serialized path whose additional demand causes waiting and limits useful completion. Evidence should show:
 

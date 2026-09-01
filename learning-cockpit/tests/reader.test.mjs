@@ -1428,6 +1428,30 @@ test("every generated career primer parses under the production inline-link poli
   }
 });
 
+test("every staged draft with a lesson source parses before the local reader starts", () => {
+  const draftsDirectory = join(repositoryRoot, "drafts");
+  const lessonFiles = readdirSync(draftsDirectory, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => join(draftsDirectory, entry.name, "lesson.md"))
+    .filter((file) => {
+      try {
+        readFileSync(file, "utf8");
+        return true;
+      } catch (error) {
+        if (error && typeof error === "object" && error.code === "ENOENT") return false;
+        throw error;
+      }
+    })
+    .sort();
+  assert.equal(lessonFiles.length, 66);
+  for (const file of lessonFiles) {
+    assert.doesNotThrow(
+      () => parseStructuredLesson(readFileSync(file, "utf8")),
+      `staged lesson ${file} must render under the production reader policy`,
+    );
+  }
+});
+
 test("career library filter keeps local chapter order and requires every query token", () => {
   const primers = [
     { slug: "kubernetes-production-interview-primer", title: "Kubernetes production interview" },
