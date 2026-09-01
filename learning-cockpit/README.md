@@ -105,10 +105,10 @@ npm run dev
 
 Open `http://127.0.0.1:3000` in a local browser. No cloud deployment, account, credential, or external API is required.
 
-On Windows, double-click `start-learning.cmd`. It installs locked dependencies on the first run, requires the exact loopback development endpoint `127.0.0.1:3000`, refuses startup when that port is already occupied, starts with the explicit port, and opens the site. Keep its command window open while learning; press `Ctrl+C` there to stop the server.
+On Windows, from the repository root, double-click `startlearning.cmd`. It installs locked dependencies on the first run, requires the exact loopback development endpoint `127.0.0.1:3000`, refuses startup when that port is already occupied, starts with the explicit port, and opens the site. Keep its command window open while learning; press `Ctrl+C` there to stop the server.
 
 ```text
-start-learning.cmd
+startlearning.cmd
 ```
 
 For a production-style local check, build first and then start the generated server:
