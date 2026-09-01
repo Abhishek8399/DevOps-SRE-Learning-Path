@@ -13,5 +13,5 @@ declare module "virtual:career-primers" {
 }
 
 declare module "virtual:staged-drafts" {
-  export const generatedStagedDraftSources: readonly { slug: string; source: string }[];
+  export const generatedStagedDraftSources: readonly { slug: string; source: string; assessments: readonly unknown[] }[];
 }

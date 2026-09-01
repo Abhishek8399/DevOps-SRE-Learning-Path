@@ -53,6 +53,7 @@ This file reports delivery of the repository and website. It does not award comp
 ## Completed and committed foundation
 
 | Date | Plan IDs | Result | Evidence |
+| 2026-09-01 | `PLAN-WEB-006`, staged assessment foundation | Loaded local draft assessment records through the virtual content module and enforced canonical schema plus exact lesson ownership | Reader suite passes 32/32; this is a source-contract foundation for later reader presentation, not learner assessment or mastery evidence. |
 | 2026-09-01 | `PLAN-GOV-003`, visible-text encoding | Corrected one learner-facing mojibake dash in the incident-command interview primer and scanned the visible corpus | Encoding scan and content/registry validation pass; this is source-quality evidence only. |
 | 2026-09-01 | `PLAN-WEB-002`, staged lab-time contract | Added a regression gate requiring every visible staged chapter to declare one or more positive-duration local labs before the reader displays summed lab time | Reader suite passes 32/32. This validates metadata only, not lab runtime, publication, learner evidence, competence, or mastery. |
 | 2026-09-01 | `PLAN-WEB-002`, staged chapter-opening metadata | Surfaced actual prerequisite IDs, all learning outcomes, and exact summed local-lab time from each chapter's structured metadata | Reader tests remain 32/32 and typecheck, lint, content/registry prebuild, and production build pass. Metadata display does not make a lab verified or alter the noncanonical/draft, learner, competence, or mastery boundaries. |

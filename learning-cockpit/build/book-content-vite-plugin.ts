@@ -65,9 +65,18 @@ export function bookContent(): Plugin {
         }))).filter((entry): entry is NonNullable<typeof entry> => entry !== null);
         const drafts = await Promise.all(directories.map(async (entry) => {
           const sourcePath = resolve(draftsDirectory, entry.name, "lesson.md");
+          const assessmentDirectory = resolve(draftsDirectory, entry.name, "support", "assessments");
           this.addWatchFile(sourcePath);
           const source = await readFile(sourcePath, "utf8");
-          return { slug: entry.name, source };
+          const assessmentFiles = (await readdir(assessmentDirectory))
+            .filter((file) => /^ASM-\d{4}\.json$/.test(file))
+            .sort();
+          const assessments = await Promise.all(assessmentFiles.map(async (file) => {
+            const assessmentPath = resolve(assessmentDirectory, file);
+            this.addWatchFile(assessmentPath);
+            return JSON.parse(await readFile(assessmentPath, "utf8"));
+          }));
+          return { slug: entry.name, source, assessments };
         }));
         return { code: `export const generatedStagedDraftSources = ${JSON.stringify(drafts)};`, map: null };
       }

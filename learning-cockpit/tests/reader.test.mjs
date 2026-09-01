@@ -1500,7 +1500,7 @@ test("every staged draft preview has parseable lesson, assessment, and reference
 
 test("a malformed staged draft identifies its source directory", () => {
   assert.throws(
-    () => parseStagedDraft({ slug: "LES-9999-broken", source: "# missing front matter" }),
+    () => parseStagedDraft({ slug: "LES-9999-broken", source: "# missing front matter", assessments: [] }),
     /staged draft LES-9999-broken cannot render: structured lesson front matter is missing/,
   );
 });
