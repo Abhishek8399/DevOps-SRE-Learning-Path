@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { readerCatalog } from "../lessons/reader-catalog";
+import { stagedDrafts } from "../staged-draft.server";
 import LearningLibrary, { type LearningLibraryLesson } from "./learning-library";
 import { isLearningLessonId } from "./learning-state";
 import styles from "./my-learning.module.css";
@@ -10,12 +11,13 @@ export const metadata: Metadata = {
   description: "A device-local place to bookmark lessons and resume reading without changing mastery evidence.",
 };
 
-const lessons: LearningLibraryLesson[] = readerCatalog.map((lesson) => {
+const canonicalLessons: LearningLibraryLesson[] = readerCatalog.map((lesson) => {
   if (!isLearningLessonId(lesson.stateId)) {
     throw new Error(`reader state identity is not trusted: ${lesson.stateId}`);
   }
   return {
     id: lesson.stateId,
+    collection: "canonical",
     number: lesson.number,
     volumeNumber: lesson.volumeNumber,
     volumeTitle: lesson.volumeTitle,
@@ -24,6 +26,28 @@ const lessons: LearningLibraryLesson[] = readerCatalog.map((lesson) => {
     href: lesson.route,
   };
 });
+
+const extendedLessons: LearningLibraryLesson[] = stagedDrafts.map((draft) => {
+  const metadata = draft.lesson.metadata;
+  if (!isLearningLessonId(metadata.id)) {
+    throw new Error(`staged reader state identity is not trusted: ${metadata.id}`);
+  }
+  return {
+    id: metadata.id,
+    collection: "extended",
+    number: String(metadata.order),
+    volumeNumber: metadata.volume.slice(0, 2),
+    volumeTitle: metadata.volume.replace(/^\d+-/, "").replaceAll("-", " "),
+    title: draft.lesson.title,
+    summary: metadata.summary,
+    href: `/drafts/${draft.slug}`,
+  };
+});
+
+const lessons: LearningLibraryLesson[] = [...canonicalLessons, ...extendedLessons]
+  .sort((left, right) => left.volumeNumber.localeCompare(right.volumeNumber)
+    || Number(left.number) - Number(right.number)
+    || left.id.localeCompare(right.id));
 
 export default function MyLearningPage() {
   return (

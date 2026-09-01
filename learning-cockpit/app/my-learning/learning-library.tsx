@@ -23,6 +23,7 @@ import styles from "./my-learning.module.css";
 
 export type LearningLibraryLesson = {
   id: LearningLessonId;
+  collection: "canonical" | "extended";
   number: string;
   volumeNumber: string;
   volumeTitle: string;
@@ -293,7 +294,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
 
       <div className={styles.libraryHeading}>
         <div>
-          <span className={styles.cardLabel}>CORE BOOK / AVAILABLE VOLUMES</span>
+          <span className={styles.cardLabel}>FULL LOCAL LIBRARY / CANONICAL AND EXTENDED</span>
           <h2>Choose your next reading move</h2>
           <p>Open a lesson, bookmark it for later, or set a private reading marker.</p>
         </div>
@@ -315,7 +316,7 @@ export default function LearningLibrary({ lessons }: { lessons: LearningLibraryL
             return (
               <article className={styles.lessonCard} key={lesson.id} aria-labelledby={titleId}>
                 <div className={styles.lessonCardTopline}>
-                  <span>VOLUME {lesson.volumeNumber} / LESSON {lesson.number}</span>
+                  <span>{lesson.collection === "canonical" ? "CANONICAL" : "EXTENDED STUDY"} / VOLUME {lesson.volumeNumber} / LESSON {lesson.number}</span>
                   <button
                     type="button"
                     className={styles.bookmarkButton}

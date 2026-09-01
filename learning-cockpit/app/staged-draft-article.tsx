@@ -1,5 +1,6 @@
 import Link from "next/link";
 import EditorialCodeBlock from "./editorial-code-block";
+import LessonReadingActions from "./lesson-reading-actions";
 import {
   headingAnchor,
   type AnsweredAssessment,
@@ -9,6 +10,7 @@ import {
   type StructuredSection,
 } from "./lessons/structured-lesson-parser";
 import type { StagedDraft } from "./staged-draft.server";
+import { isLearningLessonId } from "./my-learning/learning-state";
 import styles from "./structured-lesson.module.css";
 
 function Inline({ content }: { content: readonly MarkdownInline[] }) {
@@ -66,6 +68,9 @@ export default function StagedDraftArticle({
 }) {
   const { lesson } = draft;
   const metadata = lesson.metadata;
+  if (!isLearningLessonId(metadata.id)) {
+    throw new Error(`staged reader state identity is not trusted: ${metadata.id}`);
+  }
   const labMinutes = metadata.labs.reduce((total, lab) => total + lab.timeMinutes, 0);
   const prerequisites = [...metadata.prerequisiteLessonIds, ...metadata.prerequisiteCurriculumIds];
   return <article className={styles.article} id={draft.slug}>
@@ -75,6 +80,7 @@ export default function StagedDraftArticle({
       <div><p>VOLUME {metadata.volume.slice(0, 2)} / {metadata.id} / STAGED READING PREVIEW</p><h1>{lesson.title}</h1><span>{metadata.summary}</span></div>
     </header>
     <aside className={styles.masteryBoundary}><strong>READABLE DRAFT, NOT A VERIFIED CLAIM</strong><span>This chapter is substantial teaching material. It is not canonical publication, validated lab evidence, production proof, or mastery evidence. Follow only commands whose risks and prerequisites you understand.</span></aside>
+    <LessonReadingActions lessonId={metadata.id} title={lesson.title} />
     <div className={styles.factGrid}>
       <article><span>LEVEL</span><strong>{metadata.level.from} to {metadata.level.to}</strong></article>
       <article><span>STUDY TIME</span><strong>{metadata.estimatedMinutes} minutes</strong></article>

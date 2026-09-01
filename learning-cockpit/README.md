@@ -90,7 +90,7 @@ question -> evidence -> field meanings -> combined interpretation -> safest next
 - `/practice/interview` - local role-scoped timed mock questions, private response capture, answer reveal, follow-ups, and explicit practice-record export.
 - `/practice/storage` - practice separated from the explanatory chapter.
 - `/search` - offline search across canonical lessons, extended-study chapters, navigation, and all version-controlled career primers by symptom, command, term, title, or stable identifier.
-- `/my-learning` - device-local bookmarks, recent lessons, and private reading markers.
+- `/my-learning` - device-local bookmarks, recent lessons, and private reading markers across all 26 canonical and 66 extended-study chapters.
 
 The routed structure keeps individual pages lightweight as the manual grows. Desktop uses a persistent table of contents; smaller screens use a collapsible book menu. Previous and next links stay inside a volume; an explicit continuation link crosses into the next volume. Structured lessons also show resolved prerequisite IDs in a labelled advisory navigation panel. Those links never lock access, mark completion, or infer mastery; unresolved identities do not become guessed routes.
 

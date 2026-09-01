@@ -1172,7 +1172,7 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
   assert.equal(reliabilityStart.next, undefined);
 });
 
-test("an eight-entry v1 reading state gains eighteen lessons without prior state loss", () => {
+test("an eight-entry v1 reading state gains canonical and extended lessons without prior state loss", () => {
   const legacyStateIds = expectedLegacyIdentities.map(([, stateId]) => stateId);
   const priorStateIds = [...legacyStateIds, "LES-0006", "LES-0007", "LES-0008"];
   const priorLessons = Object.fromEntries(priorStateIds.map((lessonId, index) => [
@@ -1190,10 +1190,12 @@ test("an eight-entry v1 reading state gains eighteen lessons without prior state
   })));
 
   assert.equal(loaded.recoveredInvalidData, false);
-  assert.deepEqual(
-    [...LEARNING_LIBRARY_LESSON_IDS],
-    [...priorStateIds, "LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
-  );
+  const newCanonicalIds = Array.from({ length: 18 }, (_, index) =>
+    `LES-${String(index + 9).padStart(4, "0")}`);
+  const extendedIds = Array.from({ length: 66 }, (_, index) =>
+    `LES-${String(index + 27).padStart(4, "0")}`);
+  const newStateIds = [...newCanonicalIds, ...extendedIds];
+  assert.deepEqual([...LEARNING_LIBRARY_LESSON_IDS], [...priorStateIds, ...newStateIds]);
   assert.deepEqual(
     loaded.state.recentLessonIds,
     ["LES-0007", "LES-0006", "identity-permissions", "storage"],
@@ -1201,7 +1203,7 @@ test("an eight-entry v1 reading state gains eighteen lessons without prior state
   for (const lessonId of priorStateIds) {
     assert.deepEqual(loaded.state.lessons[lessonId], priorLessons[lessonId]);
   }
-  for (const lessonId of ["LES-0009", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"]) {
+  for (const lessonId of newStateIds) {
     assert.deepEqual(loaded.state.lessons[lessonId], {
       bookmarked: false,
       marker: "not-started",
@@ -1210,7 +1212,7 @@ test("an eight-entry v1 reading state gains eighteen lessons without prior state
   }
 });
 
-test("structured bookmarks and finished-reading markers never create mastery data", () => {
+test("canonical and extended bookmarks and finished-reading markers never create mastery data", () => {
   for (const [lessonId, openedAt] of [
     ["LES-0006", "2026-08-02T06:00:00.000Z"],
     ["LES-0007", "2026-08-02T07:00:00.000Z"],
@@ -1233,6 +1235,8 @@ test("structured bookmarks and finished-reading markers never create mastery dat
     ["LES-0024", "2026-08-03T00:00:00.000Z"],
     ["LES-0025", "2026-08-03T01:00:00.000Z"],
     ["LES-0026", "2026-08-03T02:00:00.000Z"],
+    ["LES-0027", "2026-08-03T03:00:00.000Z"],
+    ["LES-0092", "2026-08-03T04:00:00.000Z"],
   ]) {
     const initial = createEmptyLearningState();
     const bookmarked = toggleLessonBookmark(initial, lessonId);
