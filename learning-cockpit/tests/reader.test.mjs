@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -1431,7 +1431,7 @@ test("every generated career primer parses under the production inline-link poli
   }
 });
 
-test("every staged draft with a lesson source parses before the local reader starts", () => {
+test("every staged draft preview has parseable lesson, assessment, and reference support", () => {
   const draftsDirectory = join(repositoryRoot, "drafts");
   const lessonFiles = readdirSync(draftsDirectory, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
@@ -1447,11 +1447,49 @@ test("every staged draft with a lesson source parses before the local reader sta
     })
     .sort();
   assert.equal(lessonFiles.length, 66);
+  const stagedReferencePaths = new Map();
   for (const file of lessonFiles) {
-    assert.doesNotThrow(
-      () => parseStructuredLesson(readFileSync(file, "utf8")),
-      `staged lesson ${file} must render under the production reader policy`,
-    );
+    const referencesDirectory = join(dirname(file), "support", "references");
+    if (!existsSync(referencesDirectory)) continue;
+    for (const entry of readdirSync(referencesDirectory, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+      const referencePath = join(referencesDirectory, entry.name);
+      const reference = parseStructuredReference(JSON.parse(readFileSync(referencePath, "utf8")));
+      assert.equal(stagedReferencePaths.has(reference.id), false, `duplicate staged reference ${reference.id}`);
+      stagedReferencePaths.set(reference.id, referencePath);
+    }
+  }
+  for (const file of lessonFiles) {
+    const lesson = parseStructuredLesson(readFileSync(file, "utf8"));
+    const supportDirectory = join(dirname(file), "support");
+
+    assert.equal(lesson.metadata.assessmentIds.length, 3, `${file} must declare three assessments`);
+    for (const assessmentId of lesson.metadata.assessmentIds) {
+      const assessmentPath = join(supportDirectory, "assessments", `${assessmentId}.json`);
+      const assessment = parseStructuredAssessment(JSON.parse(readFileSync(assessmentPath, "utf8")));
+      assert.equal(assessment.id, assessmentId, `${assessmentPath} must match its declared assessment ID`);
+      assert.equal(assessment.lessonId, lesson.metadata.id, `${assessmentPath} must belong to its draft lesson`);
+    }
+
+    assert.ok(lesson.metadata.referenceIds.length > 0, `${file} must declare at least one reference`);
+    for (const referenceId of lesson.metadata.referenceIds) {
+      const localReferencePath = join(supportDirectory, "references", `${referenceId}.json`);
+      const canonicalReferencePath = join(repositoryRoot, "book", "references", `${referenceId}.json`);
+      const referencePath = existsSync(localReferencePath)
+        ? localReferencePath
+        : existsSync(canonicalReferencePath)
+          ? canonicalReferencePath
+          : stagedReferencePaths.get(referenceId);
+      assert.ok(referencePath, `${file} declares missing reference ${referenceId}`);
+      const reference = parseStructuredReference(JSON.parse(readFileSync(referencePath, "utf8")));
+      assert.equal(reference.id, referenceId, `${referencePath} must match its declared reference ID`);
+      if (referencePath === localReferencePath) {
+        assert.ok(
+          reference.lessonIds.includes(lesson.metadata.id),
+          `${referencePath} must link back to ${lesson.metadata.id}`,
+        );
+      }
+    }
   }
 });
 
