@@ -1,6 +1,6 @@
-# LES-0027 publication-candidate status
+# LES-0027 publication and evidence status
 
-This directory remains quarantined authoring work. It is not canonical book content, a live website route, accepted learner evidence, or proof of mastery.
+This chapter is canonical book content and has a live website route. That publication state is not lab-runtime verification, formal acceptance, learner evidence, or proof of mastery.
 
 ## Current state
 
@@ -29,16 +29,16 @@ This directory remains quarantined authoring work. It is not canonical book cont
 9. The async worker is supervised and health visible; direct downstream parentage and provider flush/shutdown are explicit.
 10. Evidence records are bounded, sanitized, digest protected, source/config/resource/network/action/window bound, and sampling trace-ID equality is required.
 
-## Open promotion gates
+## Open evidence gates
 
 1. Rerun all fourteen Linux tests and `bash verify.sh static` after the operation-lock change.
 2. Rerun `bash verify.sh runtime` from absence and retain its final zero-resource proof. This is currently blocked before Ubuntu startup by `Wsl/Service/E_ACCESSDENIED`; the Docker client is present but the Linux-engine named pipe is absent.
-3. After the current runtime passes, add `LES-0027` backlinks to canonical `REF-0166` and `REF-0170`; move the lesson, three assessments, independent response template, twelve references, and lab into canonical roots; regenerate registries.
-4. Run repository content, registry, schema, reader, lint, type, build, route, asset, link, 404, privacy, secret, residue, browser, accessibility, and responsive checks.
-5. Complete instructional/editorial review, update persistent project trackers, commit, push to `origin/main`, and prove exact remote parity.
+3. Complete the deferred advanced-lab runtime review without blocking access to the chapter's explanations and Ubuntu/Linux command guidance.
+4. Complete browser, accessibility, and responsive interaction checks when a browser backend is available.
+5. Complete independent instructional, technical, security, and editorial review.
 
 ## Decision
 
-**GO for continued quarantined engineering. NO-GO for canonical promotion until the current source-bound full runtime and repository promotion gates pass.**
+**GO for canonical reading publication under `DEC-093` and `DEC-095`. NO-GO for any new claim that the changed advanced-lab controller passed runtime verification.**
 
-The external WSL failure does not invalidate earlier evidence, but earlier evidence cannot verify the changed controller source. No backend ingest, production behavior, provider interoperability, security posture, performance capacity, learner competency, delayed recall, hiring outcome, or mastery is inferred.
+The external WSL failure does not invalidate earlier evidence, but earlier evidence cannot verify the changed controller source. Canonical publication is content availability only. No backend ingest, production behavior, provider interoperability, security posture, performance capacity, learner competency, delayed recall, hiring outcome, or mastery is inferred.

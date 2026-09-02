@@ -7,7 +7,7 @@
   "url": "https://opentelemetry.io/docs/collector/architecture/",
   "sourceType": "official-documentation",
   "versionOrDate": "Current OpenTelemetry Collector architecture documentation; reviewed 2026-08-02",
-  "lessonIds": ["LES-0026"],
+  "lessonIds": ["LES-0026", "LES-0027"],
   "topics": ["telemetry pipeline", "receiver", "processor", "exporter", "fan-out", "agent", "gateway", "sampling", "pipeline backpressure"],
   "relevance": "Official architecture for Collector receivers, processors, exporters and agent or gateway placement. It makes the telemetry path inspectable and supports failure analysis of blocked processors, dropped data, fan-out and backend export while avoiding the false assumption that application emission guarantees durable backend availability.",
   "usagePolicy": "paraphrase-first",

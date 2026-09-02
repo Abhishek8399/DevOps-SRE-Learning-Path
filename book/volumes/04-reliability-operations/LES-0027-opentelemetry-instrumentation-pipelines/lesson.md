@@ -144,7 +144,7 @@
       "question": "Are the normal-user Ubuntu, Docker, Compose, curl, and Python prerequisites visible before any lab mutation?",
       "risk": "read-only",
       "command": "bash lab.sh doctor",
-      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0027-opentelemetry-instrumentation-pipelines as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "every required prerequisite is reported ready", "meaning": "the wrapper found the declared local tools and can continue to lock and configuration checks", "nextEvidence": "inspect the exact image locks with LES-0027-CMD-002"},
         {"when": "Docker is unavailable, integration is disabled, a tool is missing, or the caller is root", "meaning": "the local prerequisite contract is not satisfied", "nextEvidence": "stop; repair only the owned local prerequisite and repeat doctor without bypassing refusal"}
@@ -157,7 +157,7 @@
       "question": "Which exact image references are locked, and do locally cached images resolve to those digests?",
       "risk": "read-only",
       "command": "bash lab.sh doctor | sed -n '/lock/p;/digest/p;/image/p'",
-      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after reading the lock file",
+      "runFrom": "book/labs/LES-0027-opentelemetry-instrumentation-pipelines as a normal Ubuntu user after reading the lock file",
       "expectedBranches": [
         {"when": "locked references and matching local content digests are reported", "meaning": "the intended immutable image content is locally addressable", "nextEvidence": "render and validate configuration with LES-0027-CMD-003"},
         {"when": "a digest is absent, mutable-only, mismatched, or its cached content ID differs", "meaning": "offline setup cannot prove the intended artifact identity", "nextEvidence": "do not substitute latest; review the lock and use the explicit prepare path only under approved network policy, then re-run doctor"}
@@ -170,7 +170,7 @@
       "question": "Does Compose render the intended topology, and does the locked Collector accept the exact configuration before services start?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh validate-configs",
-      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after doctor reports complete locks and verified artifacts",
+      "runFrom": "book/labs/LES-0027-opentelemetry-instrumentation-pipelines as a normal Ubuntu user after doctor reports complete locks and verified artifacts",
       "expectedBranches": [
         {"when": "Compose rendering and Collector validation both pass", "meaning": "the current inputs are syntactically acceptable to those exact local tools", "nextEvidence": "run offline setup and then prove runtime pipeline membership"},
         {"when": "rendering or validation fails", "meaning": "the topology, variable substitution, component name, option, or exact-version contract is invalid", "nextEvidence": "stop before startup and repair the smallest owned configuration defect"}
@@ -197,7 +197,7 @@
       "question": "Can the locked fixture start without pulling images or publishing any host port?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh setup",
-      "runFrom": "drafts/LES-0027-opentelemetry-instrumentation-pipelines/support/lab as a normal Ubuntu user after doctor passes",
+      "runFrom": "book/labs/LES-0027-opentelemetry-instrumentation-pipelines as a normal Ubuntu user after doctor passes",
       "expectedBranches": [
         {"when": "setup reports the exact owned resources ready and runtime_pull_policy=never", "meaning": "the local locked containers and internal network reached the fixture's declared readiness checks without a runtime pull", "nextEvidence": "record the lifecycle token and send one fixed request with LES-0027-CMD-006"},
         {"when": "an image is absent, a digest differs, an unexpected resource exists, or readiness fails", "meaning": "the offline lifecycle cannot safely continue", "nextEvidence": "stop, preserve diagnostics, and run token-guarded cleanup; never silently pull or take over an unowned resource"}
@@ -370,7 +370,7 @@
   "lastReviewed": "2026-08-10",
   "reviewAfter": "2027-02-10",
   "limitations": [
-    "This file is quarantined under drafts and is not canonical content, a live route, or an accepted chapter.",
+    "This chapter is canonical reading content and a live route, but publication is not formal technical acceptance, lab-runtime evidence, or learner mastery.",
     "The telemetry runtime path passed its verifier on 2026-08-07, before the controller's interruption-safe lock hardening. The current source tree requires a new complete runtime run. Any passing evidence applies only to the pinned fixture, synthetic operations, bounded faults, debug sink, and recorded host; prose must not be generalized into backend or production evidence.",
     "A local Docker fixture cannot establish Kubernetes, managed Collector, service mesh, cloud backend, vendor backend, production scale, cross-region, TLS, identity-provider, storage, retention, or failure-domain behavior.",
     "The traceparent parser is intentionally bounded to selected version-00 checks and does not replace the complete W3C processing model or current library conformance.",
@@ -385,7 +385,7 @@
 
 # OpenTelemetry instrumentation pipelines: preserve meaning from code to backend
 
-This chapter is a quarantined authoring draft. It is written so the idea can be reviewed, but nothing in `drafts/` is a published chapter or live reader route. The pinned telemetry path completed a normal-user Ubuntu runtime on 2026-08-07. The controller was subsequently hardened so an abruptly terminated operation cannot strand cleanup behind a stale sentinel; that current revision still requires the complete runtime verifier. Treat the commands below as procedures, and accept runtime claims only from a verifier receipt whose source hashes match the checked-out tree.
+This is the canonical reading chapter for OpenTelemetry instrumentation pipelines. Its explanations, diagrams, command decoders, and assessments are published; the optional advanced Docker fixture has a separate evidence boundary. The pinned telemetry path completed a normal-user Ubuntu runtime on 2026-08-07, but its controller was later hardened, so the current revision still requires a complete runtime rerun. Treat its commands as procedures and accept runtime claims only from a verifier receipt whose source hashes match the checked-out tree.
 
 If LES-0026 gave you the mental model that a dashboard is the last page of a long evidence journey, this chapter opens the middle of that journey. OpenTelemetry is not one server and not a magic switch. It is a set of contracts that lets code describe work, carry context across boundaries, encode telemetry, move it through pipelines, and hand it to a destination. Your real SRE skill is preserving the meaning of the operation while each boundary is allowed to fail.
 
@@ -1317,7 +1317,7 @@ Assign an owner and review date. “Add a dashboard” is not prevention if the 
 
 This chapter defines two lab records. The first is a guided mechanism lab. The second is an answer-isolated transfer. They are not interchangeable. Repeating a known fault proves practice, not unfamiliar diagnosis.
 
-The support bundle lives beside this lesson under `support/lab/`. It remains noncanonical until promotion. A prior controller revision passed the bounded Ubuntu 24.04 runtime, context break/recovery, per-hop reconciliation, queue/retry/drain fault, deterministic sampling, token-guarded cleanup, and final zero resources. The current controller adds crash-safe kernel locking and stronger source/config/resource evidence; its fourteen Linux tests and full runtime must be rerun before publication. The passwordless-sudo root branch was unavailable and remains explicitly unclaimed. Read its README, `STATUS.md`, and locks before running commands.
+The optional support bundle lives at `book/labs/LES-0027-opentelemetry-instrumentation-pipelines/`. A prior controller revision passed the bounded Ubuntu 24.04 runtime, context break/recovery, per-hop reconciliation, queue/retry/drain fault, deterministic sampling, token-guarded cleanup, and final zero resources. The current controller adds crash-safe kernel locking and stronger source/config/resource evidence; its fourteen Linux tests and full runtime must be rerun before relying on current runtime behavior. The passwordless-sudo root branch was unavailable and remains explicitly unclaimed. Read its README and locks before running commands.
 
 ### Safety card
 
@@ -2269,7 +2269,7 @@ Absence becomes useful evidence only when the producer and evidence path are mea
 
 ### 12. What can the LES-0027 local package prove?
 
-While the package remains quarantined, the passing runtime proves only the pinned local fixture: its chosen Python SDK, two agents, gateway, exact configurations, synthetic operations, internal network, debug sink, bounded faults, evidence bindings, sampling comparison, and cleanup. The separate model still performs no OpenTelemetry execution.
+The historical passing runtime proves only the pinned local fixture at that revision: its chosen Python SDK, two agents, gateway, exact configurations, synthetic operations, internal network, debug sink, bounded faults, evidence bindings, sampling comparison, and cleanup. The changed controller still needs a fresh runtime receipt, and the separate model performs no OpenTelemetry execution.
 
 The 2026-08-07 normal-user offline run used the reviewed immutable locks and verified cache. A future run must revalidate those exact bytes and all gates; historical success does not make changed artifacts equivalent.
 
@@ -2473,7 +2473,7 @@ Reading this rubric can improve your process. It cannot award mastery. Mastery r
 
 ## References and review
 
-The reference registry records live in the draft support package until promotion. This lesson cites identifiers only so canonical URLs, ownership, review dates, and claim scope remain controlled by those records.
+The reference registry records are canonical book records. This lesson cites identifiers so canonical URLs, ownership, review dates, and claim scope remain controlled by those records.
 
 - **REF-0166 — W3C Trace Context Recommendation.** Normative source for `traceparent`, `tracestate`, processing, privacy, and security. It supports interoperable context syntax and handling; it does not make a trace identifier authentication, authorization, or causal proof.
 - **REF-0170 — OpenTelemetry Collector Architecture.** Official architecture for receivers, processors, exporters, extensions, connectors, pipelines, and deployment patterns. Component availability and configuration depend on the exact distribution and release.
@@ -2523,7 +2523,7 @@ On or before 2027-02-07, or earlier after a material release, a reviewer should:
 
 ### Final proof boundary
 
-This quarantined lesson teaches how meaning can survive—or fail to survive—from instrumentation to query. Its metadata and prose do not establish that the current support code runs. The image digests and fourteen-wheel dependency set are exact and complete; a prior controller revision completed the bounded Ubuntu runtime, but the current interruption-safe lock revision must pass the full verifier before canonical promotion. The deterministic model remains explanation evidence, never a substitute for that runtime receipt.
+This published lesson teaches how meaning can survive—or fail to survive—from instrumentation to query. Publication, metadata, and prose do not establish that the current support code runs. The image digests and fourteen-wheel dependency set are exact and complete; a prior controller revision completed the bounded Ubuntu runtime, but the current interruption-safe lock revision must pass the full verifier before any fresh runtime claim. The deterministic model remains explanation evidence, never a substitute for that receipt.
 
 If a later reviewer supplies immutable artifacts and records a successful normal-user offline execution, that result remains local and version-bound. Production claims require representative applications, transports, Collector distributions, security, scale, destinations, failures, and independent evidence. Learner mastery requires answer-isolated transfer, qualified review, delayed retrieval, and safe performance in unfamiliar systems.
 

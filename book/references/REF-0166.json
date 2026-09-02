@@ -7,7 +7,7 @@
   "url": "https://www.w3.org/TR/trace-context/",
   "sourceType": "standard",
   "versionOrDate": "W3C Recommendation, 23 November 2021; reviewed 2026-08-02",
-  "lessonIds": ["LES-0026"],
+  "lessonIds": ["LES-0026", "LES-0027"],
   "topics": ["distributed tracing", "trace context", "traceparent", "tracestate", "context propagation", "sampling flag", "trust boundaries"],
   "relevance": "Normative W3C specification for the interoperable HTTP fields that carry trace identity across service boundaries. It supports exact propagation terminology and security cautions; a valid header links participating telemetry but does not prove that every hop emitted, exported, retained or sampled a span.",
   "usagePolicy": "paraphrase-first",

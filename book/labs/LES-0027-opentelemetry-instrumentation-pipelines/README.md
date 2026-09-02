@@ -2,7 +2,7 @@
 
 ## Read this boundary first
 
-This is a **quarantined publication candidate**, not a canonical learner lab. Its local runtime and evidence contract have been exercised on Ubuntu 24.04, but the lesson is not a canonical website route until the package-level promotion gates pass.
+This is an **optional advanced lab** attached to a canonical reading chapter. Its earlier runtime and evidence contract were exercised on Ubuntu 24.04, but the controller changed afterward and the current revision still needs a complete rerun. The lesson can be learned without this fixture; publication does not turn historical output into current runtime evidence.
 
 The lab uses exact digest-addressed images, fourteen hash-pinned Python wheels, five non-root containers, and one Docker `internal` network. Normal setup and every exercise are offline. Only the explicitly named preparation command may download artifacts, and it is unnecessary while the verified UID-scoped artifact cache remains present.
 

@@ -848,3 +848,11 @@ Support IDs must be checked across canonical and staged packages, not only the c
 **Rationale:** Moving LES-0004 to Volume 02 would break its published navigation and collide with the existing order-four HTTP chapter. Changing its curriculum ID would break search, prerequisites, and prior references. A named exact-identity exception preserves user-visible compatibility without weakening the default volume rule.
 
 **Consequences:** All five legacy reader bodies can use the shared structured renderer. The exception is covered by a positive exact-migration test and a negative identity-drift test and must never become a general allowlist for cross-volume content. The permanent map remains authoritative; formal review and browser persistence proof are still required.
+
+### DEC-095 - Canonical reading publication does not wait for optional advanced-lab runtime
+
+**Decision:** After a chapter's manuscript, diagrams, command decoders, assessments, references, identity, and repository gates pass, it may enter the canonical reader while an optional advanced fixture remains runtime-unverified. The chapter must state that boundary at the point of use. A historical fixture pass may be preserved with its date and revision boundary but never presented as evidence for changed code.
+
+**Rationale:** `DEC-093` makes the complete teaching corpus the primary product. Requiring every elaborate Docker, Kubernetes, cloud, or distributed-system fixture to be rebuilt and debugged before readers can access otherwise complete instruction couples publication to the deferred lab program and leaves the book artificially incomplete.
+
+**Consequences:** Canonical means published reading content, not formally accepted runtime behavior or learner mastery. Content/schema/reader/build gates remain mandatory. Advanced lab runtime, representative environments, browser interaction, formal multidisciplinary review, independent transfer, delayed recall, and mastery remain separate evidence states. New chapter work should prefer concise Ubuntu/Linux observations and defer elaborate fixtures unless the mechanism cannot be taught safely without one.
