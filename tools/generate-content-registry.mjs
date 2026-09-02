@@ -143,6 +143,11 @@ function renderRecordRegistry(lessons, assessments, references) {
 function renderLearningLessonIds(lessons, stagedLessons) {
   const legacyMap = JSON.parse(readFileSync(legacyMapPath, "utf8"));
   if (!Array.isArray(legacyMap.lessons)) throw new Error("legacy content map has no lessons array");
+  const migratedLegacyIds = new Set(
+    lessons
+      .filter(({ id }) => legacyMap.lessons.some((record) => record.id === id))
+      .map(({ id }) => id),
+  );
   const legacyStateIds = [...legacyMap.lessons]
     .sort((left, right) => left.id.localeCompare(right.id, undefined, { numeric: true }))
     .map((record) => {
@@ -152,6 +157,7 @@ function renderLearningLessonIds(lessons, stagedLessons) {
       return record.slug;
     });
   const structuredIds = [...lessons]
+    .filter(({ id }) => !migratedLegacyIds.has(id))
     .sort((left, right) => left.id.localeCompare(right.id, undefined, { numeric: true }))
     .map(({ id }) => id);
   const stagedIds = [...stagedLessons]

@@ -30,10 +30,27 @@ type LegacyRecord = Readonly<{
 }>;
 
 const legacyRecords = (legacyContentMapValue as { lessons: LegacyRecord[] }).lessons;
+const structuredLessonIds = new Set(
+  structuredLessonBundles.map((bundle) => bundle.lesson.metadata.id),
+);
+const unmigratedLegacyRecords = legacyRecords.filter(
+  (record) => !structuredLessonIds.has(record.id),
+);
+const migratedLegacyStateIds = Object.fromEntries(
+  legacyRecords
+    .filter((record) => structuredLessonIds.has(record.id))
+    .map((record) => [record.id, record.slug]),
+);
 
 function legacyRecord(id: string): LegacyRecord {
   const record = legacyRecords.find((candidate) => candidate.id === id);
   if (!record) throw new Error(`legacy reader identity is missing: ${id}`);
+  return record;
+}
+
+function legacyRecordBySlug(slug: string): LegacyRecord {
+  const record = legacyRecords.find((candidate) => candidate.slug === slug);
+  if (!record) throw new Error(`legacy reader identity is missing: ${slug}`);
   return record;
 }
 
@@ -43,10 +60,10 @@ function numberFromAlias(aliases: readonly string[]): number {
   return Number(publicAlias.split("-L")[1]);
 }
 
-const storageIdentity = legacyRecord("LES-0001");
 const linuxVolume = getReaderVolume("01-linux-systems");
+const storageIdentity = legacyRecord("LES-0001");
 const legacyEntries: ReaderCatalogEntry[] = [
-  {
+  ...(structuredLessonIds.has(storageIdentity.id) ? [] : [{
     canonicalId: storageIdentity.id,
     stateId: storageIdentity.slug,
     slug: storageIdentity.slug,
@@ -60,10 +77,11 @@ const legacyEntries: ReaderCatalogEntry[] = [
     curriculumIds: storageIdentity.curriculumIds,
     renderKind: "legacy-storage",
     availability: "practical-gate",
-  },
-  ...foundationLessons.map((lesson): ReaderCatalogEntry => {
-    const identity = legacyRecords.find((candidate) => candidate.slug === lesson.id);
-    if (!identity) throw new Error(`legacy reader identity is missing: ${lesson.id}`);
+  } satisfies ReaderCatalogEntry]),
+  ...foundationLessons
+    .filter((lesson) => !structuredLessonIds.has(legacyRecordBySlug(lesson.id).id))
+    .map((lesson): ReaderCatalogEntry => {
+    const identity = legacyRecordBySlug(lesson.id);
     return {
       canonicalId: identity.id,
       stateId: identity.slug,
@@ -82,13 +100,14 @@ const legacyEntries: ReaderCatalogEntry[] = [
   }),
 ];
 
-if (legacyEntries.length !== legacyRecords.length) {
-  throw new Error("reader catalog does not publish every reserved legacy lesson");
+if (legacyEntries.length !== unmigratedLegacyRecords.length) {
+  throw new Error("reader catalog does not publish every unmigrated legacy lesson");
 }
 
 export const readerCatalog = createReaderCatalog(
   legacyEntries,
   structuredLessonBundles.map((bundle) => bundle.lesson.metadata),
+  migratedLegacyStateIds,
 );
 
 export function findReaderEntry(slug: string): ReaderCatalogEntry | undefined {

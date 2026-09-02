@@ -100,11 +100,12 @@ function structuredAvailability(value: string): ReaderAvailability {
 
 export function createStructuredReaderEntry(
   metadata: StructuredReaderMetadata,
+  stateId: string = metadata.id,
 ): ReaderCatalogEntry {
   const volume = getReaderVolume(metadata.volume);
   return {
     canonicalId: metadata.id,
-    stateId: metadata.id,
+    stateId,
     slug: metadata.slug,
     route: metadata.route,
     ...volume,
@@ -122,10 +123,14 @@ export function createStructuredReaderEntry(
 export function createReaderCatalog(
   legacyEntries: readonly ReaderCatalogEntry[],
   structuredLessons: readonly StructuredReaderMetadata[],
+  migratedLegacyStateIds: Readonly<Record<string, string>> = {},
 ): readonly ReaderCatalogEntry[] {
   const entries = [
     ...legacyEntries,
-    ...structuredLessons.map(createStructuredReaderEntry),
+    ...structuredLessons.map((metadata) => createStructuredReaderEntry(
+      metadata,
+      migratedLegacyStateIds[metadata.id] ?? metadata.id,
+    )),
   ].sort((left, right) => left.volumeNumber.localeCompare(right.volumeNumber)
     || left.order - right.order);
 

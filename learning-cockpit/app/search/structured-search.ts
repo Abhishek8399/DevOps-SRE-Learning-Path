@@ -15,6 +15,7 @@ function inlineText(inlines: readonly MarkdownInline[]): string {
 
 export function createStructuredSearchDocument(
   bundle: StructuredLessonBundle,
+  documentId: string = bundle.lesson.metadata.id,
 ): SearchDocument {
   const { lesson } = bundle;
   const metadata = lesson.metadata;
@@ -25,7 +26,7 @@ export function createStructuredSearchDocument(
     block.kind === "heading" ? [inlineText(block.content)] : []) ?? [];
 
   return {
-    id: metadata.id,
+    id: documentId,
     number: String(metadata.order).padStart(2, "0"),
     volumeNumber: volume.volumeNumber,
     volumeTitle: volume.volumeTitle,

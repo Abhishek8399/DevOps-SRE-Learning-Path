@@ -54,6 +54,27 @@ const testDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(testDirectory, "..", "..");
 const liveLessonDescriptors = [
   {
+    id: "LES-0002",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "01-linux-systems",
+      "LES-0002-processes-signals-systemd",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V01-L02", "processes-signals-systemd"],
+      curriculumIds: ["LNX-002"],
+      prerequisiteCurriculumIds: ["LNX-001"],
+      prerequisiteLessonIds: ["LES-0001"],
+      order: 2,
+      route: "/book/linux/processes-signals-systemd",
+      slug: "processes-signals-systemd",
+      volume: "01-linux-systems",
+    },
+  },
+  {
     id: "LES-0007",
     path: join(
       repositoryRoot,
@@ -552,11 +573,20 @@ function loadLiveStructuredBundles() {
 }
 
 function liveProductionSearchDocuments() {
-  const structured = loadLiveStructuredBundles().map(createStructuredSearchDocument);
-  const structuredIds = new Set(structured.map((document) => document.id));
+  const migratedStateIds = new Map(expectedLegacyIdentities.map(([id, stateId]) =>
+    [id, stateId]));
+  const structured = loadLiveStructuredBundles().map((bundle) =>
+    createStructuredSearchDocument(
+      bundle,
+      migratedStateIds.get(bundle.lesson.metadata.id),
+    ));
+  const structuredByRoute = new Map(structured.map((document) =>
+    [document.href, document]));
+  const legacyRoutes = new Set(legacySearchDocuments.map((document) => document.href));
   return [
-    ...legacySearchDocuments.filter((document) => !structuredIds.has(document.id)),
-    ...structured,
+    ...legacySearchDocuments.map((document) =>
+      structuredByRoute.get(document.href) ?? document),
+    ...structured.filter((document) => !legacyRoutes.has(document.href)),
   ];
 }
 
@@ -763,12 +793,12 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("twenty-one live structured lessons preserve exact identities and canonical sections", () => {
+test("twenty-two live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
-  assert.equal(bundles.length, 21);
+  assert.equal(bundles.length, 22);
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
+    ["LES-0002", "LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -994,23 +1024,27 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
     "schema",
     "legacy-content-map.json",
   ));
-  const legacyEntries = legacyMap.lessons.map((lesson, index) => ({
+  const legacyEntries = legacyMap.lessons
+    .filter((lesson) => lesson.id !== "LES-0002")
+    .map((lesson) => ({
     canonicalId: lesson.id,
     stateId: lesson.slug,
     slug: lesson.slug,
     route: lesson.route,
     ...linuxVolume,
-    order: index + 1,
-    number: String(index + 1).padStart(2, "0"),
+    order: Number(lesson.aliases[0].split("-L")[1]),
+    number: lesson.aliases[0].split("-L")[1],
     title: lesson.slug,
     summary: `Reserved reader identity for ${lesson.id}`,
     aliases: lesson.aliases,
     curriculumIds: lesson.curriculumIds,
-    renderKind: index === 0 ? "legacy-storage" : "legacy-foundation",
-    availability: index === 0 ? "practical-gate" : "ready-to-study",
+    renderKind: lesson.id === "LES-0001" ? "legacy-storage" : "legacy-foundation",
+    availability: lesson.id === "LES-0001" ? "practical-gate" : "ready-to-study",
   }));
   const structuredMetadata = loadLiveStructuredBundles().map(({ lesson }) => lesson.metadata);
-  const catalog = createReaderCatalog(legacyEntries, structuredMetadata);
+  const catalog = createReaderCatalog(legacyEntries, structuredMetadata, {
+    "LES-0002": "processes-signals-systemd",
+  });
 
   assert.equal(catalog.length, 26);
   assert.deepEqual(
@@ -1673,8 +1707,9 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
   assert.equal(record.includes("\r"), false);
 });
 
-test("all twenty-one independent transfers stay answer-isolated from their answered records", () => {
+test("all twenty-two independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
+    ["LES-0002", "ASM-0264"],
     ["LES-0006", "ASM-0003"],
     ["LES-0007", "ASM-0006"],
     ["LES-0008", "ASM-0009"],

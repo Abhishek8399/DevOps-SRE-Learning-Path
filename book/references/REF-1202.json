@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1202",
+  "title": "systemd service manager and journal manuals",
+  "organization": "systemd project",
+  "url": "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Latest upstream manual reviewed 2026-09-02",
+  "lessonIds": ["LES-0002"],
+  "topics": ["service units", "restart policy", "termination", "systemctl properties", "journal filtering"],
+  "relevance": "Upstream systemd documentation for service lifecycle and supervision; related systemctl and journalctl manuals define the evidence commands used by the lesson.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

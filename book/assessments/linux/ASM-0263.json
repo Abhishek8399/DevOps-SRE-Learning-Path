@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0263",
+  "lessonId": "LES-0002",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "A payment API on 200 Ubuntu VMs restarts after a rollout. Half report exit 137, cgroup dashboards are incomplete, and load-balancer health fails. Lead diagnosis, recovery, and prevention.",
+  "directAnswer": "Treat 137 as a signal clue, not an OOM conclusion. Bound customer impact, compare rollout cohorts, preserve the first failing invocation, identify the termination actor, and separate process, systemd, readiness, and traffic evidence before rollback or mitigation.",
+  "foundation": "Common shells and runtimes report signal termination using 128 plus the signal number, but the status does not encode who sent the signal. systemd state and load-balancer health observe different layers.",
+  "reasoningSteps": [
+    "Clarify affected operation, error-budget burn, rollout cohort, zones, capacity margin, and rollback safety.",
+    "Pause further rollout and preserve evidence from a representative sample.",
+    "Join unit invocation, PID and start time, exit metadata, bounded journal, cgroup events and limits, kernel OOM evidence, runtime reason, and deployment or audit events.",
+    "Compare the first divergence with healthy controls and reject unsupported OOM, application-crash, operator-kill, timeout, and restart-policy hypotheses.",
+    "Use the approved rollout rollback or instance replacement rather than manual fleet restarts.",
+    "Verify synthetic operation, readiness stability, restart rate, downstream health, and error-budget recovery.",
+    "Prevent recurrence with canary gates, structured termination actor and reason, shutdown tests, measured limits, and bounded restart policy."
+  ],
+  "seniorAnswer": "I would declare incident scope and stop expansion of the suspected rollout. On sampled failing and healthy VMs I would create one UTC timeline keyed by instance, boot ID, unit invocation, PID plus start time, deploy version, and request. Exit 137 makes SIGKILL plausible but leaves OOM, controller action, operator action, and timeout escalation open. I would inspect memory.events in the correct cgroup, host kernel OOM records, runtime termination reason, deployment actions, systemd Result and ExecMain fields, and the first application error. If cohort evidence supports the rollout and prior capacity is safe, I would roll back through the deployment system, retain a representative under policy, and verify a payment-safe synthetic operation plus stable readiness and restart rate.",
+  "weakAnswer": "Add memory and restart all 200 VMs because 137 means OOM.",
+  "whyWeak": "It invents the sender, ignores cgroup identity and rollout evidence, risks capacity, destroys state across the fleet, and defines no rollback or customer-facing verification.",
+  "evidence": [
+    {"signal": "Exit status is 137", "proves": "The reporting layer encoded a signal-9-like termination.", "doesNotProve": "OOM or the actor that sent SIGKILL."},
+    {"signal": "Failures begin only in the new rollout cohort", "proves": "The failure is associated in time and cohort with the rollout.", "doesNotProve": "The precise defective mechanism."},
+    {"signal": "Load-balancer health fails", "proves": "The health operation failed from the load-balancer boundary.", "doesNotProve": "Whether process, application, dependency, network, or check design failed."}
+  ],
+  "followUps": [
+    {"prompt": "cgroup memory.events reports no oom_kill. What changes?", "answer": "OOM in that verified cgroup becomes less likely. Confirm the cgroup identity and lifetime, then inspect host OOM, runtime, deployment, timeout, and audit evidence. Do not convert missing telemetry into certainty."},
+    {"prompt": "Rollback is unavailable. What do you do?", "answer": "Stop rollout, protect healthy capacity, reduce unsafe concurrency, and use the smallest tested mitigation or instance replacement with explicit abort, rollback, and success criteria."},
+    {"prompt": "One worker remains in D after SIGKILL. What then?", "answer": "Remove it from traffic, preserve wait evidence, identify the backing kernel resource and cohort, and recover through platform or storage ownership. Repeating signals adds no information."}
+  ],
+  "rubric": [
+    {"criterion": "Causal discipline", "points": 4, "observableEvidence": "Treats 137 as a clue and identifies the termination actor using joined evidence."},
+    {"criterion": "Incident leadership", "points": 3, "observableEvidence": "Bounds impact, halts expansion, preserves evidence, and chooses fleet-safe recovery."},
+    {"criterion": "Verification and prevention", "points": 3, "observableEvidence": "Uses customer-facing verification, canary gates, structured reason, and tested lifecycle controls."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0264",
+  "lessonId": "LES-0002",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "On a disposable Ubuntu 24.04 VM, investigate one noncritical local systemd service and a credential-free, side-effect-free localhost readiness operation. Remain read-only: do not restart, signal, edit, enable, disable, or change limits. Produce an identity- and time-scoped service lifecycle analysis.",
+  "deliverables": [
+    "A sanitized environment card naming VM boundary, Ubuntu and systemd version, boot ID, user identity, privilege, and redaction policy.",
+    "An architecture diagram from effective unit configuration through manager, process, descriptors or socket, readiness, and consumer.",
+    "A timestamped evidence table stating question, command, observed branch, proves, does not prove, and next evidence.",
+    "An explanation of how normal exit, signal termination, D state, and Z state would change the response.",
+    "A proposed recovery decision with evidence to preserve, expected result, abort condition, rollback, and user-visible success test.",
+    "A cleanup-boundary and assistance disclosure."
+  ],
+  "evidenceRequirements": [
+    "Use explicit systemctl show properties rather than only systemctl status prose.",
+    "Record PID plus process start evidence and the PID namespace boundary.",
+    "Use bounded journal output and state access or retention gaps.",
+    "Separate listener presence, readiness, traffic eligibility, and user-operation success.",
+    "Redact hostnames, usernames, addresses, tokens, employer data, and production identifiers.",
+    "Do not read this implementation or a model answer to derive the independent result."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Safety and boundary control", "points": 4, "observableEvidence": "Uses only a disposable VM, remains read-only, redacts evidence, and defines cleanup honestly."},
+    {"criterion": "Process and supervisor model", "points": 4, "observableEvidence": "Correctly separates program, process, thread, parent, signal, wait status, unit, and readiness."},
+    {"criterion": "Evidence interpretation", "points": 4, "observableEvidence": "Every command answers a question and includes proof limits plus next evidence."},
+    {"criterion": "Independent diagnosis", "points": 4, "observableEvidence": "Rejects at least two plausible hypotheses and proposes a bounded evidence-backed recovery."},
+    {"criterion": "Production transfer", "points": 4, "observableEvidence": "Connects VM evidence to container, Kubernetes, fleet, SLI, rollback, and prevention boundaries."}
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0262",
+  "lessonId": "LES-0002",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "An API process exists, systemd reports active, and the localhost readiness check fails. What can you conclude, what remains unknown, and what do you inspect next?",
+  "directAnswer": "The evidence proves only that systemd tracks an active unit and a process exists; it does not prove the API is ready. Trace listener, application initialization, dependencies, readiness definition, and a real operation before choosing recovery.",
+  "foundation": "Process existence, supervisor state, socket state, readiness, traffic admission, and user success are different checkpoints. Each tool observes one boundary and time.",
+  "reasoningSteps": [
+    "Confirm the shell, PID namespace, unit name, PID owner, and process start time.",
+    "Read explicit unit properties including ActiveState, SubState, Result, MainPID, ExecMainCode, ExecMainStatus, and NRestarts.",
+    "Check the expected address and port in the same network namespace.",
+    "Read bounded startup logs and dependency evidence around the current invocation.",
+    "Run only an approved credential-free readiness operation from its intended boundary.",
+    "Choose recovery only after writing expected result, abort condition, rollback, and user-visible success test."
+  ],
+  "seniorAnswer": "I would build an identity- and time-scoped chain: unit and invocation, PID plus start time, thread state, listener, readiness dependency, traffic admission, and user operation. If the listener is absent, I investigate initialization, bind configuration, permissions, and namespace. If it listens but readiness fails, I inspect application state and dependencies. If readiness passes but the user fails, I move outward to proxy, TLS, routing, data, and business dependencies. I preserve the first failure before any restart and verify recovery at the consumer boundary.",
+  "weakAnswer": "Restart it because systemd is confused.",
+  "whyWeak": "The two observations are compatible, not contradictory. A restart can erase the failing state and repeat the defect without identifying which boundary failed.",
+  "evidence": [
+    {"signal": "MainPID is nonzero", "proves": "systemd currently associates a main process with the unit.", "doesNotProve": "That the process is progressing or serving."},
+    {"signal": "ActiveState is active", "proves": "The manager's current coarse state is active.", "doesNotProve": "Readiness or customer success."},
+    {"signal": "Readiness fails", "proves": "The defined readiness operation failed from that exact probe boundary.", "doesNotProve": "Which internal or downstream mechanism caused failure."}
+  ],
+  "followUps": [
+    {"prompt": "What if ss shows no listener?", "answer": "Inspect startup state, bind errors, configured address and port, privilege, address family, and network namespace. Absence narrows the path but does not identify the cause."},
+    {"prompt": "What if the listener exists?", "answer": "Test readiness from the intended boundary, inspect dependency timing, then test a safe user operation. A listener is a kernel socket, not application correctness."},
+    {"prompt": "When is restart reasonable?", "answer": "When it is an approved bounded recovery, the likely benefit exceeds evidence loss, minimum evidence is preserved, rollback exists, and success is verified beyond process existence."}
+  ],
+  "rubric": [
+    {"criterion": "Boundary separation", "points": 4, "observableEvidence": "Separates process, manager, listener, readiness, and user-operation claims."},
+    {"criterion": "Evidence path", "points": 4, "observableEvidence": "Uses identity-scoped manager, process, socket, log, and dependency evidence."},
+    {"criterion": "Safe decision", "points": 2, "observableEvidence": "Preserves evidence and defines rollback plus end-to-end success."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}
