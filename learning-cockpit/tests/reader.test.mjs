@@ -42,6 +42,7 @@ import { searchLessons } from "../app/search/search-index.ts";
 import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
 import { createCareerPrimerSearchDocuments } from "../app/search/career-search.ts";
 import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts";
+import { filterStagedDraftLibrary } from "../app/staged-draft-library-filter-core.ts";
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
@@ -1572,6 +1573,19 @@ test("career library filter keeps local chapter order and requires every query t
   assert.deepEqual(filterCareerPrimerLibrary(primers, "production kubernetes").map((item) => item.slug), ["kubernetes-production-interview-primer"]);
   assert.deepEqual(filterCareerPrimerLibrary(primers, "network terraform"), []);
   assert.deepEqual(filterCareerPrimerLibrary(primers, "").map((item) => item.slug), primers.map((item) => item.slug));
+});
+
+test("staged library filter searches structured metadata while preserving chapter order", () => {
+  const drafts = [
+    { slug: "linux-storage", id: "LES-0011", title: "Linux storage", searchValues: ["No space left on device", "df -i"] },
+    { slug: "kubernetes-debugging", id: "LES-0042", title: "Kubernetes debugging", searchValues: ["kubectl describe pod", "CrashLoopBackOff"] },
+    { slug: "terraform-state", id: "LES-0050", title: "Terraform state", searchValues: ["terraform plan", "state lock"] },
+  ];
+  assert.deepEqual(filterStagedDraftLibrary(drafts, "KUBERNETES, kubectl").map((item) => item.slug), ["kubernetes-debugging"]);
+  assert.deepEqual(filterStagedDraftLibrary(drafts, "no-space df-i").map((item) => item.slug), ["linux-storage"]);
+  assert.deepEqual(filterStagedDraftLibrary(drafts, "LES 0042").map((item) => item.slug), ["kubernetes-debugging"]);
+  assert.deepEqual(filterStagedDraftLibrary(drafts, "terraform crashloopbackoff"), []);
+  assert.deepEqual(filterStagedDraftLibrary(drafts, "").map((item) => item.slug), drafts.map((item) => item.slug));
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {

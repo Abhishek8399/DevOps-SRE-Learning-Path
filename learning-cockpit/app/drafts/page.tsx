@@ -1,8 +1,25 @@
 import Link from "next/link";
+import { createStagedDraftSearchDocuments } from "../search/staged-draft-search";
+import StagedDraftLibrary from "../staged-draft-library";
 import { groupStagedDrafts } from "../staged-draft-library-core";
 import { stagedDrafts } from "../staged-draft.server";
 
 export default function StagedDraftLibraryPage() {
-  const volumes = groupStagedDrafts(stagedDrafts);
-  return <main className="cockpit-shell" id="main-content"><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><b>Staged drafts</b></nav><header className="practice-page-heading"><p className="eyebrow">STAGED DRAFT LIBRARY</p><h1>Read the next chapters while their execution evidence is still being completed.</h1><p>These are complete teaching drafts from the repository. They are deliberately separate from the canonical book: a chapter can explain a real mechanism without claiming its local lab, a provider runtime, production behavior, or learner mastery has been verified.</p></header><section className="primer-library" aria-labelledby="staged-draft-list"><div className="section-heading"><div><p className="eyebrow">{stagedDrafts.length} CHAPTERS / {volumes.length} VOLUMES</p><h2 id="staged-draft-list">Follow the same system journey as the field manual.</h2><p className="section-intro">Use this shelf for reading and question-driven learning. The canonical library remains the source of validated, registered lessons.</p></div></div><nav aria-label="Jump to an extended-study volume" className="draft-volume-index">{volumes.map((volume) => <a href={`#draft-volume-${volume.number}`} key={volume.id}><span>VOLUME {volume.number}</span><strong>{volume.title}</strong><small>{volume.drafts.length} chapters</small></a>)}</nav>{volumes.map((volume) => <section aria-labelledby={`draft-volume-${volume.number}`} className="primer-library" key={volume.id}><div className="section-heading"><div><p className="eyebrow">VOLUME {volume.number} / {volume.drafts.length} STAGED CHAPTERS</p><h2 id={`draft-volume-${volume.number}`}>{volume.title}</h2></div></div><div className="primer-library-grid">{volume.drafts.map((draft) => <Link className="primer-library-card" href={`/drafts/${draft.slug}`} key={draft.slug}><span>{draft.lesson.metadata.id} · STAGED</span><strong>{draft.lesson.title}</strong><small>Open the reading preview -&gt;</small></Link>)}</div></section>)}</section></main>;
+  const documentsByHref = new Map(createStagedDraftSearchDocuments(stagedDrafts).map((document) => [document.href, document]));
+  const volumes = groupStagedDrafts(stagedDrafts).map((volume) => ({
+    id: volume.id,
+    number: volume.number,
+    title: volume.title,
+    drafts: volume.drafts.map((draft) => {
+      const document = documentsByHref.get(`/drafts/${draft.slug}`);
+      return {
+        slug: draft.slug,
+        id: draft.lesson.metadata.id,
+        title: draft.lesson.title,
+        searchValues: document?.fields.flatMap((field) => field.values) ?? [],
+      };
+    }),
+  }));
+
+  return <main className="cockpit-shell" id="main-content"><nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><b>Staged drafts</b></nav><header className="practice-page-heading"><p className="eyebrow">STAGED DRAFT LIBRARY</p><h1>Read the next chapters while their execution evidence is still being completed.</h1><p>These are complete teaching drafts from the repository. They are deliberately separate from the canonical book: a chapter can explain a real mechanism without claiming its local lab, a provider runtime, production behavior, or learner mastery has been verified.</p></header><StagedDraftLibrary volumes={volumes} /></main>;
 }

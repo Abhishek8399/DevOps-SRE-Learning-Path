@@ -1,11 +1,12 @@
 # Project Progress
 
-Last updated: 2026-09-01
+Last updated: 2026-09-02
 
 This file reports delivery of the repository and website. It does not award competency. Learner evidence and levels remain in `progress/ledger.md`.
 
 ## Latest verified change
 
+- 2026-09-02 / `PLAN-ARC-008`, `PLAN-WEB-003`, `PLAN-WEB-005`: added an offline in-place filter to the 66-chapter staged shelf. It searches the same structured IDs, aliases, titles, incident signals, commands, terms and guidance used by global search, requires every query token, preserves curriculum order and removes empty volume groups from the jump index. All 34 reader tests, typecheck, lint, content/registry validation, production build, budget and hygiene checks pass. `/drafts` returns HTTP 200 with its filter label, 66-chapter count, volume index and LES-0027 card. Browser typing, focus and responsive behavior remain unclaimed because no browser backend is connected.
 - 2026-09-02 / `PLAN-WEB-002`: completed the canonical chapter opener's estimated-lab-time field by summing declared lab durations and replacing a duplicated tested-baseline fact. All 21 canonical totals are positive integers from 25 to 330 minutes. Typecheck, lint, 33 reader tests, content/registry validation and production build pass; LES-0026 returns HTTP 200 with `330 minutes`, and its tested-workbench context remains present.
 - 2026-09-02 / `PLAN-WEB-002`: added one shared chapter operating-context panel to all 21 canonical structured lessons and 66 staged chapters, exposing tested workbenches, target roles, production signals, curriculum IDs and review dates already present in the source contract. The 87-source metadata sweep, typecheck, lint, 33 reader tests, production build, budget and hygiene gates pass. Canonical OBS-001 and staged OBS-002 routes return HTTP 200 with the complete panel. The first domain assertion was too literal about React comments and was corrected; Vinext also emitted a Windows shutdown assertion after the listener closed. No browser visual claim is made.
 - 2026-09-01 / `PLAN-WEB-004`: reconciled stale plan language with the already-implemented sepia reader theme. Source inspection confirms paper/night/sepia controls, allowlisted local restoration and sepia semantic tokens; four primary sepia text pairs remeasure between 5.80:1 and 10.84:1. No browser was connected, so theme switching, persistence and complete visual contrast remain open.
