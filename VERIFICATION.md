@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-303 - LES-0042 through LES-0046 Kubernetes publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-303` | 2026-09-02 | Kubernetes workloads, networking, storage, security/tenancy, and Helm/Kustomize release chapters | Content and registry report 46 lessons, 138 assessments and 489 references. Schema passes 39 tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and the five-stage production build pass. Forty-five canonical labs pass static safety inspection; no lab was executed. Web assets remain 592.6 KiB; all 1,226 references have zero overdue/errors; source hygiene has zero findings | `PASS` for canonical content publication | `CIC-001` was a stale alias and was corrected to canonical `CI-001`. The first reader update guessed the next draft directory incorrectly; using the exact checked-in LES-0047 path fixed both failures. Five verifier headers needed only `umask 077` to satisfy the static safety contract. No Ubuntu, Kubernetes cluster, CNI/CSI, Helm/Kustomize runtime, browser interaction, formal review, learner transfer or mastery is claimed. |
+
 ## VER-302 - LES-0037 through LES-0041 infrastructure publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |

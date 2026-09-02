@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes forty-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes forty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 41);
-  assert.equal(result.metrics.assessments, 123);
-  assert.equal(result.metrics.references, 414);
+  assert.equal(result.metrics.lessons, 46);
+  assert.equal(result.metrics.assessments, 138);
+  assert.equal(result.metrics.references, 489);
 
   const expectations = [
     {
@@ -1644,6 +1644,11 @@ test("the live structured corpus publishes forty-one lessons with exact ownershi
       ["LES-0039", "terraform-opentofu-modules-state-recovery", 3, ["LES-0038"], ["TFM-001"], 100, Array.from({ length: 15 }, (_, index) => 343 + index)],
       ["LES-0040", "ansible-configuration-management", 4, ["LES-0009", "LES-0011", "LES-0017", "LES-0039"], ["LNX-004", "AUT-001", "SCM-001", "TFM-002"], 103, Array.from({ length: 15 }, (_, index) => 358 + index)],
       ["LES-0041", "kubernetes-control-plane-reconciliation", 5, ["LES-0004", "LES-0009", "LES-0023"], ["NET-003", "SCM-001", "CTR-001"], 106, Array.from({ length: 15 }, (_, index) => 373 + index)],
+      ["LES-0042", "kubernetes-workloads-scheduling-rollouts", 6, ["LES-0012", "LES-0023", "LES-0041"], ["LNX-003", "CTR-001", "K8S-001"], 109, Array.from({ length: 15 }, (_, index) => 388 + index)],
+      ["LES-0043", "kubernetes-networking-services-dns-policy", 7, ["LES-0004", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0041", "LES-0042"], ["NET-003", "NET-004", "NET-005", "NET-006", "K8S-001", "K8S-002"], 112, Array.from({ length: 15 }, (_, index) => 403 + index)],
+      ["LES-0044", "kubernetes-storage-persistence-recovery", 8, ["LES-0006", "LES-0011", "LES-0023", "LES-0041", "LES-0042"], ["LNX-001", "LNX-006", "CTR-001", "K8S-001", "K8S-002"], 115, Array.from({ length: 15 }, (_, index) => 418 + index)],
+      ["LES-0045", "kubernetes-identity-rbac-admission-tenancy", 9, ["LES-0011", "LES-0016", "LES-0041", "LES-0042", "LES-0043"], ["LNX-004", "NET-006", "K8S-001", "K8S-002", "K8S-003"], 118, Array.from({ length: 15 }, (_, index) => 433 + index)],
+      ["LES-0046", "helm-kustomize-packaging-releases", 10, ["LES-0009", "LES-0024", "LES-0041", "LES-0042", "LES-0045"], ["SCM-001", "CI-001", "K8S-001", "K8S-002", "K8S-005"], 121, Array.from({ length: 15 }, (_, index) => 448 + index)],
     ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceNumbers]) => ({
       path: join(repositoryRoot, "book", "volumes", "05-infrastructure-platforms", `${id}-${slug}`, "lesson.md"),
       id, domain: "infrastructure", route: `/book/infrastructure/${slug}`, volume: "05-infrastructure-platforms", order,

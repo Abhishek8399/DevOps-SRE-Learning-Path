@@ -641,6 +641,11 @@ const liveLessonDescriptors = [
     ["LES-0039", "terraform-opentofu-modules-state-recovery", "V05-L03", "TFM-002", 3, ["LES-0038"], ["TFM-001"]],
     ["LES-0040", "ansible-configuration-management", "V05-L04", "CFG-001", 4, ["LES-0009", "LES-0011", "LES-0017", "LES-0039"], ["LNX-004", "AUT-001", "SCM-001", "TFM-002"]],
     ["LES-0041", "kubernetes-control-plane-reconciliation", "V05-L05", "K8S-001", 5, ["LES-0004", "LES-0009", "LES-0023"], ["NET-003", "SCM-001", "CTR-001"]],
+    ["LES-0042", "kubernetes-workloads-scheduling-rollouts", "V05-L06", "K8S-002", 6, ["LES-0012", "LES-0023", "LES-0041"], ["LNX-003", "CTR-001", "K8S-001"]],
+    ["LES-0043", "kubernetes-networking-services-dns-policy", "V05-L07", "K8S-003", 7, ["LES-0004", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0041", "LES-0042"], ["NET-003", "NET-004", "NET-005", "NET-006", "K8S-001", "K8S-002"]],
+    ["LES-0044", "kubernetes-storage-persistence-recovery", "V05-L08", "K8S-004", 8, ["LES-0006", "LES-0011", "LES-0023", "LES-0041", "LES-0042"], ["LNX-001", "LNX-006", "CTR-001", "K8S-001", "K8S-002"]],
+    ["LES-0045", "kubernetes-identity-rbac-admission-tenancy", "V05-L09", "K8S-005", 9, ["LES-0011", "LES-0016", "LES-0041", "LES-0042", "LES-0043"], ["LNX-004", "NET-006", "K8S-001", "K8S-002", "K8S-003"]],
+    ["LES-0046", "helm-kustomize-packaging-releases", "V05-L10", "K8S-006", 10, ["LES-0009", "LES-0024", "LES-0041", "LES-0042", "LES-0045"], ["SCM-001", "CI-001", "K8S-001", "K8S-002", "K8S-005"]],
   ].map(([id, slug, alias, curriculumId, order, prerequisiteLessonIds, prerequisiteCurriculumIds]) => ({
     id,
     path: join(repositoryRoot, "book", "volumes", "05-infrastructure-platforms", `${id}-${slug}`, "lesson.md"),
@@ -924,12 +929,12 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("forty-one live structured lessons preserve exact identities and canonical sections", () => {
+test("forty-six live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
-  assert.equal(bundles.length, 41);
+  assert.equal(bundles.length, 46);
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0001", "LES-0002", "LES-0003", "LES-0005", "LES-0004", "LES-0007", "LES-0008", "LES-0009", "LES-0006", ...Array.from({ length: 32 }, (_, index) => `LES-${String(index + 10).padStart(4, "0")}`)],
+    ["LES-0001", "LES-0002", "LES-0003", "LES-0005", "LES-0004", "LES-0007", "LES-0008", "LES-0009", "LES-0006", ...Array.from({ length: 37 }, (_, index) => `LES-${String(index + 10).padStart(4, "0")}`)],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -1141,7 +1146,7 @@ test("published legacy route and state identities remain immutable", () => {
   );
 });
 
-test("the volume-aware reader catalog publishes forty-one stable identities across six volumes", () => {
+test("the volume-aware reader catalog publishes forty-six stable identities across six volumes", () => {
   const linuxVolume = getReaderVolume("01-linux-systems");
   assert.deepEqual(getReaderVolume("04-reliability-operations"), {
     volumeId: "04-reliability-operations",
@@ -1181,7 +1186,7 @@ test("the volume-aware reader catalog publishes forty-one stable identities acro
     "LES-0005": "identity-permissions",
   });
 
-  assert.equal(catalog.length, 41);
+  assert.equal(catalog.length, 46);
   assert.deepEqual(
     catalog.map((entry) => [
       entry.canonicalId,
@@ -1229,11 +1234,16 @@ test("the volume-aware reader catalog publishes forty-one stable identities acro
       ["LES-0039", "LES-0039", "/book/infrastructure/terraform-opentofu-modules-state-recovery", "05-infrastructure-platforms", 3],
       ["LES-0040", "LES-0040", "/book/infrastructure/ansible-configuration-management", "05-infrastructure-platforms", 4],
       ["LES-0041", "LES-0041", "/book/infrastructure/kubernetes-control-plane-reconciliation", "05-infrastructure-platforms", 5],
+      ["LES-0042", "LES-0042", "/book/infrastructure/kubernetes-workloads-scheduling-rollouts", "05-infrastructure-platforms", 6],
+      ["LES-0043", "LES-0043", "/book/infrastructure/kubernetes-networking-services-dns-policy", "05-infrastructure-platforms", 7],
+      ["LES-0044", "LES-0044", "/book/infrastructure/kubernetes-storage-persistence-recovery", "05-infrastructure-platforms", 8],
+      ["LES-0045", "LES-0045", "/book/infrastructure/kubernetes-identity-rbac-admission-tenancy", "05-infrastructure-platforms", 9],
+      ["LES-0046", "LES-0046", "/book/infrastructure/helm-kustomize-packaging-releases", "05-infrastructure-platforms", 10],
     ],
   );
   for (const field of ["canonicalId", "stateId", "slug", "route"]) {
     const values = catalog.map((entry) => String(entry[field]));
-    assert.equal(new Set(values).size, 41, `${field} must be unique`);
+    assert.equal(new Set(values).size, 46, `${field} must be unique`);
   }
   assert.equal(new Set(catalog.map((entry) => entry.volumeId)).size, 6);
   const positions = catalog.map((entry) => `${entry.volumeId}:${entry.order}`);
@@ -1291,7 +1301,7 @@ test("the volume-aware reader catalog publishes forty-one stable identities acro
     () => resolveReaderPrerequisitesInCatalog(catalog, ["LES-9000"], []),
     /reader prerequisite LES-9000 is missing from the catalog/,
   );
-  assert.equal(new Set(positions).size, 41, "volume-local positions must be unique");
+  assert.equal(new Set(positions).size, 46, "volume-local positions must be unique");
   assert.equal(new Set(catalog.map((entry) => entry.order)).size, 11,
     "the same local order is valid in different volumes");
   assert.equal(catalog.find((entry) => entry.canonicalId === "LES-0007").availability,
@@ -1426,10 +1436,10 @@ test("an eight-entry v1 reading state gains canonical and extended lessons witho
   })));
 
   assert.equal(loaded.recoveredInvalidData, false);
-  const newCanonicalIds = Array.from({ length: 33 }, (_, index) =>
+  const newCanonicalIds = Array.from({ length: 38 }, (_, index) =>
     `LES-${String(index + 9).padStart(4, "0")}`);
-  const extendedIds = Array.from({ length: 51 }, (_, index) =>
-    `LES-${String(index + 42).padStart(4, "0")}`);
+  const extendedIds = Array.from({ length: 46 }, (_, index) =>
+    `LES-${String(index + 47).padStart(4, "0")}`);
   const newStateIds = [...newCanonicalIds, ...extendedIds];
   assert.deepEqual([...LEARNING_LIBRARY_LESSON_IDS], [...priorStateIds, ...newStateIds]);
   assert.deepEqual(
@@ -1491,7 +1501,7 @@ test("canonical and extended bookmarks and finished-reading markers never create
   }
 });
 
-test("the live production search set has forty-one unique lessons and stable golden rankings", () => {
+test("the live production search set has forty-six unique lessons and stable golden rankings", () => {
   const documents = liveProductionSearchDocuments();
   assert.deepEqual(
     documents.map((document) => document.id),
@@ -1537,10 +1547,15 @@ test("the live production search set has forty-one unique lessons and stable gol
       "LES-0039",
       "LES-0040",
       "LES-0041",
+      "LES-0042",
+      "LES-0043",
+      "LES-0044",
+      "LES-0045",
+      "LES-0046",
     ],
   );
-  assert.equal(new Set(documents.map((document) => document.id)).size, 41);
-  assert.equal(new Set(documents.map((document) => document.href)).size, 41);
+  assert.equal(new Set(documents.map((document) => document.id)).size, 46);
+  assert.equal(new Set(documents.map((document) => document.href)).size, 46);
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeNumber, "00");
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeTitle, "Start safely");
   assert.equal(documents.find((document) => document.id === "LES-0008")?.volumeNumber, "00");
@@ -1654,6 +1669,11 @@ test("the live production search set has forty-one unique lessons and stable gol
     ["modules state recovery", "LES-0039"],
     ["ansible configuration management", "LES-0040"],
     ["kubernetes control plane reconciliation", "LES-0041"],
+    ["workloads scheduling rollouts", "LES-0042"],
+    ["services dns network policy", "LES-0043"],
+    ["storage persistence recovery", "LES-0044"],
+    ["rbac admission tenancy", "LES-0045"],
+    ["helm kustomize packaging releases", "LES-0046"],
   ]);
   for (const [query, expectedId] of goldenQueries) {
     const results = searchLessons(documents, query);
@@ -1722,7 +1742,7 @@ test("every staged draft preview has parseable lesson, assessment, and reference
       }
     })
     .sort();
-  assert.equal(lessonFiles.length, 51);
+  assert.equal(lessonFiles.length, 46);
   const stagedReferencePaths = new Map();
   for (const file of lessonFiles) {
     const referencesDirectory = join(dirname(file), "support", "references");
@@ -1775,7 +1795,7 @@ test("every staged draft preview has parseable lesson, assessment, and reference
   }
   const extendedVolumes = groupStagedDrafts(parsedDrafts);
   assert.equal(extendedVolumes.length, 10);
-  assert.equal(extendedVolumes.reduce((total, volume) => total + volume.drafts.length, 0), 51);
+  assert.equal(extendedVolumes.reduce((total, volume) => total + volume.drafts.length, 0), 46);
 });
 
 test("a malformed staged draft identifies its source directory", () => {
@@ -1786,7 +1806,7 @@ test("a malformed staged draft identifies its source directory", () => {
 });
 
 test("staged draft parsing preserves exact declared reference order", () => {
-  const slug = "LES-0042-kubernetes-workloads-scheduling-rollouts";
+  const slug = "LES-0047-kubernetes-operators-custom-resources-admission";
   const draftDirectory = join(repositoryRoot, "drafts", slug);
   const source = readFileSync(join(draftDirectory, "lesson.md"), "utf8");
   const lesson = parseStructuredLesson(source);
@@ -1803,14 +1823,14 @@ test("staged draft parsing preserves exact declared reference order", () => {
 });
 
 test("staged draft previews are locally searchable without joining the canonical registry", () => {
-  const raw = readFileSync(join(repositoryRoot, "drafts", "LES-0042-kubernetes-workloads-scheduling-rollouts", "lesson.md"), "utf8");
+  const raw = readFileSync(join(repositoryRoot, "drafts", "LES-0047-kubernetes-operators-custom-resources-admission", "lesson.md"), "utf8");
   const documents = createStagedDraftSearchDocuments([{
-    slug: "LES-0042-kubernetes-workloads-scheduling-rollouts",
+    slug: "LES-0047-kubernetes-operators-custom-resources-admission",
     lesson: parseStructuredLesson(raw),
   }]);
-  assert.equal(documents[0].href, "/drafts/LES-0042-kubernetes-workloads-scheduling-rollouts");
-  assert.equal(documents[0].id, "draft-LES-0042");
-  assert.equal(searchLessons(documents, "workloads scheduling rollouts")[0]?.document.id, "draft-LES-0042");
+  assert.equal(documents[0].href, "/drafts/LES-0047-kubernetes-operators-custom-resources-admission");
+  assert.equal(documents[0].id, "draft-LES-0047");
+  assert.equal(searchLessons(documents, "operators custom resources admission")[0]?.document.id, "draft-LES-0047");
 });
 
 test("staged draft library groups chapters in curriculum volume order", () => {
@@ -1910,7 +1930,7 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
   assert.equal(record.includes("\r"), false);
 });
 
-test("all forty-one independent transfers stay answer-isolated from their answered records", () => {
+test("all forty-six independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
     ["LES-0001", "ASM-0273"],
     ["LES-0002", "ASM-0264"],
@@ -1953,6 +1973,11 @@ test("all forty-one independent transfers stay answer-isolated from their answer
     ["LES-0039", "ASM-0102"],
     ["LES-0040", "ASM-0105"],
     ["LES-0041", "ASM-0108"],
+    ["LES-0042", "ASM-0111"],
+    ["LES-0043", "ASM-0114"],
+    ["LES-0044", "ASM-0117"],
+    ["LES-0045", "ASM-0120"],
+    ["LES-0046", "ASM-0123"],
   ]);
   for (const { lesson, assessments } of loadLiveStructuredBundles()) {
     const independent = assessments.filter((assessment) =>

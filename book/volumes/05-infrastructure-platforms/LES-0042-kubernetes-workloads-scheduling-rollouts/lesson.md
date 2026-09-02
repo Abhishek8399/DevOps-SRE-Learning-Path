@@ -72,8 +72,8 @@
     {"id":"LES-0042-CMD-012","question":"Does the model cover eight boundaries and cleanup?","risk":"mutating-bounded","command":"bash verify.sh","runFrom":"LES-0042 support/lab","expectedBranches":[{"when":"verification pass","meaning":"model passed","nextEvidence":"retain model-only label"},{"when":"assertion fails","meaning":"candidate rejected","nextEvidence":"preserve first failure"}],"proves":"deterministic model","doesNotProve":"Kubernetes runtime","cleanup":"verifier proves absence"}
   ],
   "labs": [
-    {"id":"LES-0042-LAB-001","title":"Guided workload-state model","mode":"guided","environment":"Ubuntu 24.04 normal user, Bash and Python 3; no cluster","timeMinutes":210,"privilege":"normal user; root refused","network":"none","changes":["one UID-scoped temp root","eight deterministic cases"],"abortConditions":["root","network","kubectl","symlink","wrong owner","unknown artifact"],"recovery":"Preserve first failure and rerun clean.","cleanupProof":"Validate exact inventory and remove exact root.","path":"drafts/LES-0042-kubernetes-workloads-scheduling-rollouts/support/lab"},
-    {"id":"LES-0042-LAB-002","title":"Independent pinned local-cluster transfer","mode":"independent","environment":"Reviewer-owned disposable cluster, preloaded image and dedicated namespace","timeMinutes":240,"privilege":"namespace-scoped learner","network":"loopback/local only","changes":["workload controllers","resource and probe faults","PDB and HPA"],"abortConditions":["wrong context","cluster-admin","external pull","hostPath","privileged","unbounded load"],"recovery":"Preserve evidence and recover through owner controller.","cleanupProof":"Reviewer proves namespace, credentials and cluster absent.","path":"drafts/LES-0042-kubernetes-workloads-scheduling-rollouts/support/lab"}
+    {"id":"LES-0042-LAB-001","title":"Guided workload-state model","mode":"guided","environment":"Ubuntu 24.04 normal user, Bash and Python 3; no cluster","timeMinutes":210,"privilege":"normal user; root refused","network":"none","changes":["one UID-scoped temp root","eight deterministic cases"],"abortConditions":["root","network","kubectl","symlink","wrong owner","unknown artifact"],"recovery":"Preserve first failure and rerun clean.","cleanupProof":"Validate exact inventory and remove exact root.","path":"book/labs/LES-0042-kubernetes-workloads-scheduling-rollouts"},
+    {"id":"LES-0042-LAB-002","title":"Independent pinned local-cluster transfer","mode":"independent","environment":"Reviewer-owned disposable cluster, preloaded image and dedicated namespace","timeMinutes":240,"privilege":"namespace-scoped learner","network":"loopback/local only","changes":["workload controllers","resource and probe faults","PDB and HPA"],"abortConditions":["wrong context","cluster-admin","external pull","hostPath","privileged","unbounded load"],"recovery":"Preserve evidence and recover through owner controller.","cleanupProof":"Reviewer proves namespace, credentials and cluster absent.","path":"book/labs/LES-0042-kubernetes-workloads-scheduling-rollouts"}
   ],
   "incidents": [
     {"id":"LES-0042-INC-001","signal":"Pending with empty nodeName.","firstThought":"No binding exists.","safePath":"Inspect scheduler reasons, requests and all hard constraints.","trap":"Restart kubelet."},
@@ -206,7 +206,7 @@ For impossible placement, restarts change nothing. For a bad revision with healt
 The lab is a deterministic model, not Kubernetes. It covers eight cases: excessive request, impossible constraints, image pull failure, crash loop, OOM kill, Running/not Ready, stalled rollout and HPA scale intent with no placement capacity.
 
 ```bash
-cd drafts/LES-0042-kubernetes-workloads-scheduling-rollouts/support/lab
+cd book/labs/LES-0042-kubernetes-workloads-scheduling-rollouts
 bash lab.sh doctor
 bash lab.sh setup
 bash lab.sh list

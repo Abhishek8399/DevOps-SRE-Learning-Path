@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+umask 077
 IFS=$'\n\t'
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"; LAB="${SCRIPT_DIR}/lab.sh"; ROOT="/tmp/reliability-atlas-les0042-model-$(id -u)"
 [[ "$(id -u)" -gt 0 ]] || { printf 'verification=fail reason=root-refused\n' >&2; exit 1; }

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+umask 077
 D="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"; L="$D/lab.sh"; R="/tmp/reliability-atlas-les0043-model-$(id -u)"
 [[ "$(id -u)" -gt 0 && ! -e "$R" && ! -L "$R" ]]||exit 1; bash "$L" setup>/dev/null; bash "$L" verify-cases
 if bash "$L" diagnose-as dns-nxdomain service-dataplane>/dev/null 2>&1; then exit 1; fi
