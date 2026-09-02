@@ -3,6 +3,17 @@ export const mockAreas = ["Incident response", "Reliability", "Platform design",
 
 export type MockRole = (typeof mockRoles)[number];
 export type MockArea = (typeof mockAreas)[number];
+export type MockDifficulty = "Intermediate" | "Advanced" | "Expert";
+export type MockExpectedLevel = "Mid-level" | "Senior" | "Lead" | "Architect";
+
+type MockQuestionGuidance = Readonly<{
+  topic: string;
+  difficulty: MockDifficulty;
+  expectedLevel: MockExpectedLevel;
+  weakAnswerWarnings: readonly string[];
+  deeperExplanation: string;
+  productionExample: string;
+}>;
 
 export type MockQuestion = Readonly<{
   id: string;
@@ -12,9 +23,11 @@ export type MockQuestion = Readonly<{
   evaluator: string;
   strongAnswer: string;
   followUps: readonly string[];
-}>;
+}> & MockQuestionGuidance;
 
-export const mockQuestions: readonly MockQuestion[] = [
+type MockQuestionCore = Omit<MockQuestion, keyof MockQuestionGuidance>;
+
+const mockQuestionCores = [
   {
     id: "sre-user-journey",
     role: "SRE",
@@ -168,7 +181,153 @@ export const mockQuestions: readonly MockQuestion[] = [
     strongAnswer: "I begin with the supported user journeys and classify what is truly common: identity, build provenance, deployment interface, observability, policy and lifecycle. I map tenant trust, data classification, resource isolation, regulatory boundaries, operational support tier and recovery objectives. The platform exposes versioned self-service contracts with validated inputs, least-privilege defaults, quotas, audit, asynchronous status and an exception path; it does not silently turn every team into an administrator. I choose isolation boundaries appropriate to the risk—namespace, account/project, cluster, network, key or control plane—and make their limits clear. I measure adoption, time to safe capability, support load, reliability and cost, then evolve the product with migration tooling instead of forcing a one-time rewrite.",
     followUps: ["When is a separate cluster or account justified over a namespace boundary?", "How do you prevent the exception path from becoming the real platform API?"],
   },
-];
+] as const satisfies readonly MockQuestionCore[];
+
+type MockQuestionId = (typeof mockQuestionCores)[number]["id"];
+
+const mockQuestionGuidance = {
+  "sre-user-journey": {
+    topic: "Regional SLI blind spots",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Treats a green aggregate SLO as proof that users are healthy.", "Changes global routing before checking capacity, state, and rollback boundaries."],
+    deeperExplanation: "An SLO is a deliberately chosen measurement, not reality itself. Slice the journey by region and cohort, then test whether telemetry loss or aggregation has removed affected requests from the denominator before trusting the green result.",
+    productionExample: "A regional payment dependency can fail while a global availability ratio stays above target because healthy regions dominate the denominator or failed client attempts never reach server telemetry.",
+  },
+  "sre-error-budget": {
+    topic: "Error-budget release governance",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Uses the budget as an automatic deploy/no-deploy switch without checking data validity.", "Makes an exception without an owner, expiry, rollback trigger, or customer-risk statement."],
+    deeperExplanation: "The budget converts an agreed reliability objective into consumable risk. A senior answer validates the measurement and burn horizon, then applies policy with explicit exception authority instead of treating one dashboard number as a universal law.",
+    productionExample: "A low-traffic service may show a dramatic short-window burn from a few errors; the release decision should combine multi-window burn, sample size, change risk, and rollback speed.",
+  },
+  "sre-incident-command": {
+    topic: "Multi-region incident command",
+    difficulty: "Expert",
+    expectedLevel: "Lead",
+    weakAnswerWarnings: ["Lets multiple teams mutate production concurrently without one decision queue.", "Declares recovery when the main alert clears but payment outcomes remain unverified."],
+    deeperExplanation: "Incident command is a coordination system, not the title of the fastest debugger. It protects decision quality by separating command, investigation, communication, and recording while maintaining one visible mutation history.",
+    productionExample: "Traffic reduction can lower request errors while queued payment retries continue failing; customer-boundary verification and backlog observation are required before closure.",
+  },
+  "platform-golden-path": {
+    topic: "Golden-path adoption and platform product design",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Blames developers or mandates adoption without measuring their journey.", "Removes safety controls without separating essential policy from accidental friction."],
+    deeperExplanation: "A golden path wins when it is the easiest safe route for a supported job. Measure time-to-capability, failure recovery, support load, bypass reasons, and unsupported needs; adoption alone can rise while outcomes worsen.",
+    productionExample: "Teams may bypass a portal because its deployment status is opaque even when execution speed is acceptable; exposing asynchronous status and actionable failure ownership can remove the real friction.",
+  },
+  "platform-kubernetes": {
+    topic: "Kubernetes rollout failure isolation",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Reads only current container logs and ignores events, previous logs, and rollout identity.", "Restarts Pods repeatedly without distinguishing configuration, policy, scheduling, and runtime causes."],
+    deeperExplanation: "CrashLoopBackOff is backoff behavior after repeated container termination, not a root cause. Trace desired revision through admission, scheduling, mounts, runtime exit, probes, and Service endpoints, preserving the failed identity for comparison.",
+    productionExample: "A Secret key rename can let admission and scheduling succeed but make the process exit immediately; `kubectl describe`, resolved Pod configuration, and previous logs separate this from OOM termination.",
+  },
+  "devops-supply-chain": {
+    topic: "Delivery supply-chain trust",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Adds a scanner while leaving mutable artifact identity and broad credentials unchanged.", "Assumes an SBOM proves the artifact is authorized or uncompromised."],
+    deeperExplanation: "Trust must bind source, workflow, builder, artifact digest, authorization, and deployment evidence. Each control answers a different question; inventory, provenance, signature verification, and policy are complementary rather than interchangeable.",
+    productionExample: "A correctly scanned image referenced by a mutable tag can be replaced after approval; digest-bound promotion prevents the reviewed and deployed subjects from silently diverging.",
+  },
+  "cloud-networking": {
+    topic: "Private cloud connection timeouts",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Stops after DNS resolution and concludes the network path is healthy.", "Opens broad firewall access before proving direction, return path, listener, and identity."],
+    deeperExplanation: "A connection crosses independent authorities: name resolution, route selection, stateful policy, translation, listener, TLS, and application authorization. Test the exact source/destination tuple and preserve directionality.",
+    productionExample: "A private endpoint name may resolve correctly while a subnet route or return security rule drops SYN-ACK traffic, producing a timeout rather than a DNS error.",
+  },
+  "sre-data-freshness": {
+    topic: "Data correctness versus job success",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Treats scheduler success as proof of complete and correct data.", "Backfills directly into the published destination without isolated reproduction or idempotent reconciliation."],
+    deeperExplanation: "Pipeline availability and data correctness are different service properties. Establish authoritative interval, schema, row-count, completeness, lineage, and publication contracts before changing or replaying state.",
+    productionExample: "A left join can silently become an inner join after a filter change, producing a green task with fewer revenue rows; an independent source-total control catches the semantic loss.",
+  },
+  "platform-policy-exception": {
+    topic: "Admission-policy exception safety",
+    difficulty: "Expert",
+    expectedLevel: "Lead",
+    weakAnswerWarnings: ["Disables enforcement globally to restore one workload.", "Creates an exception without scope, owner, expiry, compensating controls, or audit evidence."],
+    deeperExplanation: "Policy is a production dependency with versions and failure modes. The response must preserve the invariant where possible, distinguish a defective rule from a violating workload, and make temporary authority expire safely.",
+    productionExample: "A policy rollout that rejects a newly required safe field may need revision rollback, while a privileged-container request needs a narrow time-bound exception or workload redesign—not global enforcement removal.",
+  },
+  "devops-migration-release": {
+    topic: "Progressive delivery with data migration",
+    difficulty: "Expert",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Promotes because error rate is low while ignoring latency and saturation.", "Assumes application rollback also reverses schema changes and valid writes safely."],
+    deeperExplanation: "A release with persistent data changes has asymmetric reversibility. Expand/contract compatibility, write ownership, backfill load, connection budgets, and roll-forward paths must be designed before rollout rather than improvised during failure.",
+    productionExample: "Adding a populated column or index can hold locks and exhaust connections even when requests eventually succeed; pausing exposure and containing migration concurrency protects the service.",
+  },
+  "cloud-eks-capacity": {
+    topic: "EKS scheduling and multidimensional capacity",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Adds nodes before reading scheduler events and Pod constraints.", "Models capacity only as CPU while ignoring IPs, quotas, topology, storage, and bootstrap time."],
+    deeperExplanation: "Pending means the scheduler has not found an admissible placement. Capacity is the intersection of requests, constraints, allocatable resources, network addresses, volumes, quotas, policy, and autoscaler reachability.",
+    productionExample: "Nodes can show low CPU while a Pod remains Pending because its requested memory, required zone, taint tolerance, or subnet IP supply makes every candidate infeasible.",
+  },
+  "infrastructure-host-contention": {
+    topic: "Private-cloud noisy-neighbor diagnosis",
+    difficulty: "Advanced",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Uses cluster averages that hide a single saturated failure domain.", "Evacuates all VMs without checking destination, storage, and network headroom."],
+    deeperExplanation: "A VM observes virtual resources while the hypervisor schedules shared physical CPU, memory, storage, and network. Correlate guest symptoms with host-level contention and placement before choosing containment.",
+    productionExample: "A backup workload can saturate one datastore queue, increasing tail latency for colocated VMs while fleet-wide CPU and latency averages remain normal.",
+  },
+  "data-stream-replay": {
+    topic: "Streaming replay and side-effect identity",
+    difficulty: "Expert",
+    expectedLevel: "Senior",
+    weakAnswerWarnings: ["Claims exactly-once without naming the source, checkpoint, sink, and external effect boundary.", "Replays an unbounded range before proving durable idempotency and reconciliation."],
+    deeperExplanation: "Checkpoint consistency governs captured processing state, but an external notification may commit outside that transaction. End-to-end safety requires stable event/effect identity and a durable record of what was applied.",
+    productionExample: "A worker can send a notification and crash before checkpoint completion; after restart the event is processed again unless the notification effect is keyed and reconciled.",
+  },
+  "lead-incident-decision": {
+    topic: "Incident decision leadership",
+    difficulty: "Expert",
+    expectedLevel: "Lead",
+    weakAnswerWarnings: ["Personally approves and investigates every action, becoming the bottleneck.", "Allows debate without a decision deadline, parallel evidence tasks, or one mutation owner."],
+    deeperExplanation: "Leadership under uncertainty creates a decision structure that lets specialists work in parallel while production changes remain serialized and reversible. The leader owns clarity and escalation, not every command.",
+    productionExample: "One investigator can validate database rollback safety while another checks dependency health; the incident commander chooses from timestamped evidence and keeps stakeholders updated.",
+  },
+  "lead-reliability-prioritization": {
+    topic: "Reliability portfolio prioritization",
+    difficulty: "Expert",
+    expectedLevel: "Lead",
+    weakAnswerWarnings: ["Ranks work only by incident count, executive urgency, or engineering preference.", "Commits all capacity to roadmap work and pretends interrupts will not occur."],
+    deeperExplanation: "A reliability portfolio balances user risk, mandatory obligations, recurring operational load, strategic leverage, dependencies, and uncertainty. Each investment needs a baseline and an outcome measure, not just completion of tickets.",
+    productionExample: "Automating a noisy but harmless task may save hours, while fixing one silent checkout-corruption path protects more user value; transparent criteria make that trade-off defensible.",
+  },
+  "architect-multi-region-consistency": {
+    topic: "Multi-region order correctness",
+    difficulty: "Expert",
+    expectedLevel: "Architect",
+    weakAnswerWarnings: ["Names active-active or a global database before defining operation semantics and failure assumptions.", "Describes failover without fencing the old writer or reconciling ambiguous attempts."],
+    deeperExplanation: "Architecture begins with invariants and failure semantics. Availability, latency, consistency, duplicate handling, data locality, and recovery authority constrain the topology; no replication product removes those trade-offs.",
+    productionExample: "During a partition, two regions accepting the same order key can duplicate payment unless ownership, idempotency, and conflict handling are explicit and tested through failback.",
+  },
+  "architect-platform-boundaries": {
+    topic: "Multi-tenant platform boundaries",
+    difficulty: "Expert",
+    expectedLevel: "Architect",
+    weakAnswerWarnings: ["Equates a shared platform with one shared cluster for every workload.", "Designs only the portal UI and leaves tenancy, lifecycle, support, and exception authority implicit."],
+    deeperExplanation: "A platform is a portfolio of versioned capabilities with different trust and failure boundaries. Isolation choices should follow workload risk and operational ownership, while migration paths keep the product evolvable.",
+    productionExample: "Low-risk stateless services may share namespace-based controls, while regulated data or independent upgrade requirements can justify separate accounts, clusters, keys, or control planes.",
+  },
+} satisfies Record<MockQuestionId, MockQuestionGuidance>;
+
+export const mockQuestions: readonly MockQuestion[] = mockQuestionCores.map((question) => ({
+  ...question,
+  ...mockQuestionGuidance[question.id],
+}));
 
 export function questionsForRole(role: MockRole): readonly MockQuestion[] {
   return mockQuestions.filter((question) => question.role === role);

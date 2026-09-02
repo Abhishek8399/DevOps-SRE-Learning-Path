@@ -1590,6 +1590,14 @@ test("staged library filter searches structured metadata while preserving chapte
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {
+  assert.equal(mockQuestions.length, 17);
+  assert.equal(new Set(mockQuestions.map((question) => question.id)).size, mockQuestions.length);
+  assert.equal(mockQuestions.every((question) => question.topic.trim().length > 0), true);
+  assert.equal(mockQuestions.every((question) => ["Intermediate", "Advanced", "Expert"].includes(question.difficulty)), true);
+  assert.equal(mockQuestions.every((question) => ["Mid-level", "Senior", "Lead", "Architect"].includes(question.expectedLevel)), true);
+  assert.equal(mockQuestions.every((question) => question.weakAnswerWarnings.length >= 2 && question.weakAnswerWarnings.every(Boolean)), true);
+  assert.equal(mockQuestions.every((question) => question.deeperExplanation.length >= 120), true);
+  assert.equal(mockQuestions.every((question) => question.productionExample.length >= 100), true);
   assert.equal(questionsForRole("SRE").length, 4);
   assert.equal(questionsForRole("Platform engineer").every((question) => question.role === "Platform engineer"), true);
   assert.equal(questionsForRole("Infrastructure engineer").length, 1);

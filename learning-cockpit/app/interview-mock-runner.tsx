@@ -75,6 +75,7 @@ export default function InterviewMockRunner() {
     <article className="mock-question">
       <p className="mode-kicker">{role.toUpperCase()} / {area.toUpperCase()} / QUESTION {questionIndex + 1} OF {questions.length}</p>
       <h3>{question.prompt}</h3>
+      <dl className="mock-question-meta"><div><dt>Topic</dt><dd>{question.topic}</dd></div><div><dt>Difficulty</dt><dd>{question.difficulty}</dd></div><div><dt>Expected level</dt><dd>{question.expectedLevel}</dd></div></dl>
       <p><strong>What the interviewer is evaluating:</strong> {question.evaluator}</p>
       <label htmlFor="mock-response">Your spoken-answer outline or written response</label>
       <textarea id="mock-response" maxLength={12000} onChange={(event) => setResponse(event.target.value)} placeholder="Frame impact, map the path, state your evidence, choose the smallest safe move, and explain verification." value={response} />
@@ -86,6 +87,9 @@ export default function InterviewMockRunner() {
       <details onToggle={(event) => setAnswerVisible((event.currentTarget as HTMLDetailsElement).open)}>
         <summary>Reveal a strong-answer model</summary>
         <p>{question.strongAnswer}</p>
+        <h4>Why this reasoning works</h4><p>{question.deeperExplanation}</p>
+        <h4>Production example</h4><p>{question.productionExample}</p>
+        <h4>Weak-answer warning signs</h4><ul className="mock-warning-list">{question.weakAnswerWarnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
         <h4>Senior follow-ups</h4><ul>{question.followUps.map((followUp) => <li key={followUp}>{followUp}</li>)}</ul>
       </details>
       <div className="mock-actions"><button onClick={nextQuestion} type="button">Next question -&gt;</button><button className="load-note" disabled={running} onClick={exportRecord} type="button">Export private practice record</button></div>
