@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1225",
+  "title": "RFC 9293 — Transmission Control Protocol", "organization": "IETF",
+  "url": "https://www.rfc-editor.org/rfc/rfc9293.html", "sourceType": "standard", "versionOrDate": "RFC 9293, August 2022",
+  "lessonIds": ["LES-0004"], "topics": ["TCP", "connection state", "reset", "retransmission"],
+  "relevance": "Internet Standard defining TCP behavior and terminology used to distinguish transport evidence from application semantics.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

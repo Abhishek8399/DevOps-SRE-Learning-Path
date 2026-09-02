@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1221",
+  "title": "ip-route(8) — routing table management and route lookup", "organization": "iproute2 project",
+  "url": "https://man7.org/linux/man-pages/man8/ip-route.8.html", "sourceType": "manual", "versionOrDate": "iproute2 manual, reviewed 2026-09-02",
+  "lessonIds": ["LES-0004"], "topics": ["route lookup", "source address", "next hop", "policy routing"],
+  "relevance": "Primary manual for interpreting local route lookup output without treating it as packet-delivery proof.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1223",
+  "title": "curl command-line manual", "organization": "curl project",
+  "url": "https://curl.se/docs/manpage.html", "sourceType": "manual", "versionOrDate": "curl upstream manual, reviewed 2026-09-02",
+  "lessonIds": ["LES-0004"], "topics": ["HTTP client", "verbose output", "timeouts", "write-out timing"],
+  "relevance": "Upstream manual for bounded client requests, protocol diagnostics, and client-observed timing variables.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

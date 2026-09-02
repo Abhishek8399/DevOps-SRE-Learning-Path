@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0275",
+  "lessonId": "LES-0004",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "One Kubernetes Pod times out reaching a Service; node access and healthy Pods work, while direct endpoint access from the affected Pod succeeds. Lead the investigation.",
+  "directAnswer": "Preserve the affected Pod, control differences between direct and Service requests, then compare Pod identity/DNS/route/policies with healthy peers and inspect Service identity, ports, selectors, EndpointSlices, proxy or eBPF translation, node dataplane, destination policy/listener, and application evidence. Direct success focuses the search but does not prove translation is the cause.",
+  "foundation": "A node and Pod use different network contexts. A Kubernetes Service is a virtual identity translated toward ready endpoints; NetworkPolicy and CNI behavior depend on labels, namespaces, nodes, and implementation.",
+  "reasoningSteps": ["Frame affected operation, Pod/revision/node/labels/service account/sidecar, timer, and recent change.", "Compare affected and healthy Pods on same and different nodes.", "Verify DNS/address family and route within the affected namespace.", "Evaluate selected egress and ingress policies.", "Check Service cluster IP, protocol, port, targetPort, selectors, EndpointSlices, readiness, and topology.", "Control hostname, TLS, source/destination identity, and policy differences in direct versus Service tests.", "Inspect CNI/proxy/eBPF/conntrack only where the scope points, then destination arrival/listener/app.", "Use one reversible correction and verify Service/user journey across cohorts."],
+  "seniorAnswer": "I treat direct endpoint success as evidence that one destination path can work, not proof the application or all policy is healthy. The Service test changes destination identity and possibly port, hostname, TLS, NAT and policy. I preserve the Pod, compare peers, validate Service-to-EndpointSlice mapping, and locate the last observed boundary in node dataplane only if scope follows a node. I avoid flushing conntrack or restarting cluster components without an owned hypothesis and rollback.",
+  "weakAnswer": "Restart kube-proxy and CoreDNS on every node.",
+  "whyWeak": "It changes unrelated state, destroys evidence, assumes two components despite successful DNS/direct access, and lacks safety or verification.",
+  "evidence": [{"signal": "direct endpoint succeeds", "proves": "That controlled endpoint request can traverse its specific path.", "doesNotProve": "Service translation, identical hostname/TLS/policy, or every backend."}, {"signal": "only Pods on one node fail", "proves": "Failure correlates with node placement.", "doesNotProve": "CNI cause without config/packet/state evidence."}, {"signal": "Service has no ready EndpointSlices", "proves": "The observed Service has no ready endpoints in that view.", "doesNotProve": "Why readiness failed or that a gateway cannot synthesize a response."}],
+  "followUps": [{"prompt": "Why preserve the Pod?", "answer": "Restart changes namespace, address, placement, connection and dataplane state and may erase the divergent evidence."}, {"prompt": "When inspect conntrack?", "answer": "After scope and packet/state evidence support translation or state-table failure, with bounded read-first and approved action."}, {"prompt": "How verify?", "answer": "Repeat the exact Service user operation across affected and healthy cohorts while checking correctness, latency, errors, retries, and stability."}],
+  "rubric": [{"criterion": "Kubernetes path", "points": 5, "observableEvidence": "Maps Pod, DNS, policy, Service, EndpointSlice, dataplane, destination, and app."}, {"criterion": "Comparison and ambiguity", "points": 5, "observableEvidence": "Controls direct/Service and cohort differences without overclaiming."}, {"criterion": "Safety", "points": 5, "observableEvidence": "Preserves evidence and avoids broad restarts/flushes/policy changes."}, {"criterion": "Recovery and prevention", "points": 5, "observableEvidence": "Uses predicted reversible action, user verification, and conformance/observability."}],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0276",
+  "lessonId": "LES-0004",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "Diagnose a reviewer-supplied unfamiliar client/proxy/server request-path evidence package without mutation or a model answer.",
+  "deliverables": ["A sanitized request identity and environment card with client/namespace, hostname/address/port/path, timer, cohort, time, and authorization.", "An annotated forward and return path with boundaries and owners.", "A timeline naming last successful and first failed gates.", "Normalized DNS, route, transport, TLS, HTTP, proxy, application, and dependency evidence with proof limits.", "At least four hypotheses with supporting, rejecting, and missing evidence.", "One bounded proposed recovery with prediction, authority, security invariant, maximum scope, abort, rollback, user verification, and prevention.", "Assistance and evidence-redaction disclosure."],
+  "evidenceRequirements": ["Begin from the failing client namespace and use healthy peers as comparisons.", "Name the exact timer and do not collapse refusal, reset, TLS alert, HTTP status, and timeout.", "Identify the actual HTTP/TLS responder before assigning application cause.", "Do not run external probes, captures, restarts, DNS/route/firewall/policy changes, conntrack flushes, or cluster/cloud mutations.", "Do not inspect this assessment implementation or a model diagnosis before submission."],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [{"criterion": "Safety and provenance", "points": 4, "observableEvidence": "Preserves request identity, context, sensitivity, authorization, and no-mutation boundary."}, {"criterion": "Request-path model", "points": 4, "observableEvidence": "Correctly maps name, route, policy, transport, TLS, HTTP, app, dependency, and response."}, {"criterion": "Evidence reasoning", "points": 4, "observableEvidence": "Finds last success/first failure and uses controls/proof limits."}, {"criterion": "Recovery judgment", "points": 4, "observableEvidence": "Designs one reversible secure action with user verification."}, {"criterion": "Production transfer", "points": 4, "observableEvidence": "Separates fixture facts from Kubernetes, cloud, hybrid, and mesh method."}],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

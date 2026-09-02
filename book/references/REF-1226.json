@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1226",
+  "title": "RFC 9110 — HTTP semantics", "organization": "IETF",
+  "url": "https://www.rfc-editor.org/rfc/rfc9110.html", "sourceType": "standard", "versionOrDate": "RFC 9110, June 2022",
+  "lessonIds": ["LES-0004"], "topics": ["HTTP", "methods", "status codes", "intermediaries"],
+  "relevance": "Internet Standard for HTTP request/response semantics and status-code interpretation at responding components.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

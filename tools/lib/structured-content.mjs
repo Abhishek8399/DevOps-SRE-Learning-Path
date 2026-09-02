@@ -94,6 +94,18 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   DST: "06-state-distributed-systems",
 });
 
+// LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its
+// canonical Volume 02 home. Moving it would break its route, navigation order,
+// aliases, search identity, and browser-local state. Permit only that complete,
+// permanently reserved legacy identity; every new or drifted record still uses
+// the canonical prefix rule below.
+const legacyCurriculumVolumeExceptions = Object.freeze({
+  "LES-0004": Object.freeze({
+    curriculumId: "NET-003",
+    volume: "01-linux-systems",
+  }),
+});
+
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -1901,7 +1913,17 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
       const curriculumPrefix = typeof curriculumId === "string"
         ? curriculumId.split("-", 1)[0] : "";
       const expectedVolume = canonicalCurriculumVolumeByPrefix[curriculumPrefix];
-      if (expectedVolume && record.volume !== expectedVolume) {
+      const legacyEntry = legacy.byId.get(record.id);
+      const legacyException = legacyCurriculumVolumeExceptions[record.id];
+      const preservesCompleteLegacyIdentity = legacyEntry
+        && record.slug === legacyEntry.record.slug
+        && record.route === legacyEntry.record.route
+        && sameStringSet(record.aliases, legacyEntry.record.aliases)
+        && sameStringSet(record.curriculumIds, legacyEntry.record.curriculumIds);
+      const usesLegacyVolumeException = preservesCompleteLegacyIdentity
+        && legacyException?.curriculumId === curriculumId
+        && legacyException.volume === record.volume;
+      if (expectedVolume && record.volume !== expectedVolume && !usesLegacyVolumeException) {
         issues.push({
           ...issue("CURRICULUM_VOLUME_HOME_MISMATCH", "$.curriculumIds",
             `curriculum ID "${curriculumId}" belongs to volume "${expectedVolume}", not "${record.volume}"`),

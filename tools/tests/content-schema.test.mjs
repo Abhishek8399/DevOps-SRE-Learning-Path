@@ -789,6 +789,53 @@ test("a structured migration may preserve an exact legacy identity", () => {
   assert.deepEqual(result.issues, []);
 });
 
+test("only exact LES-0004 legacy identity keeps its published Volume 01 home", () => {
+  const exactMigration = validateFixtureRepository({
+    mutate(model) {
+      const replacements = [
+        ["LES-9001", "LES-0004"], ["ASM-9001", "ASM-0001"],
+        ["REF-9001", "REF-0001"],
+      ];
+      const identity = model.legacyMap.lessons.find(({ id }) => id === "LES-0004");
+      model.lessons[0] = replaceIds(model.lessons[0], replacements);
+      model.lessons[0].aliases = [...identity.aliases];
+      model.lessons[0].curriculumIds = [...identity.curriculumIds];
+      model.lessons[0].slug = identity.slug;
+      model.lessons[0].route = identity.route;
+      model.lessons[0].volume = "01-linux-systems";
+      model.lessons[0].order = 4;
+      model.lessons[0].prerequisiteLessonIds = ["LES-0002"];
+      model.lessons[0].prerequisiteCurriculumIds = ["LNX-002"];
+      model.assessments[0] = replaceIds(model.assessments[0], replacements);
+      model.references[0] = replaceIds(model.references[0], replacements);
+    },
+  });
+  assert.deepEqual(exactMigration.issues, []);
+
+  const driftedMigration = validateFixtureRepository({
+    mutate(model) {
+      const replacements = [
+        ["LES-9001", "LES-0004"], ["ASM-9001", "ASM-0001"],
+        ["REF-9001", "REF-0001"],
+      ];
+      const identity = model.legacyMap.lessons.find(({ id }) => id === "LES-0004");
+      model.lessons[0] = replaceIds(model.lessons[0], replacements);
+      model.lessons[0].aliases = [...identity.aliases];
+      model.lessons[0].curriculumIds = [...identity.curriculumIds];
+      model.lessons[0].slug = "network-request-path-changed";
+      model.lessons[0].route = "/book/linux/network-request-path-changed";
+      model.lessons[0].volume = "01-linux-systems";
+      model.lessons[0].order = 4;
+      model.lessons[0].prerequisiteLessonIds = ["LES-0002"];
+      model.lessons[0].prerequisiteCurriculumIds = ["LNX-002"];
+      model.assessments[0] = replaceIds(model.assessments[0], replacements);
+      model.references[0] = replaceIds(model.references[0], replacements);
+    },
+  });
+  assert.ok(codes(driftedMigration.issues).includes("LEGACY_MIGRATION_IDENTITY_DRIFT"));
+  assert.ok(codes(driftedMigration.issues).includes("CURRICULUM_VOLUME_HOME_MISMATCH"));
+});
+
 test("published legacy reservations cannot be deleted from the map", () => {
   const result = validateFixtureRepository({
     mutate(model) {
@@ -1077,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes twenty-five lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes twenty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 25);
-  assert.equal(result.metrics.assessments, 75);
-  assert.equal(result.metrics.references, 193);
+  assert.equal(result.metrics.lessons, 26);
+  assert.equal(result.metrics.assessments, 78);
+  assert.equal(result.metrics.references, 199);
 
   const expectations = [
     {
@@ -1149,6 +1196,23 @@ test("the live structured corpus publishes twenty-five lessons with exact owners
         "REF-1212", "REF-1213", "REF-1214",
       ],
       independentId: "ASM-0270",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0004-network-request-path", "lesson.md"),
+      id: "LES-0004",
+      domain: "connectivity",
+      route: "/book/linux/network-request-path",
+      volume: "01-linux-systems",
+      order: 4,
+      prerequisiteLessonIds: ["LES-0002"],
+      prerequisiteCurriculumIds: ["LNX-002", "FND-001", "DBG-001"],
+      assessmentIds: ["ASM-0274", "ASM-0275", "ASM-0276"],
+      referenceIds: [
+        "REF-1221", "REF-1222", "REF-1223",
+        "REF-1224", "REF-1225", "REF-1226",
+      ],
+      independentId: "ASM-0276",
     },
     {
       path: join(repositoryRoot, "book", "volumes", "00-start-safely",

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1224",
+  "title": "openssl-s_client — TLS diagnostic client", "organization": "OpenSSL project",
+  "url": "https://docs.openssl.org/master/man1/openssl-s_client/", "sourceType": "official-documentation", "versionOrDate": "OpenSSL master documentation, reviewed 2026-09-02",
+  "lessonIds": ["LES-0004"], "topics": ["TLS", "SNI", "certificate verification", "ALPN"],
+  "relevance": "Official documentation for the TLS client options used to observe negotiation and peer identity.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

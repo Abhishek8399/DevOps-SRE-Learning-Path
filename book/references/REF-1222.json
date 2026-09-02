@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "kind": "reference", "id": "REF-1222",
+  "title": "ss(8) — inspect sockets", "organization": "iproute2 project",
+  "url": "https://man7.org/linux/man-pages/man8/ss.8.html", "sourceType": "manual", "versionOrDate": "iproute2 manual, reviewed 2026-09-02",
+  "lessonIds": ["LES-0004"], "topics": ["sockets", "listeners", "TCP state", "process visibility"],
+  "relevance": "Primary command manual for namespace-local socket and listening-state observations.", "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02", "reviewAfter": "2027-03-02"
+}

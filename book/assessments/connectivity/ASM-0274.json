@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0274",
+  "lessonId": "LES-0004",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "A hostname resolves to the expected address, but the TCP connection times out. Explain what is known, what remains open, and your next safe evidence.",
+  "directAnswer": "DNS resolution is the last proven gate. From the failing namespace, verify source/address-family/route, compare a healthy peer, then use authorized client and both-side transport evidence to distinguish route, neighbor, policy, NAT, delivery, destination response, and return-path failure before changing anything.",
+  "foundation": "DNS maps a name to records. Routing selects a local path. TCP then attempts transport. Success at one gate does not prove the next.",
+  "reasoningSteps": ["Record exact client, namespace, hostname, returned address, port, connect timer, elapsed time, and cohort.", "Confirm application-style resolution and compare a healthy peer.", "Read source-address and route selection for the actual address family.", "Inspect policy, proxy, VPN, NAT, CNI, and return-path boundaries relevant to that client.", "Correlate bounded client timing with destination listener and authorized packet/counter evidence.", "Apply one owned reversible fix and verify the original request plus healthy controls."],
+  "seniorAnswer": "I would not restart DNS because it already returned the expected record for this observation. I would name connect timeout as the first failed gate and preserve the affected namespace. I would compare route/source and policy selection with a healthy peer, then determine whether SYN and reply appear at each owned handoff. If traffic reaches the destination, listener/backlog/host pressure remain; if it does not, I narrow the last observed boundary. Recovery has a prediction, rollback, and end-to-end verification.",
+  "weakAnswer": "DNS works, so open the firewall everywhere.",
+  "whyWeak": "It treats unproven policy as cause, expands exposure, ignores route/return/listener/queue alternatives, and has no bounded verification.",
+  "evidence": [{"signal": "getent returns the intended address", "proves": "This resolver path returned that address now.", "doesNotProve": "Reachability, transport, TLS, HTTP, or another client's cache."}, {"signal": "ip route get returns dev/src/via", "proves": "The local kernel selected those route fields.", "doesNotProve": "Packet or reply delivery."}, {"signal": "destination sees SYN but client sees no SYN-ACK", "proves": "The request reached that capture point and a reply was not observed there/client under the capture limits.", "doesNotProve": "Which later return-path boundary lost it without additional evidence."}],
+  "followUps": [{"prompt": "Can timeout mean slow application?", "answer": "Yes, when the named timer covers request or first-byte time rather than only connect; always identify the timer."}, {"prompt": "What does node success add?", "answer": "A comparison path; it does not reproduce a Pod namespace."}, {"prompt": "Why compare address families?", "answer": "A/AAAA paths, routes, policy, and listeners can differ."}],
+  "rubric": [{"criterion": "Layer model", "points": 4, "observableEvidence": "Separates DNS, route, policy, transport, destination, and return path."}, {"criterion": "Evidence discipline", "points": 4, "observableEvidence": "Uses failing context, healthy comparison, bounded timers, and proof limits."}, {"criterion": "Safe recovery", "points": 2, "observableEvidence": "Avoids broad policy change and verifies the real request."}],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

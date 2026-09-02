@@ -840,3 +840,11 @@ Support IDs must be checked across canonical and staged packages, not only the c
 **Rationale:** The book is the durable learning product. A learner gains more immediate value from complete explanations and small commands they can run and understand than from a large fixture whose implementation and debugging delays missing chapters. Production realism remains important, but it belongs in later focused lab hardening after the canonical curriculum is readable end to end.
 
 **Consequences:** Legacy migrations and unpublished chapter reviews should spend effort first on accurate concepts, internals, diagrams, command decoders, troubleshooting, answers, and interviews. Labs remain versioned and verifiable but deliberately small. Runtime execution, representative faults, formal review, independent learner transfer, and mastery remain separate evidence gates and must not be inferred from a command walkthrough.
+
+### DEC-094 - Preserve LES-0004's published volume through one complete-identity exception
+
+**Decision:** `LES-0004` keeps its permanent `V01-L04`, `/book/linux/network-request-path`, `network-request-path`, and `NET-003` identity even though new `NET-*` curriculum ownership canonically belongs to Volume 02. The structured-content validator permits this Volume-01/NET-003 pairing only when every frozen legacy identity field matches the permanent map. Any drifted field, other lesson, or new cross-volume curriculum claim still fails.
+
+**Rationale:** Moving LES-0004 to Volume 02 would break its published navigation and collide with the existing order-four HTTP chapter. Changing its curriculum ID would break search, prerequisites, and prior references. A named exact-identity exception preserves user-visible compatibility without weakening the default volume rule.
+
+**Consequences:** All five legacy reader bodies can use the shared structured renderer. The exception is covered by a positive exact-migration test and a negative identity-drift test and must never become a general allowlist for cross-volume content. The permanent map remains authoritative; formal review and browser persistence proof are still required.
