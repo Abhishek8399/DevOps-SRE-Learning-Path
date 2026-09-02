@@ -42,7 +42,7 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 
 ### Library and chapter entry
 
-- The root page reads partly like a product landing page and the library like a card dashboard.
+- The root and library now provide direct entry to all canonical and extended reading, but a real-browser editorial review is still required to confirm the balance between journey guidance and book-like reading.
 - Volume cards do not yet behave like a coherent set of book covers.
 - Continue reading, recent history and bookmarks are separated on My Learning rather than making the library feel alive.
 - Chapter openers are technically complete but visually similar to the rest of a lesson.
@@ -61,6 +61,12 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 - Multiple sticky elements can collide.
 - Some uppercase labels and small text fall below comfortable reading sizes even when contrast passes.
 - External font loading would weaken offline behavior and cause layout shifts; the redesign should use local/system fallbacks unless font files are vendored.
+
+### Extended-library discoverability
+
+- The main book library reports canonical and extended counts separately, then exposes all ten real extended volume anchors in one prominent reading bridge.
+- Reader-facing navigation says “Extended chapters” rather than presenting complete manuscripts as hidden files; the route still says review pending and does not claim accepted labs, providers, production behavior or mastery.
+- The 66-chapter/ten-volume relationship is asserted from the live parsed corpus. Loopback HTML proves counts, direct anchors and review copy; visual hierarchy, phone layout and keyboard navigation remain open without a browser backend.
 
 ## Root cause
 

@@ -2,6 +2,8 @@ import Link from "next/link";
 import LibraryReadingDesk, { type LibraryLesson } from "../library-reading-desk";
 import { readerCatalog, readerEntriesForVolume } from "../lessons/reader-catalog";
 import { isLearningLessonId } from "../my-learning/learning-state";
+import { stagedDrafts } from "../staged-draft.server";
+import { groupStagedDrafts } from "../staged-draft-library-core";
 
 type VolumeCover = Readonly<{
   number: string;
@@ -53,6 +55,8 @@ const lessons: LibraryLesson[] = readerCatalog.map((lesson) => {
   };
 });
 
+const extendedVolumes = groupStagedDrafts(stagedDrafts);
+
 export default function BookLibraryPage() {
   return (
     <>
@@ -76,11 +80,13 @@ export default function BookLibraryPage() {
           </p>
           <div className="library-actions">
             <Link href="/book/start">Open Volume 00 <span aria-hidden="true">→</span></Link>
+            <Link href="/drafts">Read all extended chapters</Link>
             <Link href="/search">Search the field manual</Link>
             <Link href="/practice/interview">Practice interview scenarios</Link>
           </div>
           <dl className="library-edition-facts">
             <div><dt>Published</dt><dd>{lessons.length} lessons</dd></div>
+            <div><dt>Extended</dt><dd>{stagedDrafts.length} chapters</dd></div>
             <div><dt>Runtime</dt><dd>Localhost</dd></div>
             <div><dt>Progress</dt><dd>Browser-local</dd></div>
           </dl>
@@ -89,10 +95,32 @@ export default function BookLibraryPage() {
 
       <LibraryReadingDesk lessons={lessons} />
 
+      <aside className="extended-library-bridge" aria-labelledby="extended-library-title">
+        <div>
+          <p>ADVANCED SHELF / REVIEW STATUS IS VISIBLE</p>
+          <h2 id="extended-library-title">The rest of the authored book is ready to read.</h2>
+          <span>
+            Open {stagedDrafts.length} complete teaching chapters across {extendedVolumes.length} extended volumes.
+            They remain labelled review-pending because readable content is not the same as verified lab,
+            provider, production, or learner evidence.
+          </span>
+          <Link href="/drafts">Open the complete extended shelf <b aria-hidden="true">-&gt;</b></Link>
+        </div>
+        <nav aria-label="Extended volume shortcuts">
+          {extendedVolumes.map((volume) => (
+            <Link href={`/drafts#draft-volume-${volume.number}`} key={volume.id}>
+              <small>VOLUME {volume.number}</small>
+              <strong>{volume.title}</strong>
+              <span>{volume.drafts.length} chapters</span>
+            </Link>
+          ))}
+        </nav>
+      </aside>
+
       <section className="volume-collection" aria-labelledby="volume-collection-title">
         <div className="library-section-heading">
           <div><span>The collected field manuals</span><h2 id="volume-collection-title">Seventeen volumes. One dependency map.</h2></div>
-          <p>Published covers open reviewed lessons. Reserved covers show the complete architecture without pretending unfinished content is ready.</p>
+          <p>Canonical covers open registered lessons. The advanced shelf above opens every complete review-pending chapter; reserved covers preserve the longer-term publication map.</p>
         </div>
         <div className="field-volume-grid">
           {volumes.map((volume) => {

@@ -1621,6 +1621,30 @@ html[data-code-wrap="wrap"] .code-line > span { white-space: pre-wrap; overflow-
 .field-manual-principle blockquote { max-width: 850px; margin: 14px 0 20px; color: var(--ink-primary); font: 540 clamp(1.55rem,3vw,2.45rem)/1.32 var(--font-prose); }
 .field-manual-principle a { color: var(--accent-primary-strong); font-size: .75rem; font-weight: 800; }
 
+.extended-library-bridge {
+  margin: 56px var(--shell-gutter) 0;
+  padding: clamp(28px,4vw,52px);
+  display: grid;
+  grid-template-columns: minmax(280px,.8fr) minmax(0,1.6fr);
+  gap: clamp(26px,4vw,58px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-soft);
+}
+.extended-library-bridge > div > p { margin: 0; color: var(--orange-text); font-size: .7rem; font-weight: 850; letter-spacing: .12em; }
+.extended-library-bridge h2 { margin: 11px 0 0; color: var(--ink-primary); font: 560 clamp(1.8rem,3vw,3rem)/1.08 var(--font-prose); letter-spacing: -.03em; }
+.extended-library-bridge > div > span { margin-top: 17px; display: block; color: var(--ink-secondary); font-size: .94rem; line-height: 1.7; }
+.extended-library-bridge > div > a { margin-top: 24px; min-height: 44px; padding: 11px 15px; display: inline-flex; align-items: center; gap: 10px; border-radius: 8px; background: var(--accent-primary); color: var(--ink-inverse); font-size: .75rem; font-weight: 800; }
+.extended-library-bridge nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.extended-library-bridge nav a { min-width: 0; padding: 14px 15px; display: grid; grid-template-columns: 1fr auto; gap: 5px 12px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--surface-subtle); color: var(--ink-primary); }
+.extended-library-bridge nav a:hover,.extended-library-bridge nav a:focus-visible { border-color: var(--accent-primary); }
+.extended-library-bridge nav small { grid-column: 1/-1; color: var(--orange-text); font-size: .6rem; font-weight: 850; letter-spacing: .1em; }
+.extended-library-bridge nav strong { min-width: 0; font: 600 .92rem/1.25 var(--font-prose); }
+.extended-library-bridge nav span { color: var(--ink-tertiary); font-size: .65rem; font-weight: 700; white-space: nowrap; }
+@media (max-width:900px) { .extended-library-bridge { grid-template-columns: 1fr; } }
+@media (max-width:560px) { .extended-library-bridge { margin-inline: 10px; padding: 22px 18px; } .extended-library-bridge nav { grid-template-columns: 1fr; } }
+
 /* Chapter entries carry the same editorial structure across current renderers. */
 body .volume-hero { min-height: 440px; padding: clamp(62px,8vw,108px) 0 58px; display: flex; flex-direction: column; justify-content: end; border-bottom: 1px solid var(--border-subtle); }
 body .volume-hero h1 { max-width: 900px; color: var(--ink-primary); font: 540 clamp(3.15rem,7vw,6.2rem)/.96 var(--font-prose); letter-spacing: -.055em; text-wrap: balance; }

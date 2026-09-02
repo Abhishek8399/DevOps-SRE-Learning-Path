@@ -1498,8 +1498,10 @@ test("every staged draft preview has parseable lesson, assessment, and reference
       stagedReferencePaths.set(reference.id, referencePath);
     }
   }
+  const parsedDrafts = [];
   for (const file of lessonFiles) {
     const lesson = parseStructuredLesson(readFileSync(file, "utf8"));
+    parsedDrafts.push({ lesson });
     const supportDirectory = join(dirname(file), "support");
 
     assert.ok(lesson.metadata.labs.length > 0, `${file} must declare at least one local lab`);
@@ -1534,6 +1536,9 @@ test("every staged draft preview has parseable lesson, assessment, and reference
       }
     }
   }
+  const extendedVolumes = groupStagedDrafts(parsedDrafts);
+  assert.equal(extendedVolumes.length, 10);
+  assert.equal(extendedVolumes.reduce((total, volume) => total + volume.drafts.length, 0), 66);
 });
 
 test("a malformed staged draft identifies its source directory", () => {
