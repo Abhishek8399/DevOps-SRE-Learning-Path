@@ -78,7 +78,7 @@ Do not change stable routes, content IDs, registry generation, schema contracts,
 
 ## Interview-practice improvement evidence
 
-- Every timed scenario now exposes topic, difficulty and expected level before response entry, reducing ambiguity about the expected answer depth.
+- All 24 timed scenarios expose topic, difficulty and expected level before response entry, reducing ambiguity about the expected answer depth.
 - The answer reveal separates the strong answer, why the reasoning works, a concrete production example, weak-answer warning signs and senior follow-ups instead of presenting one undifferentiated paragraph.
 - The metadata uses a compact semantic definition list and collapses from three columns to one below 620 px; the warning panel uses existing theme-aware semantic tokens.
 - Type, lint, reader and production-build checks pass, and loopback HTML contains every layer for the initial scenario. Browser visual hierarchy, disclosure interaction, screen-reader output, mobile layout and keyboard focus remain unverified because no browser backend is connected.
