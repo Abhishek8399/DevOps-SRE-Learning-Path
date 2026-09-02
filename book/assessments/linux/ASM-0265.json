@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0265",
+  "lessonId": "LES-0003",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "An 8-CPU Ubuntu server shows load average 18, CPU idle 62%, and slow requests. Explain why these facts can coexist and give the next evidence path.",
+  "directAnswer": "Load includes runnable work and tasks in uninterruptible sleep, while CPU idle reports time CPUs were not executing work. High load with idle CPU therefore points toward blocked tasks, burst timing, or scope mismatch rather than proving CPU saturation.",
+  "foundation": "A CPU executes a runnable task. A runnable task may wait in a run queue; a task in D state waits for a kernel operation. Linux load averages include both groups, so load is demand-or-wait population over time, not CPU utilization percent.",
+  "reasoningSteps": [
+    "Confirm the same host, namespace, CPU set, and time window for all observations.",
+    "Compare load with available CPUs but do not treat their ratio as a percentage.",
+    "Use interval vmstat rows to separate runnable r, blocked b, user us, system sy, idle id, I/O-wait wa, and steal st.",
+    "Inspect process states and wait channels, then correlate storage, filesystem, network filesystem, hypervisor, or dependency evidence.",
+    "Join the resource evidence to request rate, latency, errors, queues, and a deployment timeline before choosing recovery."
+  ],
+  "seniorAnswer": "I would first align scope and time: host versus container, effective CPU quota or cpuset, and the request interval. Load 18 on eight visible CPUs says many tasks were runnable or in uninterruptible sleep during the averaging windows; 62% idle says the sampled CPUs still had unused execution time. I would read vmstat interval rows, process STAT and wchan, PSI CPU/IO/memory, cgroup cpu.stat, and storage or dependency latency. If b/D and IO pressure rise while idle remains, I investigate the blocked resource. If r and CPU pressure rise only inside a quota-constrained cgroup, host idle is irrelevant to that workload. Recovery targets the evidenced boundary and is verified with the user operation.",
+  "weakAnswer": "Load is above eight, so add CPUs.",
+  "whyWeak": "It treats load as CPU percentage, ignores D-state work and cgroup scope, and spends capacity before locating the stalled resource.",
+  "evidence": [
+    {"signal": "load average 18", "proves": "The kernel's averaged runnable-plus-D population was elevated for that host view.", "doesNotProve": "CPU saturation, root cause, or current impact."},
+    {"signal": "CPU idle 62%", "proves": "The sampled CPUs spent that share of accounted time idle in the measured interval.", "doesNotProve": "That every workload had CPU access or was making progress."},
+    {"signal": "vmstat b and process D counts rise", "proves": "More visible tasks are waiting in uninterruptible kernel operations.", "doesNotProve": "Which device or dependency owns the delay."}
+  ],
+  "followUps": [
+    {"prompt": "What if vmstat r is 20 and host idle is still high?", "answer": "Check cpusets, CPU affinity, cgroup quota/throttling, hot single threads, and sampling alignment. Some CPUs can be idle while runnable work is not eligible to run on them."},
+    {"prompt": "What does iowait prove?", "answer": "It is an accounting category for idle CPU time while outstanding I/O exists; it does not name the device, process, or cause."},
+    {"prompt": "What validates recovery?", "answer": "Falling queue or stall signals plus restored latency, success rate, and a real user operation in the same scope."}
+  ],
+  "rubric": [
+    {"criterion": "Metric semantics", "points": 4, "observableEvidence": "Separates load population, CPU-time accounting, runnable work, and D-state wait."},
+    {"criterion": "Scope and evidence", "points": 4, "observableEvidence": "Aligns host/cgroup and time, then uses interval, process, PSI, and dependency evidence."},
+    {"criterion": "Safe decision", "points": 2, "observableEvidence": "Targets the evidenced boundary and verifies user recovery."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

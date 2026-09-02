@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1206",
+  "title": "Pressure Stall Information",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/accounting/psi.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-09-02",
+  "lessonIds": ["LES-0003"],
+  "topics": ["CPU pressure", "memory pressure", "I/O pressure", "some", "full", "stall time"],
+  "relevance": "Authoritative kernel documentation for system and cgroup PSI semantics, averages, cumulative totals, and pressure-trigger interfaces.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

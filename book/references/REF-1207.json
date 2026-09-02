@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1207",
+  "title": "Control Group v2",
+  "organization": "Linux kernel project",
+  "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-09-02",
+  "lessonIds": ["LES-0003"],
+  "topics": ["CPU bandwidth", "memory controller", "memory.events", "cgroup pressure", "OOM"],
+  "relevance": "Authoritative kernel documentation for cgroup v2 hierarchy, CPU controls, memory.current, memory.high, memory.max, memory.events, memory.stat, and per-cgroup PSI.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

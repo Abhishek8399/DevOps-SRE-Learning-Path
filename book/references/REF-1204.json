@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1204",
+  "title": "vmstat(8) — virtual memory statistics",
+  "organization": "procps-ng project",
+  "url": "https://man7.org/linux/man-pages/man8/vmstat.8.html",
+  "sourceType": "manual",
+  "versionOrDate": "procps-ng manual dated 2024-07-19; upstream snapshot reviewed 2026-09-02",
+  "lessonIds": ["LES-0003"],
+  "topics": ["interval sampling", "runnable tasks", "blocked tasks", "swap activity", "CPU accounting"],
+  "relevance": "Upstream manual for vmstat first-report semantics, interval reports, units, and the r, b, si, so, bi, bo, us, sy, id, wa, and st fields.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

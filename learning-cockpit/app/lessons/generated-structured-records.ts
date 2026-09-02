@@ -2,6 +2,7 @@
 import lesson0007Raw from "virtual:book-lesson/LES-0007";
 import lesson0008Raw from "virtual:book-lesson/LES-0008";
 import lesson0002Raw from "virtual:book-lesson/LES-0002";
+import lesson0003Raw from "virtual:book-lesson/LES-0003";
 import lesson0006Raw from "virtual:book-lesson/LES-0006";
 import lesson0010Raw from "virtual:book-lesson/LES-0010";
 import lesson0011Raw from "virtual:book-lesson/LES-0011";
@@ -87,6 +88,9 @@ import assessment0063Value from "../../../book/assessments/reliability/ASM-0063.
 import assessment0262Value from "../../../book/assessments/linux/ASM-0262.json";
 import assessment0263Value from "../../../book/assessments/linux/ASM-0263.json";
 import assessment0264Value from "../../../book/assessments/linux/ASM-0264.json";
+import assessment0265Value from "../../../book/assessments/linux/ASM-0265.json";
+import assessment0266Value from "../../../book/assessments/linux/ASM-0266.json";
+import assessment0267Value from "../../../book/assessments/linux/ASM-0267.json";
 import reference0001Value from "../../../book/references/REF-0001.json";
 import reference0002Value from "../../../book/references/REF-0002.json";
 import reference0003Value from "../../../book/references/REF-0003.json";
@@ -262,11 +266,18 @@ import reference0172Value from "../../../book/references/REF-0172.json";
 import reference1200Value from "../../../book/references/REF-1200.json";
 import reference1201Value from "../../../book/references/REF-1201.json";
 import reference1202Value from "../../../book/references/REF-1202.json";
+import reference1203Value from "../../../book/references/REF-1203.json";
+import reference1204Value from "../../../book/references/REF-1204.json";
+import reference1205Value from "../../../book/references/REF-1205.json";
+import reference1206Value from "../../../book/references/REF-1206.json";
+import reference1207Value from "../../../book/references/REF-1207.json";
+import reference1208Value from "../../../book/references/REF-1208.json";
 
 export const generatedLessonSources: readonly string[] = [
   lesson0007Raw,
   lesson0008Raw,
   lesson0002Raw,
+  lesson0003Raw,
   lesson0006Raw,
   lesson0010Raw,
   lesson0011Raw,
@@ -355,6 +366,9 @@ export const generatedAssessmentValues: readonly unknown[] = [
   assessment0262Value,
   assessment0263Value,
   assessment0264Value,
+  assessment0265Value,
+  assessment0266Value,
+  assessment0267Value,
 ];
 
 export const generatedReferenceValues: readonly unknown[] = [
@@ -533,4 +547,10 @@ export const generatedReferenceValues: readonly unknown[] = [
   reference1200Value,
   reference1201Value,
   reference1202Value,
+  reference1203Value,
+  reference1204Value,
+  reference1205Value,
+  reference1206Value,
+  reference1207Value,
+  reference1208Value,
 ];

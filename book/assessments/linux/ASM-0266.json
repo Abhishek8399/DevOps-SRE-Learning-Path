@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0266",
+  "lessonId": "LES-0003",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "A Kubernetes checkout container exits 137 during traffic peaks while its node dashboard shows 45% memory used. Lead diagnosis, safe recovery, sizing, and prevention.",
+  "directAnswer": "Treat 137 as SIGKILL-shaped outcome, not an OOM verdict. Preserve the terminated container identity and timeline, distinguish cgroup OOM from host OOM and non-OOM kill, correlate working set and allocation behavior with traffic, then apply the smallest reversible recovery.",
+  "foundation": "A container belongs to a Linux cgroup with its own memory boundary. That boundary can invoke an OOM kill while the host has available memory. Conversely, exit 137 can follow another actor's SIGKILL, so the exit code alone cannot identify cause.",
+  "reasoningSteps": [
+    "Bound affected requests, replicas, nodes, zones, rollout cohort, and capacity margin; pause unsafe rollout expansion.",
+    "Record Pod UID, container ID, previous termination reason and time, image digest, node, QoS class, requests, limits, and events.",
+    "For the exact cgroup and lifetime, compare memory.current, memory.peak when available, memory.max, memory.events deltas, memory.stat, and memory.pressure.",
+    "Inspect node MemAvailable, PSI, eviction conditions, kernel OOM evidence, and other consumers in the same event window.",
+    "Inspect application heap, RSS, native memory, cache, queue, concurrency, payload, and garbage-collection behavior against request load.",
+    "Choose rollback, concurrency/load shedding, leak or bound correction, or measured limit/capacity change; canary the change.",
+    "Verify checkout success, latency, restart rate, pressure, memory headroom, and downstream health over a representative soak window."
+  ],
+  "seniorAnswer": "I would freeze a UTC timeline and preserve previous-container evidence before replacement removes it. Exit 137 makes SIGKILL plausible. An increment in oom_kill for the exact cgroup plus runtime OOMKilled reason supports cgroup OOM; host kernel selection and node pressure support global OOM; neither is established by node percent or exit code alone. I would compare healthy and failing cohorts, decompose memory into application and kernel-accounted categories, and determine whether peak working set is bounded legitimate demand or unbounded growth. If a rollout introduced growth, rollback is usually the fastest reversible action. If measured legitimate demand exceeds the limit, I would size request and limit from distributions plus headroom, prove bin-packing capacity, canary under representative load, and retain overload controls. I would not double every limit because that may reduce node capacity and move the outage to host pressure.",
+  "weakAnswer": "The node has free memory, so Kubernetes is wrong; double every limit.",
+  "whyWeak": "It collapses host and cgroup boundaries, ignores other SIGKILL actors, changes fleet capacity without arithmetic, and can convert isolated restarts into node-wide eviction or OOM.",
+  "evidence": [
+    {"signal": "exit code 137", "proves": "The reporting convention is consistent with signal 9 termination.", "doesNotProve": "OOM, the signal sender, or whether the application exceeded a limit."},
+    {"signal": "memory.events oom_kill delta for the exact cgroup", "proves": "An OOM killer killed a process charged to that cgroup during the observed lifetime.", "doesNotProve": "Why demand grew or that a larger limit is safe."},
+    {"signal": "node memory 45% used", "proves": "That dashboard's host aggregate had that value for its sampling window.", "doesNotProve": "Container headroom, peak state, complete accounting, or absence of a kill."}
+  ],
+  "followUps": [
+    {"prompt": "memory.events shows max increases but oom_kill stays unchanged. What does that mean?", "answer": "The cgroup approached or attempted to cross memory.max, but this evidence does not show an OOM victim. Reclaim may have succeeded or allocation may have failed through another path; inspect deltas, runtime reason, application errors, and pressure."},
+    {"prompt": "When is raising the limit correct?", "answer": "When representative measurements show bounded legitimate peak working set plus explicit safety headroom exceeds the old limit, and node bin-packing, failure-domain capacity, cost, and overload behavior remain acceptable."},
+    {"prompt": "What prevents recurrence?", "answer": "Per-cgroup event and pressure telemetry, allocation and queue bounds, representative load tests, rollout gates, capacity arithmetic, graceful degradation, and termination-reason retention."}
+  ],
+  "rubric": [
+    {"criterion": "Cause classification", "points": 4, "observableEvidence": "Separates cgroup OOM, host OOM, eviction, and non-OOM SIGKILL using identity-scoped evidence."},
+    {"criterion": "Recovery and sizing", "points": 3, "observableEvidence": "Uses reversible mitigation, measured working set, headroom, and node capacity rather than arbitrary limits."},
+    {"criterion": "Verification and prevention", "points": 3, "observableEvidence": "Verifies the checkout journey and adds pressure, rollout, workload, and termination controls."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

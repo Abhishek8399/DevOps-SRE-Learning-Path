@@ -646,6 +646,12 @@ Decision: accepted / rejected
 |---|---|---|---|---|---|
 | `VER-294` | 2026-09-02 | LES-0002 manuscript, assessments, references, local lab, reader migration, search and saved-state compatibility | Content/schema/reader/type/lint/build gates; Git Bash syntax; static lab, budget, hygiene and reference reports; loopback rendered-HTML probe; commit and non-force push | `PASS` within recorded boundaries | Ubuntu lab execution, real-browser persistence/visual/keyboard QA, formal review, learner transfer and mastery remain unproved |
 
+## VER-295 - LES-0003 exact-identity structured migration
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-295` | 2026-09-02 | LES-0003 CPU/load/memory/cgroup manuscript, assessments, references, concise Ubuntu walkthrough, reader migration, search and saved-state compatibility | 535 lines and 6,497 words with exactly 18 H2 sections; content reports 424 Markdown files, 205 local links, 11,402 heading anchors, 23 lessons, 69 assessments and 181 references; schema 38 pass plus one Windows capability skip; reader 35/35; typecheck, lint and all five build stages pass; 22-lab static matrix has zero incomplete contracts; Git Bash syntax and `git diff --check` pass; hygiene scans 2,310 tracked text files with zero findings; web assets total 592.5 KiB; 1,208 references have zero overdue/errors; loopback route returns 200 with new title, decoder, interview and ASM-0267 markers, excludes the legacy subtitle, and port 3012 closes | `PASS` within recorded boundaries | The first reader run failed because its hand-built fixture excluded only the first migrated legacy body; adding LES-0003 to that explicit migration map fixed the duplicate and the full suite passed. A root-level `npm run test:reader` also failed with expected ENOENT because the package lives under `learning-cockpit`; the correct-directory run passes. No artificial pressure, Ubuntu execution, container/Kubernetes runtime, real-browser interaction/visual/accessibility proof, formal review, independently reviewed learner transfer, delayed recall, production outcome or mastery is claimed |
+
 Evidence:
 
 - Feature commit `f3b9f1b` was pushed to `origin/main`. It adds 1,121 lines across the complete 18-section lesson, `ASM-0262` through `ASM-0264`, `REF-1200` through `REF-1202`, the guarded lab, generated registries, and compatibility tests.

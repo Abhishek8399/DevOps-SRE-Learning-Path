@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1203",
+  "title": "proc_loadavg(5) — Linux load average interface",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man5/proc_loadavg.5.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux man-pages 6.18, 2026-02-08",
+  "lessonIds": ["LES-0003"],
+  "topics": ["load average", "run queue", "uninterruptible sleep", "scheduler entities"],
+  "relevance": "Primary manual source for the runnable-plus-D-state population represented by Linux load averages and the fields in /proc/loadavg.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

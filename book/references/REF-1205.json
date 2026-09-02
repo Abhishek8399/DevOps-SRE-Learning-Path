@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1205",
+  "title": "free(1) and proc_meminfo(5) memory accounting manuals",
+  "organization": "procps-ng and Linux man-pages projects",
+  "url": "https://man7.org/linux/man-pages/man1/free.1.html",
+  "sourceType": "manual",
+  "versionOrDate": "Upstream manuals reviewed 2026-09-02",
+  "lessonIds": ["LES-0003"],
+  "topics": ["MemAvailable", "page cache", "buffers", "physical memory", "swap"],
+  "relevance": "Primary manual entry for free output and its /proc/meminfo source, including why available is a more useful allocation estimate than the free column alone.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

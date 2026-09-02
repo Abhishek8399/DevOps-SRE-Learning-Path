@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0267",
+  "lessonId": "LES-0003",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "On a disposable Ubuntu machine, perform a read-only CPU, load, memory, swap, PSI, process, and cgroup observation during one quiet window and one naturally busier window. Do not generate pressure. Produce an evidence-led comparison and a hypothetical exit-137 decision path.",
+  "deliverables": [
+    "A sanitized environment card with Ubuntu/kernel version, CPU count, virtualization or container boundary, effective cgroup path, time zone, privilege, and observation windows.",
+    "A diagram linking workload arrival, runnable or blocked tasks, CPU scheduling, memory allocation and reclaim, cgroup limits, pressure, termination, and user-visible outcome.",
+    "A field-by-field table for uptime, vmstat, free, PSI, process snapshot, and available cgroup files with question, value, unit, proves, does not prove, and next evidence.",
+    "A comparison that distinguishes utilization from saturation, swap used from swap activity, host memory from cgroup memory, and current gauges from cumulative counters.",
+    "A hypothetical exit-137 response with competing causes, evidence preservation, safe recovery options, rollback, and end-to-end validation.",
+    "A cleanup statement, redaction record, limitations, and assistance disclosure."
+  ],
+  "evidenceRequirements": [
+    "Use interval vmstat output and explain why the first since-boot row is excluded or requested with -y.",
+    "Record MemAvailable rather than diagnosing from the free column alone.",
+    "Interpret PSI some, full, averaging windows, and cumulative total without inventing universal thresholds.",
+    "Identify whether cgroup v2 files are visible and never claim host or container OOM without lifetime-scoped event evidence.",
+    "Relate every resource observation to a hypothetical user SLI and state all time, scope, permission, and sampling gaps.",
+    "Do not inspect this assessment's implementation or any model answer while producing the independent work."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Safety and provenance", "points": 4, "observableEvidence": "Uses read-only normal-user commands, timestamps both windows, sanitizes data, and states limitations."},
+    {"criterion": "CPU and load reasoning", "points": 4, "observableEvidence": "Separates runnable demand, blocked tasks, utilization, scheduling eligibility, and stall evidence."},
+    {"criterion": "Memory reasoning", "points": 4, "observableEvidence": "Separates free/available/cache, reclaim, swap occupancy/activity, RSS, cgroup bounds, and OOM events."},
+    {"criterion": "Evidence-led decision", "points": 4, "observableEvidence": "Maintains multiple hypotheses and proposes reversible recovery with explicit proof limits."},
+    {"criterion": "Production transfer", "points": 4, "observableEvidence": "Connects host and cgroup evidence to workload, user SLI, capacity, observability, and prevention."}
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

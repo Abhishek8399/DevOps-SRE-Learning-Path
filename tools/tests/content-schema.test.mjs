@@ -1077,12 +1077,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes twenty-two lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes twenty-three lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 22);
-  assert.equal(result.metrics.assessments, 66);
-  assert.equal(result.metrics.references, 175);
+  assert.equal(result.metrics.lessons, 23);
+  assert.equal(result.metrics.assessments, 69);
+  assert.equal(result.metrics.references, 181);
 
   const expectations = [
     {
@@ -1098,6 +1098,23 @@ test("the live structured corpus publishes twenty-two lessons with exact ownersh
       assessmentIds: ["ASM-0262", "ASM-0263", "ASM-0264"],
       referenceIds: ["REF-1200", "REF-1201", "REF-1202"],
       independentId: "ASM-0264",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0003-cpu-memory-pressure", "lesson.md"),
+      id: "LES-0003",
+      domain: "linux",
+      route: "/book/linux/cpu-memory-pressure",
+      volume: "01-linux-systems",
+      order: 3,
+      prerequisiteLessonIds: ["LES-0002"],
+      prerequisiteCurriculumIds: ["LNX-002"],
+      assessmentIds: ["ASM-0265", "ASM-0266", "ASM-0267"],
+      referenceIds: [
+        "REF-1203", "REF-1204", "REF-1205",
+        "REF-1206", "REF-1207", "REF-1208",
+      ],
+      independentId: "ASM-0267",
     },
     {
       path: join(repositoryRoot, "book", "volumes", "00-start-safely",
