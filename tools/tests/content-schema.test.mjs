@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes thirty-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes thirty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 31);
-  assert.equal(result.metrics.assessments, 93);
-  assert.equal(result.metrics.references, 270);
+  assert.equal(result.metrics.lessons, 36);
+  assert.equal(result.metrics.assessments, 108);
+  assert.equal(result.metrics.references, 345);
 
   const expectations = [
     {
@@ -1624,6 +1624,20 @@ test("the live structured corpus publishes thirty-one lessons with exact ownersh
       referenceIds: ["REF-0229", "REF-0230", "REF-0231", "REF-0232", "REF-0233", "REF-0234", "REF-0235", "REF-0236", "REF-0237", "REF-0238", "REF-0239", "REF-0240", "REF-0241", "REF-0242", "REF-0243"],
       independentId: "ASM-0078",
     },
+    ...[
+      ["LES-0032", "sli-slo-sla-error-budgets", 7, ["LES-0007", "LES-0008", "LES-0026"], ["FND-001", "DBG-001", "OBS-001", "SRE-001"], 79, 244],
+      ["LES-0033", "incident-command-on-call-recovery", 8, ["LES-0007", "LES-0008", "LES-0026", "LES-0031", "LES-0032"], ["FND-001", "DBG-001", "OBS-001", "SRE-001", "SRE-002"], 82, 259],
+      ["LES-0034", "causal-analysis-post-incident-learning", 9, ["LES-0007", "LES-0008", "LES-0026", "LES-0033"], ["FND-001", "DBG-001", "OBS-001", "SRE-003"], 85, 274],
+      ["LES-0035", "capacity-performance-scaling", 10, ["LES-0003", "LES-0007", "LES-0026", "LES-0032", "LES-0033"], ["LNX-003", "FND-001", "OBS-001", "SRE-002", "SRE-003"], 88, 289],
+      ["LES-0036", "resilience-patterns-failure-isolation", 11, ["LES-0013", "LES-0021", "LES-0026", "LES-0032", "LES-0035"], ["NET-003", "DST-003", "OBS-001", "SRE-002", "PERF-001"], 91, 304],
+    ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations", `${id}-${slug}`, "lesson.md"),
+      id, domain: "reliability", route: `/book/reliability/${slug}`, volume: "04-reliability-operations", order,
+      prerequisiteLessonIds, prerequisiteCurriculumIds,
+      assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
+      referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
+      independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
+    })),
   ];
 
   for (const expected of expectations) {

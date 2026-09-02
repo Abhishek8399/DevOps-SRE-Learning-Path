@@ -143,7 +143,7 @@
       "question": "Does the fictional SLO scenario satisfy its exact input contract?",
       "risk": "read-only",
       "command": "python3 fixtures/slo_model.py validate-scenario fixtures/scenario.json",
-      "runFrom": "the LES-0032 support/lab directory",
+      "runFrom": "book/labs/LES-0032-sli-slo-sla-error-budgets",
       "expectedBranches": [
         {"when": "scenario_valid=true appears", "meaning": "the exact fixture satisfies current identity, key, type, count, range, and relationship checks", "nextEvidence": "run doctor and setup"},
         {"when": "refused=true or a Python error appears", "meaning": "the fixture or model is invalid", "nextEvidence": "preserve the first error and do not create state"}
@@ -156,7 +156,7 @@
       "question": "Can the lab create its exact private normal-user state?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh setup",
-      "runFrom": "the LES-0032 support/lab directory as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0032-sli-slo-sla-error-budgets as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "state=ready appears", "meaning": "the exact UID-scoped state descriptor validates", "nextEvidence": "inspect status and run one case"},
         {"when": "refused=true appears", "meaning": "root, tool, fixture, ownership, symlink, concurrency, path, or state identity is unsafe", "nextEvidence": "preserve the path and inspect only the stated refusal"}
@@ -170,7 +170,7 @@
       "question": "What exact lab state and result count exist?",
       "risk": "read-only",
       "command": "bash lab.sh status",
-      "runFrom": "the LES-0032 support/lab directory",
+      "runFrom": "book/labs/LES-0032-sli-slo-sla-error-budgets",
       "expectedBranches": [
         {"when": "state=absent appears", "meaning": "the expected state path is absent", "nextEvidence": "run setup if practice is intended"},
         {"when": "state=ready appears", "meaning": "sentinel, manifest, scenario, children, types, and ownership validate", "nextEvidence": "compare result count with deliberately run cases"},
@@ -282,7 +282,7 @@
       "question": "Does the complete bounded lifecycle, math, refusal, and cleanup contract pass?",
       "risk": "mutating-bounded",
       "command": "bash verify.sh",
-      "runFrom": "the LES-0032 support/lab directory as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0032-sli-slo-sla-error-budgets as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "verification=passed, cases=9, assertions=24, and final_state=absent appear", "meaning": "encoded syntax, cases, assertions, two refusal probes, and exact cleanup passed", "nextEvidence": "record environment, commit, and proof limits"},
         {"when": "the verifier fails", "meaning": "the first failed invariant is evidence and the exit trap attempted bounded cleanup", "nextEvidence": "preserve output and inspect only the exact lesson state"}
@@ -305,7 +305,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture contract is invalid", "arithmetic differs from reviewed expectations", "cleanup cannot validate exact ownership", "any real service or policy action is proposed from model output"],
       "recovery": "Run status. If the descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state for review instead of deleting broadly.",
       "cleanupProof": "Cleanup validates exact parent, basename, real path, UID, sentinel, manifest, scenario, allowed children, types, and owner; removes only that directory; then proves exact absence.",
-      "path": "drafts/LES-0032-sli-slo-sla-error-budgets/support/lab"
+      "path": "book/labs/LES-0032-sli-slo-sla-error-budgets"
     },
     {
       "id": "LES-0032-LAB-002",
@@ -319,7 +319,7 @@
       "abortConditions": ["answered material becomes visible", "authorization, accessibility, or sanitization is unclear", "population or state validation fails", "real data or systems could be contacted", "a percentage is used without raw counts and units", "an unsupported contract or change decision is proposed"],
       "recovery": "Return to baseline evidence, narrow the hypothesis, and submit a revision. Never reveal answered material before independent review.",
       "cleanupProof": "Use the unseen case's own manifest to prove every created process, port, file, queue, container, network, and resource absent. Guided cleanup does not cover the independent case.",
-      "path": "drafts/LES-0032-sli-slo-sla-error-budgets/support/lab"
+      "path": "book/labs/LES-0032-sli-slo-sla-error-budgets"
     }
   ],
   "incidents": [
@@ -1153,7 +1153,7 @@ PRETTY_NAME="Ubuntu 24.04 LTS"
 VERSION_ID="24.04"
 Python 3.12.x
 2026-08-04T10:20:30Z
-/work/reliability-atlas/drafts/.../support/lab
+/work/reliability-atlas/book/labs/LES-0032-sli-slo-sla-error-budgets
 ```
 
 Field by field:

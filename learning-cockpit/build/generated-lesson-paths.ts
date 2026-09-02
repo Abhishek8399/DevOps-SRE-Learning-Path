@@ -31,4 +31,9 @@ export const generatedLessonPaths = {
   "LES-0029": ["book", "volumes", "04-reliability-operations", "LES-0029-structured-logging-pipelines", "lesson.md"],
   "LES-0030": ["book", "volumes", "04-reliability-operations", "LES-0030-alerting-dashboards-user-journeys", "lesson.md"],
   "LES-0031": ["book", "volumes", "04-reliability-operations", "LES-0031-sre-principles-risk-toil-readiness", "lesson.md"],
+  "LES-0032": ["book", "volumes", "04-reliability-operations", "LES-0032-sli-slo-sla-error-budgets", "lesson.md"],
+  "LES-0033": ["book", "volumes", "04-reliability-operations", "LES-0033-incident-command-on-call-recovery", "lesson.md"],
+  "LES-0034": ["book", "volumes", "04-reliability-operations", "LES-0034-causal-analysis-post-incident-learning", "lesson.md"],
+  "LES-0035": ["book", "volumes", "04-reliability-operations", "LES-0035-capacity-performance-scaling", "lesson.md"],
+  "LES-0036": ["book", "volumes", "04-reliability-operations", "LES-0036-resilience-patterns-failure-isolation", "lesson.md"],
 } as const;

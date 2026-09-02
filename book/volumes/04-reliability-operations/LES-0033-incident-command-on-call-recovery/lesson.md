@@ -144,7 +144,7 @@
       "question": "Does the fictional incident satisfy the exact checked-in scenario contract?",
       "risk": "read-only",
       "command": "python3 fixtures/incident_model.py validate-scenario fixtures/scenario.json",
-      "runFrom": "the LES-0033 support/lab directory",
+      "runFrom": "book/labs/LES-0033-incident-command-on-call-recovery",
       "expectedBranches": [
         {"when": "scenario_valid=true appears", "meaning": "identity, keys, types, timestamps, roles, actions, and outcome relationships satisfy the model", "nextEvidence": "run doctor and setup"},
         {"when": "refused=true or an error appears", "meaning": "the fixture or model contract is broken", "nextEvidence": "preserve the first error and create no state"}
@@ -157,7 +157,7 @@
       "question": "Can the lab create its exact private normal-user state without touching a real incident system?",
       "risk": "mutating-bounded",
       "command": "bash lab.sh setup",
-      "runFrom": "the LES-0033 support/lab directory as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0033-incident-command-on-call-recovery as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "state=ready appears", "meaning": "the UID-scoped descriptor validates", "nextEvidence": "inspect status and run one case"},
         {"when": "refused=true appears", "meaning": "root, tool, path, owner, symlink, fixture, or state identity is unsafe", "nextEvidence": "preserve ambiguous state and inspect the refusal"}
@@ -171,7 +171,7 @@
       "question": "What exact lab state and result count exist?",
       "risk": "read-only",
       "command": "bash lab.sh status",
-      "runFrom": "the LES-0033 support/lab directory",
+      "runFrom": "book/labs/LES-0033-incident-command-on-call-recovery",
       "expectedBranches": [
         {"when": "state=absent appears", "meaning": "the expected state root is absent", "nextEvidence": "run setup only if practice is intended"},
         {"when": "state=ready appears", "meaning": "sentinel, manifest, scenario, children, types, and ownership validate", "nextEvidence": "compare result count with deliberately run cases"},
@@ -283,7 +283,7 @@
       "question": "Did the complete guarded exercise pass and leave no state?",
       "risk": "mutating-bounded",
       "command": "bash verify.sh",
-      "runFrom": "the LES-0033 support/lab directory as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0033-incident-command-on-call-recovery as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "verification=passed and final_state=absent appear with expected counts", "meaning": "the checked-in lifecycle and semantic assertions passed on this environment", "nextEvidence": "preserve the result with environment evidence and state its limits"},
         {"when": "a command exits nonzero or cleanup is refused", "meaning": "the first failure is evidence", "nextEvidence": "stop, inspect status, and never broadly remove ambiguous state"}
@@ -306,7 +306,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture contract is invalid", "semantic assertions differ", "cleanup cannot validate exact ownership", "model output is proposed as authority for a real incident"],
       "recovery": "Run status. If the descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state instead of deleting broadly.",
       "cleanupProof": "Cleanup validates exact parent, basename, real path, UID, sentinel, manifest, scenario, allowed children, types, and owners; removes only that directory; then proves exact absence.",
-      "path": "drafts/LES-0033-incident-command-on-call-recovery/support/lab"
+      "path": "book/labs/LES-0033-incident-command-on-call-recovery"
     },
     {
       "id": "LES-0033-LAB-002",
@@ -320,7 +320,7 @@
       "abortConditions": ["answered material is visible", "authorization or sanitization is unclear", "real data or systems could be contacted", "a change lacks owner, abort, rollback, or evidence plan", "handoff is unacknowledged", "cleanup cannot be proven"],
       "recovery": "Return to the last verified baseline, narrow the decision, and submit a revised incident record. Do not reveal the answer key before qualified review.",
       "cleanupProof": "Use the unseen case manifest to prove every created process, port, file, container, namespace, queue, and resource absent. Guided cleanup does not cover the independent case.",
-      "path": "drafts/LES-0033-incident-command-on-call-recovery/support/lab"
+      "path": "book/labs/LES-0033-incident-command-on-call-recovery"
     }
   ],
   "incidents": [
@@ -1098,7 +1098,7 @@ The lab should make three habits memorable:
 - **One owner per production change:** parallel hypotheses are welcome; invisible mutation is not.
 - **Recovery is a predicate:** green error rate plus draining queues plus valid data plus an observation window.
 
-The complete operating and cleanup contract lives in the checked-in `support/lab/README.md` beside this quarantined draft. It becomes a schema-valid canonical lab link only during reviewed promotion into the public book tree.
+The complete optional operating and cleanup contract lives in `book/labs/LES-0033-incident-command-on-call-recovery/README.md`. The chapter is canonical reading content; executing that fixture remains a separate runtime evidence gate.
 
 ## Production transfer
 
