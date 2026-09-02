@@ -43,7 +43,7 @@ This file reports delivery of the repository and website. It does not award comp
 | Field | Current value |
 |---|---|
 | Branch | `main` |
-| Latest committed substantive checkpoint | `03627c3` - migrated `LES-0003` into the structured contract with compatibility-preserving reader, search, state, assessment, reference, and concise Ubuntu walkthrough support |
+| Latest committed substantive checkpoint | `6849845` - published `LES-0028` through `LES-0031`, bringing the canonical reliability path through metrics, logs, alerting, user journeys, and SRE operating principles |
 | Current canonical corpus | Thirty-one routed identities, all structured substantive drafts, with 93 assessments and 270 references. The five permanent legacy reservations now protect compatibility rather than supply typed reader bodies. The older Worktree row below describes the pre-migration `f2e3e23` baseline and is retained as historical context |
 | Remote | `origin` is configured for this dedicated learning-path repository |
 | Source checkpoint parity | LES-0089 source `d1c308d`, implementation `c2f456b`, runtime-hardening `271d9f7`, documentation/assessments `691c464` and manuscript `46b4fc1a6319b8dde065c112f40c10b33e3c1132` were pushed. The manuscript tree is `59898d23ad996ee23bcb753a8d01885ceec1e49a` with 2,210 tracked files before this tracker edit. Canonical feature `f2e3e23e51a7eb433c721c29439f3c0cce5a0893` remains the latest live-reader lesson feature |
