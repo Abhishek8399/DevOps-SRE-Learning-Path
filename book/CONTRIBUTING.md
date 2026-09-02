@@ -117,11 +117,14 @@ From `learning-cockpit/`:
 npm run lint
 npm run typecheck
 npm run validate:content
+npm run test:master-plan
 npm run test:content-schema
 npm run test:reference-freshness
 npm run report:references -- --fail-overdue
 npm run build
 ```
+
+`npm run validate:content` also runs the master-plan contract. Every `PLAN-*` row must have a unique permanent ID, the documented row shape, a P0-P3 priority where applicable, non-empty acceptance and verification fields, and exactly one of `PENDING`, `IN_PROGRESS`, `BLOCKED`, `REVIEW_REQUIRED`, or `COMPLETE`. Do not introduce synonym statuses: completion audits depend on these values having one stable meaning.
 
 The reference report scans canonical records plus every staged chapter's local support records. By default it warns 90 days before `reviewAfter` and fails malformed collection state; `--fail-overdue` also makes an expired review window fail CI. Use `--as-of YYYY-MM-DD` for reproducible review evidence and `--json` when another tool needs the complete result. A repeated URL is reported for editorial review but is not automatically an error because multiple lessons can legitimately cite the same primary source.
 

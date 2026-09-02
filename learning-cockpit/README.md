@@ -142,6 +142,7 @@ npm run generate:content-registry  # after adding/removing structured records
 npm run lint
 npm run typecheck
 npm run validate:content
+npm run test:master-plan
 npm run test:content-schema
 npm run test:reference-freshness
 npm run test:reader
@@ -154,6 +155,8 @@ npm audit  # optional network-backed advisory check
 ```
 
 The lockfile is committed for reproducible installation. `npm audit` sends dependency metadata to the configured npm registry, so run it only when that network disclosure is acceptable. Review findings rather than running `npm audit fix --force`, which may introduce breaking dependency changes.
+
+`npm run validate:content` includes `npm run validate:plan`. The plan validator fail-closes on legacy or unknown task statuses, duplicate permanent IDs, malformed milestone/task rows, missing required fields, and invalid priorities. `npm run test:master-plan` exercises those refusal paths independently.
 
 Run `npm run build` before `npm run audit:web-budget`. The audit checks only generated client assets and intentionally budgets JavaScript at 512 KiB, CSS at 256 KiB, all client assets at 768 KiB, and 80 files. These are repository guardrails for the local reader, not network-performance or browser-rendering measurements; compressed transfer size, runtime performance, accessibility, and visual QA require their own evidence.
 
