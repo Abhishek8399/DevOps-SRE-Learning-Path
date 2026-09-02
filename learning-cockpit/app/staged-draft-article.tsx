@@ -28,7 +28,7 @@ function Blocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
     if (block.kind === "paragraph") return <p key={key}><Inline content={block.content} /></p>;
     if (block.kind === "quote") return <blockquote key={key}><Inline content={block.content} /></blockquote>;
     if (block.kind === "unordered-list" || block.kind === "ordered-list") { const List = block.kind === "ordered-list" ? "ol" : "ul"; return <List key={key}>{block.items.map((item, itemIndex) => <li key={itemIndex}><Inline content={item} /></li>)}</List>; }
-    if (block.kind === "code") return <EditorialCodeBlock diagram={block.language === "text"} key={key} language={block.language} value={block.value} />;
+    if (block.kind === "code") return <EditorialCodeBlock diagram={block.language === "text"} filename={block.filename} key={key} language={block.language} lineNumbers={block.lineNumbers} role={block.role} value={block.value} />;
     return <div aria-label="Scrollable technical table" className={styles.tableWrap} key={key} role="region" tabIndex={0}><table><thead><tr>{block.headers.map((header, headerIndex) => <th key={headerIndex} scope="col"><Inline content={header} /></th>)}</tr></thead><tbody>{block.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td data-label={block.headers[cellIndex]?.map((item) => item.text).join("")} key={cellIndex}><Inline content={cell} /></td>)}</tr>)}</tbody></table></div>;
   })}</div>;
 }

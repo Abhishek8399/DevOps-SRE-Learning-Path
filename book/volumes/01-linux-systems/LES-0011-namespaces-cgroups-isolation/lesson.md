@@ -591,7 +591,7 @@ The correct mental move is:
 
 Suppose the exact container cgroup shows:
 
-```text
+```text role=output lines=off
 memory.current  532676608
 memory.max      536870912
 memory.events:

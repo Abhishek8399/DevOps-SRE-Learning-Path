@@ -894,7 +894,7 @@ Commands are questions encoded as syntax. Run them only inside their stated auth
 
 ### Decode the context command
 
-```bash
+```bash role=command lines=on
 cat /etc/os-release
 uname -sr
 id

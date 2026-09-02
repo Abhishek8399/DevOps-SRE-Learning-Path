@@ -895,6 +895,39 @@ test("structured Markdown keeps CommonMark tilde and long backtick fences inert"
   );
 });
 
+test("structured code fences preserve explicit reader presentation metadata", () => {
+  const blocks = parseMarkdownBlocks([
+    "```bash role=command file=.github/workflows/verify.yml lines=on",
+    "./scripts/verify.sh",
+    "```",
+    "",
+    "```text role=output file=expected.txt lines=off",
+    "status=healthy",
+    "```",
+  ].join("\n"));
+
+  assert.deepEqual(blocks[0], {
+    kind: "code",
+    language: "bash",
+    value: "./scripts/verify.sh",
+    role: "command",
+    filename: ".github/workflows/verify.yml",
+    lineNumbers: true,
+  });
+  assert.deepEqual(blocks[1], {
+    kind: "code",
+    language: "text",
+    value: "status=healthy",
+    role: "output",
+    filename: "expected.txt",
+    lineNumbers: false,
+  });
+  assert.throws(() => parseMarkdownBlocks("```bash role=guess\ntrue\n```"), /invalid role/);
+  assert.throws(() => parseMarkdownBlocks("```bash file=../secret\ntrue\n```"), /invalid file label/);
+  assert.throws(() => parseMarkdownBlocks("```bash file=scripts/../secret\ntrue\n```"), /invalid file label/);
+  assert.throws(() => parseMarkdownBlocks("```bash wrap=on\ntrue\n```"), /unknown attribute/);
+});
+
 test("runtime title and section parsing matches the validated ATX heading rules", () => {
   const lesson0007 = liveLessonDescriptors.find(({ id }) => id === "LES-0007");
   const liveRaw = readFileSync(lesson0007.path, "utf8");

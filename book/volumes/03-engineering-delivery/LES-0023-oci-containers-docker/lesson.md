@@ -660,7 +660,7 @@ Strong evidence includes exact container ID, cgroup path, `memory.max`, current/
 
 Bad shell form:
 
-```Dockerfile
+```Dockerfile role=configuration file=Dockerfile lines=on
 ENTRYPOINT /app/server --port 8080
 ```
 
@@ -668,7 +668,7 @@ A shell becomes PID 1 and starts the server as a child. Depending on shell/scrip
 
 Better direct form when the server handles PID 1 correctly:
 
-```Dockerfile
+```Dockerfile role=configuration file=Dockerfile lines=on
 ENTRYPOINT ["/app/server"]
 CMD ["--port", "8080"]
 ```

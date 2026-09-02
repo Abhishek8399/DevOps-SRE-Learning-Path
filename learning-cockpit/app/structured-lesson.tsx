@@ -62,7 +62,7 @@ function MarkdownBlocks({ blocks }: { blocks: readonly MarkdownBlock[] }) {
           );
         }
         if (block.kind === "code") {
-          return <EditorialCodeBlock diagram={block.language === "text"} key={key} language={block.language} value={block.value} />;
+          return <EditorialCodeBlock diagram={block.language === "text"} filename={block.filename} key={key} language={block.language} lineNumbers={block.lineNumbers} role={block.role} value={block.value} />;
         }
         return (
           <div aria-label="Scrollable technical table" className={styles.tableWrap} key={key} role="region" tabIndex={0}>

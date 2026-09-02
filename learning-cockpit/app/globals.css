@@ -1505,6 +1505,7 @@ html[data-reading-focus="on"] body .context-rail { visibility: hidden; transform
 .code-line > i { width: 1%; padding: 0 15px; display: table-cell; color: color-mix(in srgb,var(--code-muted) 56%,transparent); font-style: normal; text-align: right; user-select: none; }
 .code-line > span { padding-right: 20px; display: table-cell; white-space: pre; }
 html[data-code-wrap="wrap"] .code-line > span { white-space: pre-wrap; overflow-wrap: anywhere; }
+.editorial-code-no-lines .code-line > span { padding-left: 20px; }
 .editorial-diagram { background: color-mix(in srgb,var(--code-background) 82%,var(--accent-primary)); }
 .editorial-diagram .code-line > i { display: none; }
 .editorial-diagram .code-line > span { padding-left: 20px; }

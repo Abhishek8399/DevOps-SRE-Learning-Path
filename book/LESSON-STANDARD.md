@@ -15,6 +15,19 @@ The executable record contract is [`schema/README.md`](schema/README.md). This d
 
 Schema-v1 lesson files are non-executable Markdown with strict JSON front matter. Raw HTML blocks and HTML comments are not allowed outside fenced examples.
 
+### Code-fence reader metadata
+
+Use a language on every fenced block. The reader infers conservative labels for existing blocks, while optional space-separated attributes make the intent explicit:
+
+````text role=diagram lines=off
+```bash role=command file=scripts/verify.sh lines=on
+```text role=output file=expected.txt lines=off
+```yaml role=configuration file=kubernetes/deployment.yaml
+```console role=transcript
+````
+
+Supported roles are `command`, `configuration`, `diagram`, `output`, `source`, and `transcript`. `file=` accepts a short repository-style path without spaces or traversal segments. `lines=` accepts only `on` or `off`. The global reader control chooses wrap versus horizontal scrolling; an individual fence does not override that preference. Use `role=command` only for text the reader can run, and keep observed or illustrative results in a separate `role=output` or `role=transcript` block.
+
 ## Required teaching sections
 
 1. What the reader sees and where their mind should go first.

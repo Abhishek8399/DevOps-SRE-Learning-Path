@@ -37,7 +37,7 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 
 - Reader controls are globally fixed at the bottom-right and can cover content or compete with interactive elements.
 - Preferences support only two themes and three coarse text sizes.
-- Line spacing, manuscript width, code wrapping, distraction-free mode, navigation state and context-rail state are absent.
+- Line spacing, manuscript width, code wrapping, distraction-free mode, navigation state and context-rail state are implemented as browser-local preferences; real-browser persistence and interaction review remain open.
 - Theme-specific colours are repeated in component styles rather than expressed through complete semantic tokens.
 
 ### Library and chapter entry
@@ -49,7 +49,7 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 
 ### Technical content
 
-- Structured code blocks have a label and optional copy action, but no wrap control, line-number option, filename surface or clear command/output role.
+- Structured code blocks now distinguish command, configuration, terminal transcript, expected output, source and diagram roles; support explicit safe filename labels and optional line numbers; and expose copy plus persistent wrap/scroll controls. A browser visual, keyboard and screen-reader review remains open.
 - Tables work but do not provide a caption from structured content and use a heavy dark header.
 - Answer cards, command cards, labs and incidents are functionally strong but visually dense.
 - Legacy and structured lessons use different visual grammars.
@@ -82,3 +82,10 @@ Do not change stable routes, content IDs, registry generation, schema contracts,
 - The answer reveal separates the strong answer, why the reasoning works, a concrete production example, weak-answer warning signs and senior follow-ups instead of presenting one undifferentiated paragraph.
 - The metadata uses a compact semantic definition list and collapses from three columns to one below 620 px; the warning panel uses existing theme-aware semantic tokens.
 - Type, lint, reader and production-build checks pass, and loopback HTML contains every layer for the initial scenario. Browser visual hierarchy, disclosure interaction, screen-reader output, mobile layout and keyboard focus remain unverified because no browser backend is connected.
+
+## Structured code-block evidence
+
+- Fence metadata accepts only six documented roles, bounded traversal-free repository-style file labels and `lines=on|off`; unknown or malformed attributes fail closed with focused parser diagnostics.
+- Existing blocks retain conservative language-based labels. Canonical examples now explicitly mark a runnable Bash block, a line-number-free expected-output sample, Dockerfiles and four named CI definitions.
+- All non-diagram blocks expose copy and wrap/scroll actions; the global preference is restored from browser-local storage before paint. Diagrams suppress both actions and line numbers to keep the figure visually quiet.
+- Thirty-five reader tests, content/registry/plan validation, typecheck, lint, all five production-build stages, web-budget and hygiene gates pass. Representative canonical routes return HTTP 200 with role, filename, wrap and copy markup. Browser interaction and visual quality remain unverified because no browser backend is connected.

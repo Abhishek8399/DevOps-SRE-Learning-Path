@@ -1504,7 +1504,7 @@ These definitions are **review material, not executed labs**. They demonstrate `
 
 #### GitHub Actions shape
 
-```yaml
+```yaml role=configuration file=.github/workflows/portable-ci.yml lines=on
 name: portable-ci
 
 on:
@@ -1550,7 +1550,7 @@ What to review: event filters and fork behavior; top-level read-only token; exac
 
 #### GitLab CI/CD shape
 
-```yaml
+```yaml role=configuration file=.gitlab-ci.yml lines=on
 stages: [build, test]
 
 default:
@@ -1582,7 +1582,7 @@ What to review: exact image digest; runner tags, scope, executor, and protection
 
 #### Jenkins Declarative Pipeline shape
 
-```groovy
+```groovy role=configuration file=Jenkinsfile lines=on
 pipeline {
   agent none
   options {
@@ -1619,7 +1619,7 @@ What to review: Jenkins core and plugin versions that provide each step; control
 
 This illustrative definition is scoped to **Azure DevOps Services with a GitHub repository**. YAML `pr` triggers apply to GitHub and Bitbucket Cloud repositories; Azure Repos Git pull-request validation is configured through branch-policy build validation instead. `PublishPipelineArtifact@1` and `DownloadPipelineArtifact@2` are Azure DevOps Services tasks and are not supported on Azure DevOps Server. A Server installation needs its supported artifact mechanism and a separately reviewed definition; do not copy this example across products unchanged.
 
-```yaml
+```yaml role=configuration file=azure-pipelines.yml lines=on
 # Scope: Azure DevOps Services with a GitHub repository
 trigger:
   branches:

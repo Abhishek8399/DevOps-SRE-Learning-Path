@@ -37,17 +37,22 @@ export default function ReaderControls() {
 
   useEffect(() => {
     const root = document.documentElement;
+    const syncWrapped = () => setWrapped(root.dataset.codeWrap === "wrap");
     const frame = window.requestAnimationFrame(() => {
       setTheme(themes.includes(root.dataset.readerTheme as Theme) ? root.dataset.readerTheme as Theme : "paper");
       setSize(sizes.includes(root.dataset.readingSize as ReaderSize) ? root.dataset.readingSize as ReaderSize : "comfortable");
       setLeading(leadings.includes(root.dataset.readingLeading as ReaderLeading) ? root.dataset.readingLeading as ReaderLeading : "relaxed");
       setWidth(widths.includes(root.dataset.readingWidth as ReaderWidth) ? root.dataset.readingWidth as ReaderWidth : "standard");
-      setWrapped(root.dataset.codeWrap === "wrap");
+      syncWrapped();
       setFocused(root.dataset.readingFocus === "on");
       setNavigationOpen(root.dataset.navigation !== "closed");
       setContextOpen(root.dataset.contextRail !== "closed");
     });
-    return () => window.cancelAnimationFrame(frame);
+    window.addEventListener("field-manual-code-wrap", syncWrapped);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("field-manual-code-wrap", syncWrapped);
+    };
   }, []);
 
   useEffect(() => {
@@ -144,6 +149,7 @@ export default function ReaderControls() {
     const next = !wrapped;
     setWrapped(next);
     setDataset("codeWrap", next ? "wrap" : "scroll", "field-manual-code-wrap");
+    window.dispatchEvent(new Event("field-manual-code-wrap"));
     setAnnouncement(`Code lines now ${next ? "wrap" : "scroll horizontally"}.`);
   };
   const toggleFocus = () => {

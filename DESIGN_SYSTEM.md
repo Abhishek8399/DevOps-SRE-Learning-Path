@@ -59,6 +59,7 @@ No information depends on colour alone. Focus uses a visible two-tone outline. T
 - Reliability/security/cost notes: semantic icon plus label, never colour alone.
 - Figure: caption, flow or diagram, text alternative and evidence points.
 - Code plate: role/language, optional filename, copy, wrap and optional line numbers.
+  - Author metadata is deliberately narrow: `role=command|configuration|diagram|output|source|transcript`, `file=<repository-style-path>` and `lines=on|off`. Presentation metadata never makes a sample safe to run; surrounding lesson safety and scope remain authoritative.
 - Table: caption, quiet header, sticky header only when long, first-column emphasis.
 - Assessment: question first; answer hidden; calm feedback and deep explanation after intent.
 - Lab: objective, requirements, steps, expected result, validation, cleanup and troubleshooting.

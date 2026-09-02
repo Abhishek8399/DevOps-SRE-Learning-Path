@@ -173,13 +173,28 @@ export type MarkdownInline = Readonly<{
   href?: string;
 }>;
 
+export type MarkdownCodeRole =
+  | "command"
+  | "configuration"
+  | "diagram"
+  | "output"
+  | "source"
+  | "transcript";
+
 export type MarkdownBlock =
   | Readonly<{ kind: "heading"; level: 3 | 4; content: readonly MarkdownInline[] }>
   | Readonly<{ kind: "paragraph"; content: readonly MarkdownInline[] }>
   | Readonly<{ kind: "quote"; content: readonly MarkdownInline[] }>
   | Readonly<{ kind: "unordered-list"; items: readonly (readonly MarkdownInline[])[] }>
   | Readonly<{ kind: "ordered-list"; items: readonly (readonly MarkdownInline[])[] }>
-  | Readonly<{ kind: "code"; language: string; value: string }>
+  | Readonly<{
+      kind: "code";
+      language: string;
+      value: string;
+      role?: MarkdownCodeRole;
+      filename?: string;
+      lineNumbers?: boolean;
+    }>
   | Readonly<{
       kind: "table";
       headers: readonly (readonly MarkdownInline[])[];
@@ -304,19 +319,70 @@ type MarkdownFence = Readonly<{
   character: "`" | "~";
   length: number;
   language: string;
+  role?: MarkdownCodeRole;
+  filename?: string;
+  lineNumbers?: boolean;
 }>;
+
+const MARKDOWN_CODE_ROLES = new Set<MarkdownCodeRole>([
+  "command",
+  "configuration",
+  "diagram",
+  "output",
+  "source",
+  "transcript",
+]);
+
+function parseFenceAttributes(tokens: readonly string[]): Pick<MarkdownFence, "role" | "filename" | "lineNumbers"> {
+  const attributes: { role?: MarkdownCodeRole; filename?: string; lineNumbers?: boolean } = {};
+  for (const token of tokens) {
+    const separator = token.indexOf("=");
+    if (separator <= 0 || separator === token.length - 1) {
+      throw new Error(`structured lesson code fence has invalid attribute: ${token}`);
+    }
+    const name = token.slice(0, separator).toLowerCase();
+    const value = token.slice(separator + 1);
+    if (name === "role") {
+      if (!MARKDOWN_CODE_ROLES.has(value as MarkdownCodeRole)) {
+        throw new Error(`structured lesson code fence has invalid role: ${value}`);
+      }
+      attributes.role = value as MarkdownCodeRole;
+    } else if (name === "file") {
+      const pathSegments = value.split("/");
+      if (!/^[a-z0-9._@+-][a-z0-9._/@+-]{0,119}$/i.test(value)
+        || pathSegments.some((segment) => !segment || segment === "." || segment === "..")) {
+        throw new Error(`structured lesson code fence has invalid file label: ${value}`);
+      }
+      attributes.filename = value;
+    } else if (name === "lines") {
+      if (value !== "on" && value !== "off") {
+        throw new Error(`structured lesson code fence has invalid lines value: ${value}`);
+      }
+      attributes.lineNumbers = value === "on";
+    } else {
+      throw new Error(`structured lesson code fence has unknown attribute: ${name}`);
+    }
+  }
+  return attributes;
+}
 
 function parseFenceOpening(value: string): MarkdownFence | null {
   const marker = value.match(/^\s{0,3}(`{3,}|~{3,})(.*)$/);
   if (!marker || (marker[1][0] === "`" && marker[2].includes("`"))) return null;
-  const firstInfoToken = marker[2].trim().split(/\s+/, 1)[0] ?? "";
+  const infoTokens = marker[2].trim() ? marker[2].trim().split(/\s+/) : [];
+  const firstInfoToken = infoTokens[0] ?? "";
   const language = /^[a-z0-9_-]+$/i.test(firstInfoToken)
     ? firstInfoToken.toLowerCase()
     : "";
+  if (firstInfoToken && !language) {
+    throw new Error(`structured lesson code fence has invalid language: ${firstInfoToken}`);
+  }
+  const attributes = parseFenceAttributes(infoTokens.slice(1));
   return {
     character: marker[1][0] as "`" | "~",
     length: marker[1].length,
     language,
+    ...attributes,
   };
 }
 
@@ -395,7 +461,14 @@ export function parseMarkdownBlocks(source: string): readonly MarkdownBlock[] {
         index += 1;
       }
       if (index >= lines.length) throw new Error("structured lesson has an unclosed code fence");
-      blocks.push({ kind: "code", language: fence.language, value: content.join("\n") });
+      blocks.push({
+        kind: "code",
+        language: fence.language,
+        value: content.join("\n"),
+        ...(fence.role ? { role: fence.role } : {}),
+        ...(fence.filename ? { filename: fence.filename } : {}),
+        ...(fence.lineNumbers === undefined ? {} : { lineNumbers: fence.lineNumbers }),
+      });
       index += 1;
       continue;
     }
