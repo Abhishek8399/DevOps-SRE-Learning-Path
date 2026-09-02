@@ -1590,24 +1590,26 @@ test("staged library filter searches structured metadata while preserving chapte
 });
 
 test("mock interview questions stay role-scoped and export an explicitly non-mastery local record", () => {
-  assert.equal(mockQuestions.length, 24);
+  assert.equal(mockQuestions.length, 29);
   assert.equal(new Set(mockQuestions.map((question) => question.id)).size, mockQuestions.length);
   assert.equal(mockQuestions.every((question) => question.topic.trim().length > 0), true);
-  assert.equal(mockQuestions.every((question) => ["Intermediate", "Advanced", "Expert"].includes(question.difficulty)), true);
-  assert.equal(mockQuestions.every((question) => ["Mid-level", "Senior", "Lead", "Architect"].includes(question.expectedLevel)), true);
+  assert.equal(mockQuestions.every((question) => ["Foundation", "Intermediate", "Advanced", "Expert"].includes(question.difficulty)), true);
+  assert.equal(mockQuestions.every((question) => ["Junior", "Mid-level", "Senior", "Lead", "Architect"].includes(question.expectedLevel)), true);
+  assert.deepEqual([...new Set(mockQuestions.map((question) => question.expectedLevel))].sort(), ["Architect", "Junior", "Lead", "Mid-level", "Senior"]);
+  assert.deepEqual(mockQuestions.filter((question) => question.expectedLevel === "Junior").map((question) => question.id), ["devops-junior-artifact-flow", "infrastructure-junior-process", "cloud-junior-request-path", "platform-junior-kubernetes-service", "sre-junior-sli-alert"]);
   assert.equal(mockQuestions.every((question) => question.weakAnswerWarnings.length >= 2 && question.weakAnswerWarnings.every(Boolean)), true);
   assert.equal(mockQuestions.every((question) => question.deeperExplanation.length >= 120), true);
   assert.equal(mockQuestions.every((question) => question.productionExample.length >= 100), true);
-  assert.equal(questionsForRole("SRE").length, 5);
+  assert.equal(questionsForRole("SRE").length, 6);
   assert.equal(questionsForRole("Platform engineer").every((question) => question.role === "Platform engineer"), true);
-  assert.equal(questionsForRole("Platform engineer").length, 4);
-  assert.equal(questionsForRole("DevOps engineer").length, 3);
-  assert.equal(questionsForRole("Cloud engineer").length, 3);
-  assert.equal(questionsForRole("Infrastructure engineer").length, 2);
+  assert.equal(questionsForRole("Platform engineer").length, 5);
+  assert.equal(questionsForRole("DevOps engineer").length, 4);
+  assert.equal(questionsForRole("Cloud engineer").length, 4);
+  assert.equal(questionsForRole("Infrastructure engineer").length, 3);
   assert.equal(questionsForRole("Data platform engineer").length, 2);
   assert.equal(questionsForRole("Engineering lead").length, 2);
   assert.equal(questionsForRole("Systems architect").length, 3);
-  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Networking").map((question) => question.id), ["cloud-networking"]);
+  assert.deepEqual(questionsForRoleAndArea("Cloud engineer", "Networking").map((question) => question.id), ["cloud-networking", "cloud-junior-request-path"]);
   assert.deepEqual(questionsForRoleAndArea("SRE", "Incident response").map((question) => question.id), ["sre-user-journey", "sre-incident-command", "sre-dns-tls-partial-outage"]);
   assert.deepEqual(questionsForRoleAndArea("SRE", "Networking").map((question) => question.id), ["sre-dns-tls-partial-outage"]);
   assert.deepEqual(questionsForRoleAndArea("Platform engineer", "Reliability").map((question) => question.id), ["platform-multitenant-saturation"]);

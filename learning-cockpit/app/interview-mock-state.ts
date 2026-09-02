@@ -3,8 +3,8 @@ export const mockAreas = ["Incident response", "Reliability", "Platform design",
 
 export type MockRole = (typeof mockRoles)[number];
 export type MockArea = (typeof mockAreas)[number];
-export type MockDifficulty = "Intermediate" | "Advanced" | "Expert";
-export type MockExpectedLevel = "Mid-level" | "Senior" | "Lead" | "Architect";
+export type MockDifficulty = "Foundation" | "Intermediate" | "Advanced" | "Expert";
+export type MockExpectedLevel = "Junior" | "Mid-level" | "Senior" | "Lead" | "Architect";
 
 type MockQuestionGuidance = Readonly<{
   topic: string;
@@ -244,6 +244,51 @@ const mockQuestionCores = [
     strongAnswer: "Nightly backup cannot meet a 15-minute recovery point for payment state, and DNS failover moves traffic but does not restore data or dependencies. Inventory each authoritative state and derived artifact, its consistency boundary, write rate, retention and legal scope. Select replication and backup intervals that can meet the RPO under defined failures, protect immutable/offline copies, and test restore integrity. Define detection, declaration and failover authority; infrastructure, identity, keys, network, configuration, data, queues and applications need an ordered reconstruction plan. Fence old writers and reconcile ambiguous payments before accepting new writes. Measure the entire exercise against 15/60 minutes using representative data and an end-to-end payment/refund journey, then test failback. Record exclusions and cost/complexity trade-offs rather than claiming one platform-wide number without evidence.",
     followUps: ["Can synchronous replication replace backups?", "Where does the RTO clock start, and which approval delays belong in it?"],
   },
+  {
+    id: "devops-junior-artifact-flow",
+    role: "DevOps engineer",
+    areas: ["Delivery security"],
+    prompt: "Explain what should move from a successful build job into a deployment job, and why rebuilding the application during deployment is risky.",
+    evaluator: "Whether you distinguish source, build environment, immutable artifact identity and promotion rather than describing CI/CD as a list of stages.",
+    strongAnswer: "The build job should produce a versioned immutable artifact, such as an image or package, plus its digest and relevant test/provenance evidence. The deployment job should consume that exact approved identity and environment-specific configuration; it should not compile a new artifact. Rebuilding can resolve different dependencies, use a different toolchain or source state, and deploy something that was never tested. I would verify the deployed digest matches the approved build and then verify the user operation. Secrets do not belong inside the artifact.",
+    followUps: ["What is the difference between an artifact version and a digest?", "Where should environment-specific configuration enter the flow?"],
+  },
+  {
+    id: "infrastructure-junior-process",
+    role: "Infrastructure engineer",
+    areas: ["Incident response"],
+    prompt: "A Linux service command reports `active (running)`, but users cannot connect. What does that status prove, and what would you check next?",
+    evaluator: "Whether you separate process-manager state from listener, dependency and user-operation health.",
+    strongAnswer: "`active (running)` proves the service manager currently considers its main process active under the unit contract; it does not prove the process listens on the expected address, responds correctly, reaches dependencies or serves users. I would capture unit status and recent logs, confirm the process and restart history, inspect the exact listening socket and address, test the service locally with the correct protocol, then trace firewall, route, proxy and dependency boundaries as needed. After a scoped fix, I would verify the original user connection rather than stopping at process state.",
+    followUps: ["Why can a process listen only on loopback and still appear healthy?", "What does repeated restart count tell you?"],
+  },
+  {
+    id: "cloud-junior-request-path",
+    role: "Cloud engineer",
+    areas: ["Networking"],
+    prompt: "A user says a website is down. Give a simple ordered model of the request path before choosing a troubleshooting command.",
+    evaluator: "Whether you can map layers and choose evidence based on the observed failure rather than run random network commands.",
+    strongAnswer: "I first define the exact URL, client, time and error. A useful path is client configuration and DNS resolution, route and address reachability, TCP connection, TLS identity and negotiation, HTTP request through proxy or load balancer, application processing, dependencies and the returned user result. Each successful layer narrows—but does not prove—the next one. I choose the earliest failed boundary from the error and compare a healthy path. Any change needs a narrow target and rollback, followed by the same end-to-end request.",
+    followUps: ["What does a successful DNS lookup not prove?", "How does a TLS error differ from an HTTP 503 in this model?"],
+  },
+  {
+    id: "platform-junior-kubernetes-service",
+    role: "Platform engineer",
+    areas: ["Platform design"],
+    prompt: "A Kubernetes Service exists, but requests receive no response. Explain what the Service object does and the first evidence you would collect.",
+    evaluator: "Whether you understand selector-to-endpoint routing and avoid treating object existence as runtime health.",
+    strongAnswer: "A Service provides a stable virtual destination and selects backend Pods; it does not start the application or guarantee healthy endpoints. I would inspect the Service ports and selector, then its EndpointSlices to see whether the intended ready Pod IPs and target ports are present. I would compare Pod labels, readiness, container listening address and port, and test from the relevant network scope. If endpoints exist, I would continue through network policy, service proxy/data-plane and application behavior. Recovery is proven by the original request, not by the Service object remaining present.",
+    followUps: ["Why can running Pods produce zero Service endpoints?", "What is the difference between `port` and `targetPort`?"],
+  },
+  {
+    id: "sre-junior-sli-alert",
+    role: "SRE",
+    areas: ["Reliability"],
+    prompt: "Explain the difference between an SLI, an SLO and an alert using one checkout example.",
+    evaluator: "Whether you connect measurement, target and action while keeping the user journey and time window explicit.",
+    strongAnswer: "An SLI is a measured property of a defined service operation—for example, the proportion of eligible checkout attempts that complete successfully. An SLO is the target for that SLI over a window, such as the agreed success objective over 28 days. An alert is an actionable notification condition, often based on fast and slow error-budget burn, that tells an owner to respond before unacceptable risk is consumed. I must define eligible events and telemetry completeness; a green alert or objective does not prove every region and cohort is healthy.",
+    followUps: ["Why is CPU usage usually not a checkout availability SLI?", "What makes an alert actionable?"],
+  },
 ] as const satisfies readonly MockQuestionCore[];
 
 type MockQuestionId = (typeof mockQuestionCores)[number]["id"];
@@ -440,6 +485,46 @@ const mockQuestionGuidance = {
     weakAnswerWarnings: ["Treats DNS failover as recovery without restoring and reconciling authoritative state.", "Quotes one RPO/RTO for the whole platform without component evidence, exercise timing or dependency order."],
     deeperExplanation: "RPO bounds acceptable data loss and RTO bounds restoration time for a defined operation and failure. Meeting them requires state-specific protection, executable reconstruction, authority, dependency readiness and measured exercises—not architecture labels.",
     productionExample: "Database replication may meet payment-state RPO while unavailable keys or identity policy keep the service beyond RTO; a full exercise exposes that hidden dependency.",
+  },
+  "devops-junior-artifact-flow": {
+    topic: "Build artifacts and immutable promotion",
+    difficulty: "Foundation",
+    expectedLevel: "Junior",
+    weakAnswerWarnings: ["Says the deploy stage should rebuild from the branch without preserving tested artifact identity.", "Stores environment secrets or mutable configuration inside the promoted artifact."],
+    deeperExplanation: "Build once and promote the same bytes creates a traceable chain from tests to deployment. A version is a human-facing label; a digest identifies exact content and prevents a mutable label from silently selecting different bytes.",
+    productionExample: "If production runs `docker build` again, a changed base tag or dependency repository can produce an image different from the one integration tests approved, even at the same Git commit.",
+  },
+  "infrastructure-junior-process": {
+    topic: "Linux service state versus user health",
+    difficulty: "Foundation",
+    expectedLevel: "Junior",
+    weakAnswerWarnings: ["Treats `active (running)` as proof the network service is reachable and correct.", "Restarts immediately without preserving logs, exit history, socket state or the failing user request."],
+    deeperExplanation: "A service manager observes a process contract, while users depend on a longer path. Process existence, socket binding, protocol response, dependency access and external routing are separate boundaries with separate evidence.",
+    productionExample: "A web process can remain active while binding `127.0.0.1:8080` instead of the address expected by its proxy, leaving external users unable to connect.",
+  },
+  "cloud-junior-request-path": {
+    topic: "DNS-to-application request path",
+    difficulty: "Foundation",
+    expectedLevel: "Junior",
+    weakAnswerWarnings: ["Runs ping and concludes the application is healthy or unhealthy from that one result.", "Lists tools without connecting each command to a specific boundary and expected evidence."],
+    deeperExplanation: "Troubleshooting becomes repeatable when the path is ordered and each observation has a proof limit. The visible error often identifies the earliest known failed layer, which is a better starting point than random command execution.",
+    productionExample: "A hostname may resolve and TCP may connect while TLS rejects the certificate name; changing a firewall in that case adds risk without addressing the failed boundary.",
+  },
+  "platform-junior-kubernetes-service": {
+    topic: "Kubernetes Service and EndpointSlice routing",
+    difficulty: "Foundation",
+    expectedLevel: "Junior",
+    weakAnswerWarnings: ["Assumes creating a Service automatically makes Pods healthy or starts them.", "Edits network policy before checking selectors, EndpointSlices, readiness and target ports."],
+    deeperExplanation: "The Service API declares a stable frontend and selection contract. Controllers derive EndpointSlices from matching eligible Pods, and the data plane routes toward those endpoints; a defect at any boundary can preserve the Service object while traffic fails.",
+    productionExample: "A Deployment label changed from `app: api` to `app: checkout-api` while the Service selector stayed old, producing an empty EndpointSlice and no usable backends.",
+  },
+  "sre-junior-sli-alert": {
+    topic: "SLI, SLO and alert fundamentals",
+    difficulty: "Foundation",
+    expectedLevel: "Junior",
+    weakAnswerWarnings: ["Defines an SLI as any available metric without naming the user operation or population.", "Treats an SLO breach and an alert as identical, or proposes alerts with no owner or action."],
+    deeperExplanation: "The SLI is evidence, the SLO is an agreed objective and risk boundary, and the alert is an operational decision trigger. Keeping them distinct prevents infrastructure metrics from replacing user outcomes and avoids paging on non-actionable noise.",
+    productionExample: "Checkout CPU can be normal while a payment dependency fails; a checkout-success SLI captures the user impact, while burn alerts determine when responders must act.",
   },
 } satisfies Record<MockQuestionId, MockQuestionGuidance>;
 
