@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1211",
+  "title": "capabilities(7) — Linux privilege units",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man7/capabilities.7.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux man-pages 6.18, reviewed 2026-09-02",
+  "lessonIds": ["LES-0005"],
+  "topics": ["process capabilities","file capabilities","capability sets","least privilege"],
+  "relevance": "Primary manual for Linux process and file capability semantics and the division of traditional superuser privilege.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

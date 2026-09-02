@@ -96,6 +96,27 @@ const liveLessonDescriptors = [
     },
   },
   {
+    id: "LES-0005",
+    path: join(
+      repositoryRoot,
+      "book",
+      "volumes",
+      "01-linux-systems",
+      "LES-0005-identity-permissions",
+      "lesson.md",
+    ),
+    expected: {
+      aliases: ["V01-L05", "identity-permissions"],
+      curriculumIds: ["LNX-004"],
+      prerequisiteCurriculumIds: ["LNX-002"],
+      prerequisiteLessonIds: ["LES-0002"],
+      order: 5,
+      route: "/book/linux/identity-permissions",
+      slug: "identity-permissions",
+      volume: "01-linux-systems",
+    },
+  },
+  {
     id: "LES-0007",
     path: join(
       repositoryRoot,
@@ -814,12 +835,12 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("twenty-three live structured lessons preserve exact identities and canonical sections", () => {
+test("twenty-four live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
-  assert.equal(bundles.length, 23);
+  assert.equal(bundles.length, 24);
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0002", "LES-0003", "LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
+    ["LES-0002", "LES-0003", "LES-0005", "LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -1046,7 +1067,7 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
     "legacy-content-map.json",
   ));
   const legacyEntries = legacyMap.lessons
-    .filter((lesson) => !["LES-0002", "LES-0003"].includes(lesson.id))
+    .filter((lesson) => !["LES-0002", "LES-0003", "LES-0005"].includes(lesson.id))
     .map((lesson) => ({
     canonicalId: lesson.id,
     stateId: lesson.slug,
@@ -1066,6 +1087,7 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
   const catalog = createReaderCatalog(legacyEntries, structuredMetadata, {
     "LES-0002": "processes-signals-systemd",
     "LES-0003": "cpu-memory-pressure",
+    "LES-0005": "identity-permissions",
   });
 
   assert.equal(catalog.length, 26);
@@ -1729,10 +1751,11 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
   assert.equal(record.includes("\r"), false);
 });
 
-test("all twenty-three independent transfers stay answer-isolated from their answered records", () => {
+test("all twenty-four independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
     ["LES-0002", "ASM-0264"],
     ["LES-0003", "ASM-0267"],
+    ["LES-0005", "ASM-0270"],
     ["LES-0006", "ASM-0003"],
     ["LES-0007", "ASM-0006"],
     ["LES-0008", "ASM-0009"],

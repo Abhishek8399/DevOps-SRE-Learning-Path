@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0268",
+  "lessonId": "LES-0005",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "A service reports permission denied opening /opt/app/config/settings.yaml even though the file is mode 0644. Explain the decision path and the next evidence.",
+  "directAnswer": "Mode 0644 on the final file is only the last discretionary gate. Confirm the service's effective numeric identity, resolve the actual path, require search permission on every parent, then inspect ACL masks, mount state, LSM denials, namespace/volume mapping, and the requested operation.",
+  "foundation": "Linux resolves a pathname component by component. Directories use execute as search/traversal permission. After reaching the object, the kernel selects owner, group, or other permissions from the caller's credentials; additional controls can still deny access.",
+  "reasoningSteps": [
+    "Capture exact errno, operation, path, process PID/start time, service/container identity, and incident window.",
+    "Read the process's effective UID, GID, supplementary groups, capabilities, and confinement rather than using the operator shell as a substitute.",
+    "Resolve symlinks and mount namespace, then use namei and numeric stat data on every component.",
+    "Apply owner, matching-group, or other class and distinguish directory traversal from final-file read.",
+    "Inspect POSIX ACL entries and mask, mount options and state, AppArmor/SELinux evidence, and container volume/security context.",
+    "Propose the narrowest reversible correction and verify required access plus a negative unauthorized test."
+  ],
+  "seniorAnswer": "I would not change mode first. I would bind evidence to the failing process and its mount/user namespaces, record its effective numeric credentials and requested open flags, then resolve the exact path. A readable final file is unreachable when any parent denies search. If discretionary access should allow it, I inspect ACL mask, read-only or idmapped mount behavior, AppArmor/SELinux denial, immutable attributes, and volume/UID mapping. The fix should encode intended ownership or a narrow group/ACL/policy rule, avoid recursive changes, include rollback, and prove both the service operation and continued denial for an unauthorized identity.",
+  "weakAnswer": "The mode looks correct, so run chmod -R 777 to rule permissions out.",
+  "whyWeak": "It expands confidentiality and integrity exposure, can mutate unrelated data, destroys diagnostic evidence, and cannot repair a read-only mount, wrong namespace, or mandatory policy.",
+  "evidence": [
+    {"signal": "final file is 0644", "proves": "The inode's displayed owner/group/other mode permits owner write and broad read subject to class selection.", "doesNotProve": "Parent traversal, caller identity, ACL mask, mount writability, LSM authorization, or correct resolved object."},
+    {"signal": "namei shows one parent without applicable x", "proves": "That credential class cannot search through the displayed component under discretionary mode rules.", "doesNotProve": "That changing it broadly is authorized or that no stronger policy also denies."},
+    {"signal": "an event-window AppArmor denial matches PID/path/operation", "proves": "The enforcing profile denied that observed operation.", "doesNotProve": "That disabling the profile is safe or that all other gates permit access."}
+  ],
+  "followUps": [
+    {"prompt": "Why can your shell read it while systemd cannot?", "answer": "The unit may use another UID, groups, capabilities, root directory, mount namespace, working directory, umask, and AppArmor/SELinux profile."},
+    {"prompt": "What is a negative authorization test?", "answer": "After the fix, an identity that should remain unauthorized attempts the same bounded operation and is still denied; this checks least privilege."},
+    {"prompt": "Can chmod fix a read-only mount?", "answer": "No. The mount rejects writes independently, and chmod itself may also fail on that boundary."}
+  ],
+  "rubric": [
+    {"criterion": "Path and identity model", "points": 4, "observableEvidence": "Separates runtime credentials, every parent traversal decision, and final-object permissions."},
+    {"criterion": "Layered evidence", "points": 4, "observableEvidence": "Checks ACL, mount, LSM, namespace, and volume controls without collapsing them."},
+    {"criterion": "Least-privilege verification", "points": 2, "observableEvidence": "Uses a narrow reversible fix and positive plus negative tests."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

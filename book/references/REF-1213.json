@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1213",
+  "title": "Linux Security Module usage and AppArmor",
+  "organization": "Linux kernel project",
+  "url": "https://docs.kernel.org/admin-guide/LSM/index.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current kernel documentation reviewed 2026-09-02",
+  "lessonIds": ["LES-0005"],
+  "topics": ["Linux Security Modules","mandatory access control","AppArmor","SELinux"],
+  "relevance": "Authoritative kernel overview for LSM security hooks and active mandatory-access-control families; linked AppArmor documentation supplies profile context.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

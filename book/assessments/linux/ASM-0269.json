@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0269",
+  "lessonId": "LES-0005",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "A Kubernetes container works as root but fails as UID 10001 when writing a mounted volume. Lead diagnosis, safe restoration, and durable least-privilege prevention.",
+  "directAnswer": "Treat root success as evidence that may bypass ordinary checks, not as the solution. Trace numeric identity from image and securityContext through every mounted path component, volume ownership/ACL, fsGroup behavior, mount flags, user namespaces, and LSM policy; then correct the narrow owning boundary.",
+  "foundation": "The kernel compares numeric UIDs/GIDs and capabilities. Kubernetes can set runAsUser, runAsGroup, supplemental groups, fsGroup, privilege escalation, and filesystem policy. Volume plugins and user namespaces change which host-side identities and ownership operations are meaningful.",
+  "reasoningSteps": [
+    "Bound affected workload, operation, volume, node, rollout cohort, data sensitivity, and customer impact; preserve the non-root failure.",
+    "Inspect image USER and entrypoint assumptions, then actual UID/GID/groups/capabilities inside the exact container.",
+    "Inspect pod/container securityContext, volume type, mount path/options, fsGroup and fsGroupChangePolicy, CSI behavior, and user namespace.",
+    "Trace numeric owner/mode/ACL and traversal at the storage authority; correlate AppArmor/SELinux and admission evidence.",
+    "Choose image-time ownership, storage provisioning, narrow group/ACL, or bounded init-time correction appropriate to the owner; do not recursively mutate shared data blindly.",
+    "Canary, verify required write and durable read-back, prove unauthorized denial, monitor latency/ownership drift, and retain rollback."
+  ],
+  "seniorAnswer": "I would pause a security-context rollout if impact is growing and keep a failing replica for evidence when safe. Root success says discretionary privilege may mask the defect. I compare declared and actual numeric credentials, effective capabilities and no-new-privileges, then map the container path to its volume and inspect every component at the storage authority. I verify whether that CSI driver implements fsGroup and whether user-namespace or idmapped behavior changes host IDs. A durable fix gives the application only the operation it needs—predictable image/runtime IDs, provisioned group ownership, or a narrow ACL/policy. I reject runAsUser 0 and fleet-wide recursive chmod. The canary must write/read the real harmless operation, preserve existing data, and show another identity remains denied.",
+  "weakAnswer": "Set runAsUser to 0 or chmod -R 777 on the volume.",
+  "whyWeak": "Both bypass the intended control, expand blast radius, may corrupt or stall a shared volume, and leave identity ownership unresolved.",
+  "evidence": [
+    {"signal": "root works and UID 10001 fails", "proves": "The outcomes differ with runtime privilege/identity in the tested paths.", "doesNotProve": "Which discretionary, mount, namespace, capability, or LSM gate caused the difference."},
+    {"signal": "volume root is numeric 2000:3000 mode 0770 and container lacks group 3000", "proves": "Ordinary group-class access is unavailable to that container identity.", "doesNotProve": "That changing all ownership is safe or that ACL/LSM layers permit it."},
+    {"signal": "fsGroup is configured", "proves": "The Pod requests group handling semantics.", "doesNotProve": "That the volume driver applied them, the path was rewritten, or every existing object inherited access."}
+  ],
+  "followUps": [
+    {"prompt": "Why prefer numeric IDs in evidence?", "answer": "Names are local mappings; kernel and filesystem authorization compare numeric credentials, possibly translated through namespaces."},
+    {"prompt": "When is an init-container chown unsafe?", "answer": "On large/shared volumes it can be slow, race with other writers, cross ownership boundaries, mutate hard links or unexpected paths, and delay every rollout."},
+    {"prompt": "What makes the repair durable?", "answer": "Identity and ownership are encoded at image, workload, storage-provisioning, or policy ownership layers and verified on new volumes and rollouts."}
+  ],
+  "rubric": [
+    {"criterion": "Cross-boundary identity", "points": 4, "observableEvidence": "Traces image, runtime, Kubernetes, namespace, volume, and storage numeric identities."},
+    {"criterion": "Safe restoration", "points": 3, "observableEvidence": "Avoids root/broad recursion, uses bounded canary and rollback, and preserves data."},
+    {"criterion": "Durable least privilege", "points": 3, "observableEvidence": "Encodes ownership and proves positive and negative authorization outcomes."}
+  ],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

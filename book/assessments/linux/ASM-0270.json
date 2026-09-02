@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0270",
+  "lessonId": "LES-0005",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "On disposable Ubuntu, use read-only commands to analyze one non-sensitive existing path as your normal user, then design but do not apply a least-privilege repair for a hypothetical service identity that lacks required access.",
+  "deliverables": [
+    "A sanitized environment card naming Ubuntu/kernel, caller identity, namespace boundary, chosen path, intended operation, authorization, and time.",
+    "A component-by-component path diagram showing resolution, numeric owner/group, applicable mode class, required directory operation, final-object operation, ACL mask, mount, and LSM gates.",
+    "A command evidence table for id, proc status capabilities, readlink, namei, stat, findmnt, and getfacl when available, including proves and does not prove.",
+    "A hypothetical service credential and a manually reasoned allow/deny result without changing users or permissions.",
+    "A narrow proposed fix with owner, rollback, positive test, negative unauthorized test, monitoring, and prevention.",
+    "A no-mutation cleanup statement, redactions, limitations, and assistance disclosure."
+  ],
+  "evidenceRequirements": [
+    "Use numeric UID/GID evidence as well as names and distinguish the current shell from the hypothetical service.",
+    "Explain read, write, and execute separately for regular files and directories.",
+    "Apply only one owner/group/other class at each inode and include supplementary groups.",
+    "Explain ACL mask, read-only/noexec/nosuid mount options, capabilities, and AppArmor/SELinux as separate layers even if absent.",
+    "Do not run sudo, chmod, chown, setfacl, setcap, remount, policy-disable, or production-path commands.",
+    "Do not inspect this assessment implementation or a model answer while producing the independent work."
+  ],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [
+    {"criterion": "Safety and provenance", "points": 4, "observableEvidence": "Uses authorized non-sensitive read-only scope with exact identity/time and no mutation."},
+    {"criterion": "Path-resolution reasoning", "points": 4, "observableEvidence": "Correctly evaluates every directory component and final operation."},
+    {"criterion": "Layered authorization", "points": 4, "observableEvidence": "Separates modes, ACL mask, mount, capabilities, namespaces, and LSM policy."},
+    {"criterion": "Least-privilege design", "points": 4, "observableEvidence": "Proposes a narrow owned fix with rollback and positive/negative tests."},
+    {"criterion": "Production transfer", "points": 4, "observableEvidence": "Transfers numeric identity reasoning to systemd, container, Kubernetes, and storage boundaries."}
+  ],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

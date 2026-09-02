@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1214",
+  "title": "Configure a Security Context for a Pod or Container",
+  "organization": "Kubernetes project",
+  "url": "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Current Kubernetes documentation reviewed 2026-09-02",
+  "lessonIds": ["LES-0005"],
+  "topics": ["runAsUser","runAsGroup","fsGroup","capabilities","security context"],
+  "relevance": "Official Kubernetes documentation for Pod and container credential, group, capability, and filesystem security-context behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}
