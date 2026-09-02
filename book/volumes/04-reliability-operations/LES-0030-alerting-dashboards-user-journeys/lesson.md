@@ -185,7 +185,7 @@
       "question": "Are the bounded lab prerequisites, identity, fixture, and state path safe before mutation?",
       "risk": "read-only",
       "command": "bash lab.sh doctor",
-      "runFrom": "drafts/LES-0030-alerting-dashboards-user-journeys/support/lab as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0030-alerting-dashboards-user-journeys as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "doctor reports ready=true", "meaning": "the deterministic model prerequisites and state identity passed", "nextEvidence": "run setup"},
         {"when": "doctor refuses root, missing tools, invalid fixtures or ambiguous state", "meaning": "the wrapper cannot establish its safety contract", "nextEvidence": "preserve the refusal and fix only the named boundary"}
@@ -305,7 +305,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture contract is invalid", "a calculation differs from reviewed expectations", "cleanup cannot validate exact ownership"],
       "recovery": "Run status. If the complete descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state for review instead of deleting it broadly.",
       "cleanupProof": "Cleanup validates exact parent, basename, real path, UID, sentinel, manifest, scenario, allowed children, types, owner and size, removes only that directory, and proves exact absence.",
-      "path": "drafts/LES-0030-alerting-dashboards-user-journeys/support/lab"
+      "path": "book/labs/LES-0030-alerting-dashboards-user-journeys"
     },
     {
       "id": "LES-0030-LAB-002",
@@ -319,7 +319,7 @@
       "abortConditions": ["reviewer-only answer material becomes visible", "authorization, accessibility or sanitization is unclear", "state validation fails", "a real receiver could be contacted", "the learner proposes broad silencing or destructive action", "evidence cannot discriminate the hypothesis"],
       "recovery": "Return to baseline evidence, narrow the hypothesis and submit a revision. Never reveal answered material before independent review.",
       "cleanupProof": "Use the unseen case's own manifest to prove every created process, port, file, queue, container, network or resource absent. Guided lab cleanup does not cover the independent case.",
-      "path": "drafts/LES-0030-alerting-dashboards-user-journeys/support/lab"
+      "path": "book/labs/LES-0030-alerting-dashboards-user-journeys"
     }
   ],
   "incidents": [
@@ -359,7 +359,7 @@
   "lastReviewed": "2026-08-04",
   "reviewAfter": "2027-02-04",
   "limitations": [
-    "This package is quarantined and is not loaded by the website or canonical registry.",
+    "This chapter is canonical reading content and a live route, but publication is not formal acceptance, lab-runtime evidence, or learner mastery.",
     "The Python fixture is a deterministic teaching model, not a monitoring server, PromQL engine, rule scheduler, Alertmanager, Grafana, synthetic probe, receiver, escalation service or representative application.",
     "No Prometheus, promtool, Alertmanager, Grafana, PagerDuty, Opsgenie, email, SMS, chat, Dynatrace, Splunk, Datadog, CloudWatch or cloud-monitoring runtime has executed for this lesson.",
     "Published Google SRE burn-rate values are taught as reasoned starting points and examples, not universal policy or proof that a service's SLI and SLO are valid.",
@@ -1778,7 +1778,7 @@ Review before promotion:
 |---|---|
 | Before direct draft validation | schemas, duplicate keys, headings, commands, answer isolation, rubric parity and references |
 | Before runtime work | immutable artifacts, licenses, configuration, identities, ports, network, resources, receivers, secrets and rollback |
-| Before canonical promotion | Ubuntu and representative runtime, relationships, registries, reader, tests, build, routes, browser and formal review |
+| After canonical publication | optional Ubuntu and representative runtime, browser, accessibility, security, and formal review |
 | Every six months | official specifications, product versions, defaults, examples, security guidance and references |
 | After relevant release or incident | compatibility, migrations, state semantics, vulnerabilities, alert-quality findings and proof limits |
 

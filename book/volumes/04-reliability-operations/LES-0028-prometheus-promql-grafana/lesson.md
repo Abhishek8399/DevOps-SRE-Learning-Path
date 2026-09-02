@@ -122,7 +122,7 @@
       "question": "Are Bash and Python available, is the caller non-root, and is the bounded lab path safe before any state is created?",
       "risk": "read-only",
       "command": "bash lab.sh doctor",
-      "runFrom": "drafts/LES-0028-prometheus-promql-grafana/support/lab as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0028-prometheus-promql-grafana as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "doctor reports ready=true", "meaning": "the local teaching-model prerequisites and path checks passed", "nextEvidence": "create the bounded state with LES-0028-CMD-002"},
         {"when": "doctor refuses root, a missing tool, unsafe path, or existing foreign state", "meaning": "the declared safety contract is not satisfied", "nextEvidence": "stop and correct only the reported prerequisite; never bypass the refusal"}
@@ -284,7 +284,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture schema is invalid", "a result would exceed the declared bound"],
       "recovery": "Run status. If and only if the complete descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state for review.",
       "cleanupProof": "Cleanup validates parent, basename prefix, real path, UID, sentinel, manifest, and child types, removes only the owned directory, and proves exact absence.",
-      "path": "drafts/LES-0028-prometheus-promql-grafana/support/lab"
+      "path": "book/labs/LES-0028-prometheus-promql-grafana"
     },
     {
       "id": "LES-0028-LAB-002",
@@ -298,7 +298,7 @@
       "abortConditions": ["reviewer-only answer material is visible", "state validation fails", "the learner proposes destructive host or production action", "the evidence cannot distinguish the proposed hypothesis"],
       "recovery": "Return to baseline evidence and submit a revised hypothesis. Do not reveal the answer-isolated assessment solution before independent review.",
       "cleanupProof": "Use the unseen case's own manifest to prove exact absence of every resource it created. Guided lab cleanup covers only its declared state and never claims to remove the learner response.",
-      "path": "drafts/LES-0028-prometheus-promql-grafana/support/lab"
+      "path": "book/labs/LES-0028-prometheus-promql-grafana"
     }
   ],
   "incidents": [
@@ -338,7 +338,7 @@
   "lastReviewed": "2026-08-10",
   "reviewAfter": "2027-02-10",
   "limitations": [
-    "The current package is quarantined and is not loaded by the website or canonical registry.",
+    "This chapter is canonical reading content and a live route, but publication is not formal acceptance, lab-runtime evidence, or learner mastery.",
     "The bounded lab is a deterministic teaching model and does not implement the Prometheus query engine, TSDB, scraper, rule engine, Alertmanager, or Grafana renderer.",
     "Exact Linux/amd64 image manifests are recorded for Prometheus 3.13.2, Alertmanager 0.33.1, Grafana 13.1.1 and Python 3.12.13, but offline availability, product configuration validation, runtime lifecycle evidence and browser review are pending.",
     "Official current documentation was reviewed, but feature flags, native histogram behavior, configuration schema, dashboard schema, and release support remain version-sensitive.",
@@ -1063,7 +1063,7 @@ Environment card:
 Run from:
 
 ```text
-drafts/LES-0028-prometheus-promql-grafana/support/lab
+book/labs/LES-0028-prometheus-promql-grafana
 ```
 
 #### Step 1: preflight
@@ -1515,7 +1515,7 @@ Review schedule:
 |---|---|
 | Before draft validation | schema, exact headings, commands, safety labels, links, and answer isolation |
 | Before runtime work | immutable artifacts, supported versions, configs, network, identity, resources, and cleanup |
-| Before canonical promotion | direct schemas, runtime lifecycle, reader, build, route, browser, security, and independent editorial review |
+| After canonical publication | optional runtime lifecycle, browser, security, accessibility, and independent editorial review |
 | Every six months | official documentation, versions, commands, feature flags, and references |
 | After relevant release or advisory | compatibility, security, migrations, and rollback guidance |
 

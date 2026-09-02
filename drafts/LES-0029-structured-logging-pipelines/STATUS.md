@@ -1,7 +1,6 @@
-# LES-0029 draft status
+# LES-0029 historical authoring status
 
-This directory is a quarantined authoring package for `LES-0029` / `V04-L04` / `OBS-004`.
-Nothing here is canonical book content, a live website route, learner evidence, or a mastery claim.
+The chapter and support records have moved to canonical book paths under `DEC-093` and `DEC-095`. This retained file records the earlier authoring evidence and remaining gates; publication is not learner evidence or a mastery claim.
 
 ## Current state
 
@@ -32,7 +31,7 @@ Nothing here is canonical book content, a live website route, learner evidence, 
 
 ## Promotion boundary
 
-Promotion remains `NO-GO` until all of the following are complete:
+The following post-publication evidence gates remain open:
 
 1. Review and lock exact logging runtime artifacts, provenance, licenses, configuration, resource ceilings, storage boundaries, and offline availability.
 2. Add representative versioned local behavior for the selected source, collector, buffering, parsing, routing, indexing, querying, retention, security, and failure modes; keep deterministic-model evidence separate.

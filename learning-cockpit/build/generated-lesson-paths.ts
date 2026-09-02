@@ -27,4 +27,8 @@ export const generatedLessonPaths = {
   "LES-0025": ["book", "volumes", "03-engineering-delivery", "LES-0025-ci-platform-operations", "lesson.md"],
   "LES-0026": ["book", "volumes", "04-reliability-operations", "LES-0026-observability-foundations", "lesson.md"],
   "LES-0027": ["book", "volumes", "04-reliability-operations", "LES-0027-opentelemetry-instrumentation-pipelines", "lesson.md"],
+  "LES-0028": ["book", "volumes", "04-reliability-operations", "LES-0028-prometheus-promql-grafana", "lesson.md"],
+  "LES-0029": ["book", "volumes", "04-reliability-operations", "LES-0029-structured-logging-pipelines", "lesson.md"],
+  "LES-0030": ["book", "volumes", "04-reliability-operations", "LES-0030-alerting-dashboards-user-journeys", "lesson.md"],
+  "LES-0031": ["book", "volumes", "04-reliability-operations", "LES-0031-sre-principles-risk-toil-readiness", "lesson.md"],
 } as const;

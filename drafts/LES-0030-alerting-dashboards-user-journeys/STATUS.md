@@ -1,7 +1,6 @@
-# LES-0030 draft status
+# LES-0030 historical authoring status
 
-This directory is a quarantined authoring package for `LES-0030` / `V04-L05` / `OBS-005`.
-Nothing here is canonical book content, a live website route, learner evidence, or a mastery claim.
+The chapter and support records have moved to canonical book paths under `DEC-093` and `DEC-095`. This retained file records the earlier authoring evidence and remaining gates; publication is not learner evidence or a mastery claim.
 
 ## Current state
 
@@ -33,7 +32,7 @@ Nothing here is canonical book content, a live website route, learner evidence, 
 
 ## Promotion boundary
 
-Promotion remains `NO-GO` until all of the following are complete:
+The following post-publication evidence gates remain open:
 
 1. Review and lock exact Prometheus, Alertmanager, Grafana, probe and receiver artifacts, provenance, licenses, configuration, resource ceilings, storage boundaries, identities, secrets, ports, networks, and offline availability.
 2. Add representative versioned local behavior for rule evaluation, state timing, missing series, no data, query error, grouping, deduplication, inhibition, silences, routing, delivery, acknowledgement, dashboards, recovery, HA limitations, and failure modes; keep deterministic-model evidence separate.

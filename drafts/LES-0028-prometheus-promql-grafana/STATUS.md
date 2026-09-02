@@ -1,7 +1,6 @@
-# LES-0028 draft status
+# LES-0028 historical authoring status
 
-This directory is a quarantined authoring package for `LES-0028` / `V04-L03` / `OBS-003`.
-Nothing here is canonical book content, a live website route, learner evidence, or a mastery claim.
+The chapter and support records have moved to canonical book paths under `DEC-093` and `DEC-095`. This retained file records the earlier authoring evidence and remaining gates; publication is not learner evidence or a mastery claim.
 
 ## Current state
 
@@ -38,7 +37,7 @@ The verifier now attempts cleanup after any failure, removes only the two exact 
 
 ## Promotion boundary
 
-Promotion remains `NO-GO` until all of the following are complete:
+The following post-publication evidence gates remain open:
 
 1. Complete license review and prove that every exact pinned artifact is locally available offline.
 2. Run the guarded controller, validate configuration with the pinned binaries, and test the real stack's scrape, PromQL, recording-rule, alert-rule, Alertmanager and Grafana provisioning behavior; keep deterministic-model evidence separate.

@@ -1,7 +1,6 @@
-# LES-0031 draft status
+# LES-0031 historical authoring status
 
-This directory is a quarantined authoring package for `LES-0031` / `V04-L06` / `SRE-001`.
-Nothing here is canonical book content, a live website route, learner evidence, or a mastery claim.
+The chapter and support records have moved to canonical book paths under `DEC-093` and `DEC-095`. This retained file records the earlier authoring evidence and remaining gates; publication is not learner evidence or a mastery claim.
 
 ## Current state
 
@@ -33,7 +32,7 @@ Nothing here is canonical book content, a live website route, learner evidence, 
 
 ## Promotion boundary
 
-Promotion remains `NO-GO` until all of the following are complete:
+The following post-publication evidence gates remain open:
 
 1. Review all SRE, risk, toil, objective, readiness, ownership, on-call and learning claims for source fidelity, context and accidental universalization of organization-specific practices.
 2. Add a reviewed representative local service-and-team case with versioned user, work, ownership, readiness, capacity, change, incident, security, data and human evidence; keep fictional-model evidence separate.

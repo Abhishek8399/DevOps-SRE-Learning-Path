@@ -304,7 +304,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture contract is invalid", "a calculation differs from reviewed expectations", "cleanup cannot validate exact ownership"],
       "recovery": "Run status. If the complete descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state for review instead of deleting it broadly.",
       "cleanupProof": "Cleanup validates exact parent, basename, real path, UID, sentinel, manifest, scenario, allowed children, types and owner, removes only that directory, and proves exact absence.",
-      "path": "drafts/LES-0031-sre-principles-risk-toil-readiness/support/lab"
+      "path": "book/labs/LES-0031-sre-principles-risk-toil-readiness"
     },
     {
       "id": "LES-0031-LAB-002",
@@ -318,7 +318,7 @@
       "abortConditions": ["reviewer-only answer material becomes visible", "authorization, accessibility or sanitization is unclear", "state validation fails", "a real organizational or notification system could be contacted", "the learner proposes blame, unbounded automation or unsupported launch", "evidence cannot discriminate the hypothesis"],
       "recovery": "Return to baseline evidence, narrow the hypothesis and submit a revision. Never reveal answered material before independent review.",
       "cleanupProof": "Use the unseen case's own manifest to prove every created process, port, file, queue, container, network or resource absent. Guided lab cleanup does not cover the independent case.",
-      "path": "drafts/LES-0031-sre-principles-risk-toil-readiness/support/lab"
+      "path": "book/labs/LES-0031-sre-principles-risk-toil-readiness"
     }
   ],
   "incidents": [
@@ -1947,7 +1947,7 @@ Review before promotion:
 | Before direct draft validation | schemas, duplicate keys, headings, commands, relationships, answer isolation, rubric parity and references |
 | Before any real-team use | authorization, privacy, purpose, access, retention, employment policy, psychological safety and non-blaming measurement |
 | Before any real-service change | service scope, identity, privilege, blast radius, user/data/security risk, canary, abort, rollback and authority |
-| Before canonical promotion | Ubuntu lifecycle, representative evidence, registries, reader, tests, build, routes, browser and formal review |
+| After canonical publication | optional Ubuntu and representative evidence, browser, accessibility, security, and formal review |
 | Every six months | source currency, terminology, examples, policies, accessibility and reference review |
 | After a relevant incident or organizational change | assumptions, ownership, staffing, failure modes, safeguards and proof limits |
 

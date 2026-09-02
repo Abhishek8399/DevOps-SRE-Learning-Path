@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes twenty-seven lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes thirty-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 27);
-  assert.equal(result.metrics.assessments, 81);
-  assert.equal(result.metrics.references, 211);
+  assert.equal(result.metrics.lessons, 31);
+  assert.equal(result.metrics.assessments, 93);
+  assert.equal(result.metrics.references, 270);
 
   const expectations = [
     {
@@ -1591,6 +1591,38 @@ test("the live structured corpus publishes twenty-seven lessons with exact owner
         "REF-0183", "REF-0184",
       ],
       independentId: "ASM-0066",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations", "LES-0028-prometheus-promql-grafana", "lesson.md"),
+      id: "LES-0028", domain: "reliability", route: "/book/reliability/prometheus-promql-grafana", volume: "04-reliability-operations", order: 3,
+      prerequisiteLessonIds: ["LES-0026", "LES-0008"], prerequisiteCurriculumIds: ["OBS-001", "DBG-001"],
+      assessmentIds: ["ASM-0067", "ASM-0068", "ASM-0069"],
+      referenceIds: ["REF-0167", "REF-0185", "REF-0186", "REF-0187", "REF-0188", "REF-0189", "REF-0190", "REF-0191", "REF-0192", "REF-0193", "REF-0194", "REF-0195", "REF-0196", "REF-0197", "REF-0198"],
+      independentId: "ASM-0069",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations", "LES-0029-structured-logging-pipelines", "lesson.md"),
+      id: "LES-0029", domain: "reliability", route: "/book/reliability/structured-logging-pipelines", volume: "04-reliability-operations", order: 4,
+      prerequisiteLessonIds: ["LES-0026", "LES-0008", "LES-0021"], prerequisiteCurriculumIds: ["OBS-001", "DBG-001", "AUT-005"],
+      assessmentIds: ["ASM-0070", "ASM-0071", "ASM-0072"],
+      referenceIds: ["REF-0199", "REF-0200", "REF-0201", "REF-0202", "REF-0203", "REF-0204", "REF-0205", "REF-0206", "REF-0207", "REF-0208", "REF-0209", "REF-0210", "REF-0211", "REF-0212", "REF-0213"],
+      independentId: "ASM-0072",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations", "LES-0030-alerting-dashboards-user-journeys", "lesson.md"),
+      id: "LES-0030", domain: "reliability", route: "/book/reliability/alerting-dashboards-user-journeys", volume: "04-reliability-operations", order: 5,
+      prerequisiteLessonIds: ["LES-0026", "LES-0008"], prerequisiteCurriculumIds: ["OBS-001", "SRE-002"],
+      assessmentIds: ["ASM-0073", "ASM-0074", "ASM-0075"],
+      referenceIds: ["REF-0214", "REF-0215", "REF-0216", "REF-0217", "REF-0218", "REF-0219", "REF-0220", "REF-0221", "REF-0222", "REF-0223", "REF-0224", "REF-0225", "REF-0226", "REF-0227", "REF-0228"],
+      independentId: "ASM-0075",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "04-reliability-operations", "LES-0031-sre-principles-risk-toil-readiness", "lesson.md"),
+      id: "LES-0031", domain: "reliability", route: "/book/reliability/sre-principles-risk-toil-readiness", volume: "04-reliability-operations", order: 6,
+      prerequisiteLessonIds: ["LES-0007", "LES-0008", "LES-0026"], prerequisiteCurriculumIds: ["FND-001", "DBG-001", "OBS-001"],
+      assessmentIds: ["ASM-0076", "ASM-0077", "ASM-0078"],
+      referenceIds: ["REF-0229", "REF-0230", "REF-0231", "REF-0232", "REF-0233", "REF-0234", "REF-0235", "REF-0236", "REF-0237", "REF-0238", "REF-0239", "REF-0240", "REF-0241", "REF-0242", "REF-0243"],
+      independentId: "ASM-0078",
     },
   ];
 

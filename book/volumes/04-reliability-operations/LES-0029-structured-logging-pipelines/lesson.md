@@ -15,7 +15,7 @@
   "level": {"from": "foundation", "to": "advanced"},
   "estimatedMinutes": 600,
   "prerequisiteLessonIds": ["LES-0026", "LES-0008", "LES-0021"],
-  "prerequisiteCurriculumIds": ["OBS-001", "DBG-001", "API-001"],
+  "prerequisiteCurriculumIds": ["OBS-001", "DBG-001", "AUT-005"],
   "testedEnvironments": [
     {
       "platform": "Ubuntu",
@@ -178,7 +178,7 @@
       "question": "Are the bounded lab prerequisites, identity, fixture, and state path safe before mutation?",
       "risk": "read-only",
       "command": "bash lab.sh doctor",
-      "runFrom": "drafts/LES-0029-structured-logging-pipelines/support/lab as a normal Ubuntu user",
+      "runFrom": "book/labs/LES-0029-structured-logging-pipelines as a normal Ubuntu user",
       "expectedBranches": [
         {"when": "doctor reports ready=true", "meaning": "the deterministic model prerequisites and current state identity passed", "nextEvidence": "run setup"},
         {"when": "doctor refuses root, a missing tool, invalid fixture, symlink, unexpected child, or foreign state", "meaning": "the wrapper cannot prove its safety contract", "nextEvidence": "preserve the refusal and correct only the named boundary"}
@@ -298,7 +298,7 @@
       "abortConditions": ["caller is root", "state identity or ownership is ambiguous", "a child is a symlink or unexpected type", "fixture schema is invalid", "a result exceeds the declared bound", "cleanup cannot validate exact ownership"],
       "recovery": "Run status. If the complete descriptor validates, run cleanup and repeat setup. Preserve refused foreign or ambiguous state for review rather than deleting it broadly.",
       "cleanupProof": "Cleanup validates exact parent, basename, real path, UID, sentinel, manifest, scenario, allowed children, types, owner and size, removes only that directory, and proves exact absence.",
-      "path": "drafts/LES-0029-structured-logging-pipelines/support/lab"
+      "path": "book/labs/LES-0029-structured-logging-pipelines"
     },
     {
       "id": "LES-0029-LAB-002",
@@ -312,7 +312,7 @@
       "abortConditions": ["reviewer-only answer material becomes visible", "authorization or sanitization is unclear", "state validation fails", "the learner proposes destructive shared-system action", "the evidence cannot discriminate the hypothesis"],
       "recovery": "Return to baseline evidence, narrow the hypothesis and submit a revision. Never reveal answered material before independent review.",
       "cleanupProof": "Use the unseen case's own manifest to prove every created process, port, file, queue, container, network or resource absent. Guided lab cleanup does not cover the independent response or unseen case.",
-      "path": "drafts/LES-0029-structured-logging-pipelines/support/lab"
+      "path": "book/labs/LES-0029-structured-logging-pipelines"
     }
   ],
   "incidents": [
@@ -352,7 +352,7 @@
   "lastReviewed": "2026-08-04",
   "reviewAfter": "2027-02-04",
   "limitations": [
-    "This package is quarantined and is not loaded by the website or canonical registry.",
+    "This chapter is canonical reading content and a live route, but publication is not formal acceptance, lab-runtime evidence, or learner mastery.",
     "The Python fixture is a deterministic teaching model, not a logging framework, parser product, queue, journal, collector, index, query engine or representative service.",
     "No systemd journal lifecycle, syslog transport, OpenTelemetry SDK or Collector, Fluent Bit, Logstash, Elastic, Kibana, Splunk or cloud logging runtime has been executed for this lesson.",
     "Capacity calculations are declared arithmetic assumptions and cannot size a real product without measured workload, compression, indexing, replication, query and failure tests.",
@@ -1300,7 +1300,7 @@ Run as a normal Ubuntu user. The wrapper refuses root. It creates one UID-specif
 Before running:
 
 ```bash
-cd drafts/LES-0029-structured-logging-pipelines/support/lab
+cd book/labs/LES-0029-structured-logging-pipelines
 bash lab.sh doctor
 ```
 
@@ -1971,7 +1971,7 @@ Review before promotion:
 |---|---|
 | Before direct draft validation | schemas, duplicate keys, exact headings, command risk, assessment isolation, rubric parity and references |
 | Before runtime work | immutable artifacts, licenses, configuration, identity, ports, network, resources, retention, security and rollback |
-| Before canonical promotion | Ubuntu lifecycle, representative runtime, relationships, generated registries, reader, tests, build, routes, browser and formal review |
+| After canonical publication | optional Ubuntu and representative runtime, browser, accessibility, security, and formal review |
 | Every six months | official specifications, product versions, commands, defaults, field schemas, security guidance and references |
 | After relevant release or advisory | compatibility, migrations, vulnerabilities, licenses, rollback and proof limits |
 
