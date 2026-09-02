@@ -639,3 +639,20 @@ Fresh-clone result:
 Reviewer:
 Decision: accepted / rejected
 ```
+
+## VER-294 - LES-0002 exact-identity structured migration
+
+| ID | Date | Scope | Method | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-294` | 2026-09-02 | LES-0002 manuscript, assessments, references, local lab, reader migration, search and saved-state compatibility | Content/schema/reader/type/lint/build gates; Git Bash syntax; static lab, budget, hygiene and reference reports; loopback rendered-HTML probe; commit and non-force push | `PASS` within recorded boundaries | Ubuntu lab execution, real-browser persistence/visual/keyboard QA, formal review, learner transfer and mastery remain unproved |
+
+Evidence:
+
+- Feature commit `f3b9f1b` was pushed to `origin/main`. It adds 1,121 lines across the complete 18-section lesson, `ASM-0262` through `ASM-0264`, `REF-1200` through `REF-1202`, the guarded lab, generated registries, and compatibility tests.
+- `npm run validate:content` passes with `root-memory=6/6`, 422 Markdown files, 205 local links, 11,362 heading anchors, 108 curriculum IDs, all 46 requirements, 22 lessons, 66 assessments, 175 references, and five permanent legacy reservations.
+- The content-schema suite reports 38 passes, zero failures, and one documented Windows `EPERM` symlink-capability skip. The reader suite passes 35/35, including exact legacy identity, 26 unique routed entries, v1 state preservation, golden search rankings, 22 independent-transfer isolation contracts, and virtual lesson resolution.
+- Typecheck and lint pass. The production build completes all five environments with exit code 0; only the existing Node `module.register()` deprecation and vinext route-classification notices appear.
+- Web budget passes at 32 assets, 413.3 KiB JavaScript, 179.2 KiB CSS, and 592.5 KiB total. Hygiene scans 2,299 tracked text files with zero findings. The static lab matrix reports 21 canonical labs and zero incomplete static contracts. Reference reporting covers 1,202 records with zero overdue or structural errors.
+- Git Bash `bash -n` passes for `lab.sh`, `verify.sh`, and `fixtures/signal-target.sh`. WSL invocation fails before Ubuntu starts with `Bash/Service/CreateInstance/CreateVm/HCS/0x80070569`, so no lifecycle, signal, cleanup, refusal, or Ubuntu-runtime result is claimed.
+- A temporary `vinext dev` listener bound only to `127.0.0.1:3010`. The migrated route returned HTTP 200 and rendered its title, Architecture map, Command decoders, Product-company interview, Independent transfer and rubric, `ASM-0264`, and next route; the old typed subtitle was absent. The process was interrupted and port 3010 was independently confirmed closed.
+- Port 3000 was already owned by Node PID 33176 and served the stale typed body. It was not stopped or changed. No browser backend was available after the required discovery check, so rendered HTML is not a visual or interaction claim.

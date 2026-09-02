@@ -822,3 +822,13 @@ This decision supersedes only the temporary ownership deferral in `DEC-031`; its
 Reason: a local book reader must not require stopping another user-owned loopback service when its default port is already occupied. The override preserves local-only exposure, rejects malformed input before launch, and makes isolated reproducibility checks possible on a different loopback port.
 
 Boundary: this does not auto-select ports, expose non-loopback interfaces, create a background service, or replace explicit port-occupancy/error handling.
+
+### DEC-092 - A migrated legacy body keeps its published identity and uses support IDs beyond staged reservations
+
+**Decision:** When a lesson listed in `book/schema/legacy-content-map.json` gains a structured manuscript, the reservation remains permanent. The structured record must preserve canonical lesson ID, slug, route, aliases, and curriculum ownership. Reader state and search keep the legacy slug key so existing browser-local markers and stable search expectations survive. The typed catalog and search documents are replaced by route only when the structured bundle exists; they are not published twice.
+
+Support IDs must be checked across canonical and staged packages, not only the canonical registry. The 66 staged chapters already reserve `ASM-0064` through `ASM-0261` and `REF-0173` through `REF-1199`. Therefore LES-0002 owns `ASM-0262` through `ASM-0264` and `REF-1200` through `REF-1202`.
+
+**Rationale:** A schema-valid canonical ID can still collide with an unpublished staged package during the combined website build. Treating the complete authored tree as one allocation namespace prevents that late failure. Preserving the old state/search key avoids silently resetting learner convenience data during a renderer migration.
+
+**Consequences:** `LES-0002` can move to the shared structured renderer without changing its URL or local progress. The registry generator excludes the redundant canonical ID from learning-state keys only for exact legacy migrations, while schema policy still pins every reservation. Future migrations use the same compatibility tests and allocate support IDs after the highest staged reservation. This does not prove visual persistence in a real browser, Ubuntu lab runtime, formal editorial acceptance, learner completion, or mastery.
