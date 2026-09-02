@@ -307,6 +307,7 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
   );
   const volumeLessons = readerEntriesForVolume(entry.volumeId);
   const labNetworks = [...new Set(metadata.labs.map((lab) => lab.network))].join(" / ");
+  const labMinutes = metadata.labs.reduce((total, lab) => total + lab.timeMinutes, 0);
   const volumeEndLink = entry.volumeId === "00-start-safely"
     ? <Link href="/book/linux">Continue: Volume 01 -&gt;</Link>
     : entry.volumeId === "01-linux-systems"
@@ -326,7 +327,7 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
       <div className={styles.factGrid}>
         <article><span>LEVEL</span><strong>{metadata.level.from} to {metadata.level.to}</strong></article>
         <article><span>STUDY TIME</span><strong>{metadata.estimatedMinutes} minutes</strong></article>
-        <article><span>TESTED BASELINE</span><strong>{metadata.testedEnvironments[0].platform} {metadata.testedEnvironments[0].version}</strong></article>
+        <article><span>LOCAL LAB TIME</span><strong>{labMinutes} minutes</strong></article>
         <article><span>NETWORK</span><strong>{labNetworks}</strong></article>
       </div>
       <StructuredLessonContext metadata={metadata} />
