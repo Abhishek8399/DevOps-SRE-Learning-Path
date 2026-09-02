@@ -2,7 +2,7 @@ export type StagedDraftFilterItem = Readonly<{
   slug: string;
   id: string;
   title: string;
-  searchValues: readonly string[];
+  searchText: string;
 }>;
 
 function normalize(value: string): string {
@@ -14,6 +14,10 @@ function normalize(value: string): string {
     .trim();
 }
 
+export function compactStagedDraftSearchText(values: readonly string[]): string {
+  return [...new Set(normalize(values.join(" ")).split(/\s+/).filter(Boolean))].join(" ");
+}
+
 export function filterStagedDraftLibrary<T extends StagedDraftFilterItem>(
   drafts: readonly T[],
   query: string,
@@ -22,7 +26,6 @@ export function filterStagedDraftLibrary<T extends StagedDraftFilterItem>(
   if (tokens.length === 0) return drafts;
 
   return drafts.filter((draft) => {
-    const searchableText = normalize([draft.id, draft.slug, draft.title, ...draft.searchValues].join(" "));
-    return tokens.every((token) => searchableText.includes(token));
+    return tokens.every((token) => draft.searchText.includes(token));
   });
 }

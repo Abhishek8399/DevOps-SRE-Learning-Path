@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createStagedDraftSearchDocuments } from "../search/staged-draft-search";
 import StagedDraftLibrary from "../staged-draft-library";
+import { compactStagedDraftSearchText } from "../staged-draft-library-filter-core";
 import { groupStagedDrafts } from "../staged-draft-library-core";
 import { stagedDrafts } from "../staged-draft.server";
 
@@ -16,7 +17,12 @@ export default function StagedDraftLibraryPage() {
         slug: draft.slug,
         id: draft.lesson.metadata.id,
         title: draft.lesson.title,
-        searchValues: document?.fields.flatMap((field) => field.values) ?? [],
+        searchText: compactStagedDraftSearchText([
+          draft.slug,
+          draft.lesson.metadata.id,
+          draft.lesson.title,
+          ...(document?.fields.flatMap((field) => field.values) ?? []),
+        ]),
       };
     }),
   }));

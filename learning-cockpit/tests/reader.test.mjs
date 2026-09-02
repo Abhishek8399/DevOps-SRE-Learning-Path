@@ -42,7 +42,7 @@ import { searchLessons } from "../app/search/search-index.ts";
 import { navigationSearchDocuments } from "../app/search/navigation-search-documents.ts";
 import { createCareerPrimerSearchDocuments } from "../app/search/career-search.ts";
 import { filterCareerPrimerLibrary } from "../app/career-primer-library-core.ts";
-import { filterStagedDraftLibrary } from "../app/staged-draft-library-filter-core.ts";
+import { compactStagedDraftSearchText, filterStagedDraftLibrary } from "../app/staged-draft-library-filter-core.ts";
 import { formatMockDuration, mockEvidenceMarkdown, mockQuestions, questionsForRole, questionsForRoleAndArea } from "../app/interview-mock-state.ts";
 import { createStructuredSearchDocument } from "../app/search/structured-search.ts";
 import { createStagedDraftSearchDocuments } from "../app/search/staged-draft-search.ts";
@@ -1577,10 +1577,11 @@ test("career library filter keeps local chapter order and requires every query t
 
 test("staged library filter searches structured metadata while preserving chapter order", () => {
   const drafts = [
-    { slug: "linux-storage", id: "LES-0011", title: "Linux storage", searchValues: ["No space left on device", "df -i"] },
-    { slug: "kubernetes-debugging", id: "LES-0042", title: "Kubernetes debugging", searchValues: ["kubectl describe pod", "CrashLoopBackOff"] },
-    { slug: "terraform-state", id: "LES-0050", title: "Terraform state", searchValues: ["terraform plan", "state lock"] },
+    { slug: "linux-storage", id: "LES-0011", title: "Linux storage", searchText: compactStagedDraftSearchText(["linux-storage", "LES-0011", "Linux storage", "No space left on device", "df -i"]) },
+    { slug: "kubernetes-debugging", id: "LES-0042", title: "Kubernetes debugging", searchText: compactStagedDraftSearchText(["kubernetes-debugging", "LES-0042", "Kubernetes debugging", "kubectl describe pod", "CrashLoopBackOff"]) },
+    { slug: "terraform-state", id: "LES-0050", title: "Terraform state", searchText: compactStagedDraftSearchText(["terraform-state", "LES-0050", "Terraform state", "terraform plan", "state lock"]) },
   ];
+  assert.equal(compactStagedDraftSearchText(["SLO / SLO", "latency", "Latency"]), "slo latency");
   assert.deepEqual(filterStagedDraftLibrary(drafts, "KUBERNETES, kubectl").map((item) => item.slug), ["kubernetes-debugging"]);
   assert.deepEqual(filterStagedDraftLibrary(drafts, "no-space df-i").map((item) => item.slug), ["linux-storage"]);
   assert.deepEqual(filterStagedDraftLibrary(drafts, "LES 0042").map((item) => item.slug), ["kubernetes-debugging"]);
