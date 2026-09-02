@@ -143,10 +143,12 @@ npm run lint
 npm run typecheck
 npm run validate:content
 npm run test:content-schema
+npm run test:reference-freshness
 npm run test:reader
 npm run build
 npm run audit:web-budget
 npm run report:labs
+npm run report:references -- --fail-overdue
 npm run audit:hygiene
 npm audit  # optional network-backed advisory check
 ```
@@ -157,6 +159,8 @@ Run `npm run build` before `npm run audit:web-budget`. The audit checks only gen
 
 `npm run report:labs` produces a read-only inventory of the twenty canonical local lab contracts. It checks for a README, paired runner/verifier, and a basic Bash or PowerShell safety preamble. It deliberately reports runtime evidence as `not assessed`; run each lab's supported lifecycle separately and record its result in `VERIFICATION.md`.
 
+`npm run report:references -- --fail-overdue` scans canonical and staged reference records without contacting their URLs. It rejects malformed collection state and expired `reviewAfter` windows, warns about records entering the default 90-day review window, and reports repeated URLs without assuming they are mistakes. Use `--as-of YYYY-MM-DD` for reproducible evidence or `--json` for the complete machine-readable result.
+
 `npm run audit:hygiene` scans only the contents of tracked text files; it never scans path strings or prints a matched secret. It fails on unresolved merge markers, high-confidence private-key/GitHub/AWS/Slack credential signatures, or the configured removed-name marker. It is a narrow source guardrail rather than complete secret detection, Git-history scanning, credential rotation, or a substitute for human review.
 
 ## Continuous integration
@@ -165,7 +169,7 @@ The repository runs `.github/workflows/quality.yml` on pull requests and pushes 
 
 The content validator checks the six project-memory files, local Markdown links and anchors, duplicate curriculum IDs, requirements 1-46 coverage, all three structured record schemas, reviewed schema-policy digests, permanent legacy identities, canonical curriculum homes, and live cross-record relationships without adding another package dependency. Canonical feature `f2e3e23` has twenty-one lessons, 63 assessments (forty-two complete-answer records and twenty-one answer-isolated independent transfers), and 172 references. Exact current counters and gate results are recorded in `VERIFICATION.md`; the Windows schema suite retains one documented `EPERM` symlink-policy skip that must run on Linux or symlink-capable Windows before a public release. The suite uses disposable repositories to exercise malformed or weakened schemas, title/heading parity, answer leakage, identity collisions, canonical volume ownership, volume-aware routes and ordering, unsafe paths, case drift, symlinks, broken ownership, dangling links, prerequisite cycles, safe Markdown destinations, and the live corpus.
 
-The reader suite covers all twenty-six canonical lessons, all visible staged chapter source/assessment/reference packages, additive eighteen-lesson catalog/state migration, five-volume adjacency, trusted prerequisite resolution, advisory prerequisite rendering, all twenty-one canonical independent-transfer answer-isolation contracts, and bounded local career-primer search records. All 32 reader tests pass for the current feature set. The suite also exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, schema-backed lesson parsing, CommonMark heading/fence parity, safe links, whole-career-primer production parsing, multi-volume search ranking, staged chapter navigation, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
+The reader suite covers all twenty-six canonical lessons, all visible staged chapter source/assessment/reference packages, additive eighteen-lesson catalog/state migration, five-volume adjacency, trusted prerequisite resolution, advisory prerequisite rendering, all twenty-one canonical independent-transfer answer-isolation contracts, bounded local career-primer search records, and staged-shelf filtering. All 34 reader tests pass for the current feature set. The suite also exercises malformed browser state, storage failures, trusted lesson IDs, bookmark and reading transitions, capped recent history, immutable legacy routes, schema-backed lesson parsing, CommonMark heading/fence parity, safe links, whole-career-primer production parsing, multi-volume search ranking, staged chapter navigation, metadata-rich filter normalization, and virtual-content loader refusal using Node's built-in test runner. The structured renderer consumes inert parsed Markdown and an explicit server-side catalog; it does not execute embedded HTML or publish assessment answers into search metadata.
 
 `npm run dev` validates canonical content and the committed generated registries before startup. After adding, removing, or moving a structured record, run `npm run generate:content-registry`; it first validates the repository, then deterministically regenerates the exact virtual lesson paths, eager assessment/reference imports, and browser-safe lesson-ID allowlist. `npm run validate:content` fails when any generated file is stale. Build and development read only those canonical allowlisted paths, watch the selected lesson file, and reject unknown or path-like virtual IDs. The generator does not weaken schema, ownership, path, or answer-isolation validation.
 

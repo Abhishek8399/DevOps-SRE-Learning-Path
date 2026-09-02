@@ -118,8 +118,12 @@ npm run lint
 npm run typecheck
 npm run validate:content
 npm run test:content-schema
+npm run test:reference-freshness
+npm run report:references -- --fail-overdue
 npm run build
 ```
+
+The reference report scans canonical records plus every staged chapter's local support records. By default it warns 90 days before `reviewAfter` and fails malformed collection state; `--fail-overdue` also makes an expired review window fail CI. Use `--as-of YYYY-MM-DD` for reproducible review evidence and `--json` when another tool needs the complete result. A repeated URL is reported for editorial review but is not automatically an error because multiple lessons can legitimately cite the same primary source.
 
 From the repository root, run the teaching-structure coverage audit as well:
 

@@ -39,6 +39,9 @@ jobs:
       - name: Validate canonical content and generated registry
         run: npm run validate:content
 
+      - name: Enforce canonical and staged reference review windows
+        run: npm run report:references -- --fail-overdue
+
       - name: Run fail-closed content-schema tests
         run: npm run test:content-schema
 

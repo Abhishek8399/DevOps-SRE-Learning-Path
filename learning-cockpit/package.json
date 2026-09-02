@@ -24,6 +24,8 @@
     "test:evidence-export": "node --experimental-strip-types --test tests/evidence-export.test.mjs",
     "audit:web-budget": "node ../tools/audit-web-budget.mjs",
     "report:labs": "node ../tools/report-lab-matrix.mjs",
+    "report:references": "node ../tools/report-reference-freshness.mjs",
+    "test:reference-freshness": "node --test ../tools/tests/reference-freshness.test.mjs",
     "audit:hygiene": "node ../tools/audit-source-hygiene.mjs",
     "audit:runtime": "npm audit --omit=dev --audit-level=moderate"
   },
