@@ -89,3 +89,9 @@ Do not change stable routes, content IDs, registry generation, schema contracts,
 - Existing blocks retain conservative language-based labels. Canonical examples now explicitly mark a runnable Bash block, a line-number-free expected-output sample, Dockerfiles and four named CI definitions.
 - All non-diagram blocks expose copy and wrap/scroll actions; the global preference is restored from browser-local storage before paint. Diagrams suppress both actions and line numbers to keep the figure visually quiet.
 - Thirty-five reader tests, content/registry/plan validation, typecheck, lint, all five production-build stages, web-budget and hygiene gates pass. Representative canonical routes return HTTP 200 with role, filename, wrap and copy markup. Browser interaction and visual quality remain unverified because no browser backend is connected.
+
+## Recovery-state evidence
+
+- Unknown routes render one calm 404 surface with likely causes, a no-state-change statement, and direct paths to the library, offline search and extended chapters.
+- Application render errors reveal no raw exception, stack, path or digest. The reader offers one retry, stable exits and the exact first validation commands to run after stopping the server.
+- The invalid canonical-lesson probe returns HTTP 404 with every recovery marker. Type, lint and production build pass. Error reset, focus placement, screen-reader announcement and responsive visual behavior remain unverified without a browser backend.
