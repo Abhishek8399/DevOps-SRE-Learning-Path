@@ -54,6 +54,21 @@ const testDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(testDirectory, "..", "..");
 const liveLessonDescriptors = [
   {
+    id: "LES-0001",
+    path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+      "LES-0001-storage", "lesson.md"),
+    expected: {
+      aliases: ["V01-L01", "storage"],
+      curriculumIds: ["LNX-001"],
+      prerequisiteCurriculumIds: ["FND-001", "DBG-001"],
+      prerequisiteLessonIds: [],
+      order: 1,
+      route: "/book/linux/storage",
+      slug: "storage",
+      volume: "01-linux-systems",
+    },
+  },
+  {
     id: "LES-0002",
     path: join(
       repositoryRoot,
@@ -835,12 +850,12 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("twenty-four live structured lessons preserve exact identities and canonical sections", () => {
+test("twenty-five live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
-  assert.equal(bundles.length, 24);
+  assert.equal(bundles.length, 25);
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0002", "LES-0003", "LES-0005", "LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
+    ["LES-0001", "LES-0002", "LES-0003", "LES-0005", "LES-0007", "LES-0008", "LES-0009", "LES-0006", "LES-0010", "LES-0011", "LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0017", "LES-0018", "LES-0019", "LES-0020", "LES-0021", "LES-0022", "LES-0023", "LES-0024", "LES-0025", "LES-0026"],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -1067,7 +1082,7 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
     "legacy-content-map.json",
   ));
   const legacyEntries = legacyMap.lessons
-    .filter((lesson) => !["LES-0002", "LES-0003", "LES-0005"].includes(lesson.id))
+    .filter((lesson) => !["LES-0001", "LES-0002", "LES-0003", "LES-0005"].includes(lesson.id))
     .map((lesson) => ({
     canonicalId: lesson.id,
     stateId: lesson.slug,
@@ -1085,6 +1100,7 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
   }));
   const structuredMetadata = loadLiveStructuredBundles().map(({ lesson }) => lesson.metadata);
   const catalog = createReaderCatalog(legacyEntries, structuredMetadata, {
+    "LES-0001": "storage",
     "LES-0002": "processes-signals-systemd",
     "LES-0003": "cpu-memory-pressure",
     "LES-0005": "identity-permissions",
@@ -1192,17 +1208,17 @@ test("the volume-aware reader catalog publishes twenty-six stable identities acr
     "substantive-draft");
   assert.equal(catalog.find((entry) => entry.canonicalId === "LES-0008").availability,
     "substantive-draft");
-  const lesson0006 = structuredMetadata.find(({ id }) => id === "LES-0006");
+  const lesson0001 = structuredMetadata.find(({ id }) => id === "LES-0001");
+  const lesson0007 = structuredMetadata.find(({ id }) => id === "LES-0007");
   assert.throws(
-    () => createReaderCatalog(legacyEntries, [{
-      ...lesson0006,
+    () => createReaderCatalog(legacyEntries, [lesson0001, {
+      ...lesson0007,
       route: "/book/linux/storage",
     }]),
     /duplicate route/,
   );
-  const lesson0007 = structuredMetadata.find(({ id }) => id === "LES-0007");
   assert.throws(
-    () => createReaderCatalog(legacyEntries, [{
+    () => createReaderCatalog(legacyEntries, [lesson0001, {
       ...lesson0007,
       id: "LES-9000",
       aliases: ["V01-L99", "volume-order-collision"],
@@ -1751,8 +1767,9 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
   assert.equal(record.includes("\r"), false);
 });
 
-test("all twenty-four independent transfers stay answer-isolated from their answered records", () => {
+test("all twenty-five independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
+    ["LES-0001", "ASM-0273"],
     ["LES-0002", "ASM-0264"],
     ["LES-0003", "ASM-0267"],
     ["LES-0005", "ASM-0270"],

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0273",
+  "lessonId": "LES-0001",
+  "type": "independent-transfer",
+  "difficulty": "intermediate",
+  "prompt": "Diagnose a reviewer-supplied unfamiliar Linux storage evidence package and design recovery without destructive commands or a model answer.",
+  "deliverables": ["A sanitized environment card with operation, path, errno, caller, namespace, time, authorization, and change context.", "A path-to-mount-to-limit diagram identifying storage and decision owners.", "Normalized block, inode, quota, object-count, deleted-open, and platform evidence with units and proof limits.", "At least four ranked hypotheses with supporting, rejecting, and missing evidence.", "One bounded proposed recovery with prediction, owner, approval, maximum scope, abort, rollback, retained-data protection, and user-journey verification.", "Prevention across producer lifecycle, observability, headroom/capacity, tested cleanup, and assistance disclosure."],
+  "evidenceRequirements": ["Do not infer the failing mount from host root or a familiar dashboard name.", "Keep blocks, inodes, logical bytes, allocated bytes, quotas, and lower-layer limits separate.", "Treat recursive scans and path output as potentially costly or sensitive.", "Do not run sudo, mount, resize, quota changes, fill operations, deletion, truncation, service restart, or cloud/Kubernetes mutation.", "Do not inspect this assessment implementation or any model diagnosis before submission."],
+  "reviewPolicy": "reviewer-only-no-model-answer",
+  "rubric": [{"criterion": "Safety and provenance", "points": 4, "observableEvidence": "Preserves scope, identity, time, sensitivity, and no-mutation boundary."}, {"criterion": "Storage model", "points": 4, "observableEvidence": "Correctly joins operation, namespace, path, mount, independent limits, and owner."}, {"criterion": "Evidence reasoning", "points": 4, "observableEvidence": "Uses units, comparisons, proof limits, and ranked alternatives."}, {"criterion": "Recovery judgment", "points": 4, "observableEvidence": "Designs one authorized reversible change with retained-data and user verification."}, {"criterion": "Production transfer", "points": 4, "observableEvidence": "Separates fixture facts from container, Kubernetes, VM, and backend method."}],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

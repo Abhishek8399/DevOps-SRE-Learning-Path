@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1218",
+  "title": "unlink(2) — delete a name and possibly its file",
+  "organization": "Linux man-pages project",
+  "url": "https://man7.org/linux/man-pages/man2/unlink.2.html",
+  "sourceType": "manual",
+  "versionOrDate": "Linux man-pages, reviewed 2026-09-02",
+  "lessonIds": ["LES-0001"],
+  "topics": ["unlink", "hard links", "open file lifetime", "space reclamation"],
+  "relevance": "Primary syscall manual for explaining why an unlinked object remains allocated while links or open references survive.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0271",
+  "lessonId": "LES-0001",
+  "type": "diagnostic",
+  "difficulty": "foundation",
+  "prompt": "An upload fails with ENOSPC. df -hT on the exact path reports 48% used, while df -i reports zero free inodes. Explain the cause, safe next evidence, recovery, and verification.",
+  "directAnswer": "The exact filesystem has visible block headroom but no inode headroom, so new-object allocation can fail. Locate the high-object-count population within that filesystem, prove producer and retention authority, change only the reviewed set, then verify inode headroom, retained data, and a controlled upload.",
+  "foundation": "A filename in a directory points to an inode; the inode describes an object and its content can use data blocks. Block capacity and inode capacity are independent filesystem resources.",
+  "reasoningSteps": ["Capture the actual operation, path, errno, caller, and time.", "Map the path and confirm both df commands observed the same filesystem.", "Use bounded same-filesystem object counts to locate candidates without scanning the host blindly.", "Identify producer, retention, open state, backup, protected data, owner, and exact match rule.", "Preview and apply one narrow authorized action while controlling the producer.", "Verify IFree, the real upload result, retained data, cleanup, and stable headroom."],
+  "seniorAnswer": "I would state inode exhaustion as the leading mechanism, not declare a generic full disk. I would preserve namespace and mount identity, quantify object growth and time-to-zero, find a bounded service-owned population, and refuse deletion until retention and recovery authority are explicit. The change would have a preview, maximum scope, abort and rollback. Recovery requires a successful controlled upload with correct durable data plus sustained inode headroom and a controlled producer. Prevention covers object lifecycle, quotas/headroom, rate forecasting, and tested cleanup.",
+  "weakAnswer": "Delete the biggest file because the disk says no space.",
+  "whyWeak": "One large file usually releases one inode, ignores the responsible object population, and deletes without authority or user-journey verification.",
+  "evidence": [{"signal": "df -hT PATH shows 48% used", "proves": "The selected filesystem reports substantial caller-visible block allocation headroom.", "doesNotProve": "Inode, quota, tmpfs, backend, or application-limit headroom."}, {"signal": "df -i PATH shows IFree=0", "proves": "The selected filesystem reports no free inode records.", "doesNotProve": "Which population is disposable or whether a different namespace sees the same mount."}, {"signal": "a controlled upload succeeds after an authorized cleanup", "proves": "That tested path can complete that upload after the change.", "doesNotProve": "Recurrence prevention, every request shape, or final root cause without producer evidence."}],
+  "followUps": [{"prompt": "Why not delete one 10 GiB file?", "answer": "It can free blocks but normally only one inode; inode exhaustion is an object-count shape."}, {"prompt": "Why pass the path to df?", "answer": "The path selects the governing filesystem in the observer's mount namespace."}, {"prompt": "What else can resemble capacity failure?", "answer": "Quota, reservation, tmpfs, writable layer, ephemeral storage, thin/backend, directory/application limits, EROFS, EIO, and EACCES."}],
+  "rubric": [{"criterion": "Resource model", "points": 4, "observableEvidence": "Separates path, mount, blocks, inodes, and other limits."}, {"criterion": "Safe remediation", "points": 4, "observableEvidence": "Requires exact population and authority before a bounded change."}, {"criterion": "Recovery proof", "points": 2, "observableEvidence": "Verifies retained data and the original user operation."}],
+  "maximumScore": 10,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

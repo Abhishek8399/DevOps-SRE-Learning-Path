@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1219",
+  "title": "ext4 data structures — blocks, inodes, and orphan files",
+  "organization": "Linux kernel documentation",
+  "url": "https://docs.kernel.org/filesystems/ext4/index.html",
+  "sourceType": "official-documentation",
+  "versionOrDate": "Linux kernel documentation, reviewed 2026-09-02",
+  "lessonIds": ["LES-0001"],
+  "topics": ["ext4 blocks", "ext4 inodes", "orphan files", "filesystem implementation"],
+  "relevance": "Kernel documentation grounding the ext4-specific allocation and object-lifetime examples while keeping them separate from universal filesystem claims.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

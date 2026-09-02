@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "assessment",
+  "id": "ASM-0272",
+  "lessonId": "LES-0001",
+  "type": "interview",
+  "difficulty": "advanced",
+  "prompt": "A Kubernetes payments upload API reports ENOSPC, node root is 52% used, PVC is 61%, and a Pod restart moves the symptom. Lead the investigation and recovery.",
+  "directAnswer": "Protect the payment invariant, capture the exact failing path and errno inside the container, map that path to writable layer, emptyDir/tmpfs, log, hostPath, or PVC, then test blocks, inodes, quota, Pod/node ephemeral storage, and backend limits. A restart is a state-change clue, not proof. Apply one owned bounded mitigation and verify the durable upload plus retained data and stable headroom.",
+  "foundation": "Host root, Pod ephemeral storage, container writable layer, tmpfs, and PVC are independent allocation boundaries. Percentages cannot be compared until their identities and units are joined to the failing path.",
+  "reasoningSteps": ["Establish incident ownership, customer impact, correctness invariant, and unsafe-action freeze.", "Record container, Pod, node, revision, operation, errno, path, and timeline.", "Map the path in the failing container and join its mount to Kubernetes/node/storage owners.", "Compare exact blocks, inodes, quota, ephemeral-storage and backend evidence against a healthy cohort.", "Rank producer growth, deleted-open allocation, local eviction/GC, quota, backend and read-only hypotheses.", "Select one reversible mitigation with prediction, maximum scope, abort, rollback, and communications.", "Verify response and durable object, duplication/loss, retained data, retries, headroom, and recurrence.", "Assign prevention across lifecycle, observability, capacity, platform policy, and runbook tests."],
+  "seniorAnswer": "I would not resize the PVC until the path is proven to reside there. I would first preserve the non-restarted failure and map the container path. If it is emptyDir or overlay, node/PVC percentages are red herrings; if it is PVC-backed, inode, quota, snapshot, or backend limits still remain. I would compare affected and healthy Pods and old/new nodes, stop the responsible producer if safe, then recover only an authorized population or capacity layer. Payment correctness and durable-object identity are explicit abort and verification gates.",
+  "weakAnswer": "Restart all Pods and increase the PVC because storage is the problem.",
+  "whyWeak": "It destroys evidence, may amplify retries, changes unrelated systems, assumes the path is PVC-backed, and omits correctness and rollback.",
+  "evidence": [{"signal": "node root 52%", "proves": "That node root filesystem reports that block ratio in its accounting view.", "doesNotProve": "Container path, inodes, ephemeral limit, or PVC capacity."}, {"signal": "PVC 61%", "proves": "The named PVC/backend metric reports that utilization under its definition.", "doesNotProve": "The failed path uses it or has inode/quota headroom."}, {"signal": "restart moves symptom", "proves": "Restart or placement changed state correlated with recovery.", "doesNotProve": "Which changed boundary caused it."}],
+  "followUps": [{"prompt": "What is your first in-container command?", "answer": "findmnt -T on the exact existing failing path with explicit source/type/options columns."}, {"prompt": "What protects financial correctness?", "answer": "Idempotency/object identity, request reconciliation, duplicate/loss checks, and durable verification before closure."}, {"prompt": "When would you resize?", "answer": "Only after identifying the capacity owner, growth, objective, expansion behavior, cost, failure modes, and rollback/verification path."}],
+  "rubric": [{"criterion": "Incident command and correctness", "points": 5, "observableEvidence": "Names ownership, invariants, safety, and communications."}, {"criterion": "Cross-layer mapping", "points": 5, "observableEvidence": "Joins container path to Kubernetes, node, PVC, and backend evidence."}, {"criterion": "Hypothesis discipline", "points": 5, "observableEvidence": "Uses comparisons and proof limits without treating percentages as cause."}, {"criterion": "Recovery and prevention", "points": 5, "observableEvidence": "Defines bounded mitigation, durable verification, and owned prevention."}],
+  "maximumScore": 20,
+  "masteryBoundary": "requires-reviewed-learner-evidence",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -1077,14 +1077,31 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes twenty-four lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes twenty-five lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 24);
-  assert.equal(result.metrics.assessments, 72);
-  assert.equal(result.metrics.references, 187);
+  assert.equal(result.metrics.lessons, 25);
+  assert.equal(result.metrics.assessments, 75);
+  assert.equal(result.metrics.references, 193);
 
   const expectations = [
+    {
+      path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
+        "LES-0001-storage", "lesson.md"),
+      id: "LES-0001",
+      domain: "linux",
+      route: "/book/linux/storage",
+      volume: "01-linux-systems",
+      order: 1,
+      prerequisiteLessonIds: [],
+      prerequisiteCurriculumIds: ["FND-001", "DBG-001"],
+      assessmentIds: ["ASM-0271", "ASM-0272", "ASM-0273"],
+      referenceIds: [
+        "REF-1215", "REF-1216", "REF-1217",
+        "REF-1218", "REF-1219", "REF-1220",
+      ],
+      independentId: "ASM-0273",
+    },
     {
       path: join(repositoryRoot, "book", "volumes", "01-linux-systems",
         "LES-0002-processes-signals-systemd", "lesson.md"),

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "reference",
+  "id": "REF-1220",
+  "title": "du invocation — estimate file space usage",
+  "organization": "GNU coreutils",
+  "url": "https://www.gnu.org/software/coreutils/manual/html_node/du-invocation.html",
+  "sourceType": "manual",
+  "versionOrDate": "GNU coreutils online manual, reviewed 2026-09-02",
+  "lessonIds": ["LES-0001"],
+  "topics": ["allocated space", "inode counting", "filesystem traversal", "hard links"],
+  "relevance": "Primary command documentation for du allocation estimates and inode-oriented traversal behavior.",
+  "usagePolicy": "paraphrase-first",
+  "lastReviewed": "2026-09-02",
+  "reviewAfter": "2027-03-02"
+}

@@ -2,6 +2,7 @@
 export const generatedLessonPaths = {
   "LES-0007": ["book", "volumes", "00-start-safely", "LES-0007-systems-thinking", "lesson.md"],
   "LES-0008": ["book", "volumes", "00-start-safely", "LES-0008-evidence-driven-troubleshooting", "lesson.md"],
+  "LES-0001": ["book", "volumes", "01-linux-systems", "LES-0001-storage", "lesson.md"],
   "LES-0002": ["book", "volumes", "01-linux-systems", "LES-0002-processes-signals-systemd", "lesson.md"],
   "LES-0003": ["book", "volumes", "01-linux-systems", "LES-0003-cpu-memory-pressure", "lesson.md"],
   "LES-0005": ["book", "volumes", "01-linux-systems", "LES-0005-identity-permissions", "lesson.md"],
