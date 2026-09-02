@@ -15,6 +15,7 @@ import {
   type MarkdownBlock,
   type MarkdownInline,
   type StructuredLessonBundle,
+  type StructuredLessonMetadata,
 } from "./lessons/structured-lesson-parser";
 import styles from "./structured-lesson.module.css";
 
@@ -177,6 +178,15 @@ function LabCards({ bundle }: { bundle: StructuredLessonBundle }) {
   );
 }
 
+export function StructuredLessonContext({ metadata }: { metadata: StructuredLessonMetadata }) {
+  return <aside aria-label="Chapter operating context" className={styles.chapterContext}>
+    <section><strong>TESTED WORKBENCHES</strong><ul>{metadata.testedEnvironments.map((environment) => <li key={`${environment.platform}-${environment.version}`}><b>{environment.platform} {environment.version}</b><span>{environment.support}{environment.notes ? ` / ${environment.notes}` : ""}</span></li>)}</ul></section>
+    <section><strong>WHO THIS CHAPTER HELPS</strong><ul>{metadata.targetRoles.map((role) => <li key={role}>{role}</li>)}</ul></section>
+    <section><strong>PRODUCTION SIGNALS TO RECOGNIZE</strong><ul>{metadata.productionSignals.map((signal) => <li key={signal}>{signal}</li>)}</ul></section>
+    <footer><span>DOMAIN {metadata.curriculumIds.join(" / ")}</span><span>REVIEWED {metadata.lastReviewed}</span><span>RECHECK AFTER {metadata.reviewAfter}</span></footer>
+  </aside>;
+}
+
 function AnsweredCard({ assessment }: { assessment: AnsweredAssessment }) {
   return (
     <details className={styles.answerCard}>
@@ -319,6 +329,7 @@ export default function StructuredLessonArticle({ bundle }: { bundle: Structured
         <article><span>TESTED BASELINE</span><strong>{metadata.testedEnvironments[0].platform} {metadata.testedEnvironments[0].version}</strong></article>
         <article><span>NETWORK</span><strong>{labNetworks}</strong></article>
       </div>
+      <StructuredLessonContext metadata={metadata} />
       <PrerequisitePanel context={prerequisites} lessonId={metadata.id} />
       <nav className={styles.jumpNav} aria-label={`${metadata.title} sections`}>{lesson.sections.map((section) => <a href={`#${section.anchor}`} key={section.anchor}>{section.title}</a>)}</nav>
       {lesson.sections.map((section, index) => (

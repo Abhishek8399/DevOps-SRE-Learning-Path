@@ -1,7 +1,7 @@
 import Link from "next/link";
 import EditorialCodeBlock from "./editorial-code-block";
 import LessonReadingActions from "./lesson-reading-actions";
-import { StructuredOperationalSupplement } from "./structured-lesson";
+import { StructuredLessonContext, StructuredOperationalSupplement } from "./structured-lesson";
 import {
   headingAnchor,
   type AnsweredAssessment,
@@ -101,6 +101,7 @@ export default function StagedDraftArticle({
       <article><span>OBJECTIVES</span><strong>{metadata.learningObjectives.length} outcomes</strong></article>
       <article><span>LOCAL LAB TIME</span><strong>{labMinutes} minutes</strong></article>
     </div>
+    <StructuredLessonContext metadata={metadata} />
     <aside className={styles.draftCompass}>
       <section>
         <strong>BEFORE YOU BEGIN</strong>

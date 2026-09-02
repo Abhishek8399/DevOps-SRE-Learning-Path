@@ -12,6 +12,16 @@
 .factGrid span,.factGrid strong { display: block; }
 .factGrid span { color: var(--orange-text,var(--orange)); font-size: .64rem; font-weight: 900; letter-spacing: .1em; }
 .factGrid strong { margin-top: 7px; font-size: .8rem; line-height: 1.45; text-transform: capitalize; }
+.chapterContext { width: min(100%,920px); margin: 18px auto 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+.chapterContext section { min-width: 0; padding: 19px 20px; }
+.chapterContext section + section { border-left: 1px solid var(--border-subtle); }
+.chapterContext section > strong,.chapterContext footer span { color: var(--ink-tertiary); font: 750 .61rem var(--font-interface); letter-spacing: .075em; }
+.chapterContext ul { margin: 10px 0 0; padding-left: 17px; }
+.chapterContext li { margin: 7px 0; color: var(--ink-secondary); font: .76rem/1.5 var(--font-interface); }
+.chapterContext li b,.chapterContext li span { display: block; }
+.chapterContext li b { color: var(--ink-primary); font-weight: 700; }
+.chapterContext li span { margin-top: 2px; color: var(--ink-tertiary); }
+.chapterContext footer { grid-column: 1/-1; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 8px 18px; border-top: 1px solid var(--border-subtle); }
 .prerequisitePanel { margin-top: 18px; padding: 21px; border: 1px solid color-mix(in srgb,var(--teal) 35%,var(--line)); border-radius: 12px; background: color-mix(in srgb,var(--teal) 6%,var(--panel)); }
 .prerequisitePanel > header p { margin: 0; color: var(--teal-text,var(--teal)); font-size: .67rem; font-weight: 900; letter-spacing: .11em; }
 .prerequisitePanel > header h2 { margin: 7px 0; font: 600 23px/1.25 Georgia,serif; }
@@ -82,7 +92,7 @@
 .independentCard { margin-top: 24px; }.independentCard header { padding: 24px; background: var(--navy); color: #fff; }.noAnswer { margin: 0; padding: 18px 24px; border-bottom: 1px solid var(--line); background: color-mix(in srgb,var(--orange) 10%,var(--panel)); color: var(--ink) !important; font-weight: 700; }.independentCard .rubric { padding: 22px 24px; border-top: 1px solid var(--line); }
 .references { grid-template-columns: repeat(2,minmax(0,1fr)); }.references h3 a { color: var(--teal-text,var(--teal)); text-decoration: underline; text-underline-offset: 3px; }.references small { display: block; margin-top: 12px; }
 .limitations { margin-top: 42px; padding: 24px; border: 1px solid var(--line); border-left: 5px solid var(--orange); border-radius: 10px; background: color-mix(in srgb,var(--orange) 7%,var(--panel)); }.limitations strong { color: var(--orange-text,var(--orange)); font-size: .7rem; letter-spacing: .1em; }.limitations li { margin-top: 8px; color: var(--muted); font-size: .84rem; line-height: 1.55; }
-@media (max-width:900px) { .factGrid,.labFacts { grid-template-columns: repeat(2,minmax(0,1fr)); }.diagramCards { grid-template-columns: 1fr; }.incidentCards,.references { grid-template-columns: 1fr; } }
+@media (max-width:900px) { .factGrid,.labFacts { grid-template-columns: repeat(2,minmax(0,1fr)); }.chapterContext { grid-template-columns: 1fr; }.chapterContext section + section { border-top: 1px solid var(--border-subtle); border-left: 0; }.diagramCards { grid-template-columns: 1fr; }.incidentCards,.references { grid-template-columns: 1fr; } }
 @media (max-width:680px) { .article { margin-top: 30px; padding: 25px 17px; }.hero { grid-template-columns: 1fr; }.lessonNumber { width: 58px; height: 58px; }.masteryBoundary,.proofBoundary,.safetyColumns,.weakAnswer { grid-template-columns: 1fr; }.factGrid,.labFacts,.prerequisiteGrid { grid-template-columns: 1fr; }.branches > div,.proofBoundary > div + div,.safetyColumns > * + *,.weakAnswer section + section,.labFacts div { border-left: 0; border-top: 1px solid var(--line); }.answerCard summary { grid-template-columns: 1fr; }.answerCard summary b { max-width: none; text-align: left; }.section { padding-top: 44px; }.tableWrap { overflow: visible; }.tableWrap table,.tableWrap tbody,.tableWrap tr,.tableWrap th,.tableWrap td { display: block; min-width: 0; width: 100%; }.tableWrap thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }.tableWrap tr { padding: 12px; border-top: 1px solid var(--line); }.tableWrap td { padding: 9px 4px; border: 0; }.tableWrap td::before { content: attr(data-label); display: block; margin-bottom: 4px; color: var(--orange-text,var(--orange)); font-size: .62rem; font-weight: 900; } }
 @media print { .article { margin: 0; padding: 0; border: 0; box-shadow: none; }.jumpNav { display: none; }.prerequisitePanel,.section,.diagramCards article,.incidentCards article,.commandCards > article,.labCards > article,.answerCard,.independentCard { break-inside: avoid; }.answerCard > :not(summary) { display: block !important; } }
 
