@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-302 - LES-0037 through LES-0041 infrastructure publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-302` | 2026-09-02 | Canonical Volume 05 route plus IaC foundations, Terraform/OpenTofu language/plans, modules/state/recovery, Ansible, and Kubernetes reconciliation | Content and registry report 41 lessons, 123 assessments and 414 references. Schema passes 39 tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and five-stage production build pass. The build emits `/book/infrastructure` and its dynamic lesson route. Forty canonical lab packages pass static safety inspection; no lab was executed. Web assets remain 592.6 KiB; 1,226 references have zero overdue/errors; hygiene scans 2,364 tracked text files with zero findings | `PASS` for canonical content publication | The first static lab inventory found missing private-umask declarations in two verifier headers; adding only `umask 077` closed those source-safety gaps. No Ubuntu, Terraform/OpenTofu provider, Ansible fleet, Kubernetes cluster, browser interaction, formal review, learner transfer, production outcome, hiring result or mastery is claimed. |
+
 - Feature commit `f3b9f1b` was pushed to `origin/main`. It adds 1,121 lines across the complete 18-section lesson, `ASM-0262` through `ASM-0264`, `REF-1200` through `REF-1202`, the guarded lab, generated registries, and compatibility tests.
 - `npm run validate:content` passes with `root-memory=6/6`, 422 Markdown files, 205 local links, 11,362 heading anchors, 108 curriculum IDs, all 46 requirements, 22 lessons, 66 assessments, 175 references, and five permanent legacy reservations.
 - The content-schema suite reports 38 passes, zero failures, and one documented Windows `EPERM` symlink-capability skip. The reader suite passes 35/35, including exact legacy identity, 26 unique routed entries, v1 state preservation, golden search rankings, 22 independent-transfer isolation contracts, and virtual lesson resolution.

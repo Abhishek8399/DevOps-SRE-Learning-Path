@@ -1,6 +1,6 @@
-# LES-0039 draft status
+# LES-0039 historical authoring status
 
-Status: **quarantined substantive candidate - not canonical, not accepted, not mastery evidence**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 Last reviewed: 2026-08-04
 

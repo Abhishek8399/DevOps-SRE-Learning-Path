@@ -20,6 +20,7 @@ const availableCounts = {
   network: readerEntriesForVolume("02-connectivity").length,
   engineering: readerEntriesForVolume("03-engineering-delivery").length,
   reliability: readerEntriesForVolume("04-reliability-operations").length,
+  infrastructure: readerEntriesForVolume("05-infrastructure-platforms").length,
 };
 
 const volumes: VolumeCover[] = [
@@ -28,7 +29,7 @@ const volumes: VolumeCover[] = [
   { number: "02", title: "Networking", subtitle: "Packets, names, trust and requests", route: "/book/connectivity", count: availableCounts.network, tone: "blue" },
   { number: "03", title: "Automation & Programming", subtitle: "Git, shells, Python and delivery", route: "/book/engineering", count: availableCounts.engineering, tone: "ochre" },
   { number: "04", title: "Site Reliability Engineering", subtitle: "Signals, objectives and incidents", route: "/book/reliability", count: availableCounts.reliability, tone: "rust" },
-  { number: "05", title: "CI/CD & Release Engineering", subtitle: "From commit to safe production", tone: "indigo" },
+  { number: "05", title: "Infrastructure & Platforms", subtitle: "IaC, configuration and Kubernetes control loops", route: "/book/infrastructure", count: availableCounts.infrastructure, tone: "indigo" },
   { number: "06", title: "Containers", subtitle: "Isolation, images and runtimes", tone: "blue" },
   { number: "07", title: "Kubernetes", subtitle: "Control loops and cluster operations", tone: "slate" },
   { number: "08", title: "Cloud Engineering", subtitle: "Reliable public-cloud systems", tone: "moss" },

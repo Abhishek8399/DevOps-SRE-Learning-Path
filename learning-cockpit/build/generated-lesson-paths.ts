@@ -36,4 +36,9 @@ export const generatedLessonPaths = {
   "LES-0034": ["book", "volumes", "04-reliability-operations", "LES-0034-causal-analysis-post-incident-learning", "lesson.md"],
   "LES-0035": ["book", "volumes", "04-reliability-operations", "LES-0035-capacity-performance-scaling", "lesson.md"],
   "LES-0036": ["book", "volumes", "04-reliability-operations", "LES-0036-resilience-patterns-failure-isolation", "lesson.md"],
+  "LES-0037": ["book", "volumes", "05-infrastructure-platforms", "LES-0037-infrastructure-as-code-foundations", "lesson.md"],
+  "LES-0038": ["book", "volumes", "05-infrastructure-platforms", "LES-0038-terraform-opentofu-language-plan", "lesson.md"],
+  "LES-0039": ["book", "volumes", "05-infrastructure-platforms", "LES-0039-terraform-opentofu-modules-state-recovery", "lesson.md"],
+  "LES-0040": ["book", "volumes", "05-infrastructure-platforms", "LES-0040-ansible-configuration-management", "lesson.md"],
+  "LES-0041": ["book", "volumes", "05-infrastructure-platforms", "LES-0041-kubernetes-control-plane-reconciliation", "lesson.md"],
 } as const;

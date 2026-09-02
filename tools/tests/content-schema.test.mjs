@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes thirty-six lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes forty-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 36);
-  assert.equal(result.metrics.assessments, 108);
-  assert.equal(result.metrics.references, 345);
+  assert.equal(result.metrics.lessons, 41);
+  assert.equal(result.metrics.assessments, 123);
+  assert.equal(result.metrics.references, 414);
 
   const expectations = [
     {
@@ -1636,6 +1636,20 @@ test("the live structured corpus publishes thirty-six lessons with exact ownersh
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
       referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
+      independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
+    })),
+    ...[
+      ["LES-0037", "infrastructure-as-code-foundations", 1, ["LES-0009", "LES-0021", "LES-0024"], ["SCM-001", "AUT-005", "CI-001"], 94, Array.from({ length: 15 }, (_, index) => 319 + index)],
+      ["LES-0038", "terraform-opentofu-language-plan", 2, ["LES-0037"], ["IAC-001"], 97, [319, 320, 324, 325, 327, 330, ...Array.from({ length: 9 }, (_, index) => 334 + index)]],
+      ["LES-0039", "terraform-opentofu-modules-state-recovery", 3, ["LES-0038"], ["TFM-001"], 100, Array.from({ length: 15 }, (_, index) => 343 + index)],
+      ["LES-0040", "ansible-configuration-management", 4, ["LES-0009", "LES-0011", "LES-0017", "LES-0039"], ["LNX-004", "AUT-001", "SCM-001", "TFM-002"], 103, Array.from({ length: 15 }, (_, index) => 358 + index)],
+      ["LES-0041", "kubernetes-control-plane-reconciliation", 5, ["LES-0004", "LES-0009", "LES-0023"], ["NET-003", "SCM-001", "CTR-001"], 106, Array.from({ length: 15 }, (_, index) => 373 + index)],
+    ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceNumbers]) => ({
+      path: join(repositoryRoot, "book", "volumes", "05-infrastructure-platforms", `${id}-${slug}`, "lesson.md"),
+      id, domain: "infrastructure", route: `/book/infrastructure/${slug}`, volume: "05-infrastructure-platforms", order,
+      prerequisiteLessonIds, prerequisiteCurriculumIds,
+      assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
+      referenceIds: referenceNumbers.map((number) => `REF-${String(number).padStart(4, "0")}`),
       independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
     })),
   ];

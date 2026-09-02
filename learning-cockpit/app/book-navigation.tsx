@@ -15,10 +15,10 @@ const availableVolumes: readonly Readonly<{
   { id: "02-connectivity", number: "02", title: "Connectivity", route: "/book/connectivity" },
   { id: "03-engineering-delivery", number: "03", title: "Engineering & delivery", route: "/book/engineering" },
   { id: "04-reliability-operations", number: "04", title: "Reliability & operations", route: "/book/reliability" },
+  { id: "05-infrastructure-platforms", number: "05", title: "Infrastructure & platforms", route: "/book/infrastructure" },
 ];
 
 const plannedVolumes = [
-  ["05", "CI/CD & release engineering"],
   ["06", "Containers"],
   ["07", "Kubernetes"],
   ["08", "Cloud engineering"],

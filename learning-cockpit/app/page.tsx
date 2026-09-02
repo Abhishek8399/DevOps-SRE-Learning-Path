@@ -57,9 +57,9 @@ const stages = [
     number: "06",
     title: "IaC & Kubernetes",
     detail: "Terraform, configuration management, Kubernetes internals, GitOps, upgrades, and platform operations.",
-    state: "20 staged chapters",
-    href: "/drafts#draft-volume-05",
-    kind: "staged",
+    state: availableLessons(readerEntriesForVolume("05-infrastructure-platforms").length),
+    href: "/book/infrastructure",
+    kind: "canonical",
   },
   {
     number: "07",

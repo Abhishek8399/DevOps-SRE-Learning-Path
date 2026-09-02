@@ -35,6 +35,11 @@ import lesson0033Raw from "virtual:book-lesson/LES-0033";
 import lesson0034Raw from "virtual:book-lesson/LES-0034";
 import lesson0035Raw from "virtual:book-lesson/LES-0035";
 import lesson0036Raw from "virtual:book-lesson/LES-0036";
+import lesson0037Raw from "virtual:book-lesson/LES-0037";
+import lesson0038Raw from "virtual:book-lesson/LES-0038";
+import lesson0039Raw from "virtual:book-lesson/LES-0039";
+import lesson0040Raw from "virtual:book-lesson/LES-0040";
+import lesson0041Raw from "virtual:book-lesson/LES-0041";
 import assessment0001Value from "../../../book/assessments/linux/ASM-0001.json";
 import assessment0002Value from "../../../book/assessments/linux/ASM-0002.json";
 import assessment0003Value from "../../../book/assessments/linux/ASM-0003.json";
@@ -128,6 +133,21 @@ import assessment0090Value from "../../../book/assessments/reliability/ASM-0090.
 import assessment0091Value from "../../../book/assessments/reliability/ASM-0091.json";
 import assessment0092Value from "../../../book/assessments/reliability/ASM-0092.json";
 import assessment0093Value from "../../../book/assessments/reliability/ASM-0093.json";
+import assessment0094Value from "../../../book/assessments/infrastructure/ASM-0094.json";
+import assessment0095Value from "../../../book/assessments/infrastructure/ASM-0095.json";
+import assessment0096Value from "../../../book/assessments/infrastructure/ASM-0096.json";
+import assessment0097Value from "../../../book/assessments/infrastructure/ASM-0097.json";
+import assessment0098Value from "../../../book/assessments/infrastructure/ASM-0098.json";
+import assessment0099Value from "../../../book/assessments/infrastructure/ASM-0099.json";
+import assessment0100Value from "../../../book/assessments/infrastructure/ASM-0100.json";
+import assessment0101Value from "../../../book/assessments/infrastructure/ASM-0101.json";
+import assessment0102Value from "../../../book/assessments/infrastructure/ASM-0102.json";
+import assessment0103Value from "../../../book/assessments/infrastructure/ASM-0103.json";
+import assessment0104Value from "../../../book/assessments/infrastructure/ASM-0104.json";
+import assessment0105Value from "../../../book/assessments/infrastructure/ASM-0105.json";
+import assessment0106Value from "../../../book/assessments/infrastructure/ASM-0106.json";
+import assessment0107Value from "../../../book/assessments/infrastructure/ASM-0107.json";
+import assessment0108Value from "../../../book/assessments/infrastructure/ASM-0108.json";
 import assessment0262Value from "../../../book/assessments/linux/ASM-0262.json";
 import assessment0263Value from "../../../book/assessments/linux/ASM-0263.json";
 import assessment0264Value from "../../../book/assessments/linux/ASM-0264.json";
@@ -461,6 +481,75 @@ import reference0315Value from "../../../book/references/REF-0315.json";
 import reference0316Value from "../../../book/references/REF-0316.json";
 import reference0317Value from "../../../book/references/REF-0317.json";
 import reference0318Value from "../../../book/references/REF-0318.json";
+import reference0319Value from "../../../book/references/REF-0319.json";
+import reference0320Value from "../../../book/references/REF-0320.json";
+import reference0321Value from "../../../book/references/REF-0321.json";
+import reference0322Value from "../../../book/references/REF-0322.json";
+import reference0323Value from "../../../book/references/REF-0323.json";
+import reference0324Value from "../../../book/references/REF-0324.json";
+import reference0325Value from "../../../book/references/REF-0325.json";
+import reference0326Value from "../../../book/references/REF-0326.json";
+import reference0327Value from "../../../book/references/REF-0327.json";
+import reference0328Value from "../../../book/references/REF-0328.json";
+import reference0329Value from "../../../book/references/REF-0329.json";
+import reference0330Value from "../../../book/references/REF-0330.json";
+import reference0331Value from "../../../book/references/REF-0331.json";
+import reference0332Value from "../../../book/references/REF-0332.json";
+import reference0333Value from "../../../book/references/REF-0333.json";
+import reference0334Value from "../../../book/references/REF-0334.json";
+import reference0335Value from "../../../book/references/REF-0335.json";
+import reference0336Value from "../../../book/references/REF-0336.json";
+import reference0337Value from "../../../book/references/REF-0337.json";
+import reference0338Value from "../../../book/references/REF-0338.json";
+import reference0339Value from "../../../book/references/REF-0339.json";
+import reference0340Value from "../../../book/references/REF-0340.json";
+import reference0341Value from "../../../book/references/REF-0341.json";
+import reference0342Value from "../../../book/references/REF-0342.json";
+import reference0343Value from "../../../book/references/REF-0343.json";
+import reference0344Value from "../../../book/references/REF-0344.json";
+import reference0345Value from "../../../book/references/REF-0345.json";
+import reference0346Value from "../../../book/references/REF-0346.json";
+import reference0347Value from "../../../book/references/REF-0347.json";
+import reference0348Value from "../../../book/references/REF-0348.json";
+import reference0349Value from "../../../book/references/REF-0349.json";
+import reference0350Value from "../../../book/references/REF-0350.json";
+import reference0351Value from "../../../book/references/REF-0351.json";
+import reference0352Value from "../../../book/references/REF-0352.json";
+import reference0353Value from "../../../book/references/REF-0353.json";
+import reference0354Value from "../../../book/references/REF-0354.json";
+import reference0355Value from "../../../book/references/REF-0355.json";
+import reference0356Value from "../../../book/references/REF-0356.json";
+import reference0357Value from "../../../book/references/REF-0357.json";
+import reference0358Value from "../../../book/references/REF-0358.json";
+import reference0359Value from "../../../book/references/REF-0359.json";
+import reference0360Value from "../../../book/references/REF-0360.json";
+import reference0361Value from "../../../book/references/REF-0361.json";
+import reference0362Value from "../../../book/references/REF-0362.json";
+import reference0363Value from "../../../book/references/REF-0363.json";
+import reference0364Value from "../../../book/references/REF-0364.json";
+import reference0365Value from "../../../book/references/REF-0365.json";
+import reference0366Value from "../../../book/references/REF-0366.json";
+import reference0367Value from "../../../book/references/REF-0367.json";
+import reference0368Value from "../../../book/references/REF-0368.json";
+import reference0369Value from "../../../book/references/REF-0369.json";
+import reference0370Value from "../../../book/references/REF-0370.json";
+import reference0371Value from "../../../book/references/REF-0371.json";
+import reference0372Value from "../../../book/references/REF-0372.json";
+import reference0373Value from "../../../book/references/REF-0373.json";
+import reference0374Value from "../../../book/references/REF-0374.json";
+import reference0375Value from "../../../book/references/REF-0375.json";
+import reference0376Value from "../../../book/references/REF-0376.json";
+import reference0377Value from "../../../book/references/REF-0377.json";
+import reference0378Value from "../../../book/references/REF-0378.json";
+import reference0379Value from "../../../book/references/REF-0379.json";
+import reference0380Value from "../../../book/references/REF-0380.json";
+import reference0381Value from "../../../book/references/REF-0381.json";
+import reference0382Value from "../../../book/references/REF-0382.json";
+import reference0383Value from "../../../book/references/REF-0383.json";
+import reference0384Value from "../../../book/references/REF-0384.json";
+import reference0385Value from "../../../book/references/REF-0385.json";
+import reference0386Value from "../../../book/references/REF-0386.json";
+import reference0387Value from "../../../book/references/REF-0387.json";
 import reference1200Value from "../../../book/references/REF-1200.json";
 import reference1201Value from "../../../book/references/REF-1201.json";
 import reference1202Value from "../../../book/references/REF-1202.json";
@@ -526,6 +615,11 @@ export const generatedLessonSources: readonly string[] = [
   lesson0034Raw,
   lesson0035Raw,
   lesson0036Raw,
+  lesson0037Raw,
+  lesson0038Raw,
+  lesson0039Raw,
+  lesson0040Raw,
+  lesson0041Raw,
 ];
 
 export const generatedAssessmentValues: readonly unknown[] = [
@@ -622,6 +716,21 @@ export const generatedAssessmentValues: readonly unknown[] = [
   assessment0091Value,
   assessment0092Value,
   assessment0093Value,
+  assessment0094Value,
+  assessment0095Value,
+  assessment0096Value,
+  assessment0097Value,
+  assessment0098Value,
+  assessment0099Value,
+  assessment0100Value,
+  assessment0101Value,
+  assessment0102Value,
+  assessment0103Value,
+  assessment0104Value,
+  assessment0105Value,
+  assessment0106Value,
+  assessment0107Value,
+  assessment0108Value,
   assessment0262Value,
   assessment0263Value,
   assessment0264Value,
@@ -958,6 +1067,75 @@ export const generatedReferenceValues: readonly unknown[] = [
   reference0316Value,
   reference0317Value,
   reference0318Value,
+  reference0319Value,
+  reference0320Value,
+  reference0321Value,
+  reference0322Value,
+  reference0323Value,
+  reference0324Value,
+  reference0325Value,
+  reference0326Value,
+  reference0327Value,
+  reference0328Value,
+  reference0329Value,
+  reference0330Value,
+  reference0331Value,
+  reference0332Value,
+  reference0333Value,
+  reference0334Value,
+  reference0335Value,
+  reference0336Value,
+  reference0337Value,
+  reference0338Value,
+  reference0339Value,
+  reference0340Value,
+  reference0341Value,
+  reference0342Value,
+  reference0343Value,
+  reference0344Value,
+  reference0345Value,
+  reference0346Value,
+  reference0347Value,
+  reference0348Value,
+  reference0349Value,
+  reference0350Value,
+  reference0351Value,
+  reference0352Value,
+  reference0353Value,
+  reference0354Value,
+  reference0355Value,
+  reference0356Value,
+  reference0357Value,
+  reference0358Value,
+  reference0359Value,
+  reference0360Value,
+  reference0361Value,
+  reference0362Value,
+  reference0363Value,
+  reference0364Value,
+  reference0365Value,
+  reference0366Value,
+  reference0367Value,
+  reference0368Value,
+  reference0369Value,
+  reference0370Value,
+  reference0371Value,
+  reference0372Value,
+  reference0373Value,
+  reference0374Value,
+  reference0375Value,
+  reference0376Value,
+  reference0377Value,
+  reference0378Value,
+  reference0379Value,
+  reference0380Value,
+  reference0381Value,
+  reference0382Value,
+  reference0383Value,
+  reference0384Value,
+  reference0385Value,
+  reference0386Value,
+  reference0387Value,
   reference1200Value,
   reference1201Value,
   reference1202Value,
