@@ -1,0 +1,13 @@
+
+> devops-sre-learning-cockpit@0.1.0 start
+> npm run prepare:local-runtime && vinext start
+
+
+> devops-sre-learning-cockpit@0.1.0 prepare:local-runtime
+> node ../tools/patch-vinext-windows-static-cache.mjs
+
+vinext 0.0.50 static-path compatibility patch: already applied
+
+  vinext start  (port 3000)
+
+[vinext] Production server running at http://0.0.0.0:3000
