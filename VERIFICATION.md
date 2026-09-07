@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-306 - LES-0057 through LES-0061 distributed systems publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-306` | 2026-09-07 | API/event contracts, distributed-system foundations, NoSQL/cache reliability, queues/streams and distributed-workflow chapters | Content and registry report 61 lessons, 183 assessments and 714 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and the five-stage production build pass. Sixty canonical labs pass static safety inspection; no lab was executed. Web assets total 592.7 KiB; all 1,226 canonical and staged references have zero overdue/errors; source hygiene scans 2,366 tracked text files with zero findings. Feature commit `f76d61e` is pushed to `origin/main` | `PASS` for canonical content publication | Two Kafka records were normalized to fragment-free durable URLs and retain their section locators in version text; OWASP uses the approved official-documentation classification. Five verifier headers received only the missing private `umask 077` declaration. No Ubuntu lab, API/broker/cache/database/cluster/workflow runtime, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-305 - LES-0052 through LES-0056 cloud and state publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
