@@ -94,6 +94,7 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   DST: "06-state-distributed-systems",
   DMP: "06-state-distributed-systems",
   AIO: "07-ai-engineering",
+  SEC: "08-security-engineering",
 });
 
 // LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its

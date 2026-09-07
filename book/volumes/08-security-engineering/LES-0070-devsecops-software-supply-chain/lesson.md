@@ -77,8 +77,8 @@
     {"id": "LES-0070-CMD-012", "question": "Does the offline model cover every gate and clean exactly?", "risk": "mutating-bounded", "command": "bash verify.sh", "runFrom": "LES-0070 support/lab as normal Ubuntu 24.04 user from absent state", "expectedBranches": [{"when": "verify passes", "meaning": "34 branches refusal and cleanup pass", "nextEvidence": "retain model-only boundary"}, {"when": "failure", "meaning": "candidate is rejected", "nextEvidence": "preserve first failure"}], "proves": "deterministic decision ordering and bounded lifecycle", "doesNotProve": "build, scan, SBOM, signature, provenance, registry, admission or production security", "cleanup": "Verifier proves exact state absence."}
   ],
   "labs": [
-    {"id": "LES-0070-LAB-001", "title": "Guided supply-chain evidence-gate model", "mode": "guided", "environment": "Ubuntu 24.04 normal user with Bash and Python 3; no supply-chain products", "timeMinutes": 240, "privilege": "normal user; root refused", "network": "none", "changes": ["one UID-scoped temporary root", "one copied synthetic 34-case fixture"], "abortConditions": ["root", "credential", "endpoint", "registry", "cluster", "symlink", "wrong owner", "unknown artifact"], "recovery": "Preserve first failure and remove only exact allowlisted state.", "cleanupProof": "Exact inventory followed by root absence.", "path": "drafts/LES-0070-devsecops-software-supply-chain/support/lab"},
-    {"id": "LES-0070-LAB-002", "title": "Independent tampered-artifact rejection and recovery", "mode": "independent", "environment": "Reviewer-owned disposable local repository, registry and Kubernetes cluster with synthetic code", "timeMinutes": 240, "privilege": "normal-user developer and namespace-scoped deployer; reviewer owns trust roots and faults", "network": "isolated local only", "changes": ["synthetic source dependencies artifacts and evidence", "tamper revocation and advisory faults"], "abortConditions": ["production", "public registry", "real secret", "customer data", "broad credential", "mutable promotion", "unknown cleanup"], "recovery": "Freeze promotion, preserve evidence, deny digests, rebuild from trusted roots, verify and restore synthetic service.", "cleanupProof": "Reviewer proves repos, runners, images, evidence, identities, namespaces, policies, ports and caches absent.", "path": "drafts/LES-0070-devsecops-software-supply-chain/support/lab"}
+    {"id": "LES-0070-LAB-001", "title": "Guided supply-chain evidence-gate model", "mode": "guided", "environment": "Ubuntu 24.04 normal user with Bash and Python 3; no supply-chain products", "timeMinutes": 240, "privilege": "normal user; root refused", "network": "none", "changes": ["one UID-scoped temporary root", "one copied synthetic 34-case fixture"], "abortConditions": ["root", "credential", "endpoint", "registry", "cluster", "symlink", "wrong owner", "unknown artifact"], "recovery": "Preserve first failure and remove only exact allowlisted state.", "cleanupProof": "Exact inventory followed by root absence.", "path": "book/labs/LES-0070-devsecops-software-supply-chain"},
+    {"id": "LES-0070-LAB-002", "title": "Independent tampered-artifact rejection and recovery", "mode": "independent", "environment": "Reviewer-owned disposable local repository, registry and Kubernetes cluster with synthetic code", "timeMinutes": 240, "privilege": "normal-user developer and namespace-scoped deployer; reviewer owns trust roots and faults", "network": "isolated local only", "changes": ["synthetic source dependencies artifacts and evidence", "tamper revocation and advisory faults"], "abortConditions": ["production", "public registry", "real secret", "customer data", "broad credential", "mutable promotion", "unknown cleanup"], "recovery": "Freeze promotion, preserve evidence, deny digests, rebuild from trusted roots, verify and restore synthetic service.", "cleanupProof": "Reviewer proves repos, runners, images, evidence, identities, namespaces, policies, ports and caches absent.", "path": "book/labs/LES-0070-devsecops-software-supply-chain"}
   ],
   "incidents": [
     {"id": "LES-0070-INC-001", "signal": "A dependency release contains malicious install behavior.", "firstThought": "This may be code execution in developer and builder environments, not only an application CVE.", "safePath": "Freeze resolution, preserve lock and runner evidence, scope fetched versions and hooks, revoke exposed authority, replace and rebuild cleanly.", "trap": "Run the package manager on every shared runner to reproduce it."},
@@ -555,7 +555,7 @@ Runtime formats vary and missing status may mean not started. Neither query prov
 ### Offline model
 
 ```bash
-cd drafts/LES-0070-devsecops-software-supply-chain/support/lab
+cd book/labs/LES-0070-devsecops-software-supply-chain
 bash lab.sh doctor
 bash lab.sh setup
 bash lab.sh evaluate signature-unverified
@@ -620,7 +620,7 @@ It writes only a UID-specific directory under `/tmp`, uses Python's standard lib
 Run from Ubuntu 24.04 as your normal user:
 
 ```bash
-cd drafts/LES-0070-devsecops-software-supply-chain/support/lab
+cd book/labs/LES-0070-devsecops-software-supply-chain
 pwd
 id
 bash lab.sh doctor

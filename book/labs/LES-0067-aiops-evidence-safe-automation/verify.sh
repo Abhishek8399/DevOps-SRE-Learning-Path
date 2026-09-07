@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+umask 077
 IFS=$'\n\t'
 DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 LAB="$DIR/lab.sh"; STATE="/tmp/reliability-atlas-les0067-aiops-$(id -u)"

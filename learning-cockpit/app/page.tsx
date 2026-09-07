@@ -81,9 +81,9 @@ const stages = [
     number: "09",
     title: "Security & Platform Design",
     detail: "Least privilege, secrets, policy, tenancy, golden paths, self-service, cost, governance, and architecture tradeoffs.",
-    state: "12 staged chapters",
-    href: "/drafts#draft-volume-07",
-    kind: "staged",
+    state: availableLessons(readerEntriesForVolume("08-security-engineering").length),
+    href: "/book/security",
+    kind: "canonical",
   },
   {
     number: "10",

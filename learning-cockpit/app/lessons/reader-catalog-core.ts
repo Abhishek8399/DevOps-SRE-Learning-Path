@@ -56,6 +56,12 @@ export const READER_VOLUMES = {
     volumeTitle: "AI engineering",
     volumeRoute: "/book/ai",
   },
+  "08-security-engineering": {
+    volumeId: "08-security-engineering",
+    volumeNumber: "08",
+    volumeTitle: "Security engineering",
+    volumeRoute: "/book/security",
+  },
 } as const;
 
 export type ReaderVolumeId = keyof typeof READER_VOLUMES;

@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes sixty-six lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes seventy-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 66);
-  assert.equal(result.metrics.assessments, 198);
-  assert.equal(result.metrics.references, 789);
+  assert.equal(result.metrics.lessons, 71);
+  assert.equal(result.metrics.assessments, 213);
+  assert.equal(result.metrics.references, 864);
 
   const expectations = [
     {
@@ -1703,6 +1703,11 @@ test("the live structured corpus publishes sixty-six lessons with exact ownershi
       ["LES-0064", "workflow-ml-platform-reliability", "state", "06-state-distributed-systems", 9, ["LES-0026", "LES-0061", "LES-0062"], ["OBS-001", "DST-006", "DMP-001"], 175, 718],
       ["LES-0065", "specialized-data-service-reliability", "state", "06-state-distributed-systems", 10, ["LES-0058", "LES-0059", "LES-0063"], ["DST-005", "DST-003", "DMP-002"], 178, 733],
       ["LES-0066", "validated-ai-assisted-engineering", "ai", "07-ai-engineering", 1, ["LES-0018", "LES-0051", "LES-0057"], ["AUT-002", "DST-001", "SEC-001"], 181, 748],
+      ["LES-0067", "aiops-evidence-safe-automation", "ai", "07-ai-engineering", 2, ["LES-0026", "LES-0030", "LES-0032", "LES-0066"], ["OBS-001", "SRE-003", "AIO-001"], 184, 763],
+      ["LES-0068", "mlops-llmops-production-lifecycle", "ai", "07-ai-engineering", 3, ["LES-0042", "LES-0064", "LES-0066"], ["AIO-001", "DMP-003", "K8S-002", "REL-001"], 187, 778],
+      ["LES-0069", "ai-security-trust-boundaries", "ai", "07-ai-engineering", 4, ["LES-0051", "LES-0066", "LES-0068"], ["AIO-001", "SEC-001"], 190, 793],
+      ["LES-0071", "security-foundations-threat-modeling", "security", "08-security-engineering", 1, ["LES-0007", "LES-0011", "LES-0016"], ["FND-001", "LNX-004", "NET-006"], 196, 823],
+      ["LES-0070", "devsecops-software-supply-chain", "security", "08-security-engineering", 2, ["LES-0022", "LES-0023", "LES-0024"], ["BLD-001", "CTR-002", "CI-001"], 193, 808],
     ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
       path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
       id, domain, route: `/book/${domain}/${slug}`, volume, order,
