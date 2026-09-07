@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-305 - LES-0052 through LES-0056 cloud and state publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-305` | 2026-09-07 | Cloud networking/hybrid connectivity, AWS, Azure, GCP, and SQL/PostgreSQL reliability chapters plus the canonical State volume route | Content and registry report 56 lessons, 168 assessments and 639 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and the five-stage production build pass, including `/book/state` and its lesson route. Fifty-five canonical labs pass static safety inspection; no lab was executed. Web assets remain 592.6 KiB; all 1,226 canonical and staged reference records have zero overdue/errors; source hygiene scans 2,366 tracked text files with zero findings. Feature commit `86d90b2` is pushed to `origin/main` | `PASS` for canonical content publication | The publication adds a seventh canonical volume without changing the historical LES-0004 network identity exception. Five verifier headers received only the missing private `umask 077` declaration. No Ubuntu lab, VPN/BGP/provider network, AWS/Azure/GCP resource, PostgreSQL runtime, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-304 - LES-0047 through LES-0051 cloud-platform publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
