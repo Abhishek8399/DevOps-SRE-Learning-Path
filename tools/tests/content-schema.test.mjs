@@ -1342,7 +1342,7 @@ test("the live structured corpus publishes ninety-two lessons with exact ownersh
       volume: "02-connectivity",
       order: 2,
       prerequisiteLessonIds: ["LES-0012", "LES-0004"],
-      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "LNX-003"],
       assessmentIds: ["ASM-0022", "ASM-0023", "ASM-0024"],
       referenceIds: [
         "REF-0057", "REF-0058", "REF-0059", "REF-0060",
@@ -1709,7 +1709,7 @@ test("the live structured corpus publishes ninety-two lessons with exact ownersh
       ["LES-0071", "security-foundations-threat-modeling", "security", "08-security-engineering", 1, ["LES-0007", "LES-0011", "LES-0016"], ["FND-001", "LNX-004", "NET-006"], 196, 823],
       ["LES-0070", "devsecops-software-supply-chain", "security", "08-security-engineering", 2, ["LES-0022", "LES-0023", "LES-0024"], ["BLD-001", "CTR-002", "CI-001"], 193, 808],
       ["LES-0072", "runtime-platform-hardening-vulnerability-compliance", "security", "08-security-engineering", 3, ["LES-0011", "LES-0023", "LES-0045", "LES-0050", "LES-0071"], ["LNX-008", "CTR-002", "K8S-005", "CLD-001", "SEC-001"], 199, 838],
-      ["LES-0073", "linux-performance-analysis-safe-tuning", "linux", "01-linux-systems", 9, ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0072"], ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-003"], 202, 853],
+      ["LES-0073", "linux-performance-analysis-safe-tuning", "linux", "01-linux-systems", 9, ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0071"], ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-001"], 202, 853],
       ["LES-0074", "disaster-recovery-backup-restore-failover-continuity", "reliability", "04-reliability-operations", 12, ["LES-0032", "LES-0050", "LES-0058"], ["SRE-002", "CLD-001", "DST-005"], 205, 868],
       ["LES-0075", "chaos-engineering-safe-experiments-game-days", "reliability", "04-reliability-operations", 13, ["LES-0030", "LES-0032", "LES-0033"], ["OBS-005", "SRE-002", "SRE-003"], 208, 883],
       ["LES-0076", "virtualization-kvm-libvirt-foundations", "private-cloud", "09-private-cloud", 1, ["LES-0003", "LES-0010", "LES-0012", "LES-0037"], ["LNX-003", "LNX-006", "NET-002", "IAC-001"], 211, 898],

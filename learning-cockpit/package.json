@@ -26,6 +26,7 @@
     "audit:web-budget": "node ../tools/audit-web-budget.mjs",
     "report:labs": "node ../tools/report-lab-matrix.mjs",
     "report:volumes": "node ../tools/report-volume-coverage.mjs",
+    "report:curriculum": "node ../tools/report-curriculum-coverage.mjs",
     "report:references": "node ../tools/report-reference-freshness.mjs",
     "test:reference-freshness": "node --test ../tools/tests/reference-freshness.test.mjs",
     "test:master-plan": "node --test ../tools/tests/master-plan-validator.test.mjs",

@@ -14,8 +14,8 @@
   "domain": "linux",
   "level": {"from": "advanced", "to": "expert"},
   "estimatedMinutes": 600,
-  "prerequisiteLessonIds": ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0072"],
-  "prerequisiteCurriculumIds": ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-003"],
+  "prerequisiteLessonIds": ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0071"],
+  "prerequisiteCurriculumIds": ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-001"],
   "testedEnvironments": [
     {"platform": "Primary, official and original-author sources", "version": "Linux kernel, Ubuntu, Linux man-pages, systemd and Brendan Gregg sources reviewed 2026-08-07", "support": "concept-only", "notes": "Sources define mechanisms and methods; they do not prove workload performance or a safe production tuning value."},
     {"platform": "Ubuntu", "version": "24.04 normal-user offline model", "support": "required", "notes": "Guarded deterministic 43-case decision model only; it performs no load, profiling or host observation and changes no setting."},

@@ -64,6 +64,8 @@ jobs:
 
       - name: Check per-volume teaching coverage
         run: npm run report:volumes
+      - name: Check curriculum and target-role coverage
+        run: npm run report:curriculum
 
       - name: Check tracked source hygiene
         run: npm run audit:hygiene

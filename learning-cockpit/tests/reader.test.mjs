@@ -306,7 +306,7 @@ const liveLessonDescriptors = [
     expected: {
       aliases: ["V02-L02", "tcp-udp-sockets-exhaustion"],
       curriculumIds: ["NET-007"],
-      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006"],
+      prerequisiteCurriculumIds: ["NET-001", "NET-002", "NET-003", "LNX-003"],
       prerequisiteLessonIds: ["LES-0012", "LES-0004"],
       order: 2,
       route: "/book/connectivity/tcp-udp-sockets-exhaustion",
@@ -714,7 +714,7 @@ const liveLessonDescriptors = [
   })),
   ...[
     ["LES-0072", "runtime-platform-hardening-vulnerability-compliance", "V08-L03", "SEC-003", "security", "08-security-engineering", 3, ["LES-0011", "LES-0023", "LES-0045", "LES-0050", "LES-0071"], ["LNX-008", "CTR-002", "K8S-005", "CLD-001", "SEC-001"]],
-    ["LES-0073", "linux-performance-analysis-safe-tuning", "V01-L09", "LNX-008", "linux", "01-linux-systems", 9, ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0072"], ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-003"]],
+    ["LES-0073", "linux-performance-analysis-safe-tuning", "V01-L09", "LNX-008", "linux", "01-linux-systems", 9, ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0071"], ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-001"]],
     ["LES-0074", "disaster-recovery-backup-restore-failover-continuity", "V04-L12", "DR-001", "reliability", "04-reliability-operations", 12, ["LES-0032", "LES-0050", "LES-0058"], ["SRE-002", "CLD-001", "DST-005"]],
     ["LES-0075", "chaos-engineering-safe-experiments-game-days", "V04-L13", "CHAOS-001", "reliability", "04-reliability-operations", 13, ["LES-0030", "LES-0032", "LES-0033"], ["OBS-005", "SRE-002", "SRE-003"]],
     ["LES-0076", "virtualization-kvm-libvirt-foundations", "V09-L01", "PRV-001", "privatecloud", "09-private-cloud", 1, ["LES-0003", "LES-0010", "LES-0012", "LES-0037"], ["LNX-003", "LNX-006", "NET-002", "IAC-001"]],

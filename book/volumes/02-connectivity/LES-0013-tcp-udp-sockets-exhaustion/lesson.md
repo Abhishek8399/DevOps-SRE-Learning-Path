@@ -18,7 +18,7 @@
   },
   "estimatedMinutes": 360,
   "prerequisiteLessonIds": ["LES-0012", "LES-0004"],
-  "prerequisiteCurriculumIds": ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006"],
+  "prerequisiteCurriculumIds": ["NET-001", "NET-002", "NET-003", "LNX-003"],
   "testedEnvironments": [
     {
       "platform": "Ubuntu",
