@@ -669,6 +669,17 @@ const liveLessonDescriptors = [
     path: join(repositoryRoot, "book", "volumes", "06-state-distributed-systems", "LES-0056-sql-postgresql-internals-reliability", "lesson.md"),
     expected: { aliases: ["V06-L01", "sql-postgresql-internals-reliability"], curriculumIds: ["DST-002"], prerequisiteCurriculumIds: ["LNX-006", "AUT-005"], prerequisiteLessonIds: ["LES-0010", "LES-0021"], order: 1, route: "/book/state/sql-postgresql-internals-reliability", slug: "sql-postgresql-internals-reliability", volume: "06-state-distributed-systems" },
   },
+  ...[
+    ["LES-0057", "api-event-contracts-reliability", "V06-L02", "DST-001", 2, ["LES-0015", "LES-0021"], ["AUT-005", "NET-005"]],
+    ["LES-0058", "distributed-systems-foundations", "V06-L03", "DST-005", 3, ["LES-0007", "LES-0012", "LES-0056"], ["FND-001", "NET-003", "DST-002"]],
+    ["LES-0059", "nosql-cache-reliability", "V06-L04", "DST-003", 4, ["LES-0015", "LES-0056", "LES-0058"], ["NET-005", "DST-002", "DST-005"]],
+    ["LES-0060", "queues-streams-reliability", "V06-L05", "DST-004", 5, ["LES-0057", "LES-0058", "LES-0059"], ["DST-001", "DST-005"]],
+    ["LES-0061", "distributed-workflows-reliability", "V06-L06", "DST-006", 6, ["LES-0057", "LES-0058", "LES-0060"], ["DST-001", "DST-002", "DST-004", "RES-001"]],
+  ].map(([id, slug, alias, curriculumId, order, prerequisiteLessonIds, prerequisiteCurriculumIds]) => ({
+    id,
+    path: join(repositoryRoot, "book", "volumes", "06-state-distributed-systems", `${id}-${slug}`, "lesson.md"),
+    expected: { aliases: [alias, slug], curriculumIds: [curriculumId], prerequisiteCurriculumIds, prerequisiteLessonIds, order, route: `/book/state/${slug}`, slug, volume: "06-state-distributed-systems" },
+  })),
 ];
 const independentAnswerFields = [
   "directAnswer",
@@ -947,12 +958,12 @@ test("exact stable lesson ID outranks a title-only match", () => {
   assert.ok(results.every((result) => result.document.href.startsWith("/")));
 });
 
-test("fifty-six live structured lessons preserve exact identities and canonical sections", () => {
+test("sixty-one live structured lessons preserve exact identities and canonical sections", () => {
   const bundles = loadLiveStructuredBundles();
-  assert.equal(bundles.length, 56);
+  assert.equal(bundles.length, 61);
   assert.deepEqual(
     bundles.map(({ lesson }) => lesson.metadata.id),
-    ["LES-0001", "LES-0002", "LES-0003", "LES-0005", "LES-0004", "LES-0007", "LES-0008", "LES-0009", "LES-0006", ...Array.from({ length: 16 }, (_, index) => `LES-${String(index + 10).padStart(4, "0")}`), "LES-0049", ...Array.from({ length: 23 }, (_, index) => `LES-${String(index + 26).padStart(4, "0")}`), ...Array.from({ length: 7 }, (_, index) => `LES-${String(index + 50).padStart(4, "0")}`)],
+    ["LES-0001", "LES-0002", "LES-0003", "LES-0005", "LES-0004", "LES-0007", "LES-0008", "LES-0009", "LES-0006", ...Array.from({ length: 16 }, (_, index) => `LES-${String(index + 10).padStart(4, "0")}`), "LES-0049", ...Array.from({ length: 23 }, (_, index) => `LES-${String(index + 26).padStart(4, "0")}`), ...Array.from({ length: 12 }, (_, index) => `LES-${String(index + 50).padStart(4, "0")}`)],
   );
 
   for (const { descriptor, lesson, assessments, references } of bundles) {
@@ -1164,7 +1175,7 @@ test("published legacy route and state identities remain immutable", () => {
   );
 });
 
-test("the volume-aware reader catalog publishes fifty-six stable identities across seven volumes", () => {
+test("the volume-aware reader catalog publishes sixty-one stable identities across seven volumes", () => {
   const linuxVolume = getReaderVolume("01-linux-systems");
   assert.deepEqual(getReaderVolume("04-reliability-operations"), {
     volumeId: "04-reliability-operations",
@@ -1210,7 +1221,7 @@ test("the volume-aware reader catalog publishes fifty-six stable identities acro
     "LES-0005": "identity-permissions",
   });
 
-  assert.equal(catalog.length, 56);
+  assert.equal(catalog.length, 61);
   assert.deepEqual(
     catalog.map((entry) => [
       entry.canonicalId,
@@ -1273,11 +1284,16 @@ test("the volume-aware reader catalog publishes fifty-six stable identities acro
       ["LES-0054", "LES-0054", "/book/infrastructure/azure-foundations-reliability", "05-infrastructure-platforms", 18],
       ["LES-0055", "LES-0055", "/book/infrastructure/gcp-foundations-reliability", "05-infrastructure-platforms", 19],
       ["LES-0056", "LES-0056", "/book/state/sql-postgresql-internals-reliability", "06-state-distributed-systems", 1],
+      ["LES-0057", "LES-0057", "/book/state/api-event-contracts-reliability", "06-state-distributed-systems", 2],
+      ["LES-0058", "LES-0058", "/book/state/distributed-systems-foundations", "06-state-distributed-systems", 3],
+      ["LES-0059", "LES-0059", "/book/state/nosql-cache-reliability", "06-state-distributed-systems", 4],
+      ["LES-0060", "LES-0060", "/book/state/queues-streams-reliability", "06-state-distributed-systems", 5],
+      ["LES-0061", "LES-0061", "/book/state/distributed-workflows-reliability", "06-state-distributed-systems", 6],
     ],
   );
   for (const field of ["canonicalId", "stateId", "slug", "route"]) {
     const values = catalog.map((entry) => String(entry[field]));
-    assert.equal(new Set(values).size, 56, `${field} must be unique`);
+    assert.equal(new Set(values).size, 61, `${field} must be unique`);
   }
   assert.equal(new Set(catalog.map((entry) => entry.volumeId)).size, 7);
   const positions = catalog.map((entry) => `${entry.volumeId}:${entry.order}`);
@@ -1335,7 +1351,7 @@ test("the volume-aware reader catalog publishes fifty-six stable identities acro
     () => resolveReaderPrerequisitesInCatalog(catalog, ["LES-9000"], []),
     /reader prerequisite LES-9000 is missing from the catalog/,
   );
-  assert.equal(new Set(positions).size, 56, "volume-local positions must be unique");
+  assert.equal(new Set(positions).size, 61, "volume-local positions must be unique");
   assert.equal(new Set(catalog.map((entry) => entry.order)).size, 19,
     "the same local order is valid in different volumes");
   assert.equal(catalog.find((entry) => entry.canonicalId === "LES-0007").availability,
@@ -1467,7 +1483,10 @@ test("the volume-aware reader catalog publishes fifty-six stable identities acro
   assert.equal(infrastructureEnd.next, undefined);
   const stateStart = adjacentReaderEntriesInCatalog(catalog, "sql-postgresql-internals-reliability");
   assert.equal(stateStart.previous, undefined);
-  assert.equal(stateStart.next, undefined);
+  assert.equal(stateStart.next?.canonicalId, "LES-0057");
+  const stateEnd = adjacentReaderEntriesInCatalog(catalog, "distributed-workflows-reliability");
+  assert.equal(stateEnd.previous?.canonicalId, "LES-0060");
+  assert.equal(stateEnd.next, undefined);
 });
 
 test("an eight-entry v1 reading state gains canonical and extended lessons without prior state loss", () => {
@@ -1488,10 +1507,10 @@ test("an eight-entry v1 reading state gains canonical and extended lessons witho
   })));
 
   assert.equal(loaded.recoveredInvalidData, false);
-  const newCanonicalIds = Array.from({ length: 48 }, (_, index) =>
+  const newCanonicalIds = Array.from({ length: 53 }, (_, index) =>
     `LES-${String(index + 9).padStart(4, "0")}`);
-  const extendedIds = Array.from({ length: 36 }, (_, index) =>
-    `LES-${String(index + 57).padStart(4, "0")}`);
+  const extendedIds = Array.from({ length: 31 }, (_, index) =>
+    `LES-${String(index + 62).padStart(4, "0")}`);
   const newStateIds = [...newCanonicalIds, ...extendedIds];
   assert.deepEqual([...LEARNING_LIBRARY_LESSON_IDS], [...priorStateIds, ...newStateIds]);
   assert.deepEqual(
@@ -1553,7 +1572,7 @@ test("canonical and extended bookmarks and finished-reading markers never create
   }
 });
 
-test("the live production search set has fifty-six unique lessons and stable golden rankings", () => {
+test("the live production search set has sixty-one unique lessons and stable golden rankings", () => {
   const documents = liveProductionSearchDocuments();
   assert.deepEqual(
     documents.map((document) => document.id),
@@ -1614,10 +1633,15 @@ test("the live production search set has fifty-six unique lessons and stable gol
       "LES-0054",
       "LES-0055",
       "LES-0056",
+      "LES-0057",
+      "LES-0058",
+      "LES-0059",
+      "LES-0060",
+      "LES-0061",
     ],
   );
-  assert.equal(new Set(documents.map((document) => document.id)).size, 56);
-  assert.equal(new Set(documents.map((document) => document.href)).size, 56);
+  assert.equal(new Set(documents.map((document) => document.id)).size, 61);
+  assert.equal(new Set(documents.map((document) => document.href)).size, 61);
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeNumber, "00");
   assert.equal(documents.find((document) => document.id === "LES-0007")?.volumeTitle, "Start safely");
   assert.equal(documents.find((document) => document.id === "LES-0008")?.volumeNumber, "00");
@@ -1746,6 +1770,11 @@ test("the live production search set has fifty-six unique lessons and stable gol
     ["azure foundations reliability", "LES-0054"],
     ["gcp foundations reliability", "LES-0055"],
     ["postgresql internals reliability", "LES-0056"],
+    ["api event contracts reliability", "LES-0057"],
+    ["distributed systems foundations", "LES-0058"],
+    ["nosql cache reliability", "LES-0059"],
+    ["queues streams reliability", "LES-0060"],
+    ["distributed workflows reliability", "LES-0061"],
   ]);
   for (const [query, expectedId] of goldenQueries) {
     const results = searchLessons(documents, query);
@@ -1814,7 +1843,7 @@ test("every staged draft preview has parseable lesson, assessment, and reference
       }
     })
     .sort();
-  assert.equal(lessonFiles.length, 36);
+  assert.equal(lessonFiles.length, 31);
   const stagedReferencePaths = new Map();
   for (const file of lessonFiles) {
     const referencesDirectory = join(dirname(file), "support", "references");
@@ -1867,7 +1896,7 @@ test("every staged draft preview has parseable lesson, assessment, and reference
   }
   const extendedVolumes = groupStagedDrafts(parsedDrafts);
   assert.equal(extendedVolumes.length, 10);
-  assert.equal(extendedVolumes.reduce((total, volume) => total + volume.drafts.length, 0), 36);
+  assert.equal(extendedVolumes.reduce((total, volume) => total + volume.drafts.length, 0), 31);
 });
 
 test("a malformed staged draft identifies its source directory", () => {
@@ -1878,7 +1907,7 @@ test("a malformed staged draft identifies its source directory", () => {
 });
 
 test("staged draft parsing preserves exact declared reference order", () => {
-  const slug = "LES-0057-api-event-contracts-reliability";
+  const slug = "LES-0062-data-pipeline-reliability";
   const draftDirectory = join(repositoryRoot, "drafts", slug);
   const source = readFileSync(join(draftDirectory, "lesson.md"), "utf8");
   const lesson = parseStructuredLesson(source);
@@ -1895,14 +1924,14 @@ test("staged draft parsing preserves exact declared reference order", () => {
 });
 
 test("staged draft previews are locally searchable without joining the canonical registry", () => {
-  const raw = readFileSync(join(repositoryRoot, "drafts", "LES-0057-api-event-contracts-reliability", "lesson.md"), "utf8");
+  const raw = readFileSync(join(repositoryRoot, "drafts", "LES-0062-data-pipeline-reliability", "lesson.md"), "utf8");
   const documents = createStagedDraftSearchDocuments([{
-    slug: "LES-0057-api-event-contracts-reliability",
+    slug: "LES-0062-data-pipeline-reliability",
     lesson: parseStructuredLesson(raw),
   }]);
-  assert.equal(documents[0].href, "/drafts/LES-0057-api-event-contracts-reliability");
-  assert.equal(documents[0].id, "draft-LES-0057");
-  assert.equal(searchLessons(documents, "api event contracts reliability")[0]?.document.id, "draft-LES-0057");
+  assert.equal(documents[0].href, "/drafts/LES-0062-data-pipeline-reliability");
+  assert.equal(documents[0].id, "draft-LES-0062");
+  assert.equal(searchLessons(documents, "data pipeline reliability")[0]?.document.id, "draft-LES-0062");
 });
 
 test("staged draft library groups chapters in curriculum volume order", () => {
@@ -2002,7 +2031,7 @@ test("mock interview questions stay role-scoped and export an explicitly non-mas
   assert.equal(record.includes("\r"), false);
 });
 
-test("all fifty-six independent transfers stay answer-isolated from their answered records", () => {
+test("all sixty-one independent transfers stay answer-isolated from their answered records", () => {
   const expectedIndependentIds = new Map([
     ["LES-0001", "ASM-0273"],
     ["LES-0002", "ASM-0264"],
@@ -2060,6 +2089,11 @@ test("all fifty-six independent transfers stay answer-isolated from their answer
     ["LES-0054", "ASM-0147"],
     ["LES-0055", "ASM-0150"],
     ["LES-0056", "ASM-0153"],
+    ["LES-0057", "ASM-0156"],
+    ["LES-0058", "ASM-0159"],
+    ["LES-0059", "ASM-0162"],
+    ["LES-0060", "ASM-0165"],
+    ["LES-0061", "ASM-0168"],
   ]);
   for (const { lesson, assessments } of loadLiveStructuredBundles()) {
     const independent = assessments.filter((assessment) =>

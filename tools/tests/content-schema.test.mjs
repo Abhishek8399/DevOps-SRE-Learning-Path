@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes fifty-six lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes sixty-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 56);
-  assert.equal(result.metrics.assessments, 168);
-  assert.equal(result.metrics.references, 639);
+  assert.equal(result.metrics.lessons, 61);
+  assert.equal(result.metrics.assessments, 183);
+  assert.equal(result.metrics.references, 714);
 
   const expectations = [
     {
@@ -1683,6 +1683,20 @@ test("the live structured corpus publishes fifty-six lessons with exact ownershi
       referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(598 + index).padStart(4, "0")}`),
       independentId: "ASM-0153",
     },
+    ...[
+      ["LES-0057", "api-event-contracts-reliability", 2, ["LES-0015", "LES-0021"], ["AUT-005", "NET-005"], 154, 613],
+      ["LES-0058", "distributed-systems-foundations", 3, ["LES-0007", "LES-0012", "LES-0056"], ["FND-001", "NET-003", "DST-002"], 157, 628],
+      ["LES-0059", "nosql-cache-reliability", 4, ["LES-0015", "LES-0056", "LES-0058"], ["NET-005", "DST-002", "DST-005"], 160, 643],
+      ["LES-0060", "queues-streams-reliability", 5, ["LES-0057", "LES-0058", "LES-0059"], ["DST-001", "DST-005"], 163, 658],
+      ["LES-0061", "distributed-workflows-reliability", 6, ["LES-0057", "LES-0058", "LES-0060"], ["DST-001", "DST-002", "DST-004", "RES-001"], 166, 673],
+    ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
+      path: join(repositoryRoot, "book", "volumes", "06-state-distributed-systems", `${id}-${slug}`, "lesson.md"),
+      id, domain: "state", route: `/book/state/${slug}`, volume: "06-state-distributed-systems", order,
+      prerequisiteLessonIds, prerequisiteCurriculumIds,
+      assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
+      referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
+      independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
+    })),
   ];
 
   for (const expected of expectations) {
