@@ -32,6 +32,7 @@
     "test:master-plan": "node --test ../tools/tests/master-plan-validator.test.mjs",
     "audit:hygiene": "node ../tools/audit-source-hygiene.mjs",
     "audit:memory": "node ../tools/audit-project-memory.mjs",
+    "audit:dependencies": "node ../tools/audit-dependency-policy.mjs",
     "audit:runtime": "npm audit --omit=dev --audit-level=moderate"
   },
   "dependencies": {
