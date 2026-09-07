@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-307 - LES-0062 through LES-0066 data platform and AI publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-307` | 2026-09-07 | Data pipelines, lakehouse tables, workflow/ML platforms, specialized data services, validated AI assistance and the new canonical AI volume route | Content and registry report 66 lessons, 198 assessments and 789 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and the five-stage production build pass, including `/book/ai` and its lesson route. Sixty-five canonical labs pass static safety inspection; no lab was executed. Web assets total 592.8 KiB; all 1,226 canonical and staged references have zero overdue/errors; source hygiene scans 2,368 tracked text files with zero findings. Feature commit `81c7206` is pushed to `origin/main` | `PASS` for canonical content publication | Canonical curriculum ownership now explicitly maps DMP to Volume 06 and AIO to Volume 07; the affected specialist rows retain their governing requirement links. Five verifier headers received only the missing private `umask 077` declaration. No Ubuntu lab, Spark/Flink/Trino/Iceberg/Airflow/MLflow/Cassandra/vector/catalog/AI runtime, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-306 - LES-0057 through LES-0061 distributed systems publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
