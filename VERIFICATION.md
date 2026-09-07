@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-310 - LES-0077 through LES-0081 private-cloud and FinOps publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-310` | 2026-09-07 | OpenStack control/data planes, Ceph reliability, OVS/OVN virtual networking, bare-metal fleet lifecycle, and FinOps/cost engineering | Content and registry report 81 lessons, 243 assessments and 1,020 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and all five production-build stages pass. Eighty canonical labs pass static safety inspection; no lab was executed. Web assets total 593.0 KiB; all 1,226 reference records report zero overdue/errors; source hygiene scans 2,372 tracked text files with zero findings. Feature commit `0cbe2f7` is pushed to `origin/main` | `PASS` for canonical content publication | FIN curriculum ownership maps to Volume 05; PRV-002 through PRV-005 remain in Volume 09. Five verifier headers received only the missing private `umask 077` declaration. No OpenStack, Ceph, OVS/OVN, BMC/bare-metal, cloud billing, Kubernetes cost, Ubuntu lab, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-309 - LES-0072 through LES-0076 resilience and private-cloud publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
