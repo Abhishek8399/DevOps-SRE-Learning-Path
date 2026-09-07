@@ -1,6 +1,6 @@
-# LES-0047 draft status
+# LES-0047 historical authoring status
 
-Status: **quarantined substantive candidate - not canonical, accepted, or mastery evidence**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 The candidate supplies 2,654 whitespace-delimited words, one H1, exactly eighteen required H2 sections, six diagrams, twelve commands, two labs, five incidents, three assessments, fifteen official references and an eight-case extension decision model.
 

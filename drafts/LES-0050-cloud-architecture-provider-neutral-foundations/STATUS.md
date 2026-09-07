@@ -1,6 +1,6 @@
-# LES-0050 draft status
+# LES-0050 historical authoring status
 
-Status: **quarantined substantive candidate - not canonical, accepted, or mastery evidence**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 The candidate supplies 4,891 whitespace-delimited words, one H1, exactly eighteen required H2 sections, six diagrams, twelve commands, two labs, five incidents, three assessments, fifteen primary references and an eight-case provider-neutral cloud architecture decision model.
 

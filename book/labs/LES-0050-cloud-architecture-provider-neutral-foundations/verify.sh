@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+umask 077
 IFS=$'\n\t'
 D="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 L="$D/lab.sh"

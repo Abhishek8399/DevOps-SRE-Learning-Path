@@ -24,6 +24,7 @@ import lesson0022Raw from "virtual:book-lesson/LES-0022";
 import lesson0023Raw from "virtual:book-lesson/LES-0023";
 import lesson0024Raw from "virtual:book-lesson/LES-0024";
 import lesson0025Raw from "virtual:book-lesson/LES-0025";
+import lesson0049Raw from "virtual:book-lesson/LES-0049";
 import lesson0026Raw from "virtual:book-lesson/LES-0026";
 import lesson0027Raw from "virtual:book-lesson/LES-0027";
 import lesson0028Raw from "virtual:book-lesson/LES-0028";
@@ -45,6 +46,10 @@ import lesson0043Raw from "virtual:book-lesson/LES-0043";
 import lesson0044Raw from "virtual:book-lesson/LES-0044";
 import lesson0045Raw from "virtual:book-lesson/LES-0045";
 import lesson0046Raw from "virtual:book-lesson/LES-0046";
+import lesson0047Raw from "virtual:book-lesson/LES-0047";
+import lesson0048Raw from "virtual:book-lesson/LES-0048";
+import lesson0050Raw from "virtual:book-lesson/LES-0050";
+import lesson0051Raw from "virtual:book-lesson/LES-0051";
 import assessment0001Value from "../../../book/assessments/linux/ASM-0001.json";
 import assessment0002Value from "../../../book/assessments/linux/ASM-0002.json";
 import assessment0003Value from "../../../book/assessments/linux/ASM-0003.json";
@@ -168,6 +173,21 @@ import assessment0120Value from "../../../book/assessments/infrastructure/ASM-01
 import assessment0121Value from "../../../book/assessments/infrastructure/ASM-0121.json";
 import assessment0122Value from "../../../book/assessments/infrastructure/ASM-0122.json";
 import assessment0123Value from "../../../book/assessments/infrastructure/ASM-0123.json";
+import assessment0124Value from "../../../book/assessments/infrastructure/ASM-0124.json";
+import assessment0125Value from "../../../book/assessments/infrastructure/ASM-0125.json";
+import assessment0126Value from "../../../book/assessments/infrastructure/ASM-0126.json";
+import assessment0127Value from "../../../book/assessments/infrastructure/ASM-0127.json";
+import assessment0128Value from "../../../book/assessments/infrastructure/ASM-0128.json";
+import assessment0129Value from "../../../book/assessments/infrastructure/ASM-0129.json";
+import assessment0130Value from "../../../book/assessments/infrastructure/ASM-0130.json";
+import assessment0131Value from "../../../book/assessments/infrastructure/ASM-0131.json";
+import assessment0132Value from "../../../book/assessments/infrastructure/ASM-0132.json";
+import assessment0133Value from "../../../book/assessments/infrastructure/ASM-0133.json";
+import assessment0134Value from "../../../book/assessments/infrastructure/ASM-0134.json";
+import assessment0135Value from "../../../book/assessments/infrastructure/ASM-0135.json";
+import assessment0136Value from "../../../book/assessments/infrastructure/ASM-0136.json";
+import assessment0137Value from "../../../book/assessments/infrastructure/ASM-0137.json";
+import assessment0138Value from "../../../book/assessments/infrastructure/ASM-0138.json";
 import assessment0262Value from "../../../book/assessments/linux/ASM-0262.json";
 import assessment0263Value from "../../../book/assessments/linux/ASM-0263.json";
 import assessment0264Value from "../../../book/assessments/linux/ASM-0264.json";
@@ -645,6 +665,81 @@ import reference0459Value from "../../../book/references/REF-0459.json";
 import reference0460Value from "../../../book/references/REF-0460.json";
 import reference0461Value from "../../../book/references/REF-0461.json";
 import reference0462Value from "../../../book/references/REF-0462.json";
+import reference0463Value from "../../../book/references/REF-0463.json";
+import reference0464Value from "../../../book/references/REF-0464.json";
+import reference0465Value from "../../../book/references/REF-0465.json";
+import reference0466Value from "../../../book/references/REF-0466.json";
+import reference0467Value from "../../../book/references/REF-0467.json";
+import reference0468Value from "../../../book/references/REF-0468.json";
+import reference0469Value from "../../../book/references/REF-0469.json";
+import reference0470Value from "../../../book/references/REF-0470.json";
+import reference0471Value from "../../../book/references/REF-0471.json";
+import reference0472Value from "../../../book/references/REF-0472.json";
+import reference0473Value from "../../../book/references/REF-0473.json";
+import reference0474Value from "../../../book/references/REF-0474.json";
+import reference0475Value from "../../../book/references/REF-0475.json";
+import reference0476Value from "../../../book/references/REF-0476.json";
+import reference0477Value from "../../../book/references/REF-0477.json";
+import reference0478Value from "../../../book/references/REF-0478.json";
+import reference0479Value from "../../../book/references/REF-0479.json";
+import reference0480Value from "../../../book/references/REF-0480.json";
+import reference0481Value from "../../../book/references/REF-0481.json";
+import reference0482Value from "../../../book/references/REF-0482.json";
+import reference0483Value from "../../../book/references/REF-0483.json";
+import reference0484Value from "../../../book/references/REF-0484.json";
+import reference0485Value from "../../../book/references/REF-0485.json";
+import reference0486Value from "../../../book/references/REF-0486.json";
+import reference0487Value from "../../../book/references/REF-0487.json";
+import reference0488Value from "../../../book/references/REF-0488.json";
+import reference0489Value from "../../../book/references/REF-0489.json";
+import reference0490Value from "../../../book/references/REF-0490.json";
+import reference0491Value from "../../../book/references/REF-0491.json";
+import reference0492Value from "../../../book/references/REF-0492.json";
+import reference0493Value from "../../../book/references/REF-0493.json";
+import reference0494Value from "../../../book/references/REF-0494.json";
+import reference0495Value from "../../../book/references/REF-0495.json";
+import reference0496Value from "../../../book/references/REF-0496.json";
+import reference0497Value from "../../../book/references/REF-0497.json";
+import reference0498Value from "../../../book/references/REF-0498.json";
+import reference0499Value from "../../../book/references/REF-0499.json";
+import reference0500Value from "../../../book/references/REF-0500.json";
+import reference0501Value from "../../../book/references/REF-0501.json";
+import reference0502Value from "../../../book/references/REF-0502.json";
+import reference0503Value from "../../../book/references/REF-0503.json";
+import reference0504Value from "../../../book/references/REF-0504.json";
+import reference0505Value from "../../../book/references/REF-0505.json";
+import reference0506Value from "../../../book/references/REF-0506.json";
+import reference0507Value from "../../../book/references/REF-0507.json";
+import reference0508Value from "../../../book/references/REF-0508.json";
+import reference0509Value from "../../../book/references/REF-0509.json";
+import reference0510Value from "../../../book/references/REF-0510.json";
+import reference0511Value from "../../../book/references/REF-0511.json";
+import reference0512Value from "../../../book/references/REF-0512.json";
+import reference0513Value from "../../../book/references/REF-0513.json";
+import reference0514Value from "../../../book/references/REF-0514.json";
+import reference0515Value from "../../../book/references/REF-0515.json";
+import reference0516Value from "../../../book/references/REF-0516.json";
+import reference0517Value from "../../../book/references/REF-0517.json";
+import reference0518Value from "../../../book/references/REF-0518.json";
+import reference0519Value from "../../../book/references/REF-0519.json";
+import reference0520Value from "../../../book/references/REF-0520.json";
+import reference0521Value from "../../../book/references/REF-0521.json";
+import reference0522Value from "../../../book/references/REF-0522.json";
+import reference0523Value from "../../../book/references/REF-0523.json";
+import reference0524Value from "../../../book/references/REF-0524.json";
+import reference0525Value from "../../../book/references/REF-0525.json";
+import reference0526Value from "../../../book/references/REF-0526.json";
+import reference0527Value from "../../../book/references/REF-0527.json";
+import reference0528Value from "../../../book/references/REF-0528.json";
+import reference0529Value from "../../../book/references/REF-0529.json";
+import reference0530Value from "../../../book/references/REF-0530.json";
+import reference0531Value from "../../../book/references/REF-0531.json";
+import reference0532Value from "../../../book/references/REF-0532.json";
+import reference0533Value from "../../../book/references/REF-0533.json";
+import reference0534Value from "../../../book/references/REF-0534.json";
+import reference0535Value from "../../../book/references/REF-0535.json";
+import reference0536Value from "../../../book/references/REF-0536.json";
+import reference0537Value from "../../../book/references/REF-0537.json";
 import reference1200Value from "../../../book/references/REF-1200.json";
 import reference1201Value from "../../../book/references/REF-1201.json";
 import reference1202Value from "../../../book/references/REF-1202.json";
@@ -699,6 +794,7 @@ export const generatedLessonSources: readonly string[] = [
   lesson0023Raw,
   lesson0024Raw,
   lesson0025Raw,
+  lesson0049Raw,
   lesson0026Raw,
   lesson0027Raw,
   lesson0028Raw,
@@ -720,6 +816,10 @@ export const generatedLessonSources: readonly string[] = [
   lesson0044Raw,
   lesson0045Raw,
   lesson0046Raw,
+  lesson0047Raw,
+  lesson0048Raw,
+  lesson0050Raw,
+  lesson0051Raw,
 ];
 
 export const generatedAssessmentValues: readonly unknown[] = [
@@ -846,6 +946,21 @@ export const generatedAssessmentValues: readonly unknown[] = [
   assessment0121Value,
   assessment0122Value,
   assessment0123Value,
+  assessment0124Value,
+  assessment0125Value,
+  assessment0126Value,
+  assessment0127Value,
+  assessment0128Value,
+  assessment0129Value,
+  assessment0130Value,
+  assessment0131Value,
+  assessment0132Value,
+  assessment0133Value,
+  assessment0134Value,
+  assessment0135Value,
+  assessment0136Value,
+  assessment0137Value,
+  assessment0138Value,
   assessment0262Value,
   assessment0263Value,
   assessment0264Value,
@@ -1326,6 +1441,81 @@ export const generatedReferenceValues: readonly unknown[] = [
   reference0460Value,
   reference0461Value,
   reference0462Value,
+  reference0463Value,
+  reference0464Value,
+  reference0465Value,
+  reference0466Value,
+  reference0467Value,
+  reference0468Value,
+  reference0469Value,
+  reference0470Value,
+  reference0471Value,
+  reference0472Value,
+  reference0473Value,
+  reference0474Value,
+  reference0475Value,
+  reference0476Value,
+  reference0477Value,
+  reference0478Value,
+  reference0479Value,
+  reference0480Value,
+  reference0481Value,
+  reference0482Value,
+  reference0483Value,
+  reference0484Value,
+  reference0485Value,
+  reference0486Value,
+  reference0487Value,
+  reference0488Value,
+  reference0489Value,
+  reference0490Value,
+  reference0491Value,
+  reference0492Value,
+  reference0493Value,
+  reference0494Value,
+  reference0495Value,
+  reference0496Value,
+  reference0497Value,
+  reference0498Value,
+  reference0499Value,
+  reference0500Value,
+  reference0501Value,
+  reference0502Value,
+  reference0503Value,
+  reference0504Value,
+  reference0505Value,
+  reference0506Value,
+  reference0507Value,
+  reference0508Value,
+  reference0509Value,
+  reference0510Value,
+  reference0511Value,
+  reference0512Value,
+  reference0513Value,
+  reference0514Value,
+  reference0515Value,
+  reference0516Value,
+  reference0517Value,
+  reference0518Value,
+  reference0519Value,
+  reference0520Value,
+  reference0521Value,
+  reference0522Value,
+  reference0523Value,
+  reference0524Value,
+  reference0525Value,
+  reference0526Value,
+  reference0527Value,
+  reference0528Value,
+  reference0529Value,
+  reference0530Value,
+  reference0531Value,
+  reference0532Value,
+  reference0533Value,
+  reference0534Value,
+  reference0535Value,
+  reference0536Value,
+  reference0537Value,
   reference1200Value,
   reference1201Value,
   reference1202Value,

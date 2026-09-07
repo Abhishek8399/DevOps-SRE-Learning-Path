@@ -25,6 +25,7 @@ export const generatedLessonPaths = {
   "LES-0023": ["book", "volumes", "03-engineering-delivery", "LES-0023-oci-containers-docker", "lesson.md"],
   "LES-0024": ["book", "volumes", "03-engineering-delivery", "LES-0024-ci-cd-architecture", "lesson.md"],
   "LES-0025": ["book", "volumes", "03-engineering-delivery", "LES-0025-ci-platform-operations", "lesson.md"],
+  "LES-0049": ["book", "volumes", "03-engineering-delivery", "LES-0049-gitops-reconciliation-promotion", "lesson.md"],
   "LES-0026": ["book", "volumes", "04-reliability-operations", "LES-0026-observability-foundations", "lesson.md"],
   "LES-0027": ["book", "volumes", "04-reliability-operations", "LES-0027-opentelemetry-instrumentation-pipelines", "lesson.md"],
   "LES-0028": ["book", "volumes", "04-reliability-operations", "LES-0028-prometheus-promql-grafana", "lesson.md"],
@@ -46,4 +47,8 @@ export const generatedLessonPaths = {
   "LES-0044": ["book", "volumes", "05-infrastructure-platforms", "LES-0044-kubernetes-storage-persistence-recovery", "lesson.md"],
   "LES-0045": ["book", "volumes", "05-infrastructure-platforms", "LES-0045-kubernetes-identity-rbac-admission-tenancy", "lesson.md"],
   "LES-0046": ["book", "volumes", "05-infrastructure-platforms", "LES-0046-helm-kustomize-packaging-releases", "lesson.md"],
+  "LES-0047": ["book", "volumes", "05-infrastructure-platforms", "LES-0047-kubernetes-operators-custom-resources-admission", "lesson.md"],
+  "LES-0048": ["book", "volumes", "05-infrastructure-platforms", "LES-0048-kubernetes-production-operations", "lesson.md"],
+  "LES-0050": ["book", "volumes", "05-infrastructure-platforms", "LES-0050-cloud-architecture-provider-neutral-foundations", "lesson.md"],
+  "LES-0051": ["book", "volumes", "05-infrastructure-platforms", "LES-0051-identity-secrets-certificates-zero-trust", "lesson.md"],
 } as const;

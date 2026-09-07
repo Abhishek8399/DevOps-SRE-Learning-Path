@@ -1,6 +1,6 @@
-# LES-0051 draft status
+# LES-0051 historical authoring status
 
-Status: **quarantined substantive candidate - not canonical, accepted, or mastery evidence**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 The candidate supplies 3,361 whitespace-delimited words, one H1, exactly eighteen required H2 sections, six diagrams, twelve commands, two labs, five incidents, three assessments, fifteen primary or official references and a baseline plus eight-failure identity decision model.
 
