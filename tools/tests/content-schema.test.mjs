@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes fifty-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes fifty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 51);
-  assert.equal(result.metrics.assessments, 153);
-  assert.equal(result.metrics.references, 564);
+  assert.equal(result.metrics.lessons, 56);
+  assert.equal(result.metrics.assessments, 168);
+  assert.equal(result.metrics.references, 639);
 
   const expectations = [
     {
@@ -1653,6 +1653,10 @@ test("the live structured corpus publishes fifty-one lessons with exact ownershi
       ["LES-0048", "kubernetes-production-operations", 12, ["LES-0032", "LES-0035", "LES-0041", "LES-0042", "LES-0043", "LES-0044", "LES-0045", "LES-0046", "LES-0047"], ["SRE-002", "PERF-001", "K8S-001", "K8S-002", "K8S-003", "K8S-004", "K8S-005", "K8S-006", "K8S-007"], 127, Array.from({ length: 15 }, (_, index) => 478 + index)],
       ["LES-0050", "cloud-architecture-provider-neutral-foundations", 14, ["LES-0007", "LES-0010", "LES-0015", "LES-0037", "LES-0035"], ["FND-001", "NET-002", "NET-007", "IAC-001", "PERF-001"], 133, Array.from({ length: 15 }, (_, index) => 508 + index)],
       ["LES-0051", "identity-secrets-certificates-zero-trust", 15, ["LES-0012", "LES-0015", "LES-0045", "LES-0050"], ["LNX-004", "NET-006", "K8S-005", "CLD-001"], 136, Array.from({ length: 15 }, (_, index) => 523 + index)],
+      ["LES-0052", "cloud-networking-hybrid-connectivity", 16, ["LES-0009", "LES-0010", "LES-0011", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0050", "LES-0051"], ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006", "NET-007", "CLD-001", "IAM-001"], 139, Array.from({ length: 15 }, (_, index) => 538 + index)],
+      ["LES-0053", "aws-foundations-reliability", 17, ["LES-0035", "LES-0036", "LES-0050", "LES-0051", "LES-0052"], ["TFM-001", "CLD-001", "IAM-001", "CLD-002"], 142, Array.from({ length: 15 }, (_, index) => 553 + index)],
+      ["LES-0054", "azure-foundations-reliability", 18, ["LES-0035", "LES-0036", "LES-0050", "LES-0051", "LES-0052"], ["TFM-001", "CLD-001", "IAM-001", "CLD-002"], 145, Array.from({ length: 15 }, (_, index) => 568 + index)],
+      ["LES-0055", "gcp-foundations-reliability", 19, ["LES-0035", "LES-0036", "LES-0050", "LES-0051", "LES-0052"], ["TFM-001", "CLD-001", "IAM-001", "CLD-002"], 148, Array.from({ length: 15 }, (_, index) => 583 + index)],
     ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceNumbers]) => ({
       path: join(repositoryRoot, "book", "volumes", "05-infrastructure-platforms", `${id}-${slug}`, "lesson.md"),
       id, domain: "infrastructure", route: `/book/infrastructure/${slug}`, volume: "05-infrastructure-platforms", order,
@@ -1669,6 +1673,15 @@ test("the live structured corpus publishes fifty-one lessons with exact ownershi
       assessmentIds: ["ASM-0130", "ASM-0131", "ASM-0132"],
       referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(493 + index).padStart(4, "0")}`),
       independentId: "ASM-0132",
+    },
+    {
+      path: join(repositoryRoot, "book", "volumes", "06-state-distributed-systems", "LES-0056-sql-postgresql-internals-reliability", "lesson.md"),
+      id: "LES-0056", domain: "state", route: "/book/state/sql-postgresql-internals-reliability", volume: "06-state-distributed-systems", order: 1,
+      prerequisiteLessonIds: ["LES-0010", "LES-0021"],
+      prerequisiteCurriculumIds: ["LNX-006", "AUT-005"],
+      assessmentIds: ["ASM-0151", "ASM-0152", "ASM-0153"],
+      referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(598 + index).padStart(4, "0")}`),
+      independentId: "ASM-0153",
     },
   ];
 

@@ -51,4 +51,9 @@ export const generatedLessonPaths = {
   "LES-0048": ["book", "volumes", "05-infrastructure-platforms", "LES-0048-kubernetes-production-operations", "lesson.md"],
   "LES-0050": ["book", "volumes", "05-infrastructure-platforms", "LES-0050-cloud-architecture-provider-neutral-foundations", "lesson.md"],
   "LES-0051": ["book", "volumes", "05-infrastructure-platforms", "LES-0051-identity-secrets-certificates-zero-trust", "lesson.md"],
+  "LES-0052": ["book", "volumes", "05-infrastructure-platforms", "LES-0052-cloud-networking-hybrid-connectivity", "lesson.md"],
+  "LES-0053": ["book", "volumes", "05-infrastructure-platforms", "LES-0053-aws-foundations-reliability", "lesson.md"],
+  "LES-0054": ["book", "volumes", "05-infrastructure-platforms", "LES-0054-azure-foundations-reliability", "lesson.md"],
+  "LES-0055": ["book", "volumes", "05-infrastructure-platforms", "LES-0055-gcp-foundations-reliability", "lesson.md"],
+  "LES-0056": ["book", "volumes", "06-state-distributed-systems", "LES-0056-sql-postgresql-internals-reliability", "lesson.md"],
 } as const;

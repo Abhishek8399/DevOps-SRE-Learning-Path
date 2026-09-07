@@ -65,9 +65,9 @@ const stages = [
     number: "07",
     title: "Data & Distributed Systems",
     detail: "Databases, caches, queues, streams, consistency, replication, consensus, and data-platform reliability.",
-    state: "10 staged chapters",
-    href: "/drafts#draft-volume-06",
-    kind: "staged",
+    state: availableLessons(readerEntriesForVolume("06-state-distributed-systems").length),
+    href: "/book/state",
+    kind: "canonical",
   },
   {
     number: "08",

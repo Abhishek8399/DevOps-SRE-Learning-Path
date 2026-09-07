@@ -21,6 +21,7 @@ const availableCounts = {
   engineering: readerEntriesForVolume("03-engineering-delivery").length,
   reliability: readerEntriesForVolume("04-reliability-operations").length,
   infrastructure: readerEntriesForVolume("05-infrastructure-platforms").length,
+  state: readerEntriesForVolume("06-state-distributed-systems").length,
 };
 
 const volumes: VolumeCover[] = [
@@ -30,17 +31,12 @@ const volumes: VolumeCover[] = [
   { number: "03", title: "Automation & Programming", subtitle: "Git, shells, Python and delivery", route: "/book/engineering", count: availableCounts.engineering, tone: "ochre" },
   { number: "04", title: "Site Reliability Engineering", subtitle: "Signals, objectives and incidents", route: "/book/reliability", count: availableCounts.reliability, tone: "rust" },
   { number: "05", title: "Infrastructure & Platforms", subtitle: "IaC, configuration and Kubernetes control loops", route: "/book/infrastructure", count: availableCounts.infrastructure, tone: "indigo" },
-  { number: "06", title: "Containers", subtitle: "Isolation, images and runtimes", tone: "blue" },
-  { number: "07", title: "Kubernetes", subtitle: "Control loops and cluster operations", tone: "slate" },
-  { number: "08", title: "Cloud Engineering", subtitle: "Reliable public-cloud systems", tone: "moss" },
-  { number: "09", title: "Infrastructure as Code", subtitle: "Repeatable, reviewable change", tone: "ochre" },
-  { number: "10", title: "Observability", subtitle: "Evidence across the request path", tone: "rust" },
-  { number: "11", title: "Platform Engineering", subtitle: "Golden paths and paved roads", tone: "indigo" },
-  { number: "12", title: "Security", subtitle: "Identity, policy and supply chain", tone: "rust" },
-  { number: "13", title: "Distributed Systems", subtitle: "Time, state and partial failure", tone: "blue" },
-  { number: "14", title: "Production Troubleshooting", subtitle: "Restore service with evidence", tone: "ochre" },
-  { number: "15", title: "Architecture & Leadership", subtitle: "Trade-offs, influence and scale", tone: "moss" },
-  { number: "16", title: "Interview Mastery", subtitle: "Explain and defend the system", tone: "indigo" },
+  { number: "06", title: "State & Distributed Systems", subtitle: "Databases, transactions and partial failure", route: "/book/state", count: availableCounts.state, tone: "blue" },
+  { number: "07", title: "AI Engineering", subtitle: "Validated automation and production AI", tone: "slate" },
+  { number: "08", title: "Security Engineering", subtitle: "Threats, supply chains and runtime defense", tone: "rust" },
+  { number: "09", title: "Private Cloud", subtitle: "Virtualization, OpenStack, Ceph and virtual networking", tone: "indigo" },
+  { number: "10", title: "Architecture & Leadership", subtitle: "Trade-offs, communication and engineering ownership", tone: "moss" },
+  { number: "11", title: "Capstones", subtitle: "Integrated systems, incidents and interview defense", tone: "ochre" },
 ];
 
 const lessons: LibraryLesson[] = readerCatalog.map((lesson) => {
@@ -120,7 +116,7 @@ export default function BookLibraryPage() {
 
       <section className="volume-collection" aria-labelledby="volume-collection-title">
         <div className="library-section-heading">
-          <div><span>The collected field manuals</span><h2 id="volume-collection-title">Seventeen volumes. One dependency map.</h2></div>
+          <div><span>The collected field manuals</span><h2 id="volume-collection-title">Twelve volumes. One dependency map.</h2></div>
           <p>Canonical covers open registered lessons. The advanced shelf above opens every complete review-pending chapter; reserved covers preserve the longer-term publication map.</p>
         </div>
         <div className="field-volume-grid">

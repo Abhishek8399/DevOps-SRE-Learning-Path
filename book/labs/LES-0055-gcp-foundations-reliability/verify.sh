@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+umask 077
 IFS=$'\n\t'
 DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"; LAB="$DIR/lab.sh"
-ROOT="/tmp/reliability-atlas-les0054-model-$(id -u)"
+ROOT="/tmp/reliability-atlas-les0055-model-$(id -u)"
 [[ ! -e "$ROOT"&&! -L "$ROOT" ]]||exit 1
 "$LAB" doctor; "$LAB" setup
 trap '[[ ! -d "$ROOT" ]]||"$LAB" cleanup>/dev/null' EXIT
 "$LAB" evaluate baseline|grep -q '"decision": "operable"'
-declare -A EXPECTED=([flat-subscription]=governance [client-secret]=identity [mutable-image]=artifact [public-data]=network-exposure [single-zone]=failure-domain [quota-no-headroom]=capacity-quota [restore-untested]=recovery [resource-only-monitoring]=observability)
+declare -A EXPECTED=([project-sprawl]=governance [service-account-key]=identity [mutable-image]=artifact [public-data]=network-exposure [single-zone]=failure-domain [quota-no-headroom]=capacity-quota [restore-untested]=recovery [resource-only-monitoring]=observability)
 for case_name in "${!EXPECTED[@]}";do output="$("$LAB" evaluate "$case_name")";grep -q '"decision": "not-operable"'<<<"$output";grep -q "boundary.*${EXPECTED[$case_name]}"<<<"$output";done
 "$LAB" inject-unknown
 if "$LAB" status>/dev/null 2>&1;then exit 1;fi

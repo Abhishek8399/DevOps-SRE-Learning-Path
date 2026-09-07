@@ -16,20 +16,15 @@ const availableVolumes: readonly Readonly<{
   { id: "03-engineering-delivery", number: "03", title: "Engineering & delivery", route: "/book/engineering" },
   { id: "04-reliability-operations", number: "04", title: "Reliability & operations", route: "/book/reliability" },
   { id: "05-infrastructure-platforms", number: "05", title: "Infrastructure & platforms", route: "/book/infrastructure" },
+  { id: "06-state-distributed-systems", number: "06", title: "State & distributed systems", route: "/book/state" },
 ];
 
 const plannedVolumes = [
-  ["06", "Containers"],
-  ["07", "Kubernetes"],
-  ["08", "Cloud engineering"],
-  ["09", "Infrastructure as code"],
-  ["10", "Observability"],
-  ["11", "Platform engineering"],
-  ["12", "Security"],
-  ["13", "Distributed systems"],
-  ["14", "Production troubleshooting"],
-  ["15", "Architecture & leadership"],
-  ["16", "Interview mastery"],
+  ["07", "AI engineering"],
+  ["08", "Security engineering"],
+  ["09", "Private cloud"],
+  ["10", "Architecture & leadership"],
+  ["11", "Capstones"],
 ];
 
 function NavigationLinks() {
