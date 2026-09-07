@@ -68,6 +68,8 @@ jobs:
         run: npm run report:curriculum
       - name: Check dependency and license policy
         run: npm run audit:dependencies
+      - name: Audit production dependency advisories
+        run: npm run audit:runtime
 
       - name: Check tracked source hygiene
         run: npm run audit:hygiene
