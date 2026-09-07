@@ -96,6 +96,7 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   AIO: "07-ai-engineering",
   SEC: "08-security-engineering",
   PRV: "09-private-cloud",
+  FIN: "05-infrastructure-platforms",
 });
 
 // LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its

@@ -1,6 +1,6 @@
-# LES-0080 draft status
+# LES-0080 historical authoring status
 
-Status: **substantive lesson, canonical requirement, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regressions, hygiene, production build, feature checkpoint and tracker packaging pass**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0080` / `V09-L05` / `PRV-005`: physical-server identity and ownership; rack, power, cooling, management, provisioning and tenant-network boundaries; BMC and Redfish control; UEFI, Secure Boot and boot order; DHCP, PXE/iPXE, ephemeral agents, image identity and first boot; inspection, RAID, firmware, burn-in and hardware health; allocation, deployment, maintenance, rebuild, retirement, media sanitization, capacity and failure domains.
 

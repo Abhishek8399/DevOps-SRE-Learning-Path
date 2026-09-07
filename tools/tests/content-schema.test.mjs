@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes seventy-six lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes eighty-one lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 76);
-  assert.equal(result.metrics.assessments, 228);
-  assert.equal(result.metrics.references, 939);
+  assert.equal(result.metrics.lessons, 81);
+  assert.equal(result.metrics.assessments, 243);
+  assert.equal(result.metrics.references, 1020);
 
   const expectations = [
     {
@@ -1713,12 +1713,17 @@ test("the live structured corpus publishes seventy-six lessons with exact owners
       ["LES-0074", "disaster-recovery-backup-restore-failover-continuity", "reliability", "04-reliability-operations", 12, ["LES-0032", "LES-0050", "LES-0058"], ["SRE-002", "CLD-001", "DST-005"], 205, 868],
       ["LES-0075", "chaos-engineering-safe-experiments-game-days", "reliability", "04-reliability-operations", 13, ["LES-0030", "LES-0032", "LES-0033"], ["OBS-005", "SRE-002", "SRE-003"], 208, 883],
       ["LES-0076", "virtualization-kvm-libvirt-foundations", "private-cloud", "09-private-cloud", 1, ["LES-0003", "LES-0010", "LES-0012", "LES-0037"], ["LNX-003", "LNX-006", "NET-002", "IAC-001"], 211, 898],
-    ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
+      ["LES-0077", "openstack-control-data-plane-operations", "private-cloud", "09-private-cloud", 2, ["LES-0012", "LES-0051", "LES-0058", "LES-0076"], ["NET-002", "IAM-001", "DST-005", "PRV-001"], 214, 913],
+      ["LES-0078", "ceph-storage-reliability-operations", "private-cloud", "09-private-cloud", 3, ["LES-0010", "LES-0058", "LES-0074", "LES-0077"], ["LNX-006", "NET-007", "DST-005", "PRV-002"], 217, 928],
+      ["LES-0079", "ovs-ovn-virtual-networking", "private-cloud", "09-private-cloud", 4, ["LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0052", "LES-0077"], ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006", "NET-007", "PRV-002"], 220, 943],
+      ["LES-0080", "bare-metal-fleet-lifecycle", "private-cloud", "09-private-cloud", 5, ["LES-0006", "LES-0007", "LES-0008", "LES-0010", "LES-0012", "LES-0016", "LES-0072", "LES-0073", "LES-0074", "LES-0076", "LES-0077"], ["LNX-001", "LNX-005", "LNX-006", "LNX-008", "NET-001", "NET-002", "NET-006", "IAC-001", "CFG-001", "SEC-001", "PRV-001"], 223, 958, 18],
+      ["LES-0081", "finops-cost-engineering", "infrastructure", "05-infrastructure-platforms", 20, ["LES-0026", "LES-0035", "LES-0050"], ["OBS-001", "PERF-001", "CLD-001"], 226, 976, 18],
+    ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart, referenceCount = 15]) => ({
       path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
       id, domain, route: `/book/${domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
-      referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
+      referenceIds: Array.from({ length: referenceCount }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
       independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
     })),
   ];

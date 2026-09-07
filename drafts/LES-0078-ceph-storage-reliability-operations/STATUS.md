@@ -1,6 +1,6 @@
-# LES-0078 draft status
+# LES-0078 historical authoring status
 
-Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regression, hygiene, production build, feature checkpoint and tracker packaging pass**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0078` / `V09-L03` / `PRV-003`: Ceph RADOS architecture, monitors, managers, OSDs and BlueStore; maps, pools, objects, placement groups, CRUSH and failure domains; replicated and erasure-coded durability; peering, recovery, backfill, scrub and repair; health, fullness, capacity, performance, change, upgrades and RBD/OpenStack integration.
 

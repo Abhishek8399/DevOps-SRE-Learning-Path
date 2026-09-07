@@ -58,6 +58,7 @@ export const generatedLessonPaths = {
   "LES-0053": ["book", "volumes", "05-infrastructure-platforms", "LES-0053-aws-foundations-reliability", "lesson.md"],
   "LES-0054": ["book", "volumes", "05-infrastructure-platforms", "LES-0054-azure-foundations-reliability", "lesson.md"],
   "LES-0055": ["book", "volumes", "05-infrastructure-platforms", "LES-0055-gcp-foundations-reliability", "lesson.md"],
+  "LES-0081": ["book", "volumes", "05-infrastructure-platforms", "LES-0081-finops-cost-engineering", "lesson.md"],
   "LES-0056": ["book", "volumes", "06-state-distributed-systems", "LES-0056-sql-postgresql-internals-reliability", "lesson.md"],
   "LES-0057": ["book", "volumes", "06-state-distributed-systems", "LES-0057-api-event-contracts-reliability", "lesson.md"],
   "LES-0058": ["book", "volumes", "06-state-distributed-systems", "LES-0058-distributed-systems-foundations", "lesson.md"],
@@ -76,4 +77,8 @@ export const generatedLessonPaths = {
   "LES-0070": ["book", "volumes", "08-security-engineering", "LES-0070-devsecops-software-supply-chain", "lesson.md"],
   "LES-0072": ["book", "volumes", "08-security-engineering", "LES-0072-runtime-platform-hardening-vulnerability-compliance", "lesson.md"],
   "LES-0076": ["book", "volumes", "09-private-cloud", "LES-0076-virtualization-kvm-libvirt-foundations", "lesson.md"],
+  "LES-0077": ["book", "volumes", "09-private-cloud", "LES-0077-openstack-control-data-plane-operations", "lesson.md"],
+  "LES-0078": ["book", "volumes", "09-private-cloud", "LES-0078-ceph-storage-reliability-operations", "lesson.md"],
+  "LES-0079": ["book", "volumes", "09-private-cloud", "LES-0079-ovs-ovn-virtual-networking", "lesson.md"],
+  "LES-0080": ["book", "volumes", "09-private-cloud", "LES-0080-bare-metal-fleet-lifecycle", "lesson.md"],
 } as const;

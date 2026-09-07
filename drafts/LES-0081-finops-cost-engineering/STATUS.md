@@ -1,6 +1,6 @@
-# LES-0081 draft status
+# LES-0081 historical authoring status
 
-Status: **substantive quarantined candidate complete; representative transfer, formal review, learner evidence and publication remain pending**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0081` / `V05-L20` / `FIN-001`: cost and usage data identity; FOCUS normalization; allocation, tagging and shared cost; estimation, forecasting and budgets; unit economics; usage and rate optimization; commitment risk; anomaly response; Kubernetes allocation; architecture trade-offs; governance; and communication that preserves reliability, security, performance and business value.
 

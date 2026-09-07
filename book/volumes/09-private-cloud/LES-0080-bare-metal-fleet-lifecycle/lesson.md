@@ -80,8 +80,8 @@
     {"id":"LES-0080-CMD-012","question":"Do all decisions and cleanup pass with zero hardware calls?","risk":"mutating-bounded","command":"bash verify.sh","runFrom":"LES-0080 support/lab from absent state","expectedBranches":[{"when":"verify=pass","meaning":"cases, refusals and cleanup pass","nextEvidence":"retain the model-only limitation"},{"when":"failure","meaning":"candidate evidence is rejected","nextEvidence":"preserve the first failed gate"}],"proves":"planned offline lifecycle","doesNotProve":"Redfish, IPMI, PXE, firmware, disk, power or sanitization behavior","cleanup":"Verifier must prove exact UID-scoped state absence."}
   ],
   "labs": [
-    {"id":"LES-0080-LAB-001","title":"Guided bare-metal lifecycle evidence model","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; no hardware, provisioning or network authority","timeMinutes":240,"privilege":"normal user; root refused","network":"none","changes":["one UID-scoped temporary root","one copied synthetic fixture"],"abortConditions":["root","BMC Redfish IPMI Ironic MAAS PXE cloud cluster container or hypervisor authority","local IPMI control device","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failure and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"drafts/LES-0080-bare-metal-fleet-lifecycle/support/lab"},
-    {"id":"LES-0080-LAB-002","title":"Independent disposable bare-metal provisioning and recovery","mode":"independent","environment":"Reviewer-owned isolated physical server lab or faithful emulator with synthetic workloads and no production reachability","timeMinutes":240,"privilege":"least privilege; reviewer owns credentials, faults, power, load and stop authority","network":"isolated management and provisioning networks only","changes":["one disposable node lifecycle and immutable test image","reviewer-controlled identity power boot inspection storage network firmware health maintenance or sanitization defect"],"abortConditions":["production","public target","external cloud","customer data","unreviewed firmware","unknown disk or switch","unbounded power or load","shared management plane","uncertain cleanup authority"],"recovery":"Stop, preserve evidence, restore or rebuild one authoritative disposable node and reconcile every plane.","cleanupProof":"Reviewer proves credentials revoked and every allocation, node record, lease, boot artifact, image, task, port, temporary workload, disk ownership and audit exception absent or intentionally retained.","path":"drafts/LES-0080-bare-metal-fleet-lifecycle/support/lab"}
+    {"id":"LES-0080-LAB-001","title":"Guided bare-metal lifecycle evidence model","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; no hardware, provisioning or network authority","timeMinutes":240,"privilege":"normal user; root refused","network":"none","changes":["one UID-scoped temporary root","one copied synthetic fixture"],"abortConditions":["root","BMC Redfish IPMI Ironic MAAS PXE cloud cluster container or hypervisor authority","local IPMI control device","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failure and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"book/labs/LES-0080-bare-metal-fleet-lifecycle"},
+    {"id":"LES-0080-LAB-002","title":"Independent disposable bare-metal provisioning and recovery","mode":"independent","environment":"Reviewer-owned isolated physical server lab or faithful emulator with synthetic workloads and no production reachability","timeMinutes":240,"privilege":"least privilege; reviewer owns credentials, faults, power, load and stop authority","network":"isolated management and provisioning networks only","changes":["one disposable node lifecycle and immutable test image","reviewer-controlled identity power boot inspection storage network firmware health maintenance or sanitization defect"],"abortConditions":["production","public target","external cloud","customer data","unreviewed firmware","unknown disk or switch","unbounded power or load","shared management plane","uncertain cleanup authority"],"recovery":"Stop, preserve evidence, restore or rebuild one authoritative disposable node and reconcile every plane.","cleanupProof":"Reviewer proves credentials revoked and every allocation, node record, lease, boot artifact, image, task, port, temporary workload, disk ownership and audit exception absent or intentionally retained.","path":"book/labs/LES-0080-bare-metal-fleet-lifecycle"}
   ],
   "incidents": [
     {"id":"LES-0080-INC-001","signal":"The controller says a server is powered on, but it never appears on the network.","firstThought":"Requested power, BMC task completion, observed chassis power, firmware boot and host network are separate claims.","safePath":"Bind physical and BMC identity, task, current power, console, boot mode/order, PXE or disk selection and host link.","trap":"Send repeated power cycles or reset the entire management controller fleet."},
@@ -657,7 +657,7 @@ This prevents “the server is healthy” from hiding a chain of assumptions.
 
 ### Safe local commands
 
-Run from `drafts/LES-0080-bare-metal-fleet-lifecycle/support/lab` in Ubuntu as a normal user.
+Run from `book/labs/LES-0080-bare-metal-fleet-lifecycle` in Ubuntu as a normal user.
 
 #### `bash lab.sh doctor`
 
@@ -804,7 +804,7 @@ This lab builds diagnostic order without touching hardware. It creates only one 
 ### Step 1: enter the lab
 
 ```bash
-cd drafts/LES-0080-bare-metal-fleet-lifecycle/support/lab
+cd book/labs/LES-0080-bare-metal-fleet-lifecycle
 id
 bash lab.sh doctor
 ```

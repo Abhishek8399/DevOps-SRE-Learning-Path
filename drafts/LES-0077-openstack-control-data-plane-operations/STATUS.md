@@ -1,6 +1,6 @@
-# LES-0077 draft status
+# LES-0077 historical authoring status
 
-Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct, Ubuntu, canonical regression, production-build, hygiene, feature checkpoint and tracker packaging gates pass**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0077` / `V09-L02` / `PRV-002`: OpenStack identity, API, service-catalog, Nova, Placement, Neutron, Glance and Cinder request paths; cells, databases, queues and agents; instance build, scheduling, image, network and volume state; HA, upgrades, incidents and recovery.
 

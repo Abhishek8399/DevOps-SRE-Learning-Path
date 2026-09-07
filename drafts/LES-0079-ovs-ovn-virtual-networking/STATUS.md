@@ -1,6 +1,6 @@
-# LES-0079 draft status
+# LES-0079 historical authoring status
 
-Status: **substantive lesson, official-source lock, guarded offline lab and assessment set complete; direct schemas, declared Ubuntu lifecycle, canonical regression, hygiene, production build, feature checkpoint and tracker packaging pass**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0079` / `V09-L04` / `PRV-004`: Open vSwitch and OVN architecture; Linux interfaces, bridges, ports, VLANs and tunnels; OVSDB desired state, OpenFlow policy and datapath caches; OVN northbound intent, northd compilation, southbound bindings, chassis-local realization, logical switching/routing, ACLs, connection tracking, NAT, gateways and packet tracing.
 
