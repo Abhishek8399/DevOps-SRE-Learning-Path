@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-309 - LES-0072 through LES-0076 resilience and private-cloud publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-309` | 2026-09-07 | Runtime/platform hardening, Linux performance and safe tuning, disaster recovery, chaos engineering, KVM/libvirt foundations, and the new canonical Private Cloud volume route | Content and registry report 76 lessons, 228 assessments and 939 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and all five production-build stages pass, including `/book/privatecloud` and its lesson route. Seventy-five canonical labs pass static safety inspection; no lab was executed. Web assets total 593.0 KiB; all 1,226 reference records report zero overdue/errors; source hygiene scans 2,372 tracked text files with zero findings. Feature commit `366790f` is pushed to `origin/main` | `PASS` for canonical content publication | PRV curriculum ownership now maps to Volume 09. The Linux-performance route was normalized to its complete canonical slug, and the validator now explicitly preserves the published `privatecloud` route segment. Five verifier headers received only the missing private `umask 077` declaration. No Ubuntu lab, host tuning, backup/restore/failover, fault injection/game day, KVM/QEMU/libvirt/VM runtime, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-308 - LES-0067 through LES-0071 AI operations and security publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
