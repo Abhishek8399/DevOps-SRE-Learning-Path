@@ -1,6 +1,6 @@
-# LES-0076 draft status
+# LES-0076 historical authoring status
 
-Status: **substantive lesson candidate, source lock, guarded offline model, and assessment set complete; quarantined and not published**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0076` / `V09-L01` / `PRV-001`: virtualization boundaries, KVM and QEMU execution, libvirt management, domain identity and lifecycle, CPU/memory/NUMA, storage and images, virtual networking, cloud-init, migration, capacity, security, availability, evidence, and recovery.
 

@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes seventy-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes seventy-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 71);
-  assert.equal(result.metrics.assessments, 213);
-  assert.equal(result.metrics.references, 864);
+  assert.equal(result.metrics.lessons, 76);
+  assert.equal(result.metrics.assessments, 228);
+  assert.equal(result.metrics.references, 939);
 
   const expectations = [
     {
@@ -1708,9 +1708,14 @@ test("the live structured corpus publishes seventy-one lessons with exact owners
       ["LES-0069", "ai-security-trust-boundaries", "ai", "07-ai-engineering", 4, ["LES-0051", "LES-0066", "LES-0068"], ["AIO-001", "SEC-001"], 190, 793],
       ["LES-0071", "security-foundations-threat-modeling", "security", "08-security-engineering", 1, ["LES-0007", "LES-0011", "LES-0016"], ["FND-001", "LNX-004", "NET-006"], 196, 823],
       ["LES-0070", "devsecops-software-supply-chain", "security", "08-security-engineering", 2, ["LES-0022", "LES-0023", "LES-0024"], ["BLD-001", "CTR-002", "CI-001"], 193, 808],
+      ["LES-0072", "runtime-platform-hardening-vulnerability-compliance", "security", "08-security-engineering", 3, ["LES-0011", "LES-0023", "LES-0045", "LES-0050", "LES-0071"], ["LNX-008", "CTR-002", "K8S-005", "CLD-001", "SEC-001"], 199, 838],
+      ["LES-0073", "linux-performance-analysis-safe-tuning", "linux", "01-linux-systems", 9, ["LES-0002", "LES-0003", "LES-0010", "LES-0011", "LES-0026", "LES-0072"], ["LNX-001", "LNX-002", "LNX-003", "LNX-004", "LNX-005", "LNX-006", "LNX-007", "OBS-001", "SEC-003"], 202, 853],
+      ["LES-0074", "disaster-recovery-backup-restore-failover-continuity", "reliability", "04-reliability-operations", 12, ["LES-0032", "LES-0050", "LES-0058"], ["SRE-002", "CLD-001", "DST-005"], 205, 868],
+      ["LES-0075", "chaos-engineering-safe-experiments-game-days", "reliability", "04-reliability-operations", 13, ["LES-0030", "LES-0032", "LES-0033"], ["OBS-005", "SRE-002", "SRE-003"], 208, 883],
+      ["LES-0076", "virtualization-kvm-libvirt-foundations", "private-cloud", "09-private-cloud", 1, ["LES-0003", "LES-0010", "LES-0012", "LES-0037"], ["LNX-003", "LNX-006", "NET-002", "IAC-001"], 211, 898],
     ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
       path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
-      id, domain, route: `/book/${domain}/${slug}`, volume, order,
+      id, domain, route: `/book/${domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
       referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),

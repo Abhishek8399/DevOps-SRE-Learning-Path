@@ -1,6 +1,6 @@
-# LES-0075 draft status
+# LES-0075 historical authoring status
 
-Status: **substantive lesson candidate, source lock, guarded offline model, and assessment set complete; quarantined and not published**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0075` / `V04-L13` / `CHAOS-001`: hypothesis-driven chaos engineering, steady-state evidence, fault selection, blast-radius control, abort and rollback, experiment execution, game days, learning and regression.
 

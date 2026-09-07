@@ -19,10 +19,10 @@ const availableVolumes: readonly Readonly<{
   { id: "06-state-distributed-systems", number: "06", title: "State & distributed systems", route: "/book/state" },
   { id: "07-ai-engineering", number: "07", title: "AI engineering", route: "/book/ai" },
   { id: "08-security-engineering", number: "08", title: "Security engineering", route: "/book/security" },
+  { id: "09-private-cloud", number: "09", title: "Private cloud", route: "/book/privatecloud" },
 ];
 
 const plannedVolumes = [
-  ["09", "Private cloud"],
   ["10", "Architecture & leadership"],
   ["11", "Capstones"],
 ];

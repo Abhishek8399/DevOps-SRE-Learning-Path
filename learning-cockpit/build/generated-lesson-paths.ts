@@ -10,6 +10,7 @@ export const generatedLessonPaths = {
   "LES-0006": ["book", "volumes", "01-linux-systems", "LES-0006-boot-kernel-systemd-journal", "lesson.md"],
   "LES-0010": ["book", "volumes", "01-linux-systems", "LES-0010-block-io-storage-performance", "lesson.md"],
   "LES-0011": ["book", "volumes", "01-linux-systems", "LES-0011-namespaces-cgroups-isolation", "lesson.md"],
+  "LES-0073": ["book", "volumes", "01-linux-systems", "LES-0073-linux-performance-analysis-safe-tuning", "lesson.md"],
   "LES-0012": ["book", "volumes", "02-connectivity", "LES-0012-ethernet-ip-cidr-routing-nat", "lesson.md"],
   "LES-0013": ["book", "volumes", "02-connectivity", "LES-0013-tcp-udp-sockets-exhaustion", "lesson.md"],
   "LES-0014": ["book", "volumes", "02-connectivity", "LES-0014-dns-service-discovery", "lesson.md"],
@@ -37,6 +38,8 @@ export const generatedLessonPaths = {
   "LES-0034": ["book", "volumes", "04-reliability-operations", "LES-0034-causal-analysis-post-incident-learning", "lesson.md"],
   "LES-0035": ["book", "volumes", "04-reliability-operations", "LES-0035-capacity-performance-scaling", "lesson.md"],
   "LES-0036": ["book", "volumes", "04-reliability-operations", "LES-0036-resilience-patterns-failure-isolation", "lesson.md"],
+  "LES-0074": ["book", "volumes", "04-reliability-operations", "LES-0074-disaster-recovery-backup-restore-failover-continuity", "lesson.md"],
+  "LES-0075": ["book", "volumes", "04-reliability-operations", "LES-0075-chaos-engineering-safe-experiments-game-days", "lesson.md"],
   "LES-0037": ["book", "volumes", "05-infrastructure-platforms", "LES-0037-infrastructure-as-code-foundations", "lesson.md"],
   "LES-0038": ["book", "volumes", "05-infrastructure-platforms", "LES-0038-terraform-opentofu-language-plan", "lesson.md"],
   "LES-0039": ["book", "volumes", "05-infrastructure-platforms", "LES-0039-terraform-opentofu-modules-state-recovery", "lesson.md"],
@@ -71,4 +74,6 @@ export const generatedLessonPaths = {
   "LES-0069": ["book", "volumes", "07-ai-engineering", "LES-0069-ai-security-trust-boundaries", "lesson.md"],
   "LES-0071": ["book", "volumes", "08-security-engineering", "LES-0071-security-foundations-threat-modeling", "lesson.md"],
   "LES-0070": ["book", "volumes", "08-security-engineering", "LES-0070-devsecops-software-supply-chain", "lesson.md"],
+  "LES-0072": ["book", "volumes", "08-security-engineering", "LES-0072-runtime-platform-hardening-vulnerability-compliance", "lesson.md"],
+  "LES-0076": ["book", "volumes", "09-private-cloud", "LES-0076-virtualization-kvm-libvirt-foundations", "lesson.md"],
 } as const;

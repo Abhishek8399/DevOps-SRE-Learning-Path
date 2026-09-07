@@ -95,6 +95,7 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   DMP: "06-state-distributed-systems",
   AIO: "07-ai-engineering",
   SEC: "08-security-engineering",
+  PRV: "09-private-cloud",
 });
 
 // LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its
@@ -1614,6 +1615,7 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
     ["02-connectivity", "connectivity"],
     ["03-engineering-delivery", "engineering"],
     ["04-reliability-operations", "reliability"],
+    ["09-private-cloud", "privatecloud"],
   ]);
   for (const entry of legacy.entries) {
     const id = entry.record.id;

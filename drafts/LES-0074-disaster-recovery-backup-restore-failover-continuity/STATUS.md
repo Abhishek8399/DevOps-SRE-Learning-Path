@@ -1,6 +1,6 @@
-# LES-0074 draft status
+# LES-0074 historical authoring status
 
-Status: **complete lesson candidate quarantined for verification and curriculum-ledger review**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory is reserved for `LES-0074` / `V04-L12` / `DR-001`: disaster recovery, high availability, backup and restore proof, RPO/RTO, failover, failback and business continuity. Fifteen primary, government or official product sources are locked across recovery governance, cyber recovery, backup isolation and integrity, cloud recovery strategies, database point-in-time recovery, and Kubernetes/etcd control-plane restoration.
 

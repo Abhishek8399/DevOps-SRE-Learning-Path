@@ -62,6 +62,12 @@ export const READER_VOLUMES = {
     volumeTitle: "Security engineering",
     volumeRoute: "/book/security",
   },
+  "09-private-cloud": {
+    volumeId: "09-private-cloud",
+    volumeNumber: "09",
+    volumeTitle: "Private cloud",
+    volumeRoute: "/book/privatecloud",
+  },
 } as const;
 
 export type ReaderVolumeId = keyof typeof READER_VOLUMES;

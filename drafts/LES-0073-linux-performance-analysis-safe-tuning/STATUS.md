@@ -1,6 +1,6 @@
-# LES-0073 draft status
+# LES-0073 historical authoring status
 
-Status: **complete lesson candidate quarantined pending full publication gates**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This directory contains fifteen primary, official or original-author sources, a guarded 43-case offline experiment-decision model and diagnostic/guided/independent assessment tiers for `LNX-008` Linux performance analysis and safe system hardening. The intended candidate will connect workload objectives and controlled baselines to USE analysis, Linux counters and their limitations, pressure, per-process and cgroup scope, profiling, flame graphs, tracing, tunables, resource controls, hardening interactions, canary and rollback evidence.
 
