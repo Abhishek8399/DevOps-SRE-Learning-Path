@@ -2,13 +2,13 @@
 
 Date: 2026-08-04
 
-Last evidence update: 2026-09-02
+Last evidence update: 2026-09-07
 
 Status: source and HTTP audit complete; rendered browser inspection blocked because no browser backend is currently exposed.
 
 ## What already works and must survive
 
-- Next/Vinext application with stable routes for the library, five volume indexes, twenty-six lessons, search, My Learning and storage practice.
+- Next/Vinext application with stable routes for the library, twelve volume indexes, all 92 canonical lessons, search, My Learning and practice surfaces.
 - Schema-backed content parser and generated registry with legacy compatibility.
 - Local-only bookmarks, recent history and finished-reading markers that do not award mastery.
 - Answer-isolated assessments, expandable teaching answers, labs, command copying, responsive tables, print rules and keyboard-visible focus.
@@ -62,11 +62,11 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 - Some uppercase labels and small text fall below comfortable reading sizes even when contrast passes.
 - External font loading would weaken offline behavior and cause layout shifts; the redesign should use local/system fallbacks unless font files are vendored.
 
-### Extended-library discoverability
+### Complete-library discoverability
 
-- The main book library reports canonical and extended counts separately, then exposes all ten real extended volume anchors in one prominent reading bridge.
-- Reader-facing navigation says “Extended chapters” rather than presenting complete manuscripts as hidden files; the route still says review pending and does not claim accepted labs, providers, production behavior or mastery.
-- The 66-chapter/ten-volume relationship is asserted from the live parsed corpus. Loopback HTML proves counts, direct anchors and review copy; visual hierarchy, phone layout and keyboard navigation remain open without a browser backend.
+- The main book library exposes all 92 canonical chapters across twelve volume indexes, including the dedicated Capstones volume.
+- The former extended shelf is empty because every authored manuscript is now in the canonical registry; publication still does not claim accepted labs, provider behavior, production experience or mastery.
+- The 92-chapter/12-volume relationship is asserted from the live parsed corpus. Loopback HTML proves the library, Capstones index and final lesson route; visual hierarchy, phone layout and keyboard navigation remain open without a browser backend.
 
 ## Root cause
 

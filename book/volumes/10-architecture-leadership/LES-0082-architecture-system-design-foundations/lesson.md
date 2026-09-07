@@ -1153,27 +1153,27 @@ Owner: Checkout team
 Date: YYYY-MM-DD
 Review trigger: database/queue platform change or measured completion breach
 
-## Context
+### Context
 One accepted order must create durable fulfillment work despite process failure.
 
-## Decision drivers
+### Decision drivers
 - no untracked database-to-broker gap
 - bounded customer acknowledgement
 - replay and audit
 
-## Options
+### Options
 1. publish after database commit
 2. publish before database commit
 3. transactional outbox and idempotent consumers
 
-## Decision
+### Decision
 Choose option 3 under the stated database and polling assumptions.
 
-## Consequences
+### Consequences
 Positive: durable visible obligation and replay.
 Negative: publication lag, duplicate delivery, outbox operations and cleanup.
 
-## Validation
+### Validation
 Crash-point tests, duplicate-delivery tests, oldest-unpublished alert and replay drill.
 ```
 

@@ -2,7 +2,7 @@
 
 Version: 1.0
 Status: Binding content and product contract
-Last updated: 2026-08-02
+Last updated: 2026-09-07
 
 ## Purpose
 
@@ -10,7 +10,7 @@ This repository will become a durable, local-first field manual for DevOps, Site
 
 The manual must help a committed reader move from first principles to production judgment. It must explain why systems behave as they do, provide safe ways to observe and change them, and require evidence before claiming skill. It is not complete because a table of contents exists, a page renders, or a learner has read a chapter.
 
-The current canonical worktree is an early implementation. Twenty-six routed lesson identities are available across Volumes 00 through 04: five established typed lessons and twenty-one schema-backed `substantive-draft` lessons (`LES-0006` through `LES-0026`). The structured corpus contains 63 assessments—forty-two complete-answer records and twenty-one answer-isolated independent transfers—and 172 references. `LES-0026` / `V04-L01` / `OBS-001` is assigned to `/book/reliability/observability-foundations`. Its deterministic local five-signal fixture demonstrates only its encoded metrics, logs, synthetic traces, events, Python `cProfile` counts, ordering, loss, cardinality, sampling, retention, privacy, and cleanup behavior. It is not a production service, an OpenTelemetry SDK or Collector, Prometheus, Grafana, a continuous profiler, or a vendor backend, and it does not establish production-provider behavior. The `LES-0025` CI engines retain the same provider-proof boundary for GitHub Actions, GitLab CI/CD, Jenkins, and Azure Pipelines. These are project artifacts, not accepted chapters or learner evidence. LES-0026 feature commit `f2e3e23` is pushed with exact remote parity. Formal technical and instructional acceptance, manual browser QA, independently reviewed learner transfer and delayed recall, representative real-environment exercises, and provider-specific evidence remain open. Most curriculum domains remain planned or not started. `CONTENT_MATRIX.md` is the authoritative coverage audit; `progress/ledger.md` remains the authoritative learner-evidence record.
+The current canonical corpus contains 92 schema-backed lessons across Volumes 00 through 11, 276 assessments, 1,226 references, and 92 checked-in local lab contracts. Every authored lesson is routed, searchable, and included in the deterministic registry; no staged lesson body remains. The chapters span the complete planned curriculum and five capstones, but publication is not formal acceptance or learner evidence. Many labs deliberately use bounded local models or command walkthroughs rather than representative provider or production systems. Formal technical, security, accessibility, instructional, and editorial review; manual browser QA; independently reviewed learner transfer and delayed recall; selected fresh-clone lab execution; and representative real-environment evidence remain open. `CONTENT_MATRIX.md` is the authoritative coverage and gap ledger; `progress/ledger.md` remains the only learner-evidence authority.
 
 ## Sources of truth
 

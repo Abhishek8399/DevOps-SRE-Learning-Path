@@ -52,6 +52,7 @@ For every matrix sample check page-level overflow, clipped text, manuscript cent
 | 2026-09-02 | HTTP, viewport-independent | Enriched timed interview practice | Follow-up pass: initial request preceded server readiness; retry returned 200 with topic, difficulty, expected level, layered answer guidance and weak-answer warnings | Not applicable | Browser disclosure, responsive and keyboard review remains open |
 | 2026-09-02 | HTTP, viewport-independent | Invalid canonical lesson recovery | Pass: HTTP 404 with recovery title, library/search/extended links and explicit unchanged-state copy | Not applicable | Browser error injection, retry, focus, screen-reader and viewport review remains open |
 | 2026-09-02 | HTTP, viewport-independent | Main and extended libraries | Follow-up pass: literal dynamic-count assertion failed on React comments; semantic retry proves 26 canonical/66 extended separation, ten-volume bridge, direct Volume 05/11 anchors and review-pending copy | Not applicable | Browser hierarchy, responsive grid, keyboard and theme review remains open |
+| 2026-09-07 | HTTP, viewport-independent | Complete library, Capstones index and final chapter | Pass: the refreshed production build serves `/`, `/book`, `/book/capstones` and `/book/capstones/secured-ai-incident-assistant` with HTTP 200 and expected book/capstone markers | Not applicable | Browser inventory remains empty; visual hierarchy, responsive grid, keyboard, focus, themes and print remain open |
 
 ## Automated evidence
 

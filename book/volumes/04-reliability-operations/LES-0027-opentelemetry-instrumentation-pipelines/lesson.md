@@ -317,7 +317,8 @@
       "changes": ["creates uniquely named fixture-owned containers", "creates one uniquely named fixture-owned Docker network", "creates only fixture-owned ephemeral records and a guarded local ownership descriptor", "temporarily changes only fixture-owned propagation, gateway, and sampling controls"],
       "abortConditions": ["the caller is root", "an image lock is mutable-only, absent, or mismatched", "a project resource already exists without matching ownership", "Compose rendering or exact Collector validation fails", "a command selects more than the exact owned resource", "a timeout, unexpected external address, secret-like value, or cleanup refusal appears"],
       "recovery": "Stop request generation, restore the exact owned gateway and context controls, collect bounded diagnostics, and invoke the dedicated idempotent cleanup. Never use global prune or delete by a broad name pattern.",
-      "cleanupProof": "The ownership descriptor, exact containers, exact network, fixture records, and temporary state are absent; pre-existing and concurrent foreign resources remain; repeated cleanup is safe; status reports no owned residue."
+      "cleanupProof": "The ownership descriptor, exact containers, exact network, fixture records, and temporary state are absent; pre-existing and concurrent foreign resources remain; repeated cleanup is safe; status reports no owned residue.",
+      "path": "book/labs/LES-0027-opentelemetry-instrumentation-pipelines"
     },
     {
       "id": "LES-0027-LAB-002",

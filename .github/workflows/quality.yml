@@ -62,6 +62,9 @@ jobs:
       - name: Check canonical local-lab source contracts
         run: npm run report:labs
 
+      - name: Check per-volume teaching coverage
+        run: npm run report:volumes
+
       - name: Check tracked source hygiene
         run: npm run audit:hygiene
 

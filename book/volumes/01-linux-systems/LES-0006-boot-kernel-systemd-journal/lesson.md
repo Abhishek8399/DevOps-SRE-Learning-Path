@@ -358,7 +358,8 @@
         "Do not paste unsanitized employer, hostname, address, username, token, or production data into learning evidence."
       ],
       "recovery": "No recovery is expected because the lab is read-only. If any command was changed into a mutating form, stop and document the exact change before doing anything else.",
-      "cleanupProof": "The lesson defines no owned path, unit, socket, mount, package, or long-running process to remove. Verify that you ran only the documented read-only commands; ordinary command processes and access or audit records may exist."
+      "cleanupProof": "The lesson defines no owned path, unit, socket, mount, package, or long-running process to remove. Verify that you ran only the documented read-only commands; ordinary command processes and access or audit records may exist.",
+      "path": "book/labs/LES-0006-boot-observation"
     }
   ],
   "incidents": [
