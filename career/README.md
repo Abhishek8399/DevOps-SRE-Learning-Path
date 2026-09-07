@@ -9,6 +9,7 @@ This directory translates the supplied job profiles into a durable study map. It
 3. [Learning system](learning-system.md) — how repository content, local labs, browser state, and reviewed evidence fit together.
 4. [Incident communication playbook](incident-communication-playbook.md) — concise updates, handoffs, stakeholder translation, and post-incident language.
 5. [Portfolio and resume evidence defense](portfolio-resume-evidence-defense-primer.md) — turn real project work into precise, reproducible claims that survive senior follow-ups.
+6. [Product-company readiness audit](product-company-readiness-audit-primer.md) — practise diagnosis, building, operation, explanation, and transfer against the supplied role families.
 
 ## Shared operator foundation
 
