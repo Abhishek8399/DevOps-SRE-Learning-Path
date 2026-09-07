@@ -83,12 +83,7 @@ export default function ReaderContextRail() {
 
   return (
     <>
-      <button
-        aria-label="Close context tools"
-        className="context-backdrop"
-        onClick={() => { document.documentElement.dataset.contextRail = "closed"; }}
-        type="button"
-      />
+      <ShellToggle action="close-context" className="context-backdrop" label="Close context tools" />
       <aside className="context-rail" aria-label="Reading context" id="reading-context">
         <header className="context-rail-header">
           <div><span>Field notes</span><strong>Reading context</strong></div>

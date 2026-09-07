@@ -39,14 +39,21 @@ export default function ReaderControls() {
     const root = document.documentElement;
     const syncWrapped = () => setWrapped(root.dataset.codeWrap === "wrap");
     const frame = window.requestAnimationFrame(() => {
+      const nextNavigationOpen = root.dataset.navigation !== "closed";
+      let nextContextOpen = root.dataset.contextRail !== "closed";
+      if (window.matchMedia("(max-width: 980px)").matches && nextNavigationOpen && nextContextOpen) {
+        root.dataset.contextRail = "closed";
+        store("field-manual-context-rail", "closed");
+        nextContextOpen = false;
+      }
       setTheme(themes.includes(root.dataset.readerTheme as Theme) ? root.dataset.readerTheme as Theme : "paper");
       setSize(sizes.includes(root.dataset.readingSize as ReaderSize) ? root.dataset.readingSize as ReaderSize : "comfortable");
       setLeading(leadings.includes(root.dataset.readingLeading as ReaderLeading) ? root.dataset.readingLeading as ReaderLeading : "relaxed");
       setWidth(widths.includes(root.dataset.readingWidth as ReaderWidth) ? root.dataset.readingWidth as ReaderWidth : "standard");
       syncWrapped();
       setFocused(root.dataset.readingFocus === "on");
-      setNavigationOpen(root.dataset.navigation !== "closed");
-      setContextOpen(root.dataset.contextRail !== "closed");
+      setNavigationOpen(nextNavigationOpen);
+      setContextOpen(nextContextOpen);
     });
     window.addEventListener("field-manual-code-wrap", syncWrapped);
     return () => {
@@ -164,8 +171,21 @@ export default function ReaderControls() {
     const next = current === "closed" ? "open" : "closed";
     root.dataset[name] = next;
     store(name === "navigation" ? "field-manual-navigation" : "field-manual-context-rail", next);
-    if (name === "navigation") setNavigationOpen(next === "open");
-    else setContextOpen(next === "open");
+    if (name === "navigation") {
+      setNavigationOpen(next === "open");
+      if (next === "open" && window.matchMedia("(max-width: 980px)").matches) {
+        root.dataset.contextRail = "closed";
+        store("field-manual-context-rail", "closed");
+        setContextOpen(false);
+      }
+    } else {
+      setContextOpen(next === "open");
+      if (next === "open" && window.matchMedia("(max-width: 980px)").matches) {
+        root.dataset.navigation = "closed";
+        store("field-manual-navigation", "closed");
+        setNavigationOpen(false);
+      }
+    }
     setAnnouncement(`${name === "navigation" ? "Book navigation" : "Context rail"} ${next}.`);
   };
 

@@ -96,6 +96,12 @@ const obsoleteClaims = [
   /26 canonical lessons plus 66/i,
   /remaining authored lesson packages/i,
   /quarantined `LES-/i,
+  /Thirty-six routes/i,
+  /all 26 lesson routes/i,
+  /2,268 tracked text files/i,
+  /full-tree `npm ci` reported 15 findings/i,
+  /temporary no-local clone at `eee5ab4`/i,
+  /Current-revision clone quality gates/i,
 ];
 for (const file of activeMemory) {
   const lines = read(file).split(/\r?\n/);

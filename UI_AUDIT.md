@@ -15,7 +15,7 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 - Content, schema and reader tests plus lint, typecheck and production build gates.
 - Server-rendered long-form content with no dependency on a hosted API.
 
-## Current experience problems
+## Residual experience risks
 
 ### Reading hierarchy
 
@@ -27,18 +27,17 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 
 ### Navigation and shell
 
-- Desktop navigation permanently renders every available lesson and uses 286 px even when the reader knows where they are.
-- Volume, chapter and lesson hierarchy exists in data but is visually flattened into a long list.
-- Mobile navigation uses one large `details` block instead of a focused, dismissible drawer.
-- There is no independent contextual rail; subsection navigation is a sticky horizontal strip that becomes another toolbar.
-- The manuscript does not recenter when navigation disappears.
+- Desktop navigation uses collapsible volume groups and can be hidden; the manuscript grid recentres when either rail closes.
+- At narrow widths, navigation and reading context become separate overlay drawers. Source inspection confirms that opening one closes the other, backdrop and explicit-close actions persist state, and focus is returned to the matching toolbar trigger.
+- The independent context rail provides subsection navigation and reading tools without expanding the primary book index.
+- These behaviours are source-, type- and build-verified; their visual balance and real keyboard sequence remain unverified because no browser backend is exposed.
 
 ### Controls and state
 
-- Reader controls are globally fixed at the bottom-right and can cover content or compete with interactive elements.
-- Preferences support only two themes and three coarse text sizes.
+- Reader controls live in the sticky reader topline instead of covering the lower-right manuscript.
+- Preferences support paper, night and sepia themes; three text sizes; three line spacings; three manuscript widths; code wrapping; focus mode; and independent navigation/context state.
 - Line spacing, manuscript width, code wrapping, distraction-free mode, navigation state and context-rail state are implemented as browser-local preferences; real-browser persistence and interaction review remain open.
-- Theme-specific colours are repeated in component styles rather than expressed through complete semantic tokens.
+- The shell uses semantic colour tokens, but legacy lesson components still need a rendered cross-theme review to identify any remaining literal colour assumptions.
 
 ### Library and chapter entry
 
@@ -57,8 +56,8 @@ Status: source and HTTP audit complete; rendered browser inspection blocked beca
 ### Accessibility and performance risks
 
 - Existing skip link, focus styles, semantic headings and live announcements are valuable.
-- Mobile drawer semantics, escape-to-close, focus return and body-scroll behavior need implementation.
-- Multiple sticky elements can collide.
+- Escape handling, focus trapping, close-action focus return and background-scroll locking are implemented for the mobile drawers. Browser-assisted keyboard and screen-reader verification is still required before treating those behaviours as accepted.
+- Multiple sticky elements can still collide at unusual viewport heights or browser zoom levels; this requires rendered viewport testing.
 - Some uppercase labels and small text fall below comfortable reading sizes even when contrast passes.
 - External font loading would weaken offline behavior and cause layout shifts; the redesign should use local/system fallbacks unless font files are vendored.
 
