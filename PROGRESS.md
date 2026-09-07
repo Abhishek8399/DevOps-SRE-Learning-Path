@@ -1,10 +1,12 @@
 # Project Progress
 
-Last updated: 2026-09-07
+Last updated: 2026-09-08
 
 This file reports delivery of the repository and website. It does not award competency. Learner evidence and levels remain in `progress/ledger.md`.
 
 ## Latest verified change
+
+- 2026-09-08 / `PLAN-INT-007`, `PLAN-QUA-004`: added a 2,440-word website-readable portfolio and resume evidence-defense chapter. It teaches evidence levels, claim-to-evidence mapping, metric contracts, a read-only Ubuntu repository audit, four-layer project defense, capstone selection, adversarial follow-ups and detailed practice answers without converting local work into a production claim. The first route expansion correctly rejected five Markdown planning files that are not generated primers. Renaming the chapter to the established `*-primer.md` contract then exposed an invalid `filename=` code-fence attribute during production startup; it was corrected to the supported `file=` attribute. The rebuilt server now passes all 202 expected routes: 92 lessons, 90 career primers and twenty primary surfaces, plus the invalid-lesson 404. Authentic learner claims, independent review, live defense and browser visual evidence remain open.
 
 - 2026-09-07 / reader-shell accessibility: hardened the narrow-screen navigation and context drawers without changing routes or content contracts. Opening one drawer now closes the other below 980 px, backdrop and explicit-close actions persist the closed state and return focus to the matching toolbar trigger, and an open overlay locks background scrolling. The stale UI audit was reconciled with the current collapsible navigation, context rail and three-theme reader. Lint, 35 reader tests, full content/registry/plan/memory validation, cache-free TypeScript checking and all five production-build stages pass. Browser inventory remains empty, so actual focus order, scroll locking, responsive appearance, themes, zoom and screen-reader output remain unverified.
 

@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const volumeRoot = path.join(repositoryRoot, "book", "volumes");
+const careerRoot = path.join(repositoryRoot, "career");
 const requestedBase = process.argv[2] ?? "http://127.0.0.1:3000";
 const base = new URL(requestedBase);
 if (!['127.0.0.1', 'localhost', '[::1]'].includes(base.hostname) || !['http:', 'https:'].includes(base.protocol)) {
@@ -26,6 +27,9 @@ function lessonRoute(file) {
 }
 
 const lessons = walk(volumeRoot).map(lessonRoute);
+const careerPrimers = fs.readdirSync(careerRoot, { withFileTypes: true })
+  .filter((entry) => entry.isFile() && entry.name.endsWith("-primer.md"))
+  .map((entry) => `/career/${entry.name.slice(0, -3)}`);
 const fixedRoutes = [
   "/", "/book", "/book/start", "/book/linux", "/book/connectivity",
   "/book/engineering", "/book/reliability", "/book/infrastructure",
@@ -33,7 +37,7 @@ const fixedRoutes = [
   "/book/architecture", "/book/capstones", "/career", "/drafts",
   "/my-learning", "/practice/interview", "/practice/storage", "/search",
 ];
-const targets = [...fixedRoutes, ...lessons];
+const targets = [...new Set([...fixedRoutes, ...lessons, ...careerPrimers])];
 const failures = [];
 
 for (let index = 0; index < targets.length; index += 8) {
@@ -54,7 +58,7 @@ const invalidRoute = "/book/linux/not-a-real-lesson";
 const invalidResponse = await fetch(new URL(invalidRoute, base), { signal: AbortSignal.timeout(20_000) });
 if (invalidResponse.status !== 404) failures.push(`${invalidRoute}: expected 404, found ${invalidResponse.status}`);
 
-console.log(`LIVE_ROUTE_AUDIT base=${base.origin} routes=${targets.length} lessons=${lessons.length} invalid_status=${invalidResponse.status} failures=${failures.length}`);
+console.log(`LIVE_ROUTE_AUDIT base=${base.origin} routes=${targets.length} lessons=${lessons.length} career_primers=${careerPrimers.length} invalid_status=${invalidResponse.status} failures=${failures.length}`);
 if (failures.length > 0) {
   for (const failure of failures) console.error(`LIVE_ROUTE_AUDIT ${failure}`);
   console.error("FAIL live route audit");
