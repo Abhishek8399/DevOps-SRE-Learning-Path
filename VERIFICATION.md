@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-304 - LES-0047 through LES-0051 cloud-platform publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-304` | 2026-09-07 | Kubernetes extension/operations, GitOps, provider-neutral cloud architecture, and identity/security chapters | Content and registry report 51 lessons, 153 assessments and 564 references. Schema passes 39 tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and the five-stage production build pass. Fifty canonical labs pass static safety inspection; no lab was executed. Web assets remain 592.6 KiB; all 1,226 references have zero overdue/errors; source hygiene scans 2,364 tracked text files with zero findings. Feature commit `b5b3f3f` is pushed to `origin/main` | `PASS` for canonical content publication | `GITOPS-001` belongs to Volume 03, so `LES-0049` uses the engineering route while retaining its historical alias. Reader tests now protect its correct CI-platform-to-GitOps navigation. Five verifier headers received only the missing private `umask 077` safety declaration. No Ubuntu lab, real Kubernetes operator/admission/upgrade, GitOps controller, cloud provider, identity provider, browser interaction, formal review, learner transfer or mastery is claimed. |
+
 ## VER-303 - LES-0042 through LES-0046 Kubernetes publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
