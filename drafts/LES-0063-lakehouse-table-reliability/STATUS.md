@@ -1,6 +1,6 @@
-# LES-0063 draft status
+# LES-0063 historical authoring status
 
-Status: **substantive candidate and quarantined - not canonical, accepted, or mastery evidence**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 ## Candidate inventory
 
@@ -25,4 +25,4 @@ The deterministic model is not Trino, Iceberg, a catalog, metastore, object stor
 
 Ubuntu 24.04 runtime execution is not claimed. WSL startup is blocked before the VM is created by `Wsl/Service/CreateInstance/CreateVm/HCS/0x80070569`: the user has not been granted the requested logon type. The guarded Ubuntu lifecycle therefore remains unexecuted.
 
-Publication, formal review, representative Trino/Iceberg/catalog/storage runtime evidence, reviewer transfer, delayed recall, and learner evidence remain required.
+Canonical reading publication is complete; formal review, representative Trino/Iceberg/catalog/storage runtime evidence, reviewer transfer, delayed recall, and learner evidence remain required.

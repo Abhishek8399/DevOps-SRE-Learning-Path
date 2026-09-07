@@ -22,6 +22,7 @@ const availableCounts = {
   reliability: readerEntriesForVolume("04-reliability-operations").length,
   infrastructure: readerEntriesForVolume("05-infrastructure-platforms").length,
   state: readerEntriesForVolume("06-state-distributed-systems").length,
+  ai: readerEntriesForVolume("07-ai-engineering").length,
 };
 
 const volumes: VolumeCover[] = [
@@ -32,7 +33,7 @@ const volumes: VolumeCover[] = [
   { number: "04", title: "Site Reliability Engineering", subtitle: "Signals, objectives and incidents", route: "/book/reliability", count: availableCounts.reliability, tone: "rust" },
   { number: "05", title: "Infrastructure & Platforms", subtitle: "IaC, configuration and Kubernetes control loops", route: "/book/infrastructure", count: availableCounts.infrastructure, tone: "indigo" },
   { number: "06", title: "State & Distributed Systems", subtitle: "Databases, transactions and partial failure", route: "/book/state", count: availableCounts.state, tone: "blue" },
-  { number: "07", title: "AI Engineering", subtitle: "Validated automation and production AI", tone: "slate" },
+  { number: "07", title: "AI Engineering", subtitle: "Validated automation and production AI", route: "/book/ai", count: availableCounts.ai, tone: "slate" },
   { number: "08", title: "Security Engineering", subtitle: "Threats, supply chains and runtime defense", tone: "rust" },
   { number: "09", title: "Private Cloud", subtitle: "Virtualization, OpenStack, Ceph and virtual networking", tone: "indigo" },
   { number: "10", title: "Architecture & Leadership", subtitle: "Trade-offs, communication and engineering ownership", tone: "moss" },

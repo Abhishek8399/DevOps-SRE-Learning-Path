@@ -17,10 +17,10 @@ const availableVolumes: readonly Readonly<{
   { id: "04-reliability-operations", number: "04", title: "Reliability & operations", route: "/book/reliability" },
   { id: "05-infrastructure-platforms", number: "05", title: "Infrastructure & platforms", route: "/book/infrastructure" },
   { id: "06-state-distributed-systems", number: "06", title: "State & distributed systems", route: "/book/state" },
+  { id: "07-ai-engineering", number: "07", title: "AI engineering", route: "/book/ai" },
 ];
 
 const plannedVolumes = [
-  ["07", "AI engineering"],
   ["08", "Security engineering"],
   ["09", "Private cloud"],
   ["10", "Architecture & leadership"],

@@ -92,6 +92,8 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   K8S: "05-infrastructure-platforms",
   PLT: "05-infrastructure-platforms",
   DST: "06-state-distributed-systems",
+  DMP: "06-state-distributed-systems",
+  AIO: "07-ai-engineering",
 });
 
 // LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its

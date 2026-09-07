@@ -50,6 +50,12 @@ export const READER_VOLUMES = {
     volumeTitle: "State and distributed systems",
     volumeRoute: "/book/state",
   },
+  "07-ai-engineering": {
+    volumeId: "07-ai-engineering",
+    volumeNumber: "07",
+    volumeTitle: "AI engineering",
+    volumeRoute: "/book/ai",
+  },
 } as const;
 
 export type ReaderVolumeId = keyof typeof READER_VOLUMES;

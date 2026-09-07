@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes sixty-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes sixty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 61);
-  assert.equal(result.metrics.assessments, 183);
-  assert.equal(result.metrics.references, 714);
+  assert.equal(result.metrics.lessons, 66);
+  assert.equal(result.metrics.assessments, 198);
+  assert.equal(result.metrics.references, 789);
 
   const expectations = [
     {
@@ -1692,6 +1692,20 @@ test("the live structured corpus publishes sixty-one lessons with exact ownershi
     ].map(([id, slug, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
       path: join(repositoryRoot, "book", "volumes", "06-state-distributed-systems", `${id}-${slug}`, "lesson.md"),
       id, domain: "state", route: `/book/state/${slug}`, volume: "06-state-distributed-systems", order,
+      prerequisiteLessonIds, prerequisiteCurriculumIds,
+      assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
+      referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),
+      independentId: `ASM-${String(assessmentStart + 2).padStart(4, "0")}`,
+    })),
+    ...[
+      ["LES-0062", "data-pipeline-reliability", "state", "06-state-distributed-systems", 7, ["LES-0026", "LES-0060", "LES-0061"], ["DST-004", "PERF-001", "K8S-002"], 169, 688],
+      ["LES-0063", "lakehouse-table-reliability", "state", "06-state-distributed-systems", 8, ["LES-0056", "LES-0058", "LES-0062"], ["DST-002", "DST-005", "LNX-006"], 172, 703],
+      ["LES-0064", "workflow-ml-platform-reliability", "state", "06-state-distributed-systems", 9, ["LES-0026", "LES-0061", "LES-0062"], ["OBS-001", "DST-006", "DMP-001"], 175, 718],
+      ["LES-0065", "specialized-data-service-reliability", "state", "06-state-distributed-systems", 10, ["LES-0058", "LES-0059", "LES-0063"], ["DST-005", "DST-003", "DMP-002"], 178, 733],
+      ["LES-0066", "validated-ai-assisted-engineering", "ai", "07-ai-engineering", 1, ["LES-0018", "LES-0051", "LES-0057"], ["AUT-002", "DST-001", "SEC-001"], 181, 748],
+    ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart]) => ({
+      path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
+      id, domain, route: `/book/${domain}/${slug}`, volume, order,
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
       referenceIds: Array.from({ length: 15 }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),

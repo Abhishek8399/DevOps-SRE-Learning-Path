@@ -71,6 +71,14 @@ const stages = [
   },
   {
     number: "08",
+    title: "AI Engineering",
+    detail: "Validated AI assistance, retrieval, tool boundaries, evaluation, security, serving, and production lifecycle.",
+    state: availableLessons(readerEntriesForVolume("07-ai-engineering").length),
+    href: "/book/ai",
+    kind: "canonical",
+  },
+  {
+    number: "09",
     title: "Security & Platform Design",
     detail: "Least privilege, secrets, policy, tenancy, golden paths, self-service, cost, governance, and architecture tradeoffs.",
     state: "12 staged chapters",
@@ -78,7 +86,7 @@ const stages = [
     kind: "staged",
   },
   {
-    number: "09",
+    number: "10",
     title: "Capstones & Interviews",
     detail: "Cross-system incidents, production design reviews, operational narratives, interview drills, and reviewed evidence.",
     state: "10 staged chapters",
