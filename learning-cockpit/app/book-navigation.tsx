@@ -21,11 +21,10 @@ const availableVolumes: readonly Readonly<{
   { id: "08-security-engineering", number: "08", title: "Security engineering", route: "/book/security" },
   { id: "09-private-cloud", number: "09", title: "Private cloud", route: "/book/privatecloud" },
   { id: "10-architecture-leadership", number: "10", title: "Architecture & leadership", route: "/book/architecture" },
+  { id: "11-capstones", number: "11", title: "Capstones", route: "/book/capstones" },
 ];
 
-const plannedVolumes = [
-  ["11", "Capstones"],
-];
+const plannedVolumes: readonly (readonly [string, string])[] = [];
 
 function NavigationLinks() {
   return (
@@ -50,12 +49,14 @@ function NavigationLinks() {
           title={volume.title}
         />
       ))}
-      <details className="planned-volumes">
-        <summary><span>Future volumes</span><b aria-hidden="true">+</b></summary>
-        <div>{plannedVolumes.map(([number, title]) => (
-          <Link href="/book#volume-collection-title" key={number}><b>{number}</b>{title}<small>PLANNED</small></Link>
-        ))}</div>
-      </details>
+      {plannedVolumes.length > 0 ? (
+        <details className="planned-volumes">
+          <summary><span>Future volumes</span><b aria-hidden="true">+</b></summary>
+          <div>{plannedVolumes.map(([number, title]) => (
+            <Link href="/book#volume-collection-title" key={number}><b>{number}</b>{title}<small>PLANNED</small></Link>
+          ))}</div>
+        </details>
+      ) : null}
       <NavigationLink className="practice-link" href="/practice/storage">Open storage practice <span aria-hidden="true">-&gt;</span></NavigationLink>
       <NavigationLink className="practice-link" href="/practice/interview">Open interview practice <span aria-hidden="true">-&gt;</span></NavigationLink>
       <p className="nav-footnote">Available to read is not the same as verified mastery.</p>

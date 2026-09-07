@@ -74,6 +74,12 @@ export const READER_VOLUMES = {
     volumeTitle: "Architecture and leadership",
     volumeRoute: "/book/architecture",
   },
+  "11-capstones": {
+    volumeId: "11-capstones",
+    volumeNumber: "11",
+    volumeTitle: "Capstones",
+    volumeRoute: "/book/capstones",
+  },
 } as const;
 
 export type ReaderVolumeId = keyof typeof READER_VOLUMES;

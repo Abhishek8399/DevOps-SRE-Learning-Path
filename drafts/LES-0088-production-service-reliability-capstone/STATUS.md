@@ -1,8 +1,8 @@
-# LES-0088 draft status
+# LES-0088 publication history
 
-Status: **substantive quarantined lesson candidate; independent transfer, formal review and publication pending**
+Status: **published as a canonical substantive chapter; independent transfer and formal review remain pending**
 
-This quarantined directory reserves `LES-0088` / `V11-L01` / `CAP-001` for the production-service reliability capstone. The working route is `/book/capstones/production-service-reliability-capstone`, the volume is `11-capstones` and the domain is `capstone-engineering`.
+This historical directory records the former quarantine of `LES-0088` / `V11-L01` / `CAP-001` for the production-service reliability capstone. The canonical route is `/book/capstones/production-service-reliability-capstone`, the volume is `11-capstones` and the domain is `capstone-engineering`.
 
 The project contract is one evolving, production-shaped local service that connects request handling, durable state, tests, build provenance, container execution, proxy and TLS boundaries, metrics, structured logs, trace correlation, SLO calculation, actionable alerts, controlled incidents, backup, restore, capacity evidence, safe release, rollback, runbooks, postmortem, threat model, ADR and cost model. The baseline must run with Python standard-library components only; Docker and observability integrations are separately bounded stages.
 

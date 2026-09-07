@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes eighty-six lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes ninety-two lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 86);
-  assert.equal(result.metrics.assessments, 258);
-  assert.equal(result.metrics.references, 1108);
+  assert.equal(result.metrics.lessons, 92);
+  assert.equal(result.metrics.assessments, 276);
+  assert.equal(result.metrics.references, 1226);
 
   const expectations = [
     {
@@ -1723,9 +1723,15 @@ test("the live structured corpus publishes eighty-six lessons with exact ownersh
       ["LES-0084", "technical-writing-operational-documents", "foundations", "00-start-safely", 3, ["LES-0007"], ["FND-001"], 235, 1028, 18],
       ["LES-0085", "technical-leadership-engineering-organizations", "leadership", "10-architecture-leadership", 3, ["LES-0084", "LES-0033"], ["DOC-001", "SRE-003"], 238, 1046, 18],
       ["LES-0086", "behavioral-leadership-incident-project-interviews", "interviews", "10-architecture-leadership", 4, ["LES-0085"], ["LDR-001"], 241, 1064, 18],
+      ["LES-0087", "devops-sre-platform-career-roadmaps", "career-development", "10-architecture-leadership", 5, ["LES-0086"], ["INT-002"], 244, 1082, 18],
+      ["LES-0088", "production-service-reliability-capstone", "capstone-engineering", "11-capstones", 1, ["LES-0087"], ["LNX-001", "NET-005", "AUT-002", "BLD-001", "CI-001", "CTR-002", "OBS-001", "SRE-001", "DR-001", "SEC-001", "REL-001"], 247, 1100, 20],
+      ["LES-0089", "kubernetes-platform-engineering-capstone", "capstone-engineering", "11-capstones", 2, ["LES-0088"], ["IAC-001", "K8S-001", "K8S-002", "K8S-003", "K8S-004", "K8S-005", "K8S-006", "K8S-007", "K8S-008", "GITOPS-001", "PLT-001", "PLT-002", "PLT-003", "PLT-004", "SRE-001", "SEC-002"], 250, 1120, 20],
+      ["LES-0090", "distributed-data-reliability-capstone", "capstone-engineering", "11-capstones", 3, ["LES-0089"], ["AUT-002", "DST-002", "DST-004", "DST-006", "DMP-001", "DMP-002", "OBS-001", "SRE-002", "DR-001"], 253, 1140, 20],
+      ["LES-0091", "private-cloud-reliability-capstone", "capstone-engineering", "11-capstones", 4, ["LES-0090"], ["PRV-001", "PRV-002", "PRV-003", "PRV-004", "PRV-005", "SRE-002", "DR-001", "SEC-001", "ARC-001"], 256, 1160, 20],
+      ["LES-0092", "secured-ai-incident-assistant", "capstone-engineering", "11-capstones", 5, ["LES-0091"], ["AUT-002", "OBS-001", "SRE-003", "SEC-001", "AIO-001", "AIO-002", "AIO-003", "AIO-004"], 259, 1180, 20],
     ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart, referenceCount = 15]) => ({
       path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
-      id, domain, route: `/book/${volume === "00-start-safely" ? "start" : volume === "10-architecture-leadership" ? "architecture" : domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
+      id, domain, route: `/book/${volume === "00-start-safely" ? "start" : volume === "10-architecture-leadership" ? "architecture" : volume === "11-capstones" ? "capstones" : domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
       referenceIds: Array.from({ length: referenceCount }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),

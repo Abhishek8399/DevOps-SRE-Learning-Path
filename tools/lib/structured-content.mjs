@@ -100,6 +100,8 @@ const canonicalCurriculumVolumeByPrefix = Object.freeze({
   ARC: "10-architecture-leadership",
   LDR: "10-architecture-leadership",
   INT: "10-architecture-leadership",
+  CAR: "10-architecture-leadership",
+  CAP: "11-capstones",
 });
 
 // LES-0004 was published as Volume 01 / Lesson 04 before NET-003 gained its
@@ -1621,6 +1623,7 @@ export function validateRepositoryStructuredContent(repositoryRoot) {
     ["04-reliability-operations", "reliability"],
     ["09-private-cloud", "privatecloud"],
     ["10-architecture-leadership", "architecture"],
+    ["11-capstones", "capstones"],
   ]);
   for (const entry of legacy.entries) {
     const id = entry.record.id;

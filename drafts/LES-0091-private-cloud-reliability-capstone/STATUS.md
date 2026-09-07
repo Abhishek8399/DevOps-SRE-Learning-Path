@@ -1,8 +1,8 @@
-# LES-0091 draft status
+# LES-0091 publication history
 
-Status: **source-locked implementation-assessment-and-manuscript-complete quarantined capstone; formal review, transfer and publication pending**
+Status: **published as a canonical substantive chapter; formal review and independent transfer remain pending**
 
-This quarantined directory reserves `LES-0091` / `V11-L04` / `CAP-004` for the private-cloud reliability capstone at `/book/capstones/private-cloud-reliability-capstone`, volume `11-capstones`, order 4 and domain `capstone-engineering`.
+This historical directory records the former quarantine of `LES-0091` / `V11-L04` / `CAP-004` for the private-cloud reliability capstone at `/book/capstones/private-cloud-reliability-capstone`, volume `11-capstones`, order 4 and domain `capstone-engineering`.
 
 The capstone connects a protected VM request to identity, Placement, Nova cells, KVM/libvirt, Neutron/OVN, Ceph, hardware operations, capacity, upgrades, failure recovery and user-path validation. Its local implementation is an explicitly non-production Python simulator: it does not invoke OpenStack, libvirt, Ceph, OVN, a BMC, SSH, a subprocess, a socket or any cloud API.
 

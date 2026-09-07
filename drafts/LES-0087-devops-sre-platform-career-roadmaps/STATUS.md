@@ -1,8 +1,8 @@
-# LES-0087 draft status
+# LES-0087 publication history
 
-Status: **substantive quarantined candidate complete; formal review, learner evidence, independent transfer and publication pending**
+Status: **published as a canonical substantive chapter; formal review, learner evidence and independent transfer remain pending**
 
-This quarantined directory reserves `LES-0087` / `V10-L05` / `CAR-001` for evidence-based DevOps, SRE, infrastructure, cloud, platform, data-platform and architect career roadmaps from foundation through expert responsibility. The working route is `/book/architecture/devops-sre-platform-career-roadmaps`, the volume is `10-architecture-leadership` and the domain is `career-development`.
+This historical directory records the former quarantine of `LES-0087` / `V10-L05` / `CAR-001` for evidence-based DevOps, SRE, infrastructure, cloud, platform, data-platform and architect career roadmaps from foundation through expert responsibility. The canonical route is `/book/architecture/devops-sre-platform-career-roadmaps`, the volume is `10-architecture-leadership` and the domain is `career-development`.
 
 The source lock covers responsibility versus title, role-specific skill profiles, competency/task/knowledge/skill statements, platform maturity, DevOps scope, cloud-operations task domains, SRE training and sustainable on-call, delivery capabilities, job analysis, assessment validity and the supplied nine-company role heat map. Public role and certification pages are planning inputs, not proof that a vacancy remains open, that a learner has the skill or that a credential guarantees job performance.
 

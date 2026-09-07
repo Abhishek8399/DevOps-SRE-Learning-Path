@@ -86,4 +86,10 @@ export const generatedLessonPaths = {
   "LES-0083": ["book", "volumes", "10-architecture-leadership", "LES-0083-architecture-strategy-migration-governance", "lesson.md"],
   "LES-0085": ["book", "volumes", "10-architecture-leadership", "LES-0085-technical-leadership-engineering-organizations", "lesson.md"],
   "LES-0086": ["book", "volumes", "10-architecture-leadership", "LES-0086-behavioral-leadership-incident-project-interviews", "lesson.md"],
+  "LES-0087": ["book", "volumes", "10-architecture-leadership", "LES-0087-devops-sre-platform-career-roadmaps", "lesson.md"],
+  "LES-0088": ["book", "volumes", "11-capstones", "LES-0088-production-service-reliability-capstone", "lesson.md"],
+  "LES-0089": ["book", "volumes", "11-capstones", "LES-0089-kubernetes-platform-engineering-capstone", "lesson.md"],
+  "LES-0090": ["book", "volumes", "11-capstones", "LES-0090-distributed-data-reliability-capstone", "lesson.md"],
+  "LES-0091": ["book", "volumes", "11-capstones", "LES-0091-private-cloud-reliability-capstone", "lesson.md"],
+  "LES-0092": ["book", "volumes", "11-capstones", "LES-0092-secured-ai-incident-assistant", "lesson.md"],
 } as const;

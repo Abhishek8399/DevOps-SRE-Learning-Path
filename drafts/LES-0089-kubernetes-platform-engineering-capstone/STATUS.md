@@ -1,8 +1,8 @@
-# LES-0089 draft status
+# LES-0089 publication history
 
-Status: **substantive quarantined lesson candidate; independent transfer, formal review and publication pending**
+Status: **published as a canonical substantive chapter; independent transfer and formal review remain pending**
 
-This quarantined directory reserves `LES-0089` / `V11-L02` / `CAP-002` for the Kubernetes platform engineering capstone. The working route is `/book/capstones/kubernetes-platform-engineering-capstone`, volume `11-capstones`, order 2 and domain `capstone-engineering`.
+This historical directory records the former quarantine of `LES-0089` / `V11-L02` / `CAP-002` for the Kubernetes platform engineering capstone. The canonical route is `/book/capstones/kubernetes-platform-engineering-capstone`, volume `11-capstones`, order 2 and domain `capstone-engineering`.
 
 The project is a disposable local developer platform built around a three-node kind cluster. It connects a strict versioned ServiceRequest, deterministic manifest/catalog generation, Git-bound reconciliation, tenant RBAC, quotas, LimitRanges, Restricted Pod Security, native CEL admission, workload security, rollout/rollback, bounded SLO arithmetic, declaration reconstruction, threat/cost/capacity/upgrade analysis and a usability-test protocol.
 

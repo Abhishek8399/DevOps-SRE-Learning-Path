@@ -1,8 +1,8 @@
-# LES-0092 draft status
+# LES-0092 publication history
 
-Status: **substantive quarantined capstone with source, implementation, assessments and manuscript complete; review and publication pending**
+Status: **published as a canonical substantive chapter; formal review and independent transfer remain pending**
 
-This directory reserves `LES-0092` / `V11-L05` / `CAP-005` for `/book/capstones/secured-ai-incident-assistant`, volume `11-capstones`, order 5 and domain `capstone-engineering`.
+This historical directory records the former quarantine of `LES-0092` / `V11-L05` / `CAP-005` for `/book/capstones/secured-ai-incident-assistant`, volume `11-capstones`, order 5 and domain `capstone-engineering`.
 
 The capstone connects sanitized synthetic telemetry, versioned runbooks, retrieval, untrusted generation, claim verification, narrow tools, deterministic authorization, independent approval, effect reconciliation, privacy-aware audit, evaluation, kill/fallback behavior, capacity and cost. The default implementation uses a deterministic untrusted fixture and invokes no model provider, network, shell, subprocess, cloud, Kubernetes, ticketing, messaging, observability or production API.
 

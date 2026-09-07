@@ -1,8 +1,8 @@
-# LES-0090 draft status
+# LES-0090 publication history
 
-Status: **source-locked implementation-assessment-and-manuscript-complete quarantined capstone; review and publication pending**
+Status: **published as a canonical substantive chapter; formal review and independent transfer remain pending**
 
-This quarantined directory reserves `LES-0090` / `V11-L03` / `CAP-003` for the distributed data reliability capstone. Its working route is `/book/capstones/distributed-data-reliability-capstone`, volume `11-capstones`, order 3 and domain `capstone-engineering`.
+This historical directory records the former quarantine of `LES-0090` / `V11-L03` / `CAP-003` for the distributed data reliability capstone. Its canonical route is `/book/capstones/distributed-data-reliability-capstone`, volume `11-capstones`, order 3 and domain `capstone-engineering`.
 
 The planned local product follows one order from a transactional API through an atomic outbox, retained event log, idempotent materialization, disposable cache, analytical batch/replay output, data-quality gates, lineage receipts, SLO/capacity evidence and state-class recovery. It must make duplicates, poison records, backlog, partition skew, consumer crash windows, stale cache, schema incompatibility and restore/replay boundaries observable.
 
