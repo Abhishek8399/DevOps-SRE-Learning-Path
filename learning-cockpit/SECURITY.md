@@ -8,11 +8,13 @@ Do not enter secrets, credentials, employer data, private URLs, or production in
 
 ## Dependency evidence
 
-Latest registry-backed evidence for the committed lockfile (2026-08-11):
+Latest registry-backed evidence for the committed lockfile (2026-09-07):
 
-- A fresh-clone `npm ci --ignore-scripts` completed and reported 18 advisories overall (2 low, 16 high).
-- `npm audit --omit=dev --audit-level=moderate` reports zero vulnerabilities after the tested Next.js 16.3.0 upgrade; patched `postcss` and `nanoid` remain constrained by reviewed overrides.
-- Automatic `npm audit fix --force` was not run: npm proposes `next@16.3.0`, outside the declared dependency range, so remediation needs a reviewed compatibility/security change.
+- A Git-only temporary clone completed `npm ci`, installed 492 package artifacts, applied the documented Windows Vinext compatibility patch, and passed content, type, lint, production-build, and asset-budget checks. The guarded temporary clone was removed afterward.
+- npm warned that sharp, unrs-resolver, workerd, and nested esbuild declare install scripts without explicit npm script-approval configuration. The clean build passed, but their install behavior still requires an independent review.
+- `npm audit --omit=dev --audit-level=moderate` reports zero production vulnerabilities at the recorded time.
+- `npm run audit:dependencies` reports 655 locked packages, fifteen reviewed license expressions, registry-only resolved sources, integrity or explicit bundling, and five known install-script package paths. This is deterministic change detection, not a legal opinion or live vulnerability result.
+- Automatic `npm audit fix` and `npm audit fix --force` were not run. Future advisories require exact-path analysis, compatibility testing, and a reviewed lockfile change.
 
 The older results below are retained as historical evidence only. Audit results remain point-in-time evidence and must be rerun after dependency changes.
 

@@ -6,6 +6,8 @@ This file reports delivery of the repository and website. It does not award comp
 
 ## Latest verified change
 
+- 2026-09-07 / public-maintenance audit: replaced the stale August dependency summary with the current clean-clone, lock-policy, install-script-warning and zero-production-advisory evidence. The root README now states the honest licensing boundary: no owner-approved license is present, so public visibility must not be misrepresented as permission to reuse or redistribute. License selection remains an owner decision and a final-release dependency.
+
 - 2026-09-07 / `PLAN-MS-06`, `PLAN-AUD-007`: proved that committed revision `8393cb3` can bootstrap outside the warmed worktree. A Git-only temporary clone completed `npm ci`, content/memory/plan validation, curriculum and dependency audits, typecheck, lint, all five production-build environments, and the 593.3 KiB asset budget; the exact guarded temporary directory was then removed. The production-only npm advisory query returned zero vulnerabilities. npm warned that four non-optional install-script packages lack explicit script-approval configuration, so install-script review remains open along with browser accessibility, legal, representative runtime, learner and final release review.
 
 - 2026-09-07 / `PLAN-AUD-004`: added a deterministic dependency-policy gate for the local website. It validates exact direct dependency versions, package/lock agreement, registry-only resolved sources, integrity or explicit bundling, the current fifteen license expressions, and the five packages that declare install scripts. The current 655-package lockfile passes. This is inventory and change detection—not a vulnerability scan, legal opinion, install-script sandbox, or proof that every lab misuse path is safe.

@@ -43,6 +43,10 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 - Do not perform a mutating or destructive action unless the exercise labels it `[MUTATING]` or `[DESTRUCTIVE]` and provides exact scope, stop conditions, success evidence, and cleanup or rollback.
 - Production systems and employer cloud accounts are out of scope unless explicitly approved for a later exercise.
 
+## Reuse and licensing status
+
+This repository does not yet contain an owner-approved root license. Its public visibility permits reading and GitHub-supported inspection, but it must not be described as open source or assumed reusable, modifiable, or redistributable under an unstated license. The repository owner must deliberately select and add a license before a public reusable release; automated checks and contributors must not make that legal choice implicitly.
+
 ## Learner files
 
 - [Learner profile](learner-profile.md)
