@@ -690,6 +690,12 @@ Decision: accepted / rejected
 
 Evidence:
 
+## VER-308 - LES-0067 through LES-0071 AI operations and security publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-308` | 2026-09-07 | Evidence-safe AIOps, MLOps/LLMOps lifecycle, AI security, DevSecOps/software supply chain, security foundations/threat modeling, and the new canonical Security volume route | Content and registry report 71 lessons, 213 assessments and 864 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and all five production-build stages pass, including `/book/security` and its lesson route. Seventy canonical labs pass static safety inspection; no lab was executed. Web assets total 592.9 KiB; all 1,226 canonical and staged references have zero overdue/errors; source hygiene scans 2,370 tracked text files with zero findings. Feature commit `1df69ed` is pushed to `origin/main` | `PASS` for canonical content publication | Security curriculum ownership now maps SEC to Volume 08, while AIO remains in Volume 07. Five verifier headers received only the missing private `umask 077` declaration. The first reader run exposed expected fixture drift in Volume-08 ordering and staged counts; exact canonical order and the 21-chapter staged boundary were corrected, then 35/35 passed. Hygiene was correctly rerun after staging canonical moves. No Ubuntu lab, model/telemetry/registry/scanner/signer/policy/identity runtime, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result or mastery is claimed. |
+
 ## VER-307 - LES-0062 through LES-0066 data platform and AI publication batch
 
 | ID | Date | Scope | Evidence | Result | Boundary |
