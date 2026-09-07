@@ -13,7 +13,7 @@
   "summary":"Build a truthful role-specific interview system from learner-owned evidence, answer at several depths, survive changing follow-ups, defend incidents and architectures, protect confidentiality, and use AI only within explicit preparation boundaries.",
   "domain":"interviews",
   "level":{"from":"foundation","to":"expert"},
-  "estimatedMinutes":720,
+  "estimatedMinutes":600,
   "prerequisiteLessonIds":["LES-0085"],
   "prerequisiteCurriculumIds":["LDR-001"],
   "testedEnvironments":[
@@ -70,8 +70,8 @@
     {"id":"LES-0086-CMD-012","question":"Do all gates, calculations, refusals and cleanup pass?","risk":"mutating-bounded","command":"bash verify.sh","runFrom":"LES-0086 support/lab from absent state","expectedBranches":[{"when":"verify=pass","meaning":"73 cases, five calculations, refusals and cleanup pass","nextEvidence":"retain fictional and non-evaluative limits"},{"when":"failure","meaning":"candidate evidence is rejected","nextEvidence":"preserve the first failed gate"}],"proves":"guarded offline lifecycle","doesNotProve":"learner mastery, job level or hiring outcome","cleanup":"Verifier proves exact UID-scoped state absence."}
   ],
   "labs":[
-    {"id":"LES-0086-LAB-001","title":"Guided truthful interview-evidence review","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; fictional local JSON only","timeMinutes":240,"privilege":"normal user; root, ATS, people-system, resume, recording, live-interview, AI-service and runtime authority refused","network":"none","changes":["one UID-scoped temporary root","copied fictional case and evidence packet fixtures"],"abortConditions":["root","credential","candidate or people-system authority","private resume or recording path","live-interview or AI token","production endpoint","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failed assertion and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"drafts/LES-0086-behavioral-leadership-incident-project-interviews/support/lab"},
-    {"id":"LES-0086-LAB-002","title":"Independent two-role timed interview loop","mode":"independent","environment":"Reviewer-owned public job descriptions and learner-owned policy-safe evidence; no employer or hiring-system connection","timeMinutes":300,"privilege":"learner and reviewer only; reviewer owns questions, timing, hidden changes, scorecards and delayed follow-up","network":"none","changes":["local role maps","story and claim ledgers","duration variants","mock scorecards","revisions"],"abortConditions":["employer-confidential artifact","customer or employee data","credential or endpoint","fabricated claim","hiring prediction","unauthorized recording","unauthorized live assistance","answer-key exposure"],"recovery":"Withdraw unsupported claims and discard or sanitize reviewer-owned artifacts after evidence retention.","cleanupProof":"Reviewer confirms no prohibited data, secret, recording, live-assistance artifact or independent answer key remains.","path":"drafts/LES-0086-behavioral-leadership-incident-project-interviews/support/lab"}
+    {"id":"LES-0086-LAB-001","title":"Guided truthful interview-evidence review","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; fictional local JSON only","timeMinutes":240,"privilege":"normal user; root, ATS, people-system, resume, recording, live-interview, AI-service and runtime authority refused","network":"none","changes":["one UID-scoped temporary root","copied fictional case and evidence packet fixtures"],"abortConditions":["root","credential","candidate or people-system authority","private resume or recording path","live-interview or AI token","production endpoint","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failed assertion and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"book/labs/LES-0086-behavioral-leadership-incident-project-interviews"},
+    {"id":"LES-0086-LAB-002","title":"Independent two-role timed interview loop","mode":"independent","environment":"Reviewer-owned public job descriptions and learner-owned policy-safe evidence; no employer or hiring-system connection","timeMinutes":240,"privilege":"learner and reviewer only; reviewer owns questions, timing, hidden changes, scorecards and delayed follow-up","network":"none","changes":["local role maps","story and claim ledgers","duration variants","mock scorecards","revisions"],"abortConditions":["employer-confidential artifact","customer or employee data","credential or endpoint","fabricated claim","hiring prediction","unauthorized recording","unauthorized live assistance","answer-key exposure"],"recovery":"Withdraw unsupported claims and discard or sanitize reviewer-owned artifacts after evidence retention.","cleanupProof":"Reviewer confirms no prohibited data, secret, recording, live-assistance artifact or independent answer key remains.","path":"book/labs/LES-0086-behavioral-leadership-incident-project-interviews"}
   ],
   "incidents":[
     {"id":"LES-0086-INC-001","signal":"A candidate says they improved uptime by forty percent but cannot name a baseline, source, window or denominator.","firstThought":"The persuasive metric is not attributable evidence.","safePath":"Withdraw or qualify the number, state the narrower observed result and explain the source limitation.","trap":"Invent a plausible dashboard or call the figure approximate."},
@@ -861,7 +861,7 @@ This is deterministic test data. Real consistency requires a reviewer-controlled
 Run commands from:
 
 ```bash
-cd drafts/LES-0086-behavioral-leadership-incident-project-interviews/support/lab
+cd book/labs/LES-0086-behavioral-leadership-incident-project-interviews
 ```
 
 Use Ubuntu 24.04 as a normal non-root user. The lab is offline and uses only fictional JSON. It refuses real resume, candidate, ATS, recording, live-interview, AI-service and production paths.
@@ -1033,7 +1033,7 @@ The lab may create only one UID-scoped temporary state root and copied fixtures.
 ### Exercise 1 — establish identity before trust
 
 ```bash
-cd drafts/LES-0086-behavioral-leadership-incident-project-interviews/support/lab
+cd book/labs/LES-0086-behavioral-leadership-incident-project-interviews
 id
 bash lab.sh doctor
 bash lab.sh setup

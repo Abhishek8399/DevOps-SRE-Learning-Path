@@ -20,10 +20,10 @@ const availableVolumes: readonly Readonly<{
   { id: "07-ai-engineering", number: "07", title: "AI engineering", route: "/book/ai" },
   { id: "08-security-engineering", number: "08", title: "Security engineering", route: "/book/security" },
   { id: "09-private-cloud", number: "09", title: "Private cloud", route: "/book/privatecloud" },
+  { id: "10-architecture-leadership", number: "10", title: "Architecture & leadership", route: "/book/architecture" },
 ];
 
 const plannedVolumes = [
-  ["10", "Architecture & leadership"],
   ["11", "Capstones"],
 ];
 

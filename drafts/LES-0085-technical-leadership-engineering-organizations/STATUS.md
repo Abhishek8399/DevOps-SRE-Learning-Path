@@ -1,6 +1,6 @@
-# LES-0085 draft status
+# LES-0085 historical authoring status
 
-Status: **substantive quarantined candidate; representative organizational evidence, formal review, learner transfer and promotion remain pending**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory reserves `LES-0085` / `V10-L03` / `LDR-001` for evidence-based technical leadership, ownership, prioritization, delegation, influence, disagreement, feedback, mentoring, stakeholder and risk communication. The working route is `/book/architecture/technical-leadership-engineering-organizations`, the volume is `10-architecture-leadership` and the domain is `leadership`.
 

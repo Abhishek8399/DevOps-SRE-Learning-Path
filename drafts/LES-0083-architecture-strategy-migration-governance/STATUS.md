@@ -1,6 +1,6 @@
-# LES-0083 draft status
+# LES-0083 historical authoring status
 
-Status: **substantive quarantined candidate complete within recorded source, static, model, Ubuntu and canonical regression boundaries; representative and human evidence pending**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory reserves `LES-0083` / `V10-L02` / `ARC-002` for architecture strategy, portfolio decisions, migration, governance, standards and vendor evaluation. The working route is `/book/architecture/architecture-strategy-migration-governance`, the volume is `10-architecture-leadership` and the domain is `architecture`.
 

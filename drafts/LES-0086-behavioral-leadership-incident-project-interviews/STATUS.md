@@ -1,6 +1,6 @@
-# LES-0086 draft status
+# LES-0086 historical authoring status
 
-Status: **substantive quarantined candidate complete; formal review, learner evidence, independent transfer and publication pending**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory reserves `LES-0086` / `V10-L04` / `INT-002` for truthful behavioral, leadership, incident, ownership, resume-project and architecture-defense interview practice. The working route is `/book/architecture/behavioral-leadership-incident-project-interviews`, the volume is `10-architecture-leadership` and the domain is `interviews`.
 

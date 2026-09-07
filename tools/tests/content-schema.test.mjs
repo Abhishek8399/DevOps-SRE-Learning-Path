@@ -1124,12 +1124,12 @@ test("repository loading rejects a weakened schema even with no usable lesson sc
   }
 });
 
-test("the live structured corpus publishes eighty-one lessons with exact ownership and answer isolation", () => {
+test("the live structured corpus publishes eighty-six lessons with exact ownership and answer isolation", () => {
   const result = validateRepositoryStructuredContent(repositoryRoot);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.metrics.lessons, 81);
-  assert.equal(result.metrics.assessments, 243);
-  assert.equal(result.metrics.references, 1020);
+  assert.equal(result.metrics.lessons, 86);
+  assert.equal(result.metrics.assessments, 258);
+  assert.equal(result.metrics.references, 1108);
 
   const expectations = [
     {
@@ -1718,9 +1718,14 @@ test("the live structured corpus publishes eighty-one lessons with exact ownersh
       ["LES-0079", "ovs-ovn-virtual-networking", "private-cloud", "09-private-cloud", 4, ["LES-0012", "LES-0013", "LES-0014", "LES-0015", "LES-0016", "LES-0052", "LES-0077"], ["NET-001", "NET-002", "NET-003", "NET-004", "NET-005", "NET-006", "NET-007", "PRV-002"], 220, 943],
       ["LES-0080", "bare-metal-fleet-lifecycle", "private-cloud", "09-private-cloud", 5, ["LES-0006", "LES-0007", "LES-0008", "LES-0010", "LES-0012", "LES-0016", "LES-0072", "LES-0073", "LES-0074", "LES-0076", "LES-0077"], ["LNX-001", "LNX-005", "LNX-006", "LNX-008", "NET-001", "NET-002", "NET-006", "IAC-001", "CFG-001", "SEC-001", "PRV-001"], 223, 958, 18],
       ["LES-0081", "finops-cost-engineering", "infrastructure", "05-infrastructure-platforms", 20, ["LES-0026", "LES-0035", "LES-0050"], ["OBS-001", "PERF-001", "CLD-001"], 226, 976, 18],
+      ["LES-0082", "architecture-system-design-foundations", "architecture", "10-architecture-leadership", 1, ["LES-0007", "LES-0008"], ["FND-001", "DBG-001", "DOC-001"], 229, 994, 16],
+      ["LES-0083", "architecture-strategy-migration-governance", "architecture", "10-architecture-leadership", 2, ["LES-0082", "LES-0035", "LES-0081"], ["ARC-001", "PERF-001", "FIN-001"], 232, 1010, 18],
+      ["LES-0084", "technical-writing-operational-documents", "foundations", "00-start-safely", 3, ["LES-0007"], ["FND-001"], 235, 1028, 18],
+      ["LES-0085", "technical-leadership-engineering-organizations", "leadership", "10-architecture-leadership", 3, ["LES-0084", "LES-0033"], ["DOC-001", "SRE-003"], 238, 1046, 18],
+      ["LES-0086", "behavioral-leadership-incident-project-interviews", "interviews", "10-architecture-leadership", 4, ["LES-0085"], ["LDR-001"], 241, 1064, 18],
     ].map(([id, slug, domain, volume, order, prerequisiteLessonIds, prerequisiteCurriculumIds, assessmentStart, referenceStart, referenceCount = 15]) => ({
       path: join(repositoryRoot, "book", "volumes", volume, `${id}-${slug}`, "lesson.md"),
-      id, domain, route: `/book/${domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
+      id, domain, route: `/book/${volume === "00-start-safely" ? "start" : volume === "10-architecture-leadership" ? "architecture" : domain === "private-cloud" ? "privatecloud" : domain}/${slug}`, volume, order,
       prerequisiteLessonIds, prerequisiteCurriculumIds,
       assessmentIds: Array.from({ length: 3 }, (_, index) => `ASM-${String(assessmentStart + index).padStart(4, "0")}`),
       referenceIds: Array.from({ length: referenceCount }, (_, index) => `REF-${String(referenceStart + index).padStart(4, "0")}`),

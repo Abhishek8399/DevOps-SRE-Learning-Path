@@ -1,6 +1,6 @@
-# LES-0084 draft status
+# LES-0084 historical authoring status
 
-Status: **substantive quarantined candidate; representative organizational evidence, formal review, learner transfer and promotion remain pending**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory reserves `LES-0084` / `V00-L03` / `DOC-001` for evidence-based technical writing, diagrams, operational documentation, architecture decision records, incident communication, post-incident learning and audience translation. The working route is `/book/start/technical-writing-operational-documents`, the volume is `00-start-safely` and the domain is `foundations`.
 

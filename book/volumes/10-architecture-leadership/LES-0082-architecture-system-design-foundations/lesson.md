@@ -82,8 +82,8 @@
     {"id":"LES-0082-CMD-012","question":"Do all gates, calculations, refusals and cleanup pass?","risk":"mutating-bounded","command":"bash verify.sh","runFrom":"LES-0082 support/lab from absent state","expectedBranches":[{"when":"verify=pass","meaning":"67 cases, five calculations, refusals and cleanup pass","nextEvidence":"retain fictional-only limits"},{"when":"failure","meaning":"candidate evidence is rejected","nextEvidence":"preserve the first failed gate"}],"proves":"guarded offline lifecycle","doesNotProve":"representative architecture or learner mastery","cleanup":"Verifier proves exact UID-scoped state absence."}
   ],
   "labs": [
-    {"id":"LES-0082-LAB-001","title":"Guided checkout architecture evidence and tradeoff review","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; fictional local JSON only","timeMinutes":240,"privilege":"normal user; root and runtime authority refused","network":"none","changes":["one UID-scoped temporary root","copied fictional design and decision fixtures"],"abortConditions":["root","cloud credential","runtime endpoint","Kubernetes or Docker authority","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failed assertion and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"drafts/LES-0082-architecture-system-design-foundations/support/lab"},
-    {"id":"LES-0082-LAB-002","title":"Independent unfamiliar two-scale architecture review","mode":"independent","environment":"Reviewer-owned sanitized design briefs and evidence packet; no production connection","timeMinutes":240,"privilege":"read-only analyst; reviewer owns hidden constraints, scoring and cleanup","network":"none","changes":["local diagrams","calculations","risk table","ADR and review narrative"],"abortConditions":["production credential or mutation","employer-confidential architecture","customer data","fabricated benchmark","missing recovery or security boundary"],"recovery":"Discard or sanitize reviewer-owned artifacts after scored evidence is retained.","cleanupProof":"Reviewer confirms no credential, endpoint, external resource or confidential artifact remains.","path":"drafts/LES-0082-architecture-system-design-foundations/support/lab"}
+    {"id":"LES-0082-LAB-001","title":"Guided checkout architecture evidence and tradeoff review","mode":"guided","environment":"Ubuntu 24.04 normal user with Bash and Python 3; fictional local JSON only","timeMinutes":240,"privilege":"normal user; root and runtime authority refused","network":"none","changes":["one UID-scoped temporary root","copied fictional design and decision fixtures"],"abortConditions":["root","cloud credential","runtime endpoint","Kubernetes or Docker authority","symlink","wrong owner","unknown artifact"],"recovery":"Preserve the first failed assertion and remove only exact allowlisted state.","cleanupProof":"Exact inventory followed by state-root absence.","path":"book/labs/LES-0082-architecture-system-design-foundations"},
+    {"id":"LES-0082-LAB-002","title":"Independent unfamiliar two-scale architecture review","mode":"independent","environment":"Reviewer-owned sanitized design briefs and evidence packet; no production connection","timeMinutes":240,"privilege":"read-only analyst; reviewer owns hidden constraints, scoring and cleanup","network":"none","changes":["local diagrams","calculations","risk table","ADR and review narrative"],"abortConditions":["production credential or mutation","employer-confidential architecture","customer data","fabricated benchmark","missing recovery or security boundary"],"recovery":"Discard or sanitize reviewer-owned artifacts after scored evidence is retained.","cleanupProof":"Reviewer confirms no credential, endpoint, external resource or confidential artifact remains.","path":"book/labs/LES-0082-architecture-system-design-foundations"}
   ],
   "incidents": [
     {"id":"LES-0082-INC-001","signal":"A design review shows many services but cannot state the user operation or success measure.","firstThought":"The team has solution structure without a decision or measurable requirement.","safePath":"Return to actors, operation, outcome, scope, workload and quality scenarios before selecting components.","trap":"Add more diagram detail or fashionable technology."},
@@ -974,7 +974,7 @@ Do not label a calculated number “validated.” Do not label a successful test
 The lab is deliberately offline. It teaches evidence discipline without pretending that fictional JSON represents production. Run it as a normal Ubuntu user from:
 
 ```bash
-cd drafts/LES-0082-architecture-system-design-foundations/support/lab
+cd book/labs/LES-0082-architecture-system-design-foundations
 ```
 
 Do not use `sudo`. The guard refuses root because root would weaken ownership and cleanup evidence.
@@ -1199,7 +1199,7 @@ The lab refuses cloud credential variables, runtime endpoints, Docker/Kubernetes
 ### Exercise A: prove the shell boundary
 
 ```bash
-cd drafts/LES-0082-architecture-system-design-foundations/support/lab
+cd book/labs/LES-0082-architecture-system-design-foundations
 bash lab.sh doctor
 bash lab.sh setup
 bash lab.sh status

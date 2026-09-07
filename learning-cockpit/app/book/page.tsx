@@ -25,6 +25,7 @@ const availableCounts = {
   ai: readerEntriesForVolume("07-ai-engineering").length,
   security: readerEntriesForVolume("08-security-engineering").length,
   privateCloud: readerEntriesForVolume("09-private-cloud").length,
+  architecture: readerEntriesForVolume("10-architecture-leadership").length,
 };
 
 const volumes: VolumeCover[] = [
@@ -38,7 +39,7 @@ const volumes: VolumeCover[] = [
   { number: "07", title: "AI Engineering", subtitle: "Validated automation and production AI", route: "/book/ai", count: availableCounts.ai, tone: "slate" },
   { number: "08", title: "Security Engineering", subtitle: "Threats, supply chains and runtime defense", route: "/book/security", count: availableCounts.security, tone: "rust" },
   { number: "09", title: "Private Cloud", subtitle: "Virtualization, OpenStack, Ceph and virtual networking", route: "/book/privatecloud", count: availableCounts.privateCloud, tone: "indigo" },
-  { number: "10", title: "Architecture & Leadership", subtitle: "Trade-offs, communication and engineering ownership", tone: "moss" },
+  { number: "10", title: "Architecture & Leadership", subtitle: "Trade-offs, communication and engineering ownership", route: "/book/architecture", count: availableCounts.architecture, tone: "moss" },
   { number: "11", title: "Capstones", subtitle: "Integrated systems, incidents and interview defense", tone: "ochre" },
 ];
 

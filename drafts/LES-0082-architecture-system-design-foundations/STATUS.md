@@ -1,6 +1,6 @@
-# LES-0082 draft status
+# LES-0082 historical authoring status
 
-Status: **substantive quarantined candidate; manuscript, source lock, guarded offline lab and assessment set complete within recorded boundaries**
+Status: **published as canonical reading content; formal acceptance, learner evidence, and mastery remain separate**
 
 This quarantined directory reserves `LES-0082` / `V10-L01` / `ARC-001` for architecture and system-design foundations. The working route is `/book/architecture/architecture-system-design-foundations`, the volume is `10-architecture-leadership` and the domain is `architecture`.
 

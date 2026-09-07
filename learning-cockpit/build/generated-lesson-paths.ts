@@ -2,6 +2,7 @@
 export const generatedLessonPaths = {
   "LES-0007": ["book", "volumes", "00-start-safely", "LES-0007-systems-thinking", "lesson.md"],
   "LES-0008": ["book", "volumes", "00-start-safely", "LES-0008-evidence-driven-troubleshooting", "lesson.md"],
+  "LES-0084": ["book", "volumes", "00-start-safely", "LES-0084-technical-writing-operational-documents", "lesson.md"],
   "LES-0001": ["book", "volumes", "01-linux-systems", "LES-0001-storage", "lesson.md"],
   "LES-0002": ["book", "volumes", "01-linux-systems", "LES-0002-processes-signals-systemd", "lesson.md"],
   "LES-0003": ["book", "volumes", "01-linux-systems", "LES-0003-cpu-memory-pressure", "lesson.md"],
@@ -81,4 +82,8 @@ export const generatedLessonPaths = {
   "LES-0078": ["book", "volumes", "09-private-cloud", "LES-0078-ceph-storage-reliability-operations", "lesson.md"],
   "LES-0079": ["book", "volumes", "09-private-cloud", "LES-0079-ovs-ovn-virtual-networking", "lesson.md"],
   "LES-0080": ["book", "volumes", "09-private-cloud", "LES-0080-bare-metal-fleet-lifecycle", "lesson.md"],
+  "LES-0082": ["book", "volumes", "10-architecture-leadership", "LES-0082-architecture-system-design-foundations", "lesson.md"],
+  "LES-0083": ["book", "volumes", "10-architecture-leadership", "LES-0083-architecture-strategy-migration-governance", "lesson.md"],
+  "LES-0085": ["book", "volumes", "10-architecture-leadership", "LES-0085-technical-leadership-engineering-organizations", "lesson.md"],
+  "LES-0086": ["book", "volumes", "10-architecture-leadership", "LES-0086-behavioral-leadership-incident-project-interviews", "lesson.md"],
 } as const;
