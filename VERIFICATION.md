@@ -1,6 +1,6 @@
 # Verification Register
 
-Last updated: 2026-09-02
+Last updated: 2026-09-07
 
 This register separates observed results from planned checks. A statement in a lesson, plan, or ledger is not silently converted into a test result.
 
@@ -689,6 +689,12 @@ Decision: accepted / rejected
 | `VER-301` | 2026-09-02 | SLI/SLO/SLA and error budgets, incident command and recovery, causal analysis and post-incident learning, capacity and performance, and resilience/failure-isolation chapters with assessments, references, reader/search/navigation integration, and mechanically relocated optional labs | The five manuscripts contain 13,258, 8,927, 4,991, 4,989, and 5,773 words respectively and exactly 18 H2 sections each. Content and generated registry report 36 lessons, 108 assessments, and 345 canonical references. Schema reports 39 passes and one Windows symlink-capability skip; reader passes 35/35; typecheck, lint, all five production build stages, 35-lab static matrix, 592.5 KiB web budget, 1,226-reference freshness, source hygiene over 2,362 tracked text files, and whitespace checks pass. All five routes return HTTP 200 with command-decoder, product-company-interview, and independent-assessment markers and without the stale unpublished marker; port 3018 closes | `PASS` for canonical content publication | The first reader run exposed a genuinely ambiguous one-word `backpressure` ranking after the resilience chapter joined the corpus; the logging assertion now uses the domain-specific query `structured logging backpressure`. One schema command was first launched from the repository root, which has no `package.json`; the correct package-directory run passed. The production server ignored the requested host flag and briefly listened on `0.0.0.0:3018` during local route checks; it was stopped immediately and the port was proved closed. No lab runtime, Ubuntu execution, representative load/incident/service behavior, browser interaction, formal review, learner transfer, delayed recall, production outcome, hiring result, or mastery is claimed. |
 
 Evidence:
+
+## VER-311 - LES-0082 through LES-0086 architecture and leadership publication batch
+
+| ID | Date | Scope | Evidence | Result | Boundary |
+|---|---|---|---|---|---|
+| `VER-311` | 2026-09-07 | System-design foundations, architecture strategy/migration governance, operational technical writing, technical leadership, behavioral/incident/project interviews, and the new canonical Architecture & Leadership volume route | Content and registry report 86 lessons, 258 assessments and 1,108 references. Schema passes 39 executable tests with one Windows symlink-capability skip; reader passes 35/35; typecheck, lint and all five production-build stages pass, including `/book/architecture` and its lesson route. Eighty-five canonical labs pass static safety inspection; no lab was executed. Web assets total 593.0 KiB; all 1,226 reference records report zero overdue/errors; source hygiene scans 2,374 tracked text files with zero findings. Feature commit `04a25f1` is pushed to `origin/main` | `PASS` for canonical content publication | Curriculum ownership maps ARC/LDR/INT to Volume 10 and DOC remains in Start Safely. The first static lab inventory exposed a missing strict-mode/private-umask pair in LES-0086; the safety preamble was corrected before the passing rerun. Initial reader failures were stale adjacency, ordering and staged-fixture expectations; exact canonical and six-chapter staged boundaries then passed. No Ubuntu lab, production architecture/migration, organizational outcome, live interview evaluation, browser interaction, formal review, learner transfer, delayed recall, hiring result or mastery is claimed. |
 
 ## VER-310 - LES-0077 through LES-0081 private-cloud and FinOps publication batch
 
